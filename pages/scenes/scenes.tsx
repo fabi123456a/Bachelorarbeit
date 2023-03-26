@@ -46,7 +46,7 @@ const Scenes = (props: {
           })
         : null}
       <Typography sx={{ margin: "20px" }}>Oder</Typography>
-      <AddScene user={props.user}></AddScene>
+      <AddScene user={props.user} setSceneID={props.setSceneID}></AddScene>
     </>
   );
 };

@@ -274,7 +274,7 @@ export default function Main(props: {
     //link.click();
     document.body.removeChild(link);
 
-    // auf server laden
+    // auf server laden, scene mit gleichen id safen ist quasi scene speichern
 
     const response = await fetch("/api/FS_uploadScene", {
       method: "POST",

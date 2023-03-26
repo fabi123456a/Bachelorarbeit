@@ -4,7 +4,10 @@ import UsersList from "../admin/usersList";
 import { ModelUser } from "../api/DB_checkPassword";
 
 // einmal in DB und json file to FS
-const AddScene = (props: { user: ModelUser }) => {
+const AddScene = (props: {
+  user: ModelUser;
+  setSceneID: (id: string) => void;
+}) => {
   const [name, setName] = useState<string>();
   const idFromInsertetS = useRef<string>(null);
 
@@ -57,7 +60,9 @@ const AddScene = (props: { user: ModelUser }) => {
 
           // insert into DB then to FS
           addSceneToDB().then(() => {
-            addSceneToFS();
+            addSceneToFS().then(() => {
+              props.setSceneID(idFromInsertetS.current);
+            });
           });
         }}
       >

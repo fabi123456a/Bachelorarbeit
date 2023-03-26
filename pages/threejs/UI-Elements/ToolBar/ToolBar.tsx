@@ -222,7 +222,7 @@ function ToolBar(props: {
             <ImportExportIcon></ImportExportIcon>
             <Typography fontSize=".75rem">Export</Typography>
           </IconButton>
-          <IconButton
+          {/* <IconButton
             title="View GLTF scene"
             style={{ ...(buttonWithTextStyle as any) }}
             onClick={() => {
@@ -241,8 +241,8 @@ function ToolBar(props: {
           >
             <PublishIcon></PublishIcon>
             <Typography fontSize=".75rem">Add View</Typography>
-          </IconButton>
-          <IconButton
+          </IconButton> */}
+          {/* <IconButton
             title="Remove Gltf Scene View"
             style={{ ...(buttonWithTextStyle as any) }}
             onClick={() => {
@@ -251,8 +251,8 @@ function ToolBar(props: {
           >
             <RemoveIcon></RemoveIcon>
             <Typography fontSize=".75rem">Remove View</Typography>
-          </IconButton>
-          <IconButton
+          </IconButton> */}
+          {/* <IconButton
             title="Load Scene"
             style={{ ...(buttonWithTextStyle as any) }}
             onClick={() => {
@@ -271,7 +271,7 @@ function ToolBar(props: {
           >
             <DownloadIcon></DownloadIcon>
             <Typography fontSize=".75rem">Load</Typography>
-          </IconButton>
+          </IconButton> */}
           <IconButton
             style={{ ...(buttonWithTextStyle as any) }}
             title="Save current Scene"
