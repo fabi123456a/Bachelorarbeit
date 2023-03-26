@@ -9,49 +9,38 @@ const Scenes = (props: {
   setSceneID: (id: string) => void;
   user: ModelUser;
 }) => {
-  const [names, setNames] = useState<string[]>();
+  const [scenes, setSenes] = useState<ModelScene[]>();
 
   useEffect(() => {
     const getAllSceneNames = async () => {
-      const response = await fetch("/api/FS_getAllSceneNames");
-      const result = await response.json();
-
-      return result["result"];
+      const response = await fetch("/api/DB_getAllSceneNames");
+      const result: ModelScene[] = await response.json();
+      return result;
     };
-
-    getAllSceneNames().then((files) => {
-      alert("LENGTH: " + files);
-      //xxx;
-      //setNames(files); files müsste eigentlich string[] sein aber ist object
+    getAllSceneNames().then((scenes) => {
+      setSenes(scenes);
     });
   }, []);
 
-  const getNameFromID = async (id1: string) => {
-    const response = await fetch("/api/DB_getSceneNameByID", {
-      method: "POST",
-      body: JSON.stringify({
-        id: id1,
-      }),
-    });
-
-    const data = (await response.json()) as ModelScene;
-
-    return data["result"];
+  const getSceneData = async () => {
+    const response = await fetch("/api/DB_getAllSceneNames");
+    const result: ModelScene[] = await response.json();
+    return result;
   };
 
   return (
     <>
       <Typography>Szene auswählen:</Typography>
-      {names
-        ? names.map(async (name) => {
+      {scenes
+        ? scenes.map((scene: ModelScene) => {
             return (
               <Button
-                onClick={() => {
-                  props.setSceneID(name.split(".")[0]);
+                key={scene.id}
+                onClick={async () => {
+                  props.setSceneID(scene.id.toString());
                 }}
               >
-                {name}
-                {/* {await getNameFromID(name.split(".")[0])} */}
+                {scene.name}
               </Button>
             );
           })

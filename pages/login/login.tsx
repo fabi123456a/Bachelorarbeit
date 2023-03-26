@@ -6,8 +6,8 @@ const Home = (props: {
   setLoggedIn: (flag: boolean) => void;
   setActUser: (user: ModelUser) => void;
 }) => {
-  const [anmeldeID, setAmeldeID] = useState<string>();
-  const [password, setPassword] = useState<string>();
+  const [anmeldeID, setAmeldeID] = useState<string>("q");
+  const [password, setPassword] = useState<string>("q");
   const loggedIn = useRef<boolean>(false);
 
   // checkt login & pw wenns stim kommt der user zurück
@@ -29,12 +29,14 @@ const Home = (props: {
         onChange={(event) => {
           setAmeldeID(event.target.value);
         }}
+        value={anmeldeID}
       ></TextField>
       <Typography>Passwort</Typography>
       <TextField
         onChange={(event) => {
           setPassword(event.target.value);
         }}
+        value={password}
       ></TextField>
       <Button
         onClick={async () => {

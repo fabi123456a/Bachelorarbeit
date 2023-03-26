@@ -24,7 +24,7 @@ const AddScene = (props: { user: ModelUser }) => {
     return result["result"];
   };
 
-  const AddSceneToFS = async () => {
+  const addSceneToFS = async () => {
     const response = await fetch("/api/FS_uploadScene", {
       method: "POST",
       body: JSON.stringify({
@@ -55,9 +55,9 @@ const AddScene = (props: { user: ModelUser }) => {
             return;
           }
 
-          // insert into database
+          // insert into DB then to FS
           addSceneToDB().then(() => {
-            AddSceneToFS();
+            addSceneToFS();
           });
         }}
       >
