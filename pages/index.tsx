@@ -8,6 +8,7 @@ import UploadFile from "./fbxHandle/uploadFbx";
 import Login from "./login/login";
 import Scenes from "./scenes/scenes";
 import Main from "./threejs/Main";
+import Stack from "@mui/material/Stack";
 
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -17,7 +18,7 @@ const Home = () => {
   const [sceneID, setSceneID] = useState<string>(null);
 
   return (
-    <>
+    <Stack>
       {loggedIn ? (
         sceneID ? (
           <Main sceneID={sceneID} setSceneID={setSceneID}></Main>
@@ -27,7 +28,7 @@ const Home = () => {
       ) : (
         <Login setLoggedIn={setLoggedIn} setActUser={setActUser}></Login>
       )}
-    </>
+    </Stack>
   );
 };
 

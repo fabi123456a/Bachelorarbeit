@@ -522,7 +522,11 @@ export default function Main(props: {
 
         {/* Canvas */}
         <Stack
-          style={{ border: "1px solid darkgray", height: "100%", flex: "1" }}
+          style={{
+            border: "1px solid darkgray",
+            height: "100%",
+            flex: "1",
+          }}
         >
           <Canvas>
             {/*TO ACCESS THE useThree hook in the Scene component*/}
