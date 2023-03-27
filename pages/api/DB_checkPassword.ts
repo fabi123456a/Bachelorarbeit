@@ -1,14 +1,13 @@
-import { PrismaClient } from "@prisma/client";
-import { randomUUID } from "crypto";
 import { NextApiRequest, NextApiResponse } from "next";
+import { ModelUser } from "./_models";
+import { prismaClient } from "./_prismaClient";
 
-const prisma = new PrismaClient();
+type Session= {
+  id: string,
+  user: string,
+}
 
-export type ModelUser = {
-  id: string;
-  loginID: string;
-  password: string;
-};
+let sessions=new Map<string, Session>();
 
 export default async function DB_checkPassword(
   req: NextApiRequest,
@@ -17,14 +16,14 @@ export default async function DB_checkPassword(
   const pw = req.query.pw as string;
   const user = req.query.user as string;
 
-  const selectedUser: ModelUser = await prisma.user.findFirst({
+  const selectedUser: ModelUser = await prismaClient.user.findFirst({
     where: {
       AND: [{ loginID: user }, { password: pw }],
     },
   });
 
-  if (selectedUser == null) res.status(200).json({ result: false });
+  if (selectedUser == null) res.status(200).json(null);
   else {
-    res.status(200).json({ result: selectedUser });
+    res.status(200).json(selectedUser);
   }
 }

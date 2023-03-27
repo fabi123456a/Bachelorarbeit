@@ -1,13 +1,13 @@
 import { Button, Divider, TextField, Typography } from "@mui/material";
 import { useRef, useState } from "react";
-import { ModelUser } from "../api/DB_checkPassword";
+import { ModelUser } from "../api/_models";
 
 const Home = (props: {
   setLoggedIn: (flag: boolean) => void;
   setActUser: (user: ModelUser) => void;
 }) => {
-  const [anmeldeID, setAmeldeID] = useState<string>("q");
-  const [password, setPassword] = useState<string>("q");
+  const [anmeldeID, setAmeldeID] = useState<string>("Fabian Thomas");
+  const [password, setPassword] = useState<string>("pw");
   const loggedIn = useRef<boolean>(false);
 
   // checkt login & pw wenns stim kommt der user zurück
@@ -17,7 +17,7 @@ const Home = (props: {
     );
     const result = await response.json();
 
-    return result["result"] as ModelUser;
+    return result;
   };
 
   return (
@@ -42,12 +42,12 @@ const Home = (props: {
         onClick={async () => {
           const actUser = await checkData();
 
-          alert(actUser.id);
-
           loggedIn.current = actUser != null ? true : false;
           if (loggedIn.current == true) {
             props.setLoggedIn(true);
             props.setActUser(actUser);
+          } else {
+            alert("anmeldeID oder Passwortr ist nicht korrekt.");
           }
         }}
       >

@@ -13,10 +13,11 @@ import exportToGLTF from "./utils/exporting";
 
 //@ts-ignore
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
+import { ModelScene } from "../api/_models";
 
 export default function Main(props: {
-  sceneID: string;
-  setSceneID: (id: string) => void;
+  scene: ModelScene;
+  setScene: (scene: ModelScene) => void;
 }) {
   const [showControlsInfo, setShowControlsInfo] = useState(true);
   const [fbx_models_files, setFbx_models_files] = useState<any[]>([]); //Contains all FBX Model Files which can be selected via the ModelList Component. Is needed to save the Scene and all FBX Model Files
@@ -280,7 +281,7 @@ export default function Main(props: {
       method: "POST",
       body: JSON.stringify({
         jsonData: sceneJsonString,
-        sceneID: props.sceneID,
+        sceneID: props.scene.id,
       }),
     });
     const result = await response.json();
@@ -395,7 +396,7 @@ export default function Main(props: {
       const response = await fetch("/api/FS_getSceneByID", {
         method: "POST",
         body: JSON.stringify({
-          sceneID: props.sceneID,
+          sceneID: props.scene.id,
         }),
       });
 
@@ -414,7 +415,7 @@ export default function Main(props: {
     >
       <Button
         onClick={() => {
-          props.setSceneID(null);
+          props.setScene(null);
         }}
       >
         Back

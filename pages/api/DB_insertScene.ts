@@ -1,42 +1,31 @@
-import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { type } from "os";
-
-const prisma = new PrismaClient();
-
-export type ModelScene = {
-  id: number;
-  idUserCreater: number;
-  name: string;
-  createDate: Date;
-  path: string;
-};
+import { ModelScene, ModelUser } from "./_models";
+import { prismaClient } from "./_prismaClient";
 
 export default async function DB_insertScene(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // const idUserCreater = req.query.idUserCreater as string;
-  // const name = req.query.name as string;
-
   const b = req.body;
   const requestData = JSON.parse(b);
 
-  let idScene: number = getRandomInt(44444);
+  let idScene: number = getRandomInt(999999);
 
-  const result = prisma.scene.create({
-    data: {
-      id: idScene.toString(),
-      idUserCreater: "2", //requestData["idUserCreator"],
-      createDate: new Date(),
-      name: requestData["name"],
-      path: idScene + ".json",
-    },
+  let sceneModel: ModelScene = {
+    id: idScene.toString(),
+    idUserCreater: requestData["idUserCreator"],
+    createDate: new Date(),
+    name: requestData["name"],
+    path: idScene + ".json",
+  };
+
+  const result = await prismaClient.scene.create({
+    data: sceneModel,
   });
 
   if (result == null) res.status(200).json({ result: false });
   else {
-    res.status(200).json({ result: (await result).id });
+    res.status(200).json(sceneModel);
   }
 }
 

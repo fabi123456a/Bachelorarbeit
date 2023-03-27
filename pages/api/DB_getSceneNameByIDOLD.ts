@@ -1,16 +1,7 @@
-import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { type } from "os";
 
-const prisma = new PrismaClient();
-
-export type ModelScene = {
-  id: string;
-  idUserCreater: string;
-  name: string;
-  createDate: Date;
-  path: string;
-};
+import { ModelScene } from "./_models";
+import { prismaClient } from "./_prismaClient";
 
 export default async function DB_insertScene(
   req: NextApiRequest,
@@ -19,7 +10,7 @@ export default async function DB_insertScene(
   const b = req.body;
   const requestData = JSON.parse(b);
 
-  const result: ModelScene[] = await prisma.scene.findMany({
+  const result: ModelScene[] = await prismaClient.scene.findMany({
     where: { id: requestData["id"] },
   });
 

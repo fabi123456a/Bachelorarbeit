@@ -1,18 +1,17 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useRef, useState } from "react";
 import UsersList from "../admin/usersList";
-import { ModelUser } from "../api/DB_checkPassword";
+import { ModelScene, ModelUser } from "../api/_models";
 
 // einmal in DB und json file to FS
 const AddScene = (props: {
   user: ModelUser;
-  setSceneID: (id: string) => void;
+  setScene: (scene: ModelScene) => void;
 }) => {
   const [name, setName] = useState<string>();
-  const idFromInsertetS = useRef<string>(null);
+  const [sceneModel, setSceneModel] = useState<ModelScene>();
 
   const addSceneToDB = async () => {
-    alert(props.user.id);
     const response = await fetch("/api/DB_insertScene", {
       method: "POST",
       body: JSON.stringify({
@@ -20,25 +19,24 @@ const AddScene = (props: {
         name: name,
       }),
     });
+
     const result = await response.json();
 
-    idFromInsertetS.current = result["result"];
-
-    return result["result"];
+    return result;
   };
 
-  const addSceneToFS = async () => {
+  const addSceneToFS = async (idScene: string) => {
     const response = await fetch("/api/FS_uploadScene", {
       method: "POST",
       body: JSON.stringify({
         jsonData:
-          '{"roomDimensions":{"height":7,"width":50,"depth":50},"models":[],"fbx_models":[]}',
-        sceneID: idFromInsertetS.current,
+          '{"roomDimensions":{"height":7,"width":50,"depth":50},"models":[],"fbx_models":[]}', // leere scene daten
+        sceneID: idScene,
       }),
     });
     const result = await response.json();
 
-    alert(result["result"]);
+    alert("FS: " + result["result"]);
     return result["result"];
   };
 
@@ -59,9 +57,9 @@ const AddScene = (props: {
           }
 
           // insert into DB then to FS
-          addSceneToDB().then(() => {
-            addSceneToFS().then(() => {
-              props.setSceneID(idFromInsertetS.current);
+          addSceneToDB().then((scene: ModelScene) => {
+            addSceneToFS(scene.id).then(() => {
+              props.setScene(scene);
             });
           });
         }}

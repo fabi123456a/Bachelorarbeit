@@ -1,12 +1,11 @@
 import { Button, Divider, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import { ModelUser } from "../api/DB_checkPassword";
-import { ModelScene } from "../api/DB_insertScene";
+import { ModelScene, ModelUser } from "../api/_models";
 import AddScene from "./addScne";
-import newScene from "./newScene";
+import SceneListEntry from "./sceneListEntry";
 
-const Scenes = (props: {
-  setSceneID: (id: string) => void;
+const SceneList = (props: {
+  setScene: (scene: ModelScene) => void;
   user: ModelUser;
 }) => {
   const [scenes, setSenes] = useState<ModelScene[]>();
@@ -22,33 +21,24 @@ const Scenes = (props: {
     });
   }, []);
 
-  const getSceneData = async () => {
-    const response = await fetch("/api/DB_getAllSceneNames");
-    const result: ModelScene[] = await response.json();
-    return result;
-  };
-
   return (
     <>
       <Typography>Szene auswählen:</Typography>
       {scenes
         ? scenes.map((scene: ModelScene) => {
             return (
-              <Button
+              <SceneListEntry
                 key={scene.id}
-                onClick={async () => {
-                  props.setSceneID(scene.id.toString());
-                }}
-              >
-                {scene.name}
-              </Button>
+                scene={scene}
+                setScene={props.setScene}
+              ></SceneListEntry>
             );
           })
         : null}
       <Typography sx={{ margin: "20px" }}>Oder</Typography>
-      <AddScene user={props.user} setSceneID={props.setSceneID}></AddScene>
+      <AddScene user={props.user} setScene={props.setScene}></AddScene>
     </>
   );
 };
 
-export default Scenes;
+export default SceneList;
