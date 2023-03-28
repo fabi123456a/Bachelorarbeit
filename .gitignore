@@ -3,5 +3,5 @@ node_modules
 .env
 .next
 .DS_Store
-dev.db
+prisma/dev.db
 public/Scenes
