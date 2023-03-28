@@ -1,13 +1,8 @@
+import { randomUUID } from "crypto";
 import { NextApiRequest, NextApiResponse } from "next";
-import { ModelUser } from "./_models";
+import { NextRequest, NextResponse } from "next/server";
+import { ModelSession, ModelUser } from "./_models";
 import { prismaClient } from "./_prismaClient";
-
-type Session= {
-  id: string,
-  user: string,
-}
-
-let sessions=new Map<string, Session>();
 
 export default async function DB_checkPassword(
   req: NextApiRequest,
@@ -16,7 +11,7 @@ export default async function DB_checkPassword(
   const pw = req.query.pw as string;
   const user = req.query.user as string;
 
-  const selectedUser: ModelUser = await prismaClient.user.findFirst({
+  const selectedUser: ModelUser = await prismaClient.users.findFirst({
     where: {
       AND: [{ loginID: user }, { password: pw }],
     },
@@ -24,6 +19,26 @@ export default async function DB_checkPassword(
 
   if (selectedUser == null) res.status(200).json(null);
   else {
+    // neue Session hinzufügen
+    const session: ModelSession = await insertSession(selectedUser.id);
+
+    // session in cookie
+    res.setHeader("Set-Cookie", `sessionID=${session.id};HttpOnly`); // HTTPONLY
+
+    // eingeloggten user + session zurücksenden
     res.status(200).json(selectedUser);
   }
+}
+
+async function insertSession(idUser: string): Promise<ModelSession> {
+  const sessionData = {
+    id: randomUUID(),
+    idUser: idUser,
+  };
+
+  const session: ModelSession = await prismaClient.sessions.create({
+    data: sessionData,
+  });
+
+  return session;
 }

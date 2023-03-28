@@ -6,14 +6,14 @@ const Home = (props: {
   setLoggedIn: (flag: boolean) => void;
   setActUser: (user: ModelUser) => void;
 }) => {
-  const [anmeldeID, setAmeldeID] = useState<string>("Fabian Thomas");
-  const [password, setPassword] = useState<string>("pw");
+  const [txtAnmeldeID, setTxtAmeldeID] = useState<string>("Fabian Thomas");
+  const [txtPassword, setTxtPassword] = useState<string>("pw");
   const loggedIn = useRef<boolean>(false);
 
   // checkt login & pw wenns stim kommt der user zurück
   const checkData = async () => {
     const response = await fetch(
-      `/api/DB_checkPassword?user=${anmeldeID}&pw=${password}`
+      `/api/DB_checkPassword?user=${txtAnmeldeID}&pw=${txtPassword}`
     );
     const result = await response.json();
 
@@ -27,25 +27,25 @@ const Home = (props: {
       <Typography>AnmeldeID</Typography>
       <TextField
         onChange={(event) => {
-          setAmeldeID(event.target.value);
+          setTxtAmeldeID(event.target.value);
         }}
-        value={anmeldeID}
+        value={txtAnmeldeID}
       ></TextField>
       <Typography>Passwort</Typography>
       <TextField
         onChange={(event) => {
-          setPassword(event.target.value);
+          setTxtPassword(event.target.value);
         }}
-        value={password}
+        value={txtPassword}
       ></TextField>
       <Button
         onClick={async () => {
-          const actUser = await checkData();
+          const user = await checkData();
 
-          loggedIn.current = actUser != null ? true : false;
+          loggedIn.current = user != null ? true : false;
           if (loggedIn.current == true) {
             props.setLoggedIn(true);
-            props.setActUser(actUser);
+            props.setActUser(user);
           } else {
             alert("anmeldeID oder Passwortr ist nicht korrekt.");
           }

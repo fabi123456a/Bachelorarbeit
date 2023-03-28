@@ -19,7 +19,7 @@ export default async function DB_insertScene(
     path: idScene + ".json",
   };
 
-  const result = await prismaClient.scene.create({
+  const result = await prismaClient.scenes.create({
     data: sceneModel,
   });
 

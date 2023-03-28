@@ -12,3 +12,8 @@ export type ModelScene = {
   createDate: Date;
   path: string;
 };
+
+export type ModelSession = {
+  id: string;
+  idUser: string;
+};

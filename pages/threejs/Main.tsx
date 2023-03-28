@@ -402,7 +402,7 @@ export default function Main(props: {
 
       const result = await response.json();
 
-      loadScene2(result["result"]);
+      loadScene2(result["data"]);
     };
     handle();
   }, []);

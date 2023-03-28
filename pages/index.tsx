@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { useRef, useState } from "react";
 import AdminArea from "./admin/adminArea";
 import AddSceneToDB from "./scenes/addScne";
@@ -24,20 +24,33 @@ const Home = () => {
         scene ? (
           <Main scene={scene} setScene={setScene}></Main>
         ) : (
-          <SceneList setScene={setScene} user={actUser}></SceneList>
+          <Stack>
+            <SceneList
+              setScene={setScene}
+              user={actUser}
+    
+            ></SceneList>
+          </Stack>
         )
       ) : (
-        <Login setLoggedIn={setLoggedIn} setActUser={setActUser}></Login>
+        <Login
+          setLoggedIn={setLoggedIn}
+          setActUser={setActUser}
+        ></Login>
       )}
+      {/* <Button
+        onClick={async () => {
+          var sessions = new Map<string, string>();
+          sessions.set("1", "x");
+          sessions.set("2", "3");
+
+          alert(sessions.size);
+        }}
+      >
+        Test
+      </Button> */}
     </Stack>
   );
 };
 
 export default Home;
-
-{
-  /* <UploadFile></UploadFile>
-      <GetFbx></GetFbx>
-      <img src="testBild.png"></img> 
-      <Main></Main>*/
-}

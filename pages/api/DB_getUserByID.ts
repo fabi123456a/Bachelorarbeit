@@ -10,7 +10,7 @@ export default async function DB_getUserByID(
   const b = req.body;
   const requestData = JSON.parse(b);
 
-  const user: ModelUser = await prismaClient.user.findFirst({
+  const user: ModelUser = await prismaClient.users.findFirst({
     where: { id: requestData["idUser"] },
   });
 

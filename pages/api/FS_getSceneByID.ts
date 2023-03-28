@@ -23,6 +23,6 @@ export default async function FS_getSceneByID(
       res.status(200).json({ result: "err: " + filePath });
       return;
     }
-    res.status(200).json({ result: jsonString });
+    res.status(200).json({ data: jsonString });
   });
 }

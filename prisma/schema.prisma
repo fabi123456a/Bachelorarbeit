@@ -11,24 +11,29 @@ datasource db {
 }
 
 // rename to Users
-model User {
-  id      String     @id 
+model Users {
+  id        String     @id 
   loginID   String  @unique
   password  String?
 }
 
 // rename to FbxModels
-model FbxModel {
+model FbxModels {
   id      String     @id 
   name    String  
   folder  String
 }
 
 // rename zu Scenes
-model Scene{
-  id      String     @id 
+model Scenes{
+  id             String     @id 
   idUserCreater  String 
   name           String
   createDate     DateTime
   path           String
+}
+
+model Sessions{
+  id      String     @id 
+  idUser  String
 }
