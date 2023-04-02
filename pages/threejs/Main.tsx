@@ -410,7 +410,7 @@ export default function Main(props: {
   return (
     <Stack
       direction="row"
-      style={{ height: "100%", background: "lightGray", overflowY: "auto" }}
+      style={{ height: "100%", background: "#d9d9d9", overflowY: "auto" }}
       divider={<Divider orientation="vertical" flexItem />}
     >
       <Button
@@ -494,7 +494,6 @@ export default function Main(props: {
       <Stack
         direction="column"
         style={{
-          height: "100%",
           width: "100%",
           background: "white",
         }}

@@ -9,6 +9,7 @@ import SceneList from "./scenes/sceneList";
 import Main from "./threejs/Main";
 import Stack from "@mui/material/Stack";
 import { ModelScene, ModelUser } from "./api/_models";
+//import xx from "../styles/globals.css";
 
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -25,18 +26,11 @@ const Home = () => {
           <Main scene={scene} setScene={setScene}></Main>
         ) : (
           <Stack>
-            <SceneList
-              setScene={setScene}
-              user={actUser}
-    
-            ></SceneList>
+            <SceneList setScene={setScene} user={actUser}></SceneList>
           </Stack>
         )
       ) : (
-        <Login
-          setLoggedIn={setLoggedIn}
-          setActUser={setActUser}
-        ></Login>
+        <Login setLoggedIn={setLoggedIn} setActUser={setActUser}></Login>
       )}
       {/* <Button
         onClick={async () => {

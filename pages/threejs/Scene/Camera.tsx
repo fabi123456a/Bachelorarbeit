@@ -17,7 +17,7 @@ export function Camera(props: {
   return (
     <>
       {props.orthogonal ? (
-        <OrthographicCamera
+        <OrthographicCamera // TODO: warum guckt die kamera immer in die mitte und nicht nach vorne?
           position={
             props.perspektive === "1"
               ? camPos.topDown
@@ -28,7 +28,7 @@ export function Camera(props: {
               : camPos.rightToMid
           }
           zoom={20}
-          makeDefault
+          makeDefault // TODO:  glaube durch das make deafult wird die oritcontrol cam überschrieben
         ></OrthographicCamera>
       ) : null}
       <OrbitControls

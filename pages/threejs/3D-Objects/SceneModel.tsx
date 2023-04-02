@@ -16,9 +16,11 @@ function SceneModel(
 ) {
   // lädt das FBX-Model
   const fbx: THREE.Group = useLoader(FBXLoader, props.modelPath);
+
   // referenz auf das Mesh des FBX-Models
   const refMesh = useRef<THREE.Mesh>(null);
   const tcRef = useRef<any>(null);
+
   // function
   const sendCurrentObjectDataToControls = () => {
     // position des Objects als Vektor3
@@ -28,7 +30,7 @@ function SceneModel(
     // skalierung des Objects als Vektor3
     let vektorScale: Vector3 = new Vector3();
     refMesh.current?.getWorldScale(vektorScale);
-    
+
     props.setCurrentObjectProps({
       id: props.id,
       position: {
@@ -97,6 +99,7 @@ function SceneModel(
             console.log("Kamerarotation frei");
 
             if (props.camPerspektive === "0") {
+              // kamera rotation nur freigeben wenn camPerspektive normal (== "0") ist, bei othogonaler perpektive soll cam drehen nicht gehen
               props.controlsRef.current.enableRotate = true;
             }
           }
