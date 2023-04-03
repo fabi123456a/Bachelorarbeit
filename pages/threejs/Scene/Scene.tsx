@@ -69,6 +69,7 @@ export default function Scene(props: {
             rotation={model.rotation}
             removeBoundingBox={model.removeBoundingBox}
             camPerspektive={props.perspektive}
+
           ></SceneModel>
         ) : (
           <BoxGeoPivot
@@ -87,6 +88,7 @@ export default function Scene(props: {
             removeBoundingBox={null}
             camPerspektive={props.perspektive}
             setCurrentObjectProps={props.setCurrentObjectProps}
+
           ></BoxGeoPivot>
         )
       )}

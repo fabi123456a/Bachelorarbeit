@@ -43,6 +43,7 @@ type TypeObjectProps = {
   showZTransform: boolean;
   modelPath: string;
   removeBoundingBox: () => void;
+  info?: string;
 };
 type TypeCamPerspektive = {
   topDown: boolean;

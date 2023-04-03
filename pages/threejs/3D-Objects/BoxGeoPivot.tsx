@@ -63,10 +63,6 @@ function BoxGeoPivot(
     });
   };
 
-  const insertBoundingBox = () => {};
-
-  const removeBoundingBox = () => {};
-
   // color
   const [color, setColor] = useState<string>("#328da8");
 

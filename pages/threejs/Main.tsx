@@ -14,6 +14,8 @@ import exportToGLTF from "./utils/exporting";
 //@ts-ignore
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { ModelScene } from "../api/_models";
+import { WallList } from "./UI-Elements/WallList/WallList";
+import { debug } from "console";
 
 export default function Main(props: {
   scene: ModelScene;
@@ -35,6 +37,7 @@ export default function Main(props: {
       showZTransform: false,
       modelPath: null,
       removeBoundingBox: () => {},
+      info: "floor",
     },
     {
       // right wall
@@ -48,10 +51,11 @@ export default function Main(props: {
       showZTransform: false,
       modelPath: null,
       removeBoundingBox: () => {},
+      info: "rightWall",
     },
     {
       // left wall
-      id: "efewdgv5555ew434",
+      id: "efewdgv5555ew434lllll",
       position: { x: -25, y: 5, z: 0 },
       scale: { x: 0.001, y: 10, z: 50 },
       rotation: { x: 0, y: 0, z: 0 },
@@ -61,6 +65,7 @@ export default function Main(props: {
       showZTransform: false,
       modelPath: null,
       removeBoundingBox: () => {},
+      info: "leftWall",
     },
     {
       // hinten wall
@@ -74,6 +79,7 @@ export default function Main(props: {
       showZTransform: false,
       modelPath: null,
       removeBoundingBox: () => {},
+      info: "behindWall",
     },
   ]); // contains all models which are currently in the scene, models without path are walls
   const [modelPaths, setModelPaths] = useState<TypeModel[]>([]); //Contains all Model Files and their name which can be selected via the ModelList
@@ -161,7 +167,10 @@ export default function Main(props: {
 
   // xxx
   useEffect(() => {
-    if (!currentObjectProps) return;
+    if (!currentObjectProps) {
+      prevObjectProps.current.removeBoundingBox();
+      return;
+    }
     updateModels(currentObjectProps.id, currentObjectProps);
 
     if (prevObjectProps.current != null) {
@@ -207,6 +216,11 @@ export default function Main(props: {
         removeBoundingBox: () => {},
       },
     ]);
+  };
+
+  // wall add, damit sind walls floors und cubes gemeint, also alles aus wallList
+  const handleWallAdd = (objProps: TypeObjectProps) => {
+    setModels([...models, objProps]);
   };
 
   const handleModelDelete = (id: string) => {
@@ -492,7 +506,6 @@ export default function Main(props: {
         ></ModelList>
       </Stack>
 
-      {/* ToolBar */}
       <Stack
         direction="column"
         style={{
@@ -506,6 +519,7 @@ export default function Main(props: {
             background: "#d9d9d9",
           }}
         >
+          {/* ToolBar */}
           <ToolBar
             setPerspective={setPerspective}
             setOrtho={setIsOrtho}
@@ -530,7 +544,11 @@ export default function Main(props: {
             flex: "1",
           }}
         >
-          <Canvas>
+          <Canvas
+            onPointerMissed={() => {
+              setCurrentObjectProps(null);
+            }}
+          >
             {/*TO ACCESS THE useThree hook in the Scene component*/}
             <Scene
               controlsRef={controlsRef}
@@ -545,6 +563,7 @@ export default function Main(props: {
             ></Scene>
           </Canvas>
         </Stack>
+        <WallList addWall={handleWallAdd}></WallList>
       </Stack>
 
       {/* PropertieContainer */}

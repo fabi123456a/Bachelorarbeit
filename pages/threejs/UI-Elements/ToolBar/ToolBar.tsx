@@ -52,6 +52,17 @@ function ToolBar(props: {
 
   function setEditMode(editMode: "translate" | "scale" | "rotate") {
     props.setObjProps((prev: TypeObjectProps) => {
+      // console.log("xxxxxxx: " + prev.info); // TODO: info ist leer, wenn wall ausgewählt wird x axis ausblenden, man kann wände trotzdem nicht breit ziehen??
+      // if (prev.info == "wall" && editMode == "scale") {
+      //   return {
+      //     ...prev,
+      //     editMode: editMode,
+      //     showXTransform: false,
+      //     showYTransform: true,
+      //     showZTransform: true,
+      //   };
+      // }
+
       return {
         ...prev,
         editMode: editMode,
