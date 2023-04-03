@@ -28,7 +28,7 @@ export function WallListItem(props: {
             rotation: { x: 0, y: 0, z: 0 },
             removeObjHighlight: () => {},
             highlightObj: () => {},
-            info: "wall",
+            color: props.name == "floor" ? "#eee" : null, // der boden soll eine andere farbe bekommen
           };
 
           props.addWall(x);

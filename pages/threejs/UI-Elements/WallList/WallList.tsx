@@ -14,7 +14,7 @@ export function WallList(props: {
 
   return (
     <Stack
-      sx={{ background: "red" }}
+      sx={{ background: "lightgray" }}
       direction="column"
       height="100px"
       alignContent={"center"}
