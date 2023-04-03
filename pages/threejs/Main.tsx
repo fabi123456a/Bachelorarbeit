@@ -429,7 +429,7 @@ export default function Main(props: {
   // ---- COMPONENT ----
   return (
     <Stack>
-      <Typography>{props.scene.name}</Typography>
+      <Typography>Scene: {props.scene.name}</Typography>
       <Stack
         direction="row"
         style={{ height: "100%", background: "#d9d9d9", overflowY: "auto" }}
