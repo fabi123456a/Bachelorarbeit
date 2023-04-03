@@ -2,8 +2,9 @@ import SceneModel from "../3D-Objects/SceneModel";
 import Room from "../3D-Objects/Room";
 import { Camera } from "./Camera";
 import { useThree } from "@react-three/fiber";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as THREE from "three";
+import BoxGeoPivot from "../3D-Objects/BoxGeoPivot";
 
 export default function Scene(props: {
   controlsRef: React.RefObject<any>;
@@ -11,7 +12,7 @@ export default function Scene(props: {
   currentObjectProps: TypeObjectProps;
   ortho: boolean;
   perspektive: string;
-  setMainCurrentObjectProps: (props: TypeObjectProps) => void;
+  setCurrentObjectProps: (props: TypeObjectProps) => void;
   roomDimensions: TypeRoomDimensions;
   sceneRef: any;
   wallVisibility: TypeWallVisibility;
@@ -19,6 +20,7 @@ export default function Scene(props: {
   const { scene } = useThree();
   props.sceneRef.current = scene;
 
+  // gitter raster erstellen & einfügen
   useEffect(() => {
     for (let j: number = -500; j < 500; j += 50) {
       for (let i: number = -500; i < 500; i += 50) {
@@ -34,6 +36,7 @@ export default function Scene(props: {
       }
     }
   }, [scene]);
+
   return (
     <>
       {/* Canvas nimmt größe von parent container */}
@@ -48,33 +51,53 @@ export default function Scene(props: {
       <ambientLight intensity={0.1} />
       <pointLight position={[10, 10, 10]} />
       {/* Modelle */}
-      {props.models.map((model) => (
-        <SceneModel
-          controlsRef={props.controlsRef}
-          key={model.id}
-          id={model.id}
-          isSelected={model.id === props.currentObjectProps?.id}
-          setCurrentObjectProps={props.setMainCurrentObjectProps}
-          editMode={model.editMode}
-          modelPath={model.modelPath}
-          showXTransform={model.showXTransform}
-          showYTransform={model.showYTransform}
-          showZTransform={model.showZTransform}
-          position={model.position}
-          scale={model.scale}
-          rotation={model.rotation}
-          removeBoundingBox={model.removeBoundingBox}
-          camPerspektive={props.perspektive}
-        ></SceneModel>
-      ))}
+      {props.models.map((model) =>
+        model.modelPath ? ( // model nur einfügen wenn kein path da ist, weil dann ist es eine wand
+          <SceneModel
+            controlsRef={props.controlsRef}
+            key={model.id}
+            id={model.id}
+            isSelected={model.id === props.currentObjectProps?.id}
+            setCurrentObjectProps={props.setCurrentObjectProps}
+            editMode={model.editMode}
+            modelPath={model.modelPath}
+            showXTransform={model.showXTransform}
+            showYTransform={model.showYTransform}
+            showZTransform={model.showZTransform}
+            position={model.position}
+            scale={model.scale}
+            rotation={model.rotation}
+            removeBoundingBox={model.removeBoundingBox}
+            camPerspektive={props.perspektive}
+          ></SceneModel>
+        ) : (
+          <BoxGeoPivot
+            key={model.id}
+            id={model.id}
+            controlsRef={props.controlsRef}
+            isSelected={model.id === props.currentObjectProps?.id}
+            editMode={model.editMode}
+            modelPath={model.modelPath}
+            showXTransform={model.showXTransform}
+            showYTransform={model.showYTransform}
+            showZTransform={model.showZTransform}
+            position={model.position}
+            scale={model.scale}
+            rotation={model.rotation}
+            removeBoundingBox={null}
+            camPerspektive={props.perspektive}
+            setCurrentObjectProps={props.setCurrentObjectProps}
+          ></BoxGeoPivot>
+        )
+      )}
       {/* Raum */}
-      <Room
+      {/* <Room
         height={props.roomDimensions.height}
         width={props.roomDimensions.width}
         depth={props.roomDimensions.depth}
         leftWall={props.wallVisibility.leftWall}
         rightWall={props.wallVisibility.rightWall}
-      />
+      /> */}
     </>
   );
 }

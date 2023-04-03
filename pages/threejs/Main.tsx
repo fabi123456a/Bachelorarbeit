@@ -19,66 +19,90 @@ export default function Main(props: {
   scene: ModelScene;
   setScene: (scene: ModelScene) => void;
 }) {
+  // ---- STATES ----
   const [showControlsInfo, setShowControlsInfo] = useState(true);
   const [fbx_models_files, setFbx_models_files] = useState<any[]>([]); //Contains all FBX Model Files which can be selected via the ModelList Component. Is needed to save the Scene and all FBX Model Files
-
-  // contains all models which are currently in the scene
   const [models, setModels] = useState<TypeObjectProps[]>([
     {
-      id: "123567",
-      position: { x: -2, y: 0, z: 0 },
-      scale: { x: 0.06, y: 0.06, z: 0.06 },
+      // ground
+      id: "fewrtgregvdg",
+      position: { x: 0, y: 0, z: 0 },
+      scale: { x: 50, y: 0.001, z: 50 },
       rotation: { x: 0, y: 0, z: 0 },
       editMode: undefined,
       showXTransform: false,
       showYTransform: false,
       showZTransform: false,
-      modelPath: "./ModelsFBX/Computer Desk.FBX",
+      modelPath: null,
       removeBoundingBox: () => {},
     },
     {
-      id: "12321321367",
-      position: { x: -1, y: 0, z: 0 },
-      scale: { x: 0.03, y: 0.03, z: 0.03 },
-      rotation: { x: 0, y: -1.6, z: 0 },
+      // right wall
+      id: "efewdgvew434",
+      position: { x: 25, y: 5, z: 0 },
+      scale: { x: 0.001, y: 10, z: 50 },
+      rotation: { x: 0, y: 0, z: 0 },
       editMode: undefined,
       showXTransform: false,
       showYTransform: false,
       showZTransform: false,
-      modelPath: "./ModelsFBX/Chair.FBX",
+      modelPath: null,
       removeBoundingBox: () => {},
     },
     {
-      id: "123211231233321367",
-      position: {
-        x: 2.0517650695421015,
-        y: 1.83353328885948,
-        z: 3.489659672608047,
-      },
-      scale: { x: 0.03, y: 0.03, z: 0.03 },
-      rotation: { x: 0, y: 1.6, z: 0 },
+      // left wall
+      id: "efewdgv5555ew434",
+      position: { x: -25, y: 5, z: 0 },
+      scale: { x: 0.001, y: 10, z: 50 },
+      rotation: { x: 0, y: 0, z: 0 },
       editMode: undefined,
       showXTransform: false,
       showYTransform: false,
       showZTransform: false,
-      modelPath: "./ModelsFBX/Monitor.FBX",
+      modelPath: null,
       removeBoundingBox: () => {},
     },
-  ]);
+    {
+      // hinten wall
+      id: "rfwefedsfdsdddd",
+      position: { x: 0, y: 5, z: -25 },
+      scale: { x: 50, y: 10, z: 0.001 },
+      rotation: { x: 0, y: 0, z: 0 },
+      editMode: undefined,
+      showXTransform: false,
+      showYTransform: false,
+      showZTransform: false,
+      modelPath: null,
+      removeBoundingBox: () => {},
+    },
+  ]); // contains all models which are currently in the scene, models without path are walls
+  const [modelPaths, setModelPaths] = useState<TypeModel[]>([]); //Contains all Model Files and their name which can be selected via the ModelList
+  const [currentObjectProps, setCurrentObjectProps] = useState<TypeObjectProps>(
+    null!
+  ); // currentObjectProps
+  const [copiedObjectProps, setCopiedObjectProps] =
+    useState<TypeObjectProps | null>(null);
+  const textRef = useRef<string>("");
+  const [isOrtho, setIsOrtho] = useState<boolean>(false); // cam
+  const [perspective, setPerspective] = useState<string>("0"); // cam TODO: type für perspektiven
+  const [roomDimensions, setRoomDimensions] = useState<TypeRoomDimensions>({
+    // cam
+    height: 7,
+    width: 50,
+    depth: 50,
+  });
+  const [wallVisiblity, setWallVisiblity] = useState<TypeWallVisibility>({
+    leftWall: true,
+    rightWall: true,
+  }); // to show the left or right wall or hide it when the camera mode changes
+  const [valueGltf, setValueGltf] = useState<THREE.Group>(null!);
 
-  //Contains all Model Files and their name which can be selected via the ModelList
-  const [modelPaths, setModelPaths] = useState<TypeModel[]>([]);
-  // [
-  //   { name: "Car", path: "./ModelsFBX/car.fbx" },
-  //   { name: "Mercedes", path: "./ModelsFBX/mercedes.fbx" },
-  //   { name: "Couch", path: "./ModelsFBX/couch.fbx" },
-  //   { name: "Low Poly Tree", path: "./ModelsFBX/lowpolytree.fbx" },
-  //   { name: "Sofa", path: "./ModelsFBX/sofa.fbx" },
-  //   { name: "Table And Chairs", path: "./ModelsFBX/tableandchairs.fbx" },
-  //   { name: "Monitor", path: "./ModelsFBX/Monitor.FBX" },
-  //   { name: "Chair", path: "./ModelsFBX/Chair.FBX" },
-  //   { name: "Computer Desk", path: "./ModelsFBX/Computer Desk.FBX" },
-  // ]
+  // ---- REFS ----
+  const sceneRef = useRef<any>(null!);
+  const controlsRef = useRef<any>(null);
+  const prevObjectProps = useRef(currentObjectProps);
+
+  // ---- USE EFFECTS ----
 
   // load all models for the state modelPaths, am anfang
   useEffect(() => {
@@ -100,32 +124,6 @@ export default function Main(props: {
 
     fetchData();
   }, []);
-
-  // currentObjectProps
-  const [currentObjectProps, setMainCurrentObjectProps] =
-    useState<TypeObjectProps>(null!);
-  const [copiedObjectProps, setCopiedObjectProps] =
-    useState<TypeObjectProps | null>(null);
-  const textRef = useRef<string>("");
-
-  // cam
-  const [ortho, setOrtho] = useState<boolean>(false);
-  const [perspective, setPerspective] = useState<string>("0");
-  const [roomDimensions, setRoomDimensions] = useState<TypeRoomDimensions>({
-    height: 7,
-    width: 50,
-    depth: 50,
-  });
-
-  // to show the left or right wall or hide it when the camera mode changes
-  const [wallVisiblity, setWallVisiblity] = useState<TypeWallVisibility>({
-    leftWall: true,
-    rightWall: true,
-  });
-
-  const sceneRef = useRef<any>(null!);
-  const controlsRef = useRef<any>(null);
-  const prevObjectProps = useRef(currentObjectProps);
 
   //Shortcuts
   useEffect(() => {
@@ -161,6 +159,7 @@ export default function Main(props: {
     };
   }, [copiedObjectProps]);
 
+  // xxx
   useEffect(() => {
     if (!currentObjectProps) return;
     updateModels(currentObjectProps.id, currentObjectProps);
@@ -174,6 +173,24 @@ export default function Main(props: {
     prevObjectProps.current = currentObjectProps;
   }, [currentObjectProps]);
 
+  // anfangs scene laden
+  useEffect(() => {
+    const handle = async () => {
+      const response = await fetch("/api/FS_getSceneByID", {
+        method: "POST",
+        body: JSON.stringify({
+          sceneID: props.scene.id,
+        }),
+      });
+
+      const result = await response.json();
+
+      loadScene2(result["data"]);
+    };
+    handle();
+  }, []);
+
+  // ----- FUNCTIONS ----
   const handleModelAdd = (pfad: string) => {
     setModels([
       ...models,
@@ -194,7 +211,7 @@ export default function Main(props: {
 
   const handleModelDelete = (id: string) => {
     setModels((prevModels) => prevModels.filter((model) => model.id !== id));
-    setMainCurrentObjectProps(null!);
+    setCurrentObjectProps(null!);
   };
 
   const handleModelexport = async () => {
@@ -222,7 +239,7 @@ export default function Main(props: {
     }
     exportToGLTF(scene);
   };
-  const [valueGltf, setValueGltf] = useState<THREE.Group>(null!);
+
   const handleModelimport = async (file: File | null) => {
     if (!file) return;
     const reader = new FileReader();
@@ -378,6 +395,7 @@ export default function Main(props: {
     ]);
 
     setModels([
+      ...models,
       ...data.models.map((model: any) => {
         const newPathName = modifiedPaths.find((modelFbxPath) => {
           return modelFbxPath?.oldPathName === model?.modelPath;
@@ -390,23 +408,7 @@ export default function Main(props: {
     ]);
   }
 
-  // anfangs scene laden
-  useEffect(() => {
-    const handle = async () => {
-      const response = await fetch("/api/FS_getSceneByID", {
-        method: "POST",
-        body: JSON.stringify({
-          sceneID: props.scene.id,
-        }),
-      });
-
-      const result = await response.json();
-
-      loadScene2(result["data"]);
-    };
-    handle();
-  }, []);
-
+  // ---- COMPONENT ----
   return (
     <Stack
       direction="row"
@@ -506,13 +508,13 @@ export default function Main(props: {
         >
           <ToolBar
             setPerspective={setPerspective}
-            setOrtho={setOrtho}
+            setOrtho={setIsOrtho}
             deleteObject={handleModelDelete}
             exportObject={handleModelexport}
             importObject={handleModelimport}
             removeObject={handleModelRemoval}
             objProps={currentObjectProps}
-            setObjProps={setMainCurrentObjectProps}
+            setObjProps={setCurrentObjectProps}
             controlsRef={controlsRef}
             setWallVisibility={setWallVisiblity}
             saveScene={saveScene}
@@ -533,9 +535,9 @@ export default function Main(props: {
             <Scene
               controlsRef={controlsRef}
               perspektive={perspective}
-              ortho={ortho}
+              ortho={isOrtho}
               currentObjectProps={currentObjectProps}
-              setMainCurrentObjectProps={setMainCurrentObjectProps}
+              setCurrentObjectProps={setCurrentObjectProps}
               models={models}
               roomDimensions={roomDimensions}
               sceneRef={sceneRef}
@@ -554,7 +556,7 @@ export default function Main(props: {
       >
         <PropertieContainer
           objProps={currentObjectProps}
-          setObjProps={setMainCurrentObjectProps}
+          setObjProps={setCurrentObjectProps}
           roomDimensions={roomDimensions}
           setRoomDimensions={setRoomDimensions}
         ></PropertieContainer>
@@ -562,3 +564,59 @@ export default function Main(props: {
     </Stack>
   );
 }
+
+// modelPaths
+// [
+//   { name: "Car", path: "./ModelsFBX/car.fbx" },
+//   { name: "Mercedes", path: "./ModelsFBX/mercedes.fbx" },
+//   { name: "Couch", path: "./ModelsFBX/couch.fbx" },
+//   { name: "Low Poly Tree", path: "./ModelsFBX/lowpolytree.fbx" },
+//   { name: "Sofa", path: "./ModelsFBX/sofa.fbx" },
+//   { name: "Table And Chairs", path: "./ModelsFBX/tableandchairs.fbx" },
+//   { name: "Monitor", path: "./ModelsFBX/Monitor.FBX" },
+//   { name: "Chair", path: "./ModelsFBX/Chair.FBX" },
+//   { name: "Computer Desk", path: "./ModelsFBX/Computer Desk.FBX" },
+// ]
+
+// [
+//   {
+//     id: "123567",
+//     position: { x: -2, y: 0, z: 0 },
+//     scale: { x: 0.06, y: 0.06, z: 0.06 },
+//     rotation: { x: 0, y: 0, z: 0 },
+//     editMode: undefined,
+//     showXTransform: false,
+//     showYTransform: false,
+//     showZTransform: false,
+//     modelPath: "./ModelsFBX/Computer Desk.FBX",
+//     removeBoundingBox: () => {},
+//   },
+//   {
+//     id: "12321321367",
+//     position: { x: -1, y: 0, z: 0 },
+//     scale: { x: 0.03, y: 0.03, z: 0.03 },
+//     rotation: { x: 0, y: -1.6, z: 0 },
+//     editMode: undefined,
+//     showXTransform: false,
+//     showYTransform: false,
+//     showZTransform: false,
+//     modelPath: "./ModelsFBX/Chair.FBX",
+//     removeBoundingBox: () => {},
+//   },
+//   {
+//     id: "123211231233321367",
+//     position: {
+//       x: 2.0517650695421015,
+//       y: 1.83353328885948,
+//       z: 3.489659672608047,
+//     },
+//     scale: { x: 0.03, y: 0.03, z: 0.03 },
+//     rotation: { x: 0, y: 1.6, z: 0 },
+//     editMode: undefined,
+//     showXTransform: false,
+//     showYTransform: false,
+//     showZTransform: false,
+//     modelPath: "./ModelsFBX/Monitor.FBX",
+//     removeBoundingBox: () => {},
+//   },
+// ]

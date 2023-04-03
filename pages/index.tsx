@@ -32,17 +32,6 @@ const Home = () => {
       ) : (
         <Login setLoggedIn={setLoggedIn} setActUser={setActUser}></Login>
       )}
-      {/* <Button
-        onClick={async () => {
-          var sessions = new Map<string, string>();
-          sessions.set("1", "x");
-          sessions.set("2", "3");
-
-          alert(sessions.size);
-        }}
-      >
-        Test
-      </Button> */}
     </Stack>
   );
 };

@@ -16,7 +16,7 @@ export default function Room({
 }) {
   return (
     <>
-      {/* Raum */} {/* TODO: eigene Komponete für den Raum */}
+      {/* Raum {/* TODO: eigene Komponete für den Raum */}
       {/* Boden */}
       <BoxGeometry
         geometrie={{ positionXYZ: [0, 0, 0], scaleXYZ: [width, 0.001, depth] }}
@@ -49,7 +49,7 @@ export default function Room({
           scaleXYZ: [width, height, 0.001],
         }}
         color="#328da8"
-      ></BoxGeometry>
+      ></BoxGeometry> 
     </>
   );
 }

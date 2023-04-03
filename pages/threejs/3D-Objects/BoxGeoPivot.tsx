@@ -3,20 +3,26 @@ import { TransformControls } from "@react-three/drei";
 import { useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import * as THREE from "three";
-import { BoxHelper, Camera, LineBasicMaterial, Vector3 } from "three";
+import {
+  Box3,
+  Box3Helper,
+  BoxHelper,
+  Camera,
+  LineBasicMaterial,
+  Vector3,
+} from "three";
+import BoxGeometry from "./BoxGeometry";
+
 // KOMPONENTE
 
-function SceneModel(
+function BoxGeoPivot(
   props: TypeObjectProps & {
-    controlsRef: React.RefObject<any>;
     isSelected: boolean;
     camPerspektive: string;
+    controlsRef: React.RefObject<any>;
     setCurrentObjectProps: (props: TypeObjectProps) => void;
   }
 ) {
-  // lädt das FBX-Model
-  const fbx: THREE.Group = useLoader(FBXLoader, props.modelPath);
-
   // referenz auf das Mesh des FBX-Models
   const refMesh = useRef<THREE.Mesh>(null);
   const tcRef = useRef<any>(null);
@@ -52,32 +58,17 @@ function SceneModel(
       showXTransform: props.showXTransform,
       showYTransform: props.showYTransform,
       showZTransform: props.showZTransform,
-      modelPath: props.modelPath,
-      removeBoundingBox: () => removeBoundingBox(),
+      modelPath: null,
+      removeBoundingBox: () => setColor("#328da8"),
     });
   };
 
-  // BoundingBox management
-  const box = useRef<BoxHelper>(new BoxHelper(fbx, 0xff0000));
-  const [boundingBox, setBoundingBox] = useState<boolean>(false);
+  const insertBoundingBox = () => {};
 
-  const insertBoundingBox = () => {
-    box.current.geometry.computeBoundingBox();
-    const material = new LineBasicMaterial({ color: 0xff0000 });
-    box.current.material = material;
-    refMesh?.current?.add(box.current);
-  };
+  const removeBoundingBox = () => {};
 
-  const removeBoundingBox = () => {
-    refMesh?.current?.remove(box.current);
-    setBoundingBox(false);
-  };
-
-  useEffect(() => {
-    if (boundingBox) {
-      insertBoundingBox();
-    }
-  });
+  // color
+  const [color, setColor] = useState<string>("#328da8");
 
   return (
     <>
@@ -114,26 +105,31 @@ function SceneModel(
         onClick={(e) => {
           if (e) {
             e.stopPropagation();
-            setCurrentObj();
-            insertBoundingBox();
+            //insertBoundingBox();
           }
         }}
       >
-        <primitive
+        {/* <primitive
           onClick={() => {
-            setCurrentObj();
-            insertBoundingBox();
-            setBoundingBox(true);
+            //insertBoundingBox();
+            //setBoundingBox(true);
           }}
           onDoubleClick={() => {
-            removeBoundingBox();
+            //removeBoundingBox();
           }}
           ref={refMesh}
           object={fbx.clone(true)}
-        ></primitive>
+        ></primitive> */}
+        <BoxGeometry
+          ref123={refMesh}
+          onclick={setCurrentObj}
+          geometrie={{ positionXYZ: [0, 0, 0], scaleXYZ: [1, 1, 1] }}
+          color={color}
+          setColor={setColor}
+        ></BoxGeometry>
       </TransformControls>
     </>
   );
 }
 
-export default SceneModel;
+export default BoxGeoPivot;
