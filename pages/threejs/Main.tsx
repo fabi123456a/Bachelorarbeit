@@ -96,12 +96,7 @@ export default function Main(props: {
   const textRef = useRef<string>("");
   const [isOrtho, setIsOrtho] = useState<boolean>(false); // cam
   const [perspective, setPerspective] = useState<string>("0"); // cam TODO: type für perspektiven
-  const [roomDimensions, setRoomDimensions] = useState<TypeRoomDimensions>({
-    // cam
-    height: 7,
-    width: 50,
-    depth: 50,
-  });
+
   const [wallVisiblity, setWallVisiblity] = useState<TypeWallVisibility>({
     leftWall: true,
     rightWall: true,
@@ -206,22 +201,23 @@ export default function Main(props: {
 
   // ----- FUNCTIONS ----
   const handleModelAdd = (pfad: string) => {
-    setModels([
-      ...models,
-      {
-        id: "" + Math.random() * 1000,
-        editMode: undefined,
-        showXTransform: false,
-        showYTransform: false,
-        showZTransform: false,
-        modelPath: pfad,
-        position: { x: 0, y: 0, z: 0 },
-        scale: { x: 0.02, y: 0.02, z: 0.02 },
-        rotation: { x: 0, y: 0, z: 0 },
-        removeObjHighlight: () => {},
-        highlightObj: () => {},
-      },
-    ]);
+    const objProps: TypeObjectProps = {
+      id: "" + Math.random() * 1000,
+      editMode: "translate",
+      showXTransform: true,
+      showYTransform: true,
+      showZTransform: true,
+      modelPath: pfad,
+      position: { x: 0, y: 0, z: 0 },
+      scale: { x: 0.02, y: 0.02, z: 0.02 },
+      rotation: { x: 0, y: 0, z: 0 },
+      removeObjHighlight: () => {},
+      highlightObj: () => {},
+    };
+
+    setModels([...models, objProps]);
+
+    setCurrentObjectProps(objProps);
   };
 
   // wall add, damit sind walls floors und cubes gemeint, also alles aus wallList
@@ -300,7 +296,7 @@ export default function Main(props: {
       })
     );
     const toSaveObj = {
-      roomDimensions: roomDimensions,
+      //roomDimensions: roomDimensions,
       models: [...models],
       fbx_models: files,
     };
@@ -332,7 +328,7 @@ export default function Main(props: {
     return (
       typeof data === "object" &&
       data !== null &&
-      "roomDimensions" in data &&
+      // "roomDimensions" in data &&
       "models" in data &&
       "fbx_models" in data
     );
@@ -361,9 +357,9 @@ export default function Main(props: {
         })
       );
 
-      if (data.roomDimensions) {
-        setRoomDimensions({ ...data.roomDimensions });
-      }
+      // if (data.roomDimensions) {
+      //   setRoomDimensions({ ...data.roomDimensions });
+      // }
 
       setModelPaths((prev) => [
         ...prev,
@@ -405,9 +401,9 @@ export default function Main(props: {
       })
     );
 
-    if (data.roomDimensions) {
-      setRoomDimensions({ ...data.roomDimensions });
-    }
+    // if (data.roomDimensions) {
+    //   setRoomDimensions({ ...data.roomDimensions });
+    // }
 
     setModelPaths((prev) => [
       ...prev,
@@ -432,41 +428,34 @@ export default function Main(props: {
 
   // ---- COMPONENT ----
   return (
-    <Stack
-      direction="row"
-      style={{ height: "100%", background: "#d9d9d9", overflowY: "auto" }}
-      divider={<Divider orientation="vertical" flexItem />}
-    >
-      <Button
-        onClick={() => {
-          props.setScene(null);
-        }}
+    <Stack>
+      <Typography>{props.scene.name}</Typography>
+      <Stack
+        direction="row"
+        style={{ height: "100%", background: "#d9d9d9", overflowY: "auto" }}
+        divider={<Divider orientation="vertical" flexItem />}
       >
-        Back
-      </Button>
-      <Snackbar
-        autoHideDuration={4000}
-        open={textRef.current !== ""}
-        onClose={(event?: React.SyntheticEvent | Event, reason?: string) => {
-          if (reason === "clickaway") {
-            return;
-          }
-          textRef.current = "";
-        }}
-      >
-        <Alert severity="info">{textRef.current}</Alert>
-      </Snackbar>
-      <Snackbar
-        open={showControlsInfo}
-        onClose={(event?: React.SyntheticEvent | Event, reason?: string) => {
-          if (reason === "clickaway") {
-            return;
-          }
-          setShowControlsInfo(false);
-        }}
-      >
-        <Alert
-          severity="info"
+        <Button
+          onClick={() => {
+            props.setScene(null);
+          }}
+        >
+          Back
+        </Button>
+        <Snackbar
+          autoHideDuration={4000}
+          open={textRef.current !== ""}
+          onClose={(event?: React.SyntheticEvent | Event, reason?: string) => {
+            if (reason === "clickaway") {
+              return;
+            }
+            textRef.current = "";
+          }}
+        >
+          <Alert severity="info">{textRef.current}</Alert>
+        </Snackbar>
+        <Snackbar
+          open={showControlsInfo}
           onClose={(event?: React.SyntheticEvent | Event, reason?: string) => {
             if (reason === "clickaway") {
               return;
@@ -474,119 +463,129 @@ export default function Main(props: {
             setShowControlsInfo(false);
           }}
         >
-          <Typography>Controls: </Typography>
-          Modelle Kopieren: COMMAND + C, <br />
-          Modelle Eingfügen: COMMAND + V
-        </Alert>
-      </Snackbar>
-      {/* ModelList */}
-      <Stack
-        style={{
-          background: "#d9d9d9",
-          width: "20%",
-        }}
-      >
-        <ModelList
-          addObject={handleModelAdd}
-          deleteModel={(url: string) => {
-            setModelPaths((prev) => [
-              ...prev.filter((path) => path.path !== url),
-            ]);
-            setFbx_models_files((prev) => [
-              ...prev.filter((path) => path.pathName !== url),
-            ]);
-          }}
-          addModel={(name: string, url: string, file: any) => {
-            setModelPaths((prev) => [...prev, { name: name, path: url }]);
-            setFbx_models_files((prev: any[]) => {
-              if (prev.find((elem) => elem.pathName === url)) {
-                return prev;
+          <Alert
+            severity="info"
+            onClose={(
+              event?: React.SyntheticEvent | Event,
+              reason?: string
+            ) => {
+              if (reason === "clickaway") {
+                return;
               }
-              const newFile = {
-                pathName: url,
-                name: name,
-                file: file,
-              };
-              return [...prev, newFile];
-            });
-          }}
-          paths={modelPaths}
-        ></ModelList>
-      </Stack>
-
-      <Stack
-        direction="column"
-        style={{
-          width: "100%",
-          background: "white",
-        }}
-        divider={<Divider orientation="horizontal" flexItem />}
-      >
+              setShowControlsInfo(false);
+            }}
+          >
+            <Typography>Controls: </Typography>
+            Modelle Kopieren: COMMAND + C, <br />
+            Modelle Eingfügen: COMMAND + V
+          </Alert>
+        </Snackbar>
+        {/* ModelList */}
         <Stack
           style={{
             background: "#d9d9d9",
+            width: "20%",
           }}
         >
-          {/* ToolBar */}
-          <ToolBar
-            setPerspective={setPerspective}
-            setOrtho={setIsOrtho}
-            deleteObject={handleModelDelete}
-            exportObject={handleModelexport}
-            importObject={handleModelimport}
-            removeObject={handleModelRemoval}
-            objProps={currentObjectProps}
-            setObjProps={setCurrentObjectProps}
-            controlsRef={controlsRef}
-            setWallVisibility={setWallVisiblity}
-            saveScene={saveScene}
-            loadScene={loadScene}
-          ></ToolBar>
+          <ModelList
+            addObject={handleModelAdd}
+            deleteModel={(url: string) => {
+              setModelPaths((prev) => [
+                ...prev.filter((path) => path.path !== url),
+              ]);
+              setFbx_models_files((prev) => [
+                ...prev.filter((path) => path.pathName !== url),
+              ]);
+            }}
+            addModel={(name: string, url: string, file: any) => {
+              setModelPaths((prev) => [...prev, { name: name, path: url }]);
+              setFbx_models_files((prev: any[]) => {
+                if (prev.find((elem) => elem.pathName === url)) {
+                  return prev;
+                }
+                const newFile = {
+                  pathName: url,
+                  name: name,
+                  file: file,
+                };
+                return [...prev, newFile];
+              });
+            }}
+            paths={modelPaths}
+          ></ModelList>
         </Stack>
 
-        {/* Canvas */}
         <Stack
+          direction="column"
           style={{
-            border: "1px solid darkgray",
-            height: "100%",
-            flex: "1",
+            width: "100%",
+            background: "white",
           }}
+          divider={<Divider orientation="horizontal" flexItem />}
         >
-          <Canvas
-            onPointerMissed={() => {
-              setCurrentObjectProps(null);
+          <Stack
+            style={{
+              background: "#d9d9d9",
             }}
           >
-            {/*TO ACCESS THE useThree hook in the Scene component*/}
-            <Scene
+            {/* ToolBar */}
+            <ToolBar
+              setPerspective={setPerspective}
+              setOrtho={setIsOrtho}
+              deleteObject={handleModelDelete}
+              exportObject={handleModelexport}
+              importObject={handleModelimport}
+              removeObject={handleModelRemoval}
+              objProps={currentObjectProps}
+              setObjProps={setCurrentObjectProps}
               controlsRef={controlsRef}
-              perspektive={perspective}
-              ortho={isOrtho}
-              currentObjectProps={currentObjectProps}
-              setCurrentObjectProps={setCurrentObjectProps}
-              models={models}
-              roomDimensions={roomDimensions}
-              sceneRef={sceneRef}
-              wallVisibility={wallVisiblity}
-            ></Scene>
-          </Canvas>
-        </Stack>
-        <WallList addWall={handleWallAdd}></WallList>
-      </Stack>
+              setWallVisibility={setWallVisiblity}
+              saveScene={saveScene}
+              loadScene={loadScene}
+            ></ToolBar>
+          </Stack>
 
-      {/* PropertieContainer */}
-      <Stack
-        style={{
-          background: "#d9d9d9",
-          width: "30%",
-        }}
-      >
-        <PropertieContainer
-          objProps={currentObjectProps}
-          setObjProps={setCurrentObjectProps}
-          roomDimensions={roomDimensions}
-          setRoomDimensions={setRoomDimensions}
-        ></PropertieContainer>
+          {/* Canvas */}
+          <Stack
+            style={{
+              border: "1px solid darkgray",
+              height: "100%",
+              flex: "1",
+            }}
+          >
+            <Canvas
+              onPointerMissed={() => {
+                setCurrentObjectProps(null);
+              }}
+            >
+              {/*TO ACCESS THE useThree hook in the Scene component*/}
+              <Scene
+                controlsRef={controlsRef}
+                perspektive={perspective}
+                ortho={isOrtho}
+                currentObjectProps={currentObjectProps}
+                setCurrentObjectProps={setCurrentObjectProps}
+                models={models}
+                sceneRef={sceneRef}
+                wallVisibility={wallVisiblity}
+              ></Scene>
+            </Canvas>
+          </Stack>
+          <WallList addWall={handleWallAdd}></WallList>
+        </Stack>
+
+        {/* PropertieContainer */}
+        <Stack
+          style={{
+            background: "#d9d9d9",
+            width: "30%",
+          }}
+        >
+          <PropertieContainer
+            objProps={currentObjectProps}
+            setObjProps={setCurrentObjectProps}
+          ></PropertieContainer>
+        </Stack>
       </Stack>
     </Stack>
   );

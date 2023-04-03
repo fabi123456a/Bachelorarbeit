@@ -13,7 +13,6 @@ export default function Scene(props: {
   ortho: boolean;
   perspektive: string;
   setCurrentObjectProps: (props: TypeObjectProps) => void;
-  roomDimensions: TypeRoomDimensions;
   sceneRef: any;
   wallVisibility: TypeWallVisibility;
 }) {

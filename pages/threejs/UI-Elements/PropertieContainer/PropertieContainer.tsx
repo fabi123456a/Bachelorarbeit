@@ -10,13 +10,9 @@ import NumberInput from "./NumberInput";
 function PropertieContainer({
   objProps,
   setObjProps,
-  roomDimensions,
-  setRoomDimensions,
 }: {
   setObjProps: Function;
   objProps: TypeObjectProps;
-  roomDimensions: TypeRoomDimensions;
-  setRoomDimensions: Function;
 }) {
   function handlePositionChange(position: string, value: number) {
     let newPosition: any = { ...objProps.position };
@@ -59,53 +55,7 @@ function PropertieContainer({
       <Typography textAlign={"center"} fontSize={"1.25rem"}>
         Eigenschaften
       </Typography>
-      <Stack direction={"column"} gap="0.5rem" padding="0.5rem">
-        <Typography fontSize="20px">Raum</Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={4}>
-            <NumberInput
-              label="width"
-              value={roomDimensions ? roomDimensions.width : ""}
-              onChange={(e) =>
-                setRoomDimensions((prev: TypeRoomDimensions) => {
-                  return {
-                    ...prev,
-                    width: e.target.value,
-                  };
-                })
-              }
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <NumberInput
-              label="height"
-              value={roomDimensions ? roomDimensions.height : ""}
-              onChange={(e) =>
-                setRoomDimensions((prev: TypeRoomDimensions) => {
-                  return {
-                    ...prev,
-                    height: e.target.value,
-                  };
-                })
-              }
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <NumberInput
-              label="depth"
-              value={roomDimensions ? roomDimensions.depth : ""}
-              onChange={(e) =>
-                setRoomDimensions((prev: TypeRoomDimensions) => {
-                  return {
-                    ...prev,
-                    depth: e.target.value,
-                  };
-                })
-              }
-            />
-          </Grid>
-        </Grid>
-      </Stack>
+
       <Divider />
       {objProps ? (
         <Stack direction={"column"} padding="0.5rem">
