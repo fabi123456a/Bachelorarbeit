@@ -1,16 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { TransformControls } from "@react-three/drei";
-import { useLoader } from "@react-three/fiber";
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import * as THREE from "three";
-import {
-  Box3,
-  Box3Helper,
-  BoxHelper,
-  Camera,
-  LineBasicMaterial,
-  Vector3,
-} from "three";
+import { Vector3 } from "three";
 import BoxGeometry from "./BoxGeometry";
 
 // KOMPONENTE
@@ -26,6 +17,10 @@ function BoxGeoPivot(
   // referenz auf das Mesh des FBX-Models
   const refMesh = useRef<THREE.Mesh>(null);
   const tcRef = useRef<any>(null);
+
+  // default color
+  const defaultColor = "#328da8";
+  const highlightColor = "#fffb00";
 
   // function
   const setCurrentObj = () => {
@@ -59,12 +54,20 @@ function BoxGeoPivot(
       showYTransform: props.showYTransform,
       showZTransform: props.showZTransform,
       modelPath: null,
-      removeBoundingBox: () => setColor("#328da8"),
+      removeObjHighlight: () =>
+        setColor(props.color ? props.color : defaultColor),
+      highlightObj: () => setColor(highlightColor),
     });
   };
 
   // color
-  const [color, setColor] = useState<string>("#328da8");
+  const [color, setColor] = useState<string>(
+    props.color ? props.color : defaultColor
+  );
+
+  useEffect(() => {
+    //alert(props.info + props.color);
+  }, []);
 
   return (
     <>
@@ -83,7 +86,7 @@ function BoxGeoPivot(
           //Checks if an event happened or if component just rerendered
           if (e) {
             setCurrentObj();
-            console.log("Kamerarotation frei");
+            console.log("_Kamerarotation frei");
 
             if (props.camPerspektive === "0") {
               // kamera rotation nur freigeben wenn camPerspektive normal (== "0") ist, bei othogonaler perpektive soll cam drehen nicht gehen
@@ -94,7 +97,7 @@ function BoxGeoPivot(
         onMouseDown={(e) => {
           //Checks if an event happened or if component just rerendered
           if (e) {
-            console.log("Kamerarotation sperren");
+            console.log("_Kamerarotation sperren");
             props.controlsRef.current.enableRotate = false;
           }
         }}
@@ -105,17 +108,6 @@ function BoxGeoPivot(
           }
         }}
       >
-        {/* <primitive
-          onClick={() => {
-            //insertBoundingBox();
-            //setBoundingBox(true);
-          }}
-          onDoubleClick={() => {
-            //removeBoundingBox();
-          }}
-          ref={refMesh}
-          object={fbx.clone(true)}
-        ></primitive> */}
         <BoxGeometry
           ref123={refMesh}
           onclick={setCurrentObj}

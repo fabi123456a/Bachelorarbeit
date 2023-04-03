@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { TransformControls } from "@react-three/drei";
-import { useLoader } from "@react-three/fiber";
+import { ThreeEvent, useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import * as THREE from "three";
 import { BoxHelper, Camera, LineBasicMaterial, Vector3 } from "three";
@@ -53,7 +53,8 @@ function SceneModel(
       showYTransform: props.showYTransform,
       showZTransform: props.showZTransform,
       modelPath: props.modelPath,
-      removeBoundingBox: () => removeBoundingBox(),
+      removeObjHighlight: () => removeBoundingBox(),
+      highlightObj: () => insertBoundingBox(),
     });
   };
 

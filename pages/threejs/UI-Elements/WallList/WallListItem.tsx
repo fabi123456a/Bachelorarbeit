@@ -26,7 +26,8 @@ export function WallListItem(props: {
               z: props.data[props.name]["z"],
             },
             rotation: { x: 0, y: 0, z: 0 },
-            removeBoundingBox: () => {},
+            removeObjHighlight: () => {},
+            highlightObj: () => {},
             info: "wall",
           };
 

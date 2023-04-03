@@ -42,8 +42,10 @@ type TypeObjectProps = {
   showYTransform: boolean;
   showZTransform: boolean;
   modelPath: string;
-  removeBoundingBox: () => void;
+  removeObjHighlight: () => void;
+  highlightObj: () => void;
   info?: string;
+  color?: string;
 };
 type TypeCamPerspektive = {
   topDown: boolean;

@@ -19,9 +19,12 @@ function BoxGeometry(props: {
           props.geometrie.positionXYZ[1],
           props.geometrie.positionXYZ[2],
         ]}
-        onClick={() => {
-          props.onclick ? props.onclick() : null;
-          props.setColor("#fffb00");
+        onClick={(e) => {
+          if (e) {
+            props.onclick ? props.onclick() : null;
+            props.setColor("#fffb00");
+            console.log("xxxxxx click");
+          }
         }}
       >
         <boxBufferGeometry args={props.geometrie.scaleXYZ} />

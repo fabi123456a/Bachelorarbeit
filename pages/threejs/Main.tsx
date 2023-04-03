@@ -25,62 +25,67 @@ export default function Main(props: {
   const [showControlsInfo, setShowControlsInfo] = useState(true);
   const [fbx_models_files, setFbx_models_files] = useState<any[]>([]); //Contains all FBX Model Files which can be selected via the ModelList Component. Is needed to save the Scene and all FBX Model Files
   const [models, setModels] = useState<TypeObjectProps[]>([
-    {
-      // ground
-      id: "fewrtgregvdg",
-      position: { x: 0, y: 0, z: 0 },
-      scale: { x: 50, y: 0.001, z: 50 },
-      rotation: { x: 0, y: 0, z: 0 },
-      editMode: undefined,
-      showXTransform: false,
-      showYTransform: false,
-      showZTransform: false,
-      modelPath: null,
-      removeBoundingBox: () => {},
-      info: "floor",
-    },
-    {
-      // right wall
-      id: "efewdgvew434",
-      position: { x: 25, y: 5, z: 0 },
-      scale: { x: 0.001, y: 10, z: 50 },
-      rotation: { x: 0, y: 0, z: 0 },
-      editMode: undefined,
-      showXTransform: false,
-      showYTransform: false,
-      showZTransform: false,
-      modelPath: null,
-      removeBoundingBox: () => {},
-      info: "rightWall",
-    },
-    {
-      // left wall
-      id: "efewdgv5555ew434lllll",
-      position: { x: -25, y: 5, z: 0 },
-      scale: { x: 0.001, y: 10, z: 50 },
-      rotation: { x: 0, y: 0, z: 0 },
-      editMode: undefined,
-      showXTransform: false,
-      showYTransform: false,
-      showZTransform: false,
-      modelPath: null,
-      removeBoundingBox: () => {},
-      info: "leftWall",
-    },
-    {
-      // hinten wall
-      id: "rfwefedsfdsdddd",
-      position: { x: 0, y: 5, z: -25 },
-      scale: { x: 50, y: 10, z: 0.001 },
-      rotation: { x: 0, y: 0, z: 0 },
-      editMode: undefined,
-      showXTransform: false,
-      showYTransform: false,
-      showZTransform: false,
-      modelPath: null,
-      removeBoundingBox: () => {},
-      info: "behindWall",
-    },
+    // {
+    //   // ground
+    //   id: "fewrtgregvdg",
+    //   position: { x: 0, y: 0, z: 0 },
+    //   scale: { x: 50, y: 0.001, z: 50 },
+    //   rotation: { x: 0, y: 0, z: 0 },
+    //   editMode: undefined,
+    //   showXTransform: false,
+    //   showYTransform: false,
+    //   showZTransform: false,
+    //   modelPath: null,
+    //   removeObjHighlight: () => {},
+    //   highlightObj: () => {},
+    //   info: "floor",
+    //   color: "#eee",
+    // },
+    // {
+    //   // right wall
+    //   id: "efewdgvew434",
+    //   position: { x: 25, y: 5, z: 0 },
+    //   scale: { x: 0.001, y: 10, z: 50 },
+    //   rotation: { x: 0, y: 0, z: 0 },
+    //   editMode: undefined,
+    //   showXTransform: false,
+    //   showYTransform: false,
+    //   showZTransform: false,
+    //   modelPath: null,
+    //   removeObjHighlight: () => {},
+    //   highlightObj: () => {},
+    //   info: "rightWall",
+    // },
+    // {
+    //   // left wall
+    //   id: "efewdgv5555ew434lllll",
+    //   position: { x: -25, y: 5, z: 0 },
+    //   scale: { x: 0.001, y: 10, z: 50 },
+    //   rotation: { x: 0, y: 0, z: 0 },
+    //   editMode: undefined,
+    //   showXTransform: false,
+    //   showYTransform: false,
+    //   showZTransform: false,
+    //   modelPath: null,
+    //   removeObjHighlight: () => {},
+    //   highlightObj: () => {},
+    //   info: "leftWall",
+    // },
+    // {
+    //   // hinten wall
+    //   id: "rfwefedsfdsdddd",
+    //   position: { x: 0, y: 5, z: -25 },
+    //   scale: { x: 50, y: 10, z: 0.001 },
+    //   rotation: { x: 0, y: 0, z: 0 },
+    //   editMode: undefined,
+    //   showXTransform: false,
+    //   showYTransform: false,
+    //   showZTransform: false,
+    //   modelPath: null,
+    //   removeObjHighlight: () => {},
+    //   highlightObj: () => {},
+    //   info: "behindWall",
+    // },
   ]); // contains all models which are currently in the scene, models without path are walls
   const [modelPaths, setModelPaths] = useState<TypeModel[]>([]); //Contains all Model Files and their name which can be selected via the ModelList
   const [currentObjectProps, setCurrentObjectProps] = useState<TypeObjectProps>(
@@ -168,14 +173,14 @@ export default function Main(props: {
   // xxx
   useEffect(() => {
     if (!currentObjectProps) {
-      prevObjectProps.current.removeBoundingBox();
+      if (prevObjectProps.current) prevObjectProps.current.removeObjHighlight();
       return;
     }
     updateModels(currentObjectProps.id, currentObjectProps);
 
     if (prevObjectProps.current != null) {
       if (prevObjectProps.current.id !== currentObjectProps.id) {
-        prevObjectProps.current.removeBoundingBox();
+        prevObjectProps.current.removeObjHighlight();
       }
     }
 
@@ -213,7 +218,8 @@ export default function Main(props: {
         position: { x: 0, y: 0, z: 0 },
         scale: { x: 0.02, y: 0.02, z: 0.02 },
         rotation: { x: 0, y: 0, z: 0 },
-        removeBoundingBox: () => {},
+        removeObjHighlight: () => {},
+        highlightObj: () => {},
       },
     ]);
   };
@@ -221,6 +227,8 @@ export default function Main(props: {
   // wall add, damit sind walls floors und cubes gemeint, also alles aus wallList
   const handleWallAdd = (objProps: TypeObjectProps) => {
     setModels([...models, objProps]);
+    setCurrentObjectProps(objProps);
+    // objProps.insertBoundingBox(); // TODO:
   };
 
   const handleModelDelete = (id: string) => {
