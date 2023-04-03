@@ -29,6 +29,7 @@ export function WallListItem(props: {
             removeObjHighlight: () => {},
             highlightObj: () => {},
             color: props.name == "floor" ? "#eee" : null, // der boden soll eine andere farbe bekommen
+            info: props.name,
           };
 
           props.addWall(x);

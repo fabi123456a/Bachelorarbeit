@@ -57,6 +57,7 @@ function BoxGeoPivot(
       removeObjHighlight: () =>
         setColor(props.color ? props.color : defaultColor),
       highlightObj: () => setColor(highlightColor),
+      info: props.info,
     });
   };
 
