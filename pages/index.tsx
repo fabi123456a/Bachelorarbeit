@@ -1,5 +1,5 @@
-import { Button, Typography } from "@mui/material";
-import { useRef, useState } from "react";
+import { Button, TextField, Typography } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 import AdminArea from "./admin/adminArea";
 import AddSceneToDB from "./scenes/addScne";
 import GetFbx from "./fbxHandle/getFbx";
@@ -10,6 +10,7 @@ import Main from "./threejs/Main";
 import Stack from "@mui/material/Stack";
 import { ModelScene, ModelUser } from "./api/_models";
 //import xx from "../styles/globals.css";
+import { Chat } from "./chat/Chat";
 
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -21,6 +22,7 @@ const Home = () => {
 
   return (
     <Stack>
+      <Chat></Chat>
       {loggedIn ? (
         scene ? (
           <Main scene={scene} setScene={setScene}></Main>
