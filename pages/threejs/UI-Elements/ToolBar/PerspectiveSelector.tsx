@@ -1,11 +1,19 @@
-import { FormControl, FormLabel, NativeSelect } from "@mui/material";
-import React from "react";
+import {
+  FormControl,
+  FormLabel,
+  IconButton,
+  NativeSelect,
+} from "@mui/material";
+import React, { useRef } from "react";
+import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 
 export default function PerspectiveSelector(props: {
   setOrtho: Function;
   controlsRef: React.RefObject<any>;
   setPerspective: Function;
-  setWallVisibility: (flag: TypeWallVisibility) => void;
+  setWallVisibility: (flag: boolean) => void;
+  setIsTestMode: (flag: boolean) => void;
+  isTestMode: boolean;
 }) {
   return (
     <FormControl
@@ -16,46 +24,59 @@ export default function PerspectiveSelector(props: {
       }}
     >
       <FormLabel>Perspektive</FormLabel>
-      <NativeSelect
-        disableUnderline
-        onChange={(e) => {
-          const camPerspective = e.target.value;
-          // wenn Kameraperspektive geändert wurde, "0" = normale perspektive
-          if (camPerspective !== "0") {
-            props.setOrtho(true);
-            props.controlsRef.current.enableRotate = false;
-          } else {
-            props.setOrtho(false);
-            props.controlsRef.current.enableRotate = false;
-            props.setPerspective(camPerspective);
-            props.setWallVisibility({ leftWall: true, rightWall: true });
-          }
-          switch (camPerspective) {
-            case "1": // topDown
-              props.setPerspective(camPerspective);
-              props.setWallVisibility({ leftWall: false, rightWall: false });
-              break;
-            case "2": // frontal
-              props.setPerspective(camPerspective);
-              props.setWallVisibility({ leftWall: false, rightWall: false });
-              break;
-            case "3": // leftMid
-              props.setPerspective(camPerspective);
-              props.setWallVisibility({ leftWall: false, rightWall: true });
-              break;
-            case "4": // rightMid
-              props.setPerspective(camPerspective);
-              props.setWallVisibility({ leftWall: true, rightWall: false });
-              break;
-          }
+      <IconButton
+        onClick={() => {
+          props.setIsTestMode(!props.isTestMode);
         }}
+        color={props.isTestMode ? "success" : "default"}
       >
-        <option value={"0"} label="Normal" />
-        <option value={"1"} label="TopDown" />
-        <option value={"2"} label="Frontal" />
-        <option value={"3"} label="LeftMid" />
-        <option value={"4"} label="RightMid" />
-      </NativeSelect>
+        <DirectionsWalkIcon />
+      </IconButton>
+      {props.isTestMode ? null : (
+        <NativeSelect
+          disableUnderline
+          onChange={(e) => {
+            const camPerspective: string = e.target.value;
+
+            if (camPerspective !== "normal") {
+              props.setOrtho(true);
+              props.controlsRef.current.enableRotate = false;
+              // setPerspective & setWallVisibility wird weiter unten gesetzt
+            } else {
+              props.setOrtho(false);
+              props.controlsRef.current.enableRotate = true;
+              props.setPerspective(camPerspective);
+              props.setWallVisibility(true);
+            }
+
+            // unnötig TODO: setPerspective & setWallVisibility oben reinpacken
+            switch (camPerspective) {
+              case "topdown": // topDown
+                props.setPerspective(camPerspective);
+                props.setWallVisibility(false);
+                break;
+              case "frontal": // frontal
+                props.setPerspective(camPerspective);
+                props.setWallVisibility(false);
+                break;
+              case "leftmid": // leftMid
+                props.setPerspective(camPerspective);
+                props.setWallVisibility(false);
+                break;
+              case "rightmid": // rightMid
+                props.setPerspective(camPerspective);
+                props.setWallVisibility(false);
+                break;
+            }
+          }}
+        >
+          <option value={"normal"} label="Normal" />
+          <option value={"topdown"} label="TopDown" />
+          <option value={"frontal"} label="Frontal" />
+          <option value={"leftmid"} label="LeftMid" />
+          <option value={"rightmid"} label="RightMid" />
+        </NativeSelect>
+      )}
     </FormControl>
   );
 }

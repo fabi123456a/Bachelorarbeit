@@ -9,7 +9,7 @@ export function WallList(props: {
   const data: object = {
     floor: { x: 50, y: 0.001, z: 50 },
     wall: { x: 0.001, y: 10, z: 50 },
-    cube: { x: 2, y: 2, z: 2 },
+    cube: { x: 5, y: 5, z: 5 },
   };
 
   return (

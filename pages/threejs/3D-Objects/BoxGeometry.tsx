@@ -8,7 +8,7 @@ function BoxGeometry(props: {
   color?: string;
   onclick?: () => void;
   ref123?: Ref<Mesh<BufferGeometry, Material | Material[]>>;
-  setColor: (color: string) => void;
+  setColor?: (color: string) => void;
 }) {
   return (
     <>

@@ -28,9 +28,11 @@ function ToolBar(props: {
   removeObject: () => void;
   setOrtho: (flag: boolean) => void; // funktion die ein boolean setzt, ob gerade ein Orthografische Kamera aktiv ist
   setPerspective: (perspective: string) => void; // funktion setzt die Kamera Perspektive -> "0"=normal, "1"=topDown, "2"=frontal, "3"=leftMid, "4"=rightMid
-  setWallVisibility: (flag: TypeWallVisibility) => void;
+  setWallVisibility: (flag: boolean) => void;
   saveScene: () => void;
   loadScene: (file: File | null) => void;
+  setIsTestMode: (flag: boolean) => void;
+  isTestMode: boolean;
 }) {
   // funktion
   const checkIfAObjectIsSelected = (): boolean => {
@@ -225,6 +227,8 @@ function ToolBar(props: {
           controlsRef={props.controlsRef}
           setPerspective={props.setPerspective}
           setWallVisibility={props.setWallVisibility}
+          setIsTestMode={props.setIsTestMode}
+          isTestMode={props.isTestMode}
         />
       </Stack>
 

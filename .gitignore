@@ -4,3 +4,4 @@ node_modules
 .next
 .DS_Store
 prisma/dev.db
+public/Scenes

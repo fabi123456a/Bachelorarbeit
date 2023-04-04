@@ -1,13 +1,18 @@
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import * as THREE from "three";
+import { FirstPersonControls } from "@react-three/drei";
+import { FlyControls } from "@react-three/drei";
+import { Vector3 } from "three";
+import { useFrame } from "react-three-fiber";
 
 export function Camera(props: {
   controlsRef: React.RefObject<any>;
   orthogonal: boolean;
   perspektive: string;
+  testMode: boolean;
 }) {
-  const [camPos] = useState<TypeCamPosition>({
+  const [camPos, setCamPos] = useState<TypeCamPosition>({
     topDown: new THREE.Vector3(0, 999, 0),
     leftToMid: new THREE.Vector3(-999, 0, 0),
     rightToMid: new THREE.Vector3(999, 0, 0),
@@ -19,11 +24,11 @@ export function Camera(props: {
       {props.orthogonal ? (
         <OrthographicCamera // TODO: warum guckt die kamera immer in die mitte und nicht nach vorne?
           position={
-            props.perspektive === "1"
+            props.perspektive === "topdown"
               ? camPos.topDown
-              : props.perspektive === "2"
+              : props.perspektive === "frontal"
               ? camPos.frontal
-              : props.perspektive === "3"
+              : props.perspektive === "leftmid"
               ? camPos.leftToMid
               : camPos.rightToMid
           }
@@ -38,4 +43,29 @@ export function Camera(props: {
       />
     </>
   );
+}
+
+///* enableRotate={props.lockCamera ? false : true} */
+
+{
+  /* <OrbitControls
+        ref={props.controlsRef}
+        enableZoom={false}
+        enablePan={false}
+        minPolarAngle={Math.PI / 2}
+        maxPolarAngle={Math.PI / 2}
+        position={new Vector3(1, 10, 1)}
+
+      /> */
+}
+
+{
+  /* <FlyControls
+          ref={props.controlsRef}
+          movementSpeed={5}
+          rollSpeed={0.5}
+          dragToLook={true}
+          args={[cameraRef.current]}
+          position={[10, 30, 20]}
+        /> */
 }

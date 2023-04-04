@@ -14,7 +14,8 @@ export default function Scene(props: {
   perspektive: string;
   setCurrentObjectProps: (props: TypeObjectProps) => void;
   sceneRef: any;
-  wallVisibility: TypeWallVisibility;
+  wallVisibility: boolean;
+  testMode: boolean;
 }) {
   const { scene } = useThree();
   props.sceneRef.current = scene;
@@ -45,6 +46,7 @@ export default function Scene(props: {
         controlsRef={props.controlsRef}
         orthogonal={props.ortho}
         perspektive={props.perspektive}
+        testMode={props.testMode}
       ></Camera>
       {/* Licht */}
       <ambientLight intensity={0.1} />
@@ -70,7 +72,7 @@ export default function Scene(props: {
             highlightObj={model.highlightObj}
             camPerspektive={props.perspektive}
           ></SceneModel>
-        ) : (
+        ) : props.wallVisibility ? (
           <BoxGeoPivot
             key={model.id}
             id={model.id}
@@ -91,7 +93,7 @@ export default function Scene(props: {
             info={model.info}
             color={model.color}
           ></BoxGeoPivot>
-        )
+        ) : null
       )}
       {/* Raum */}
       {/* <Room

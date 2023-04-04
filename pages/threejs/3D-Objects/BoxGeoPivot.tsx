@@ -89,7 +89,7 @@ function BoxGeoPivot(
             setCurrentObj();
             console.log("_Kamerarotation frei");
 
-            if (props.camPerspektive === "0") {
+            if (props.camPerspektive === "normal") {
               // kamera rotation nur freigeben wenn camPerspektive normal (== "0") ist, bei othogonaler perpektive soll cam drehen nicht gehen
               props.controlsRef.current.enableRotate = true;
             }

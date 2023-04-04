@@ -16,13 +16,16 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { ModelScene } from "../api/_models";
 import { WallList } from "./UI-Elements/WallList/WallList";
 import { debug } from "console";
+import SceneModelList from "./UI-Elements/SceneModelList/SceneModelList";
 
 export default function Main(props: {
   scene: ModelScene;
   setScene: (scene: ModelScene) => void;
 }) {
   // ---- STATES ----
-  const [showControlsInfo, setShowControlsInfo] = useState(true);
+  const [treeViewSelectedId, setTreeViewSelectedId] = useState<string>(null);
+  const [showControlsInfo, setShowControlsInfo] = useState<boolean>(true);
+  const [isTestMode, setIsTestMode] = useState<boolean>(false);
   const [fbx_models_files, setFbx_models_files] = useState<any[]>([]); //Contains all FBX Model Files which can be selected via the ModelList Component. Is needed to save the Scene and all FBX Model Files
   const [models, setModels] = useState<TypeObjectProps[]>([
     // {
@@ -95,12 +98,9 @@ export default function Main(props: {
     useState<TypeObjectProps | null>(null);
   const textRef = useRef<string>("");
   const [isOrtho, setIsOrtho] = useState<boolean>(false); // cam
-  const [perspective, setPerspective] = useState<string>("0"); // cam TODO: type für perspektiven
+  const [perspective, setPerspective] = useState<string>("normal"); // cam TODO: type für perspektiven
 
-  const [wallVisiblity, setWallVisiblity] = useState<TypeWallVisibility>({
-    leftWall: true,
-    rightWall: true,
-  }); // to show the left or right wall or hide it when the camera mode changes
+  const [wallVisiblity, setWallVisiblity] = useState<boolean>(true); // to show the left or right wall or hide it when the camera mode changes
   const [valueGltf, setValueGltf] = useState<THREE.Group>(null!);
 
   // ---- REFS ----
@@ -165,19 +165,32 @@ export default function Main(props: {
     };
   }, [copiedObjectProps]);
 
-  // xxx
+  // wird ausgeführt wenn currentObject sich ändert
   useEffect(() => {
+    // wenn man pointer missed ist currentObjectProps null oder wenn es keine gibt
     if (!currentObjectProps) {
-      if (prevObjectProps.current) prevObjectProps.current.removeObjHighlight();
+      // wenn es ein vorheriges obj gibt & removeHighligt dann entferne highlight von prevObj
+      if (prevObjectProps.current != null) {
+        if (prevObjectProps.current.removeObjHighlight)
+          prevObjectProps.current.removeObjHighlight();
+      }
+
       return;
     }
-    updateModels(currentObjectProps.id, currentObjectProps);
 
     if (prevObjectProps.current != null) {
-      if (prevObjectProps.current.id !== currentObjectProps.id) {
+      if (prevObjectProps.current.removeObjHighlight)
         prevObjectProps.current.removeObjHighlight();
-      }
     }
+
+    // xxx
+    updateModels(currentObjectProps.id, currentObjectProps);
+
+    // currentObj highlighten wenns die funktion schon gibt
+    if (currentObjectProps.highlightObj) currentObjectProps.highlightObj();
+
+    // treeview setselected id
+    setTreeViewSelectedId(currentObjectProps.id);
 
     prevObjectProps.current = currentObjectProps;
   }, [currentObjectProps]);
@@ -277,13 +290,26 @@ export default function Main(props: {
   };
 
   const updateModels = (modelID: string, newModelData: any) => {
-    setModels((prev: TypeObjectProps[]) => [
-      {
-        ...prev.find((model) => model.id === modelID),
-        ...newModelData,
-      },
-      ...prev.filter((model) => model.id !== modelID),
-    ]);
+    // setModels((prev: TypeObjectProps[]) => [
+    //   {
+    //     ...prev.find((model) => model.id === modelID),
+    //     ...newModelData,
+    //   },
+    //   ...prev.filter((model) => model.id !== modelID),
+    // ]);
+
+    setModels((prev: TypeObjectProps[]) =>
+      prev.map((model) => {
+        if (model.id === modelID) {
+          return {
+            ...model,
+            ...newModelData,
+          };
+        } else {
+          return model;
+        }
+      })
+    );
   };
 
   // save Scene
@@ -429,7 +455,9 @@ export default function Main(props: {
   // ---- COMPONENT ----
   return (
     <Stack>
-      <Typography>Scene: {props.scene.name}</Typography>
+      <Typography>
+        Scene: {props.scene.name}, testMode: {isTestMode ? "ja" : "nein"}
+      </Typography>
       <Stack
         direction="row"
         style={{ height: "100%", background: "#d9d9d9", overflowY: "auto" }}
@@ -542,6 +570,8 @@ export default function Main(props: {
               setWallVisibility={setWallVisiblity}
               saveScene={saveScene}
               loadScene={loadScene}
+              setIsTestMode={setIsTestMode}
+              isTestMode={isTestMode}
             ></ToolBar>
           </Stack>
 
@@ -568,6 +598,7 @@ export default function Main(props: {
                 models={models}
                 sceneRef={sceneRef}
                 wallVisibility={wallVisiblity}
+                testMode={isTestMode}
               ></Scene>
             </Canvas>
           </Stack>
@@ -585,6 +616,14 @@ export default function Main(props: {
             objProps={currentObjectProps}
             setObjProps={setCurrentObjectProps}
           ></PropertieContainer>
+          <Divider sx={{ margin: "8px" }}></Divider>
+          <SceneModelList
+            models={models}
+            currentObjProps={currentObjectProps}
+            setCurrentObj={setCurrentObjectProps}
+            deleteObject={handleModelDelete}
+            selectedId={treeViewSelectedId}
+          ></SceneModelList>
         </Stack>
       </Stack>
     </Stack>

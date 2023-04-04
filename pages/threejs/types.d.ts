@@ -71,3 +71,4 @@ type ExportedScene = {
   models: TypeModel[];
   fbx_models: { pathName: string; name: string; file: string }[];
 };
+
