@@ -85,7 +85,7 @@ export function Chat(props:{scene: ModelScene, user: ModelUser}) {
       </Button>
       <Stack>
         {msgs.map((msg: ModelChatEntry) => (
-          <Typography>{msg.idUser + ": " +  msg.message + " (" + new Date(msg.datum).toLocaleTimeString() + ")"}</Typography>
+          <Typography>{new Date(msg.datum).toLocaleTimeString() + ": " +  msg.message + " (" +  msg.idUser + ")"}</Typography>
         ))}
 
       </Stack></Stack>

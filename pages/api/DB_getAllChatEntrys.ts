@@ -12,7 +12,9 @@ export default async function DB_getAllChatEntrys(
   const session = await checkSessionID(sessionID);
 
   if (session) {
-    const chatEntrys: ModelChatEntry[] = await prismaClient.chatEntry.findMany();
+    const chatEntrys: ModelChatEntry[] = await prismaClient.chatEntry.findMany({ orderBy: {
+      datum: 'desc' // oder 'desc' für absteigende Sortierung
+    }});
 
     if (chatEntrys == null)
       res.status(200).json({ result: "fehler beim laden der Scenes" });

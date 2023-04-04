@@ -22,7 +22,7 @@ const SocketHandler = (req, res) => {
           datum: 'desc' // oder 'desc' für absteigende Sortierung
         }});
 
-        socket.emit("getChatEntry", chatEntrys);
+        socket.broadcast.emit("getChatEntry", chatEntrys);
 
       });
     });
