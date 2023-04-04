@@ -12,6 +12,7 @@ function BoxGeoPivot(
     camPerspektive: string;
     controlsRef: React.RefObject<any>;
     setCurrentObjectProps: (props: TypeObjectProps) => void;
+    testMode: boolean;
   }
 ) {
   // referenz auf das Mesh des FBX-Models
@@ -49,14 +50,11 @@ function BoxGeoPivot(
         y: tcRef.current?.object.rotation.y ?? 0,
         z: tcRef.current?.object.rotation.z ?? 0,
       },
-      editMode: props.editMode,
-      showXTransform: props.showXTransform,
-      showYTransform: props.showYTransform,
-      showZTransform: props.showZTransform,
+      editMode: "translate", //props.editMode,
+      showXTransform: true, //props.showXTransform,
+      showYTransform: true, //props.showYTransform,
+      showZTransform: true, //props.showZTransform,
       modelPath: null,
-      removeObjHighlight: () =>
-        setColor(props.color ? props.color : defaultColor),
-      highlightObj: () => setColor(highlightColor),
       info: props.info,
     });
   };
@@ -111,10 +109,9 @@ function BoxGeoPivot(
       >
         <BoxGeometry
           ref123={refMesh}
-          onclick={setCurrentObj}
+          onclick={props.testMode ? null : setCurrentObj}
           geometrie={{ positionXYZ: [0, 0, 0], scaleXYZ: [1, 1, 1] }}
-          color={color}
-          setColor={setColor}
+          testMode={props.testMode}
         ></BoxGeometry>
       </TransformControls>
     </>

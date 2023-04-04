@@ -42,8 +42,6 @@ type TypeObjectProps = {
   showYTransform: boolean;
   showZTransform: boolean;
   modelPath: string;
-  removeObjHighlight: () => void;
-  highlightObj: () => void;
   info?: string;
   color?: string;
 };
@@ -71,4 +69,3 @@ type ExportedScene = {
   models: TypeModel[];
   fbx_models: { pathName: string; name: string; file: string }[];
 };
-

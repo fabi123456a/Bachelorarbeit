@@ -12,6 +12,7 @@ function SceneModel(
     isSelected: boolean;
     camPerspektive: string;
     setCurrentObjectProps: (props: TypeObjectProps) => void;
+    testmode: boolean;
   }
 ) {
   // lädt das FBX-Model
@@ -23,6 +24,8 @@ function SceneModel(
 
   // function
   const setCurrentObj = () => {
+    if (props.testmode) return;
+
     // position des Objects als Vektor3
     let vectorPosition: Vector3 = new Vector3();
     refMesh.current?.getWorldPosition(vectorPosition);
@@ -48,37 +51,13 @@ function SceneModel(
         y: tcRef.current?.object.rotation.y ?? 0,
         z: tcRef.current?.object.rotation.z ?? 0,
       },
-      editMode: props.editMode,
-      showXTransform: props.showXTransform,
-      showYTransform: props.showYTransform,
-      showZTransform: props.showZTransform,
+      editMode: "translate", //props.editMode,
+      showXTransform: true, //props.showXTransform,
+      showYTransform: true, //props.showYTransform,
+      showZTransform: true, //props.showZTransform,
       modelPath: props.modelPath,
-      removeObjHighlight: () => removeBoundingBox(),
-      highlightObj: () => insertBoundingBox(),
     });
   };
-
-  // BoundingBox management
-  const box = useRef<BoxHelper>(new BoxHelper(fbx, 0xff0000));
-  const [boundingBox, setBoundingBox] = useState<boolean>(false);
-
-  const insertBoundingBox = () => {
-    box.current.geometry.computeBoundingBox();
-    const material = new LineBasicMaterial({ color: 0xff0000 });
-    box.current.material = material;
-    refMesh?.current?.add(box.current);
-  };
-
-  const removeBoundingBox = () => {
-    refMesh?.current?.remove(box.current);
-    setBoundingBox(false);
-  };
-
-  useEffect(() => {
-    if (boundingBox) {
-      insertBoundingBox();
-    }
-  });
 
   return (
     <>
@@ -94,6 +73,7 @@ function SceneModel(
           new Vector3(props.position.x, props.position.y, props.position.z)
         }
         onMouseUp={(e) => {
+          if (props.testmode) return;
           //Checks if an event happened or if component just rerendered
           if (e) {
             setCurrentObj();
@@ -113,21 +93,17 @@ function SceneModel(
           }
         }}
         onClick={(e) => {
+          if (props.testmode) return;
           if (e) {
             e.stopPropagation();
             setCurrentObj();
-            insertBoundingBox();
           }
         }}
       >
         <primitive
           onClick={() => {
+            if (props.testmode) return;
             setCurrentObj();
-            insertBoundingBox();
-            setBoundingBox(true);
-          }}
-          onDoubleClick={() => {
-            removeBoundingBox();
           }}
           ref={refMesh}
           object={fbx.clone(true)}

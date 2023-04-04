@@ -68,9 +68,8 @@ export default function Scene(props: {
             position={model.position}
             scale={model.scale}
             rotation={model.rotation}
-            removeObjHighlight={model.removeObjHighlight}
-            highlightObj={model.highlightObj}
             camPerspektive={props.perspektive}
+            testmode={props.testMode}
           ></SceneModel>
         ) : props.wallVisibility ? (
           <BoxGeoPivot
@@ -86,12 +85,11 @@ export default function Scene(props: {
             position={model.position}
             scale={model.scale}
             rotation={model.rotation}
-            removeObjHighlight={null}
             camPerspektive={props.perspektive}
             setCurrentObjectProps={props.setCurrentObjectProps}
-            highlightObj={model.highlightObj}
             info={model.info}
             color={model.color}
+            testMode={props.testMode}
           ></BoxGeoPivot>
         ) : null
       )}

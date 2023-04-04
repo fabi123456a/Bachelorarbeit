@@ -169,25 +169,11 @@ export default function Main(props: {
   useEffect(() => {
     // wenn man pointer missed ist currentObjectProps null oder wenn es keine gibt
     if (!currentObjectProps) {
-      // wenn es ein vorheriges obj gibt & removeHighligt dann entferne highlight von prevObj
-      if (prevObjectProps.current != null) {
-        if (prevObjectProps.current.removeObjHighlight)
-          prevObjectProps.current.removeObjHighlight();
-      }
-
       return;
-    }
-
-    if (prevObjectProps.current != null) {
-      if (prevObjectProps.current.removeObjHighlight)
-        prevObjectProps.current.removeObjHighlight();
     }
 
     // xxx
     updateModels(currentObjectProps.id, currentObjectProps);
-
-    // currentObj highlighten wenns die funktion schon gibt
-    if (currentObjectProps.highlightObj) currentObjectProps.highlightObj();
 
     // treeview setselected id
     setTreeViewSelectedId(currentObjectProps.id);
@@ -224,8 +210,6 @@ export default function Main(props: {
       position: { x: 0, y: 0, z: 0 },
       scale: { x: 0.02, y: 0.02, z: 0.02 },
       rotation: { x: 0, y: 0, z: 0 },
-      removeObjHighlight: () => {},
-      highlightObj: () => {},
     };
 
     setModels([...models, objProps]);
