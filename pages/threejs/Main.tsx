@@ -13,12 +13,17 @@ import exportToGLTF from "./utils/exporting";
 
 //@ts-ignore
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
-import { ModelScene } from "../api/_models";
+import { ModelScene, ModelUser } from "../api/_models";
 import { WallList } from "./UI-Elements/WallList/WallList";
 import { debug } from "console";
 import SceneModelList from "./UI-Elements/SceneModelList/SceneModelList";
+import { Radio } from "@mui/material";
+import { RadioGroup } from "@mui/material";
+import { FormControlLabel } from "@mui/material";
+import { Chat } from "../chat/Chat";
 
 export default function Main(props: {
+  user: ModelUser;
   scene: ModelScene;
   setScene: (scene: ModelScene) => void;
 }) {
@@ -435,6 +440,14 @@ export default function Main(props: {
     ]);
   }
 
+  // chat
+
+  const [selectedOption, setSelectedOption] = useState('');
+
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+  }
+
   // ---- COMPONENT ----
   return (
     <Stack>
@@ -594,7 +607,8 @@ export default function Main(props: {
             width: "30%",
           }}
         >
-          <PropertieContainer
+          {selectedOption == "chat" ? <Chat user={props.user} scene={props.scene}></Chat>:
+          <><PropertieContainer
             objProps={currentObjectProps}
             setObjProps={setCurrentObjectProps}
           ></PropertieContainer>
@@ -605,7 +619,15 @@ export default function Main(props: {
             setCurrentObj={setCurrentObjectProps}
             deleteObject={handleModelDelete}
             selectedId={treeViewSelectedId}
-          ></SceneModelList>
+          ></SceneModelList></>}
+
+          <RadioGroup value={selectedOption} onChange={handleOptionChange}>
+            <Stack direction={"row"}>
+              <FormControlLabel value="chat" control={<Radio />} label="Chat" />
+              <FormControlLabel value="properties" control={<Radio />} label="Eigenschaften" />
+            </Stack>
+          </RadioGroup>
+
         </Stack>
       </Stack>
     </Stack>

@@ -1,4 +1,5 @@
 import { Server } from "Socket.IO";
+import { prismaClient } from "./_prismaClient";
 
 const SocketHandler = (req, res) => {
   if (res.socket.server.io) {
@@ -11,6 +12,18 @@ const SocketHandler = (req, res) => {
     io.on("connection", (socket) => {
       socket.on("input-change", (msg) => {
         socket.broadcast.emit("update-input", msg);
+      });
+
+      socket.on("addChatEntry", async (msg) => {
+        console.log(msg);
+        const selectedUser = await prismaClient.chatEntry.create({ data: msg});
+
+        const chatEntrys = await prismaClient.chatEntry.findMany({ orderBy: {
+          datum: 'desc' // oder 'desc' für absteigende Sortierung
+        }});
+
+        socket.emit("getChatEntry", chatEntrys);
+
       });
     });
   }

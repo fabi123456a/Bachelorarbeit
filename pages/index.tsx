@@ -10,7 +10,7 @@ import Main from "./threejs/Main";
 import Stack from "@mui/material/Stack";
 import { ModelScene, ModelUser } from "./api/_models";
 //import xx from "../styles/globals.css";
-import { Chat } from "./chat/Chat";
+
 
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -22,10 +22,10 @@ const Home = () => {
 
   return (
     <Stack>
-      <Chat></Chat>
+
       {loggedIn ? (
         scene ? (
-          <Main scene={scene} setScene={setScene}></Main>
+          <Main scene={scene} setScene={setScene} user={actUser}></Main>
         ) : (
           <Stack>
             <SceneList setScene={setScene} user={actUser}></SceneList>

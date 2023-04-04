@@ -37,3 +37,11 @@ model Sessions{
   id      String     @id 
   idUser  String
 }
+
+model ChatEntry{
+  id      String     @id 
+  idScene String
+  idUser  String
+  message String
+  datum   DateTime
+}

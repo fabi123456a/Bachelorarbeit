@@ -17,3 +17,11 @@ export type ModelSession = {
   id: string;
   idUser: string;
 };
+
+export type ModelChatEntry = {
+  id      :string;
+  idScene :string;
+  idUser  :string;
+  message :string;
+  datum   : Date;
+}

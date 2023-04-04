@@ -1,12 +1,15 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import io from "Socket.IO-client";
+import { ModelChatEntry, ModelScene, ModelUser } from "../api/_models";
+import { randomUUID } from "crypto";
 
 let socket;
 
-export function Chat() {
+export function Chat(props:{scene: ModelScene, user: ModelUser}) {
   const [value, setValue] = useState<string>("");
   const [input, setInput] = useState<string[]>([]);
+  const [msgs, setMsgs] = useState<ModelChatEntry[]>([]);
 
   useEffect(() => {
     const socketInitializer = async () => {
@@ -18,11 +21,29 @@ export function Chat() {
       });
 
       socket.on("update-input", (msg) => {
-        setInput([...input, msg]);
+        //setInput([...input, msg]);
+      });
+
+      socket.on("getChatEntry", (chatEntrys) => {
+        setMsgs(chatEntrys);
       });
     };
     socketInitializer();
   }, []);
+
+  useEffect(()=>{
+    const getAllChatEntry = async () => {
+      const response = await fetch("/api/DB_getAllChatEntrys");
+      const result: ModelChatEntry[] = await response.json();
+      return result;
+    };
+    getAllChatEntry().then((chatEntrys) => {
+      setMsgs(chatEntrys);
+    });
+  }, []);
+
+
+
 
   const onChangeHandler = (e) => {
     setValue(e.target.value);
@@ -31,19 +52,44 @@ export function Chat() {
 
   const onClickHandler = () => {
     socket.emit("input-change", value);
+
+    const chatEntry: ModelChatEntry = {
+      id: "" + Math.random() * 1000,
+      idScene: props.scene.id,
+      idUser: props.user.id,
+      message: value,
+      datum: new Date(),
+    };
+
+    socket.emit("addChatEntry", chatEntry);
+  };
+
+  const getUserByID = async (idUser: string) => {
+    const response = await fetch("/api/DB_getUserByID", {
+      method: "POST",
+      body: JSON.stringify({
+        idUser: props.scene.idUserCreater,
+      }),
+    });
+
+    const user = await response.json();
+
+    return user;
   };
 
   return (
     <>
-      <TextField onChange={onChangeHandler} value={value}></TextField>
+    <Stack sx={{overflowY: "scroll", maxHeight: "400px"}}><TextField onChange={onChangeHandler} value={value}></TextField>
       <Button variant="outlined" onClick={onClickHandler}>
         send
       </Button>
       <Stack>
-        {input.map((txt) => (
-          <Typography>{txt}</Typography>
+        {msgs.map((msg: ModelChatEntry) => (
+          <Typography>{msg.idUser + ": " +  msg.message + " (" + new Date(msg.datum).toLocaleTimeString() + ")"}</Typography>
         ))}
-      </Stack>
+
+      </Stack></Stack>
+      
 
       {/* <TextField></TextField>
       <Typography>{value}</Typography>
