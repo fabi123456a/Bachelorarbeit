@@ -1,5 +1,4 @@
 import SceneModel from "../3D-Objects/SceneModel";
-import Room from "../3D-Objects/Room";
 import { Camera } from "./Camera";
 import { useThree } from "@react-three/fiber";
 import { useEffect, useState } from "react";
@@ -10,7 +9,6 @@ export default function Scene(props: {
   controlsRef: React.RefObject<any>;
   models: TypeObjectProps[];
   currentObjectProps: TypeObjectProps;
-  ortho: boolean;
   perspektive: string;
   setCurrentObjectProps: (props: TypeObjectProps) => void;
   sceneRef: any;
@@ -22,20 +20,23 @@ export default function Scene(props: {
 
   // gitter raster erstellen & einfügen
   useEffect(() => {
-    for (let j: number = -500; j < 500; j += 50) {
-      for (let i: number = -500; i < 500; i += 50) {
-        const geometry = new THREE.BoxGeometry(50, 0, 50);
-        const material = new THREE.MeshBasicMaterial({
-          color: 0xf5f5f5,
-          wireframe: true,
-          opacity: 0.5,
-        });
-        const mesh = new THREE.Mesh(geometry, material);
-        mesh.position.set(i, 0, j);
-        scene.add(mesh);
+    // TODO: wird das raster mehrmals eingefügt??
+    if (props.perspektive == "normal") {
+      for (let j: number = -500; j < 500; j += 50) {
+        for (let i: number = -500; i < 500; i += 50) {
+          const geometry = new THREE.BoxGeometry(50, 0, 50);
+          const material = new THREE.MeshBasicMaterial({
+            color: 0xf5f5f5,
+            wireframe: true,
+            opacity: 0.5,
+          });
+          const mesh = new THREE.Mesh(geometry, material);
+          mesh.position.set(i, 0, j);
+          scene.add(mesh);
+        }
       }
     }
-  }, [scene]);
+  }, [scene, props.perspektive]);
 
   return (
     <>
@@ -44,7 +45,6 @@ export default function Scene(props: {
       {/* Kamera */}
       <Camera
         controlsRef={props.controlsRef}
-        orthogonal={props.ortho}
         perspektive={props.perspektive}
         testMode={props.testMode}
       ></Camera>

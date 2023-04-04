@@ -97,7 +97,6 @@ export default function Main(props: {
   const [copiedObjectProps, setCopiedObjectProps] =
     useState<TypeObjectProps | null>(null);
   const textRef = useRef<string>("");
-  const [isOrtho, setIsOrtho] = useState<boolean>(false); // cam
   const [perspective, setPerspective] = useState<string>("normal"); // cam TODO: type für perspektiven
 
   const [wallVisiblity, setWallVisiblity] = useState<boolean>(true); // to show the left or right wall or hide it when the camera mode changes
@@ -543,7 +542,6 @@ export default function Main(props: {
             {/* ToolBar */}
             <ToolBar
               setPerspective={setPerspective}
-              setOrtho={setIsOrtho}
               deleteObject={handleModelDelete}
               exportObject={handleModelexport}
               importObject={handleModelimport}
@@ -556,6 +554,7 @@ export default function Main(props: {
               loadScene={loadScene}
               setIsTestMode={setIsTestMode}
               isTestMode={isTestMode}
+              setCurentObj={setCurrentObjectProps}
             ></ToolBar>
           </Stack>
 
@@ -576,7 +575,6 @@ export default function Main(props: {
               <Scene
                 controlsRef={controlsRef}
                 perspektive={perspective}
-                ortho={isOrtho}
                 currentObjectProps={currentObjectProps}
                 setCurrentObjectProps={setCurrentObjectProps}
                 models={models}

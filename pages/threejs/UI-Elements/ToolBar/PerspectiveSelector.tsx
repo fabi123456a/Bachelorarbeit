@@ -8,12 +8,12 @@ import React, { useRef } from "react";
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 
 export default function PerspectiveSelector(props: {
-  setOrtho: Function;
   controlsRef: React.RefObject<any>;
   setPerspective: Function;
   setWallVisibility: (flag: boolean) => void;
   setIsTestMode: (flag: boolean) => void;
   isTestMode: boolean;
+  setCurrentObj: (obj: TypeObjectProps) => void;
 }) {
   return (
     <FormControl
@@ -27,6 +27,7 @@ export default function PerspectiveSelector(props: {
       <IconButton
         onClick={() => {
           props.setIsTestMode(!props.isTestMode);
+          props.setCurrentObj(null);
         }}
         color={props.isTestMode ? "success" : "default"}
       >
@@ -39,11 +40,9 @@ export default function PerspectiveSelector(props: {
             const camPerspective: string = e.target.value;
 
             if (camPerspective !== "normal") {
-              props.setOrtho(true);
               props.controlsRef.current.enableRotate = false;
               // setPerspective & setWallVisibility wird weiter unten gesetzt
             } else {
-              props.setOrtho(false);
               props.controlsRef.current.enableRotate = true;
               props.setPerspective(camPerspective);
               props.setWallVisibility(true);

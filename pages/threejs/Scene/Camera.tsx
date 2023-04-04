@@ -8,7 +8,6 @@ import { useFrame } from "react-three-fiber";
 
 export function Camera(props: {
   controlsRef: React.RefObject<any>;
-  orthogonal: boolean;
   perspektive: string;
   testMode: boolean;
 }) {
@@ -21,7 +20,21 @@ export function Camera(props: {
 
   return (
     <>
-      {props.orthogonal ? (
+      {props.testMode ? (
+        <FlyControls
+          ref={props.controlsRef}
+          movementSpeed={8}
+          rollSpeed={0.5}
+          dragToLook={true}
+          position={[10, 30, 20]}
+          makeDefault
+        />
+      ) : props.perspektive == "normal" ? (
+        <OrbitControls
+          ref={props.controlsRef}
+          /* enableRotate={props.lockCamera ? false : true} */
+        />
+      ) : (
         <OrthographicCamera // TODO: warum guckt die kamera immer in die mitte und nicht nach vorne?
           position={
             props.perspektive === "topdown"
@@ -34,13 +47,10 @@ export function Camera(props: {
           }
           zoom={20}
           makeDefault // TODO:  glaube durch das make deafult wird die oritcontrol cam überschrieben
-        ></OrthographicCamera>
-      ) : null}
-      <OrbitControls
-        ref={
-          props.controlsRef
-        } /* enableRotate={props.lockCamera ? false : true} */
-      />
+        >
+          <OrbitControls ref={props.controlsRef} enableRotate={false} />
+        </OrthographicCamera>
+      )}
     </>
   );
 }
