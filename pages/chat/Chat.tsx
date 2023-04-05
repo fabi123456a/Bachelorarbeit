@@ -65,7 +65,7 @@ export function Chat(props: { scene: ModelScene; user: ModelUser }) {
     //socket.emit("input-change", e.target.value);
   };
 
-  const onClickHandler = () => {
+  const onClickHandler = async () => {
     socket.emit("input-change", value);
 
     const chatEntry: ModelChatEntry = {
@@ -80,7 +80,7 @@ export function Chat(props: { scene: ModelScene; user: ModelUser }) {
 
     // test sessio keep alive
 
-    
+    await fetch("api/DB_sessionKeepAlive");
   };
 
   const getUserByID = async (idUser: string) => {

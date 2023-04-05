@@ -21,6 +21,9 @@ import { Radio } from "@mui/material";
 import { RadioGroup } from "@mui/material";
 import { FormControlLabel } from "@mui/material";
 import { Chat } from "../chat/Chat";
+import io from "Socket.IO-client";
+
+let socket;
 
 export default function Main(props: {
   user: ModelUser;
@@ -106,6 +109,8 @@ export default function Main(props: {
 
   const [wallVisiblity, setWallVisiblity] = useState<boolean>(true); // to show the left or right wall or hide it when the camera mode changes
   const [valueGltf, setValueGltf] = useState<THREE.Group>(null!);
+
+  const [refreshedSceneID, getRefreshedSceneID] = useState<string>("");
 
   // ---- REFS ----
   const sceneRef = useRef<any>(null!);
@@ -200,6 +205,43 @@ export default function Main(props: {
       loadScene2(result["data"]);
     };
     handle();
+  }, []);
+
+  // scene neu socket.io laden TEST
+
+  useEffect(() => {
+    const socketInitializer = async () => {
+      await fetch("/api/socket");
+      socket = io();
+
+      // socket.on("connect", () => {
+      //   console.log("connected");
+      // });
+
+      socket.on("getSceneRefresh", (msg) => {
+        // msg => scene id von der seite die jemand gespeichert hat
+        //setInput([...input, msg]);xxxx
+        console.log("scene wurde refresht: " + msg);
+        getRefreshedSceneID(msg);
+
+        if (msg == props.scene.id) {
+          const handle = async () => {
+            const response = await fetch("/api/FS_getSceneByID", {
+              method: "POST",
+              body: JSON.stringify({
+                sceneID: props.scene.id,
+              }),
+            });
+
+            const result = await response.json();
+
+            loadScene2(result["data"]);
+          };
+          handle();
+        }
+      });
+    };
+    socketInitializer();
   }, []);
 
   // ----- FUNCTIONS ----
@@ -440,13 +482,11 @@ export default function Main(props: {
     ]);
   }
 
-  // chat
-
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOption, setSelectedOption] = useState("");
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
-  }
+  };
 
   // ---- COMPONENT ----
   return (
@@ -568,6 +608,7 @@ export default function Main(props: {
               setIsTestMode={setIsTestMode}
               isTestMode={isTestMode}
               setCurentObj={setCurrentObjectProps}
+              scene={props.scene}
             ></ToolBar>
           </Stack>
 
@@ -607,27 +648,35 @@ export default function Main(props: {
             width: "30%",
           }}
         >
-          {selectedOption == "chat" ? <Chat user={props.user} scene={props.scene}></Chat>:
-          <><PropertieContainer
-            objProps={currentObjectProps}
-            setObjProps={setCurrentObjectProps}
-          ></PropertieContainer>
-          <Divider sx={{ margin: "8px" }}></Divider>
-          <SceneModelList
-            models={models}
-            currentObjProps={currentObjectProps}
-            setCurrentObj={setCurrentObjectProps}
-            deleteObject={handleModelDelete}
-            selectedId={treeViewSelectedId}
-          ></SceneModelList></>}
+          {selectedOption == "chat" ? (
+            <Chat user={props.user} scene={props.scene}></Chat>
+          ) : (
+            <>
+              <PropertieContainer
+                objProps={currentObjectProps}
+                setObjProps={setCurrentObjectProps}
+              ></PropertieContainer>
+              <Divider sx={{ margin: "8px" }}></Divider>
+              <SceneModelList
+                models={models}
+                currentObjProps={currentObjectProps}
+                setCurrentObj={setCurrentObjectProps}
+                deleteObject={handleModelDelete}
+                selectedId={treeViewSelectedId}
+              ></SceneModelList>
+            </>
+          )}
 
           <RadioGroup value={selectedOption} onChange={handleOptionChange}>
             <Stack direction={"row"}>
               <FormControlLabel value="chat" control={<Radio />} label="Chat" />
-              <FormControlLabel value="properties" control={<Radio />} label="Eigenschaften" />
+              <FormControlLabel
+                value="properties"
+                control={<Radio />}
+                label="Eigenschaften"
+              />
             </Stack>
           </RadioGroup>
-
         </Stack>
       </Stack>
     </Stack>

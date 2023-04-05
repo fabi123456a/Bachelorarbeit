@@ -27,6 +27,10 @@ const SocketHandler = (req, res) => {
         //socket.broadcast.emit("getChatEntry", chatEntrys);
         io.emit("getChatEntry", chatEntrys);
       });
+
+      socket.on("sceneRefresh", async (msg) => {
+        io.emit("getSceneRefresh", msg);
+      });
     });
   }
   res.end();

@@ -17,6 +17,11 @@ import SaveIcon from "@mui/icons-material/Save";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
 import PublishIcon from "@mui/icons-material/Publish";
 import RemoveIcon from "@mui/icons-material/Remove";
+import io from "Socket.IO-client";
+import { useEffect } from "react";
+import { ModelScene } from "../../../api/_models";
+
+let socket1;
 
 function ToolBar(props: {
   objProps: TypeObjectProps; // ist gleich die currentObjectProps
@@ -33,6 +38,7 @@ function ToolBar(props: {
   setIsTestMode: (flag: boolean) => void;
   isTestMode: boolean;
   setCurentObj: (obj: TypeObjectProps) => void;
+  scene: ModelScene;
 }) {
   // funktion
   const checkIfAObjectIsSelected = (): boolean => {
@@ -90,6 +96,14 @@ function ToolBar(props: {
     alignItems: "center",
     padding: "0",
   };
+
+  useEffect(() => {
+    const socketInitializer = async () => {
+      await fetch("/api/socket");
+      socket1 = io();
+    };
+    socketInitializer();
+  }, []);
 
   return (
     <Stack
@@ -303,6 +317,8 @@ function ToolBar(props: {
             title="Save current Scene"
             onClick={() => {
               props.saveScene();
+
+              socket1.emit("sceneRefresh", props.scene.id);
             }}
           >
             <SaveIcon></SaveIcon>
