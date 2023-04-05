@@ -16,12 +16,13 @@ export type ModelScene = {
 export type ModelSession = {
   id: string;
   idUser: string;
+  startDate: Date;
 };
 
 export type ModelChatEntry = {
-  id      :string;
-  idScene :string;
-  idUser  :string;
-  message :string;
-  datum   : Date;
-}
+  id: string;
+  idScene: string;
+  idUser: string;
+  message: string;
+  datum: Date;
+};

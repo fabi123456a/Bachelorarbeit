@@ -1,5 +1,5 @@
 import { Button, Divider, TextField, Typography } from "@mui/material";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ModelUser } from "../api/_models";
 
 const Home = (props: {
@@ -19,6 +19,14 @@ const Home = (props: {
 
     return result;
   };
+
+  // beim start alte sessions löschen
+  useEffect(() => {
+    const deletOldSessions = async () => {
+      await fetch("/api/DB_deleteOldSessions");
+    };
+    deletOldSessions();
+  }, []);
 
   return (
     <>

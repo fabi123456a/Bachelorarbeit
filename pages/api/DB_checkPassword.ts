@@ -31,9 +31,10 @@ export default async function DB_checkPassword(
 }
 
 async function insertSession(idUser: string): Promise<ModelSession> {
-  const sessionData = {
+  const sessionData: ModelSession = {
     id: randomUUID(),
     idUser: idUser,
+    startDate: new Date(),
   };
 
   const session: ModelSession = await prismaClient.sessions.create({

@@ -1,15 +1,22 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import io from "Socket.IO-client";
-import { ModelChatEntry, ModelScene, ModelUser } from "../api/_models";
+import {
+  ModelChatEntry,
+  ModelScene,
+  ModelSession,
+  ModelUser,
+} from "../api/_models";
 import { randomUUID } from "crypto";
+import { UserOnlineItem } from "./UserOnlineItem";
 
 let socket;
 
-export function Chat(props:{scene: ModelScene, user: ModelUser}) {
+export function Chat(props: { scene: ModelScene; user: ModelUser }) {
   const [value, setValue] = useState<string>("");
   const [input, setInput] = useState<string[]>([]);
   const [msgs, setMsgs] = useState<ModelChatEntry[]>([]);
+  const [sessions, setSessions] = useState<ModelSession[]>([]);
 
   useEffect(() => {
     const socketInitializer = async () => {
@@ -31,7 +38,7 @@ export function Chat(props:{scene: ModelScene, user: ModelUser}) {
     socketInitializer();
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     const getAllChatEntry = async () => {
       const response = await fetch("/api/DB_getAllChatEntrys");
       const result: ModelChatEntry[] = await response.json();
@@ -42,8 +49,16 @@ export function Chat(props:{scene: ModelScene, user: ModelUser}) {
     });
   }, []);
 
-
-
+  useEffect(() => {
+    const getAllSessions = async () => {
+      const response = await fetch("/api/DB_getAllSessions");
+      const result: ModelSession[] = await response.json();
+      return result;
+    };
+    getAllSessions().then((sessions: ModelSession[]) => {
+      setSessions(sessions);
+    });
+  }, []);
 
   const onChangeHandler = (e) => {
     setValue(e.target.value);
@@ -62,6 +77,10 @@ export function Chat(props:{scene: ModelScene, user: ModelUser}) {
     };
 
     socket.emit("addChatEntry", chatEntry);
+
+    // test sessio keep alive
+
+    
   };
 
   const getUserByID = async (idUser: string) => {
@@ -77,19 +96,44 @@ export function Chat(props:{scene: ModelScene, user: ModelUser}) {
     return user;
   };
 
+  let counter = 0;
+
   return (
     <>
-    <Stack sx={{overflowY: "scroll", maxHeight: "400px"}}><TextField onChange={onChangeHandler} value={value}></TextField>
-      <Button variant="outlined" onClick={onClickHandler}>
-        send
-      </Button>
-      <Stack>
-        {msgs.map((msg: ModelChatEntry) => (
-          <Typography>{new Date(msg.datum).toLocaleTimeString() + ": " +  msg.message + " (" +  msg.idUser + ")"}</Typography>
-        ))}
+      <Stack sx={{ background: "red", maxHeight: "500px", minHeight: "500px" }}>
+        <Stack direction={"row"}>
+          <TextField onChange={onChangeHandler} value={value}></TextField>
+          <Button variant="outlined" onClick={onClickHandler}>
+            send
+          </Button>
+        </Stack>
 
-      </Stack></Stack>
-      
+        <Stack
+          sx={{ overflowY: "scroll", maxHeight: "300px", minHeight: "300px" }}
+        >
+          {msgs.map((msg: ModelChatEntry) => {
+            const color = counter % 2 === 0 ? "#abdbe3" : "#eab676";
+            counter++;
+
+            return (
+              <Typography style={{ background: color }}>
+                {new Date(msg.datum).toLocaleTimeString() +
+                  ": " +
+                  msg.message +
+                  " (" +
+                  msg.idUser +
+                  ")"}
+              </Typography>
+            );
+          })}
+        </Stack>
+        <Stack sx={{ overflowY: "scroll" }}>
+          <Typography>Online: </Typography>
+          {sessions.map((session) => {
+            return <UserOnlineItem session={session}></UserOnlineItem>;
+          })}
+        </Stack>
+      </Stack>
 
       {/* <TextField></TextField>
       <Typography>{value}</Typography>

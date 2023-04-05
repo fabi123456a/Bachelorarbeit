@@ -11,7 +11,6 @@ import Stack from "@mui/material/Stack";
 import { ModelScene, ModelUser } from "./api/_models";
 //import xx from "../styles/globals.css";
 
-
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [actUser, setActUser] = useState<ModelUser>(null);
@@ -22,7 +21,6 @@ const Home = () => {
 
   return (
     <Stack>
-
       {loggedIn ? (
         scene ? (
           <Main scene={scene} setScene={setScene} user={actUser}></Main>

@@ -34,8 +34,9 @@ model Scenes{
 }
 
 model Sessions{
-  id      String     @id 
-  idUser  String
+  id        String     @id 
+  idUser    String
+  startDate DateTime
 }
 
 model ChatEntry{
