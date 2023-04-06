@@ -110,7 +110,7 @@ export default function Main(props: {
   const [wallVisiblity, setWallVisiblity] = useState<boolean>(true); // to show the left or right wall or hide it when the camera mode changes
   const [valueGltf, setValueGltf] = useState<THREE.Group>(null!);
 
-  const [refreshedSceneID, getRefreshedSceneID] = useState<string>("");
+  const [refreshedSceneID, setRefreshedSceneID] = useState<string>("");
 
   // ---- REFS ----
   const sceneRef = useRef<any>(null!);
@@ -207,8 +207,7 @@ export default function Main(props: {
     handle();
   }, []);
 
-  // scene neu socket.io laden TEST
-
+  // scene neu socket.io laden
   useEffect(() => {
     const socketInitializer = async () => {
       await fetch("/api/socket");
@@ -222,7 +221,7 @@ export default function Main(props: {
         // msg => scene id von der seite die jemand gespeichert hat
         //setInput([...input, msg]);xxxx
         console.log("scene wurde refresht: " + msg);
-        getRefreshedSceneID(msg);
+        setRefreshedSceneID(msg);
 
         if (msg == props.scene.id) {
           const handle = async () => {
@@ -377,7 +376,7 @@ export default function Main(props: {
     });
     const result = await response.json();
 
-    alert(result["result"]);
+    alert("Scene wurde erfolgreich gespeichert (" + result["result"] + ")");
   }
 
   function isExportedScene(data: any): data is ExportedScene {
