@@ -8,26 +8,22 @@ const SocketHandler = (req, res) => {
     console.log("Socket is initializing");
     const io = new Server(res.socket.server);
     res.socket.server.io = io;
-
     io.on("connection", (socket) => {
-      socket.on("input-change", (msg) => {
-        socket.broadcast.emit("update-input", msg);
-      });
-
-      socket.on("addChatEntry", async (msg) => {
-        console.log(msg);
-        const selectedUser = await prismaClient.chatEntry.create({ data: msg });
-
+      // chat
+      socket.on("addChatEntry", async (chatEntry) => {
+        console.log("========" + chatEntry["message"]);
+        const selectedUser = await prismaClient.chatEntry.create({
+          data: chatEntry,
+        });
         const chatEntrys = await prismaClient.chatEntry.findMany({
           orderBy: {
             datum: "desc", // oder 'desc' für absteigende Sortierung
           },
         });
-
         //socket.broadcast.emit("getChatEntry", chatEntrys);
         io.emit("getChatEntry", chatEntrys);
       });
-
+      // scene
       socket.on("sceneRefresh", async (msg) => {
         io.emit("getSceneRefresh", msg);
       });

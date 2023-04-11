@@ -1,4 +1,4 @@
-import { Button, Divider, TextField, Typography } from "@mui/material";
+import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { ModelUser } from "../api/_models";
 
@@ -29,24 +29,31 @@ const Home = (props: {
   }, []);
 
   return (
-    <>
-      <Typography>Anmelden</Typography>
-      <Divider></Divider>
-      <Typography>AnmeldeID</Typography>
+    <Stack className="login">
+      <Typography sx={{ fontWeight: "bold", fontSize: "22px" }}>
+        AnmeldeID
+      </Typography>
       <TextField
+        variant="filled"
         onChange={(event) => {
           setTxtAmeldeID(event.target.value);
         }}
         value={txtAnmeldeID}
       ></TextField>
-      <Typography>Passwort</Typography>
+      <Typography sx={{ fontWeight: "bold", fontSize: "22px", mt: "24px" }}>
+        Passwort
+      </Typography>
       <TextField
+        variant="filled"
         onChange={(event) => {
           setTxtPassword(event.target.value);
         }}
         value={txtPassword}
       ></TextField>
       <Button
+        sx={{ mt: "24px" }}
+        size="large"
+        variant="contained"
         onClick={async () => {
           const user = await checkData();
 
@@ -61,7 +68,7 @@ const Home = (props: {
       >
         Login
       </Button>
-    </>
+    </Stack>
   );
 };
 

@@ -1,0 +1,93 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+#__next {
+  height: 100%;
+}
+
+/* index */
+.index {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* index */
+.index::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../public/images/background.png");
+  filter: blur(10px);
+  z-index: -1;
+}
+
+/* login */
+.login {
+  height: 40vh;
+  width: 30vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 6px 6px 9px rgba(0, 0, 0, 0.75);
+  opacity: 1;
+  position: relative;
+}
+
+/* login */
+.login::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: url("../public/images/loginBackground.png");
+  filter: none;
+}
+
+/* Scene List */
+.sceneList {
+  display: flex;
+  /* justify-content: center;  zentriert horizontal */
+  align-items: center; /* zentriert vertikal */
+  height: 100%;
+  width: 100%;
+}
+
+/* new Scene */
+.newScene {
+  /* background: red; */
+  margin-top: auto; /* damit am ende des containers */
+  width: 75%;
+  margin: 24px;
+}
+
+/* main */
+.main {
+  height: 100%;
+  width: 100%;
+}
+
+/* Menubar */
+.menuBar {
+  height: 5%;
+  background: rgb(168, 183, 192);
+  align-items: center;
+}
+
+/* hover */
+.scenListEntry:hover {
+  background-color: yellow;
+}

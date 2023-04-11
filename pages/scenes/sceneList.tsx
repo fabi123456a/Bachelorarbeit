@@ -1,4 +1,4 @@
-import { Button, Divider, TextField, Typography } from "@mui/material";
+import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { ModelScene, ModelUser } from "../api/_models";
 import AddScene from "./addScne";
@@ -22,22 +22,25 @@ const SceneList = (props: {
   }, []);
 
   return (
-    <>
-      <Typography>Szene auswählen:</Typography>
-      {scenes
-        ? scenes.map((scene: ModelScene) => {
-            return (
-              <SceneListEntry
-                key={scene.id}
-                scene={scene}
-                setScene={props.setScene}
-              ></SceneListEntry>
-            );
-          })
-        : null}
-      <Typography sx={{ margin: "20px" }}>Oder</Typography>
+    <Stack className="sceneList">
+      <Typography sx={{ mb: "24px", fontWeight: "bold" }}>
+        Szene auswählen:
+      </Typography>
+      <Stack sx={{ overflowY: "auto", background: "", width: "70%" }}>
+        {scenes
+          ? scenes.map((scene: ModelScene) => {
+              return (
+                <SceneListEntry
+                  key={scene.id}
+                  scene={scene}
+                  setScene={props.setScene}
+                ></SceneListEntry>
+              );
+            })
+          : null}
+      </Stack>
       <AddScene user={props.user} setScene={props.setScene}></AddScene>
-    </>
+    </Stack>
   );
 };
 

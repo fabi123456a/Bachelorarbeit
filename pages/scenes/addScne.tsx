@@ -41,31 +41,35 @@ const AddScene = (props: {
   };
 
   return (
-    <Stack>
-      <Typography>Neue Szene erstellen:</Typography>
-      <TextField
-        label={"Scene name"}
-        onChange={(event) => {
-          setName(event.target.value);
-        }}
-      ></TextField>
-      <Button
-        onClick={async () => {
-          if (name == null) {
-            alert("Scenename eingeben");
-            return;
-          }
+    <Stack className="newScene">
+      <Typography sx={{ alignSelf: "center", fontWeight: "bold" }}>
+        Neue Szene erstellen:
+      </Typography>
+      <Stack direction={"row"} sx={{ justifyContent: "center" }}>
+        <TextField
+          label={"Scene name"}
+          onChange={(event) => {
+            setName(event.target.value);
+          }}
+        ></TextField>
+        <Button
+          onClick={async () => {
+            if (name == null) {
+              alert("Scenename eingeben");
+              return;
+            }
 
-          // insert into DB then to FS
-          addSceneToDB().then((scene: ModelScene) => {
-            addSceneToFS(scene.id).then(() => {
-              props.setScene(scene);
+            // insert into DB then to FS
+            addSceneToDB().then((scene: ModelScene) => {
+              addSceneToFS(scene.id).then(() => {
+                props.setScene(scene);
+              });
             });
-          });
-        }}
-      >
-        Szene Erstellen
-      </Button>
+          }}
+        >
+          Szene Erstellen
+        </Button>
+      </Stack>
     </Stack>
   );
 };

@@ -22,6 +22,7 @@ import { RadioGroup } from "@mui/material";
 import { FormControlLabel } from "@mui/material";
 import { Chat } from "../chat/Chat";
 import io from "Socket.IO-client";
+import MenuBar from "./UI-Elements/Menubar/menuBar";
 
 let socket;
 
@@ -489,22 +490,20 @@ export default function Main(props: {
 
   // ---- COMPONENT ----
   return (
-    <Stack>
-      <Typography>
+    <Stack className="main">
+      <MenuBar
+        setScene={props.setScene}
+        scene={props.scene}
+        isTestMode={isTestMode}
+      ></MenuBar>
+      {/* <Typography>
         Scene: {props.scene.name}, testMode: {isTestMode ? "ja" : "nein"}
-      </Typography>
+      </Typography> */}
       <Stack
         direction="row"
         style={{ height: "100%", background: "#d9d9d9", overflowY: "auto" }}
         divider={<Divider orientation="vertical" flexItem />}
       >
-        <Button
-          onClick={() => {
-            props.setScene(null);
-          }}
-        >
-          Back
-        </Button>
         <Snackbar
           autoHideDuration={4000}
           open={textRef.current !== ""}

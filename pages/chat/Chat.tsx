@@ -27,10 +27,6 @@ export function Chat(props: { scene: ModelScene; user: ModelUser }) {
         console.log("connected");
       });
 
-      socket.on("update-input", (msg) => {
-        //setInput([...input, msg]);
-      });
-
       socket.on("getChatEntry", (chatEntrys) => {
         setMsgs(chatEntrys);
       });
@@ -66,8 +62,6 @@ export function Chat(props: { scene: ModelScene; user: ModelUser }) {
   };
 
   const onClickHandler = async () => {
-    socket.emit("input-change", value);
-
     const chatEntry: ModelChatEntry = {
       id: "" + Math.random() * 1000,
       idScene: props.scene.id,
@@ -79,8 +73,7 @@ export function Chat(props: { scene: ModelScene; user: ModelUser }) {
     socket.emit("addChatEntry", chatEntry);
 
     // test sessio keep alive
-
-    await fetch("api/DB_sessionKeepAlive");
+    //await fetch("api/DB_sessionKeepAlive");
   };
 
   const getUserByID = async (idUser: string) => {
@@ -116,7 +109,7 @@ export function Chat(props: { scene: ModelScene; user: ModelUser }) {
             counter++;
 
             return (
-              <Typography style={{ background: color }}>
+              <Typography style={{ background: color }} key={msg.id}>
                 {new Date(msg.datum).toLocaleTimeString() +
                   ": " +
                   msg.message +
@@ -130,7 +123,12 @@ export function Chat(props: { scene: ModelScene; user: ModelUser }) {
         <Stack sx={{ overflowY: "scroll" }}>
           <Typography>Online: </Typography>
           {sessions.map((session) => {
-            return <UserOnlineItem session={session}></UserOnlineItem>;
+            return (
+              <UserOnlineItem
+                session={session}
+                key={session.id}
+              ></UserOnlineItem>
+            );
           })}
         </Stack>
       </Stack>

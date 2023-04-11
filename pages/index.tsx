@@ -9,7 +9,6 @@ import SceneList from "./scenes/sceneList";
 import Main from "./threejs/Main";
 import Stack from "@mui/material/Stack";
 import { ModelScene, ModelUser } from "./api/_models";
-//import xx from "../styles/globals.css";
 
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -20,18 +19,19 @@ const Home = () => {
   const [scene, setScene] = useState<ModelScene>(null);
 
   return (
-    <Stack>
+    <Stack className="index">
       {loggedIn ? (
         scene ? (
           <Main scene={scene} setScene={setScene} user={actUser}></Main>
         ) : (
-          <Stack>
+          <Stack sx={{ height: "100%", width: "100%", background: "" }}>
             <SceneList setScene={setScene} user={actUser}></SceneList>
           </Stack>
         )
       ) : (
         <Login setLoggedIn={setLoggedIn} setActUser={setActUser}></Login>
       )}
+      {/* <AdminArea></AdminArea> */}
     </Stack>
   );
 };

@@ -30,22 +30,23 @@ const SceneListEntry = (props: {
   }, []);
 
   return (
-    <Stack>
-      <Button
-        onClick={() => {
-          props.setScene(props.scene);
-        }}
-      >
-        {props.scene.name}
-      </Button>
+    <Stack
+      sx={{ margin: "4px" }}
+      className="scenListEntry"
+      onClick={() => {
+        props.setScene(props.scene);
+      }}
+    >
+      <Typography>{props.scene.name}</Typography>
       <Typography>
         {userCreator
           ? "Ersteller: " +
             userCreator.loginID +
             ", ertsellt am: " +
-            props.scene.createDate
+            new Date(props.scene.createDate).toLocaleDateString()
           : null}
       </Typography>
+      <Divider></Divider>
     </Stack>
   );
 };
