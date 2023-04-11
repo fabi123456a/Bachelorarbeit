@@ -7,29 +7,33 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 const SceneListEntry = (props: {
   scene: ModelScene;
   setScene: (scene: ModelScene) => void;
+  setReload: (i: number) => void;
 }) => {
   // user der die scene ertsellt hat
   const [userCreator, setUserCreator] = useState<ModelUser>();
   const [mouseOver, setMouseOver] = useState<boolean>(false);
 
-  const getUserByID = async (idUser: string) => {
-    const response = await fetch("/api/DB_getUserByID", {
+  const deleteSceneFromDB = async () => {
+    const response = await fetch("/api/DB_deleteSceneByID", {
       method: "POST",
       body: JSON.stringify({
-        idUser: props.scene.idUserCreater,
+        idScene: props.scene.id,
       }),
     });
 
-    const user = await response.json();
-
-    return user;
+    return response;
   };
 
-  useEffect(() => {
-    getUserByID(props.scene.idUserCreater).then((user: ModelUser) => {
-      setUserCreator(user);
+  const deleteSceneFromFS = async () => {
+    const response = await fetch("/api/xxxxxxxxxx", {
+      method: "POST",
+      body: JSON.stringify({
+        idScene: props.scene.id,
+      }),
     });
-  }, []);
+
+    return response;
+  };
 
   return (
     <>
@@ -63,9 +67,20 @@ const SceneListEntry = (props: {
           <DeleteForeverIcon
             color="error"
             sx={{ alignSelf: "center", marginLeft: "auto" }}
-            onClick={(e) => {
-              alert("löschen " + props.scene.name);
+            onClick={async (e) => {
               e.stopPropagation();
+
+              let result = confirm(
+                "Wollen Sie wirklich die Scene " +
+                  props.scene.name +
+                  " löschen?"
+              );
+              if (result) {
+                await deleteSceneFromDB();
+                await deleteSceneFromFS();
+
+                props.setReload(Math.random());
+              }
             }}
           ></DeleteForeverIcon>
         ) : null}

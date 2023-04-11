@@ -9,17 +9,25 @@ const SceneList = (props: {
   user: ModelUser;
 }) => {
   const [scenes, setSenes] = useState<ModelScene[]>();
+  const [reload, setReload] = useState<number>();
+
+  const getAllSceneNames = async () => {
+    const response = await fetch("/api/DB_getAllSceneNames");
+    const result: ModelScene[] = await response.json();
+    return result;
+  };
 
   useEffect(() => {
-    const getAllSceneNames = async () => {
-      const response = await fetch("/api/DB_getAllSceneNames");
-      const result: ModelScene[] = await response.json();
-      return result;
-    };
     getAllSceneNames().then((scenes) => {
       setSenes(scenes);
     });
   }, []);
+
+  useEffect(() => {
+    getAllSceneNames().then((scenes) => {
+      setSenes(scenes);
+    });
+  }, [reload]);
 
   return (
     <Stack className="sceneList">
@@ -34,6 +42,7 @@ const SceneList = (props: {
                   key={scene.id}
                   scene={scene}
                   setScene={props.setScene}
+                  setReload={setReload}
                 ></SceneListEntry>
               );
             })
