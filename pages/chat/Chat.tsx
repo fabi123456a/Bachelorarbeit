@@ -13,8 +13,7 @@ import { UserOnlineItem } from "./UserOnlineItem";
 let socket;
 
 export function Chat(props: { scene: ModelScene; user: ModelUser }) {
-  const [value, setValue] = useState<string>("");
-  const [input, setInput] = useState<string[]>([]);
+  const [text, setText] = useState<string>("");
   const [msgs, setMsgs] = useState<ModelChatEntry[]>([]);
   const [sessions, setSessions] = useState<ModelSession[]>([]);
 
@@ -57,23 +56,27 @@ export function Chat(props: { scene: ModelScene; user: ModelUser }) {
   }, []);
 
   const onChangeHandler = (e) => {
-    setValue(e.target.value);
-    //socket.emit("input-change", e.target.value);
+    setText(e.target.value);
   };
 
   const onClickHandler = async () => {
+    // textfeld leeren
+    setText("");
+
+    // model für chat eintrag erstellen
     const chatEntry: ModelChatEntry = {
       id: "" + Math.random() * 1000,
       idScene: props.scene.id,
       idUser: props.user.id,
-      message: value,
+      message: text,
       datum: new Date(),
     };
 
+    //  model verteilen
     socket.emit("addChatEntry", chatEntry);
 
     // test sessio keep alive
-    //await fetch("api/DB_sessionKeepAlive");
+    await fetch("api/DB_sessionKeepAlive");
   };
 
   const getUserByID = async (idUser: string) => {
@@ -95,7 +98,7 @@ export function Chat(props: { scene: ModelScene; user: ModelUser }) {
     <>
       <Stack sx={{ background: "red", maxHeight: "500px", minHeight: "500px" }}>
         <Stack direction={"row"}>
-          <TextField onChange={onChangeHandler} value={value}></TextField>
+          <TextField onChange={onChangeHandler} value={text}></TextField>
           <Button variant="outlined" onClick={onClickHandler}>
             send
           </Button>
