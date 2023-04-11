@@ -2,6 +2,7 @@ import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { ModelScene, ModelUser } from "../api/_models";
 import AddScene from "./addScne";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 const SceneListEntry = (props: {
   scene: ModelScene;
@@ -9,6 +10,7 @@ const SceneListEntry = (props: {
 }) => {
   // user der die scene ertsellt hat
   const [userCreator, setUserCreator] = useState<ModelUser>();
+  const [mouseOver, setMouseOver] = useState<boolean>(false);
 
   const getUserByID = async (idUser: string) => {
     const response = await fetch("/api/DB_getUserByID", {
@@ -30,24 +32,46 @@ const SceneListEntry = (props: {
   }, []);
 
   return (
-    <Stack
-      sx={{ margin: "4px" }}
-      className="scenListEntry"
-      onClick={() => {
-        props.setScene(props.scene);
-      }}
-    >
-      <Typography>{props.scene.name}</Typography>
-      <Typography>
-        {userCreator
-          ? "Ersteller: " +
-            userCreator.loginID +
-            ", ertsellt am: " +
-            new Date(props.scene.createDate).toLocaleDateString()
-          : null}
-      </Typography>
-      <Divider></Divider>
-    </Stack>
+    <>
+      <Stack
+        direction={"row"}
+        sx={{ margin: "4px" }}
+        className="scenListEntry"
+        onClick={() => {
+          props.setScene(props.scene);
+        }}
+        onMouseEnter={() => {
+          setMouseOver(true);
+        }}
+        onMouseLeave={() => {
+          setMouseOver(false);
+        }}
+      >
+        <Stack>
+          <Typography>{props.scene.name}</Typography>
+          <Typography>
+            {userCreator
+              ? "Ersteller: " +
+                userCreator.loginID +
+                ", ertsellt am: " +
+                new Date(props.scene.createDate).toLocaleDateString()
+              : null}
+          </Typography>
+        </Stack>
+
+        {mouseOver ? (
+          <DeleteForeverIcon
+            color="error"
+            sx={{ alignSelf: "center", marginLeft: "auto" }}
+            onClick={(e) => {
+              alert("löschen " + props.scene.name);
+              e.stopPropagation();
+            }}
+          ></DeleteForeverIcon>
+        ) : null}
+      </Stack>
+      <Divider sx={{ mt: "4px", mb: "4px" }}></Divider>
+    </>
   );
 };
 
