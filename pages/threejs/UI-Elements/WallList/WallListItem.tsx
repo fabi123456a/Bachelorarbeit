@@ -14,10 +14,10 @@ export function WallListItem(props: {
         onClick={() => {
           let x: TypeObjectProps = {
             id: "" + Math.random() * 1000,
-            editMode: undefined,
-            showXTransform: false,
-            showYTransform: false,
-            showZTransform: false,
+            editMode: "translate",
+            showXTransform: true,
+            showYTransform: true,
+            showZTransform: true,
             modelPath: null,
             position: { x: 0, y: 0, z: 0 },
             scale: {
@@ -26,8 +26,6 @@ export function WallListItem(props: {
               z: props.data[props.name]["z"],
             },
             rotation: { x: 0, y: 0, z: 0 },
-            removeObjHighlight: () => {},
-            highlightObj: () => {},
             color: props.name == "floor" ? "#eee" : null, // der boden soll eine andere farbe bekommen
             info: props.name,
           };
