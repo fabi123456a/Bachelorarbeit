@@ -20,7 +20,7 @@ const Home = () => {
   const [scene, setScene] = useState<ModelScene>(null);
 
   return (
-    <Stack sx={{ background: "green" }}>
+    <Stack>
       {loggedIn ? (
         scene ? (
           <Main scene={scene} setScene={setScene} user={actUser}></Main>
@@ -32,7 +32,6 @@ const Home = () => {
       ) : (
         <Login setLoggedIn={setLoggedIn} setActUser={setActUser}></Login>
       )}
-      {/* <AdminArea></AdminArea> */}
     </Stack>
   );
 };

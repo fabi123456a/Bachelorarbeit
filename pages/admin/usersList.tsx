@@ -1,77 +1,45 @@
-import {
-  Button,
-  Divider,
-  Paper,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { ModelUser } from "../api/_models";
 import AddUser from "./addUser";
 
 const UsersList = () => {
-  const [users, setUsers] = useState<ModelUser[]>();
-  const [reload, setReload] = useState<number>(0);
+  const [users, setUsers] = useState();
 
-  const getAllUsers = async () => {
-    const response = await fetch("/api/DB_getAllUser");
-    const result = await response.json();
-
-    setUsers(result["result"]);
-  };
-
-  // beim start users laden
   useEffect(() => {
+    const getAllUsers = async () => {
+      const response = await fetch("/api/getAllUser");
+      const result = await response.json();
+
+      //alert(result["result"].length);
+
+      setUsers(result["result"]);
+    };
+
     getAllUsers();
   }, []);
 
-  // nach addUser userliste neu laden, damit der neue user drin ist
-  useEffect(() => {
-    getAllUsers();
-  }, [reload]);
-
   return (
     <Stack>
-      <Typography sx={{ alignSelf: "center", pb: "12px" }}>Userlist</Typography>
-
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ fontWeight: "bold" }}>Name</TableCell>
-            <TableCell sx={{ fontWeight: "bold" }}>Passwort</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {users
-            ? users.map((user: ModelUser) => (
-                <TableRow key={user.id}>
-                  <TableCell>{user.loginID}</TableCell>
-                  <TableCell>{user.password}</TableCell>
-                </TableRow>
-              ))
-            : null}
-
-          {/* <TableRow key={"newUser"}>
-            <TableCell>
-              <TextField label={"loginID"} />
-            </TableCell>
-            <TableCell>
-              <TextField label={"password"} />
-            </TableCell>
-          </TableRow>*/}
-        </TableBody>
-      </Table>
-      <Stack sx={{ margin: "24px" }}></Stack>
-      <AddUser setReload={setReload}></AddUser>
+      {users
+        ? (users as []).map((user) => {
+            return (
+              <Typography>
+                {user["id"] + ": " + user["loginID"] + ", " + user["password"]}
+              </Typography>
+            );
+          })
+        : null}
+      {/* TODO: seite neu laden wenn ein user hinzugefügt wurde */}
+      <AddUser></AddUser>
     </Stack>
   );
 };
 
 export default UsersList;
+
+{
+  /* <UploadFile></UploadFile>
+      <GetFbx></GetFbx>
+      <img src="testBild.png"></img> 
+      <Main></Main>*/
+}

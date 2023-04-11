@@ -1,4 +1,4 @@
-import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
+import { Button, Divider, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { ModelUser } from "../api/_models";
 
@@ -29,7 +29,9 @@ const Home = (props: {
   }, []);
 
   return (
-    <Stack sx={{ background: "" }}>
+    <>
+      <Typography>Anmelden</Typography>
+      <Divider></Divider>
       <Typography>AnmeldeID</Typography>
       <TextField
         onChange={(event) => {
@@ -59,7 +61,7 @@ const Home = (props: {
       >
         Login
       </Button>
-    </Stack>
+    </>
   );
 };
 
