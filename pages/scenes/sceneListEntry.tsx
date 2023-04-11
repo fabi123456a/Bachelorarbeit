@@ -25,7 +25,7 @@ const SceneListEntry = (props: {
   };
 
   const deleteSceneFromFS = async () => {
-    const response = await fetch("/api/xxxxxxxxxx", {
+    const response = await fetch("/api/FS_deleteSceneByID", {
       method: "POST",
       body: JSON.stringify({
         idScene: props.scene.id,
