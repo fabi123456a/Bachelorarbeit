@@ -64,11 +64,11 @@ body {
   align-items: center; /* zentriert vertikal */
   height: 100%;
   width: 100%;
+  background: "green";
 }
 
 /* new Scene */
 .newScene {
-  /* background: red; */
   margin-top: auto; /* damit am ende des containers */
   width: 75%;
   margin: 24px;
@@ -85,6 +85,18 @@ body {
   height: 5%;
   background: rgb(168, 183, 192);
   align-items: center;
+}
+
+/* logout */
+.logout {
+  background: "red";
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 12px;
+}
+.logout:hover {
+  background-color: yellow;
 }
 
 /* hover */

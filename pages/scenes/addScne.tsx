@@ -45,7 +45,10 @@ const AddScene = (props: {
       <Typography sx={{ alignSelf: "center", fontWeight: "bold" }}>
         Neue Szene erstellen:
       </Typography>
-      <Stack direction={"row"} sx={{ justifyContent: "center" }}>
+      <Stack
+        direction={"row"}
+        sx={{ justifyContent: "center", flexGrow: 1, background: "" }}
+      >
         <TextField
           label={"Scene name"}
           onChange={(event) => {

@@ -35,6 +35,24 @@ const SceneListEntry = (props: {
     return response;
   };
 
+  const getUserFromScene = async () => {
+    const response = await fetch("/api/DB_getUserByID", {
+      method: "POST",
+      body: JSON.stringify({
+        idUser: props.scene.idUserCreater,
+      }),
+    });
+
+    const user = (await response.json()) as ModelUser;
+
+    setUserCreator(user);
+    //console.log("-------:: " + ((await response.json()) as ModelUser).loginID);
+  };
+
+  useEffect(() => {
+    getUserFromScene();
+  }, []);
+
   return (
     <>
       <Stack
@@ -52,7 +70,9 @@ const SceneListEntry = (props: {
         }}
       >
         <Stack>
-          <Typography>{props.scene.name}</Typography>
+          <Typography sx={{ fontWeight: "bold" }}>
+            {props.scene.name}
+          </Typography>
           <Typography>
             {userCreator
               ? "Ersteller: " +

@@ -34,7 +34,13 @@ const SceneList = (props: {
       <Typography sx={{ mb: "24px", fontWeight: "bold" }}>
         Szene auswählen:
       </Typography>
-      <Stack sx={{ overflowY: "auto", background: "", width: "70%" }}>
+      <Stack
+        sx={{
+          overflowY: "auto",
+          width: "70%",
+          flexGrow: 1,
+        }}
+      >
         {scenes
           ? scenes.map((scene: ModelScene) => {
               return (

@@ -9,6 +9,8 @@ import SceneList from "./scenes/sceneList";
 import Main from "./threejs/Main";
 import Stack from "@mui/material/Stack";
 import { ModelScene, ModelUser } from "./api/_models";
+import CubeRotater from "./login/cubeRotater";
+import Logout from "./login/logout";
 
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -32,6 +34,10 @@ const Home = () => {
         <Login setLoggedIn={setLoggedIn} setActUser={setActUser}></Login>
       )}
       {/* <AdminArea></AdminArea> */}
+      {scene ? null : <CubeRotater loggedIn={loggedIn}></CubeRotater>}
+      {loggedIn ? (
+        <Logout setActUser={setActUser} setLoggedIn={setLoggedIn}></Logout>
+      ) : null}
     </Stack>
   );
 };
