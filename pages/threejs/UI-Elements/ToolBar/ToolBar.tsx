@@ -112,6 +112,7 @@ function ToolBar(props: {
       alignContent="center"
       gap="1rem"
       justifyContent="center"
+      className="toolBar"
     >
       {/* Transform: Verschieben, Rotieren & Skalieren */}
       <Stack direction={"row"}>

@@ -87,6 +87,59 @@ body {
   align-items: center;
 }
 
+/* modelList */
+.modelList {
+  background: red;
+  position: absolute;
+
+  left: 5%;
+  top: 10%;
+  height: 80%;
+  width: 17.5%;
+  z-index: 10;
+}
+
+/* toolbar */
+.toolBar {
+  background: green;
+  position: absolute;
+  height: 100px;
+  width: 50%;
+  left: 22.5%;
+  right: 22.5%;
+  top: 5%;
+  z-index: 10;
+}
+
+/* wallList */
+.wallList {
+  background: yellow;
+  position: absolute;
+  height: 100px;
+  width: 50%;
+  left: 22.5%;
+  right: 22.5%;
+  bottom: 5%;
+  z-index: 10;
+}
+
+/* properties */
+.properties {
+  background: blue;
+  position: absolute;
+  right: 5%;
+  top: 10%;
+  height: 80%;
+  width: 17.5%;
+  max-width: 17.5%;
+  z-index: 10;
+}
+
+/* canvas */
+.canvas {
+  background: darkorange;
+}
+
 /* logout */
 .logout {
   background: "red";

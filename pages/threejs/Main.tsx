@@ -542,102 +542,76 @@ export default function Main(props: {
             Modelle Eingfügen: COMMAND + V
           </Alert>
         </Snackbar>
+
+        
         {/* ModelList */}
-        <Stack
-          style={{
-            background: "#d9d9d9",
-            width: "20%",
+        <ModelList
+          addObject={handleModelAdd}
+          deleteModel={(url: string) => {
+            setModelPaths((prev) => [
+              ...prev.filter((path) => path.path !== url),
+            ]);
+            setFbx_models_files((prev) => [
+              ...prev.filter((path) => path.pathName !== url),
+            ]);
           }}
-        >
-          <ModelList
-            addObject={handleModelAdd}
-            deleteModel={(url: string) => {
-              setModelPaths((prev) => [
-                ...prev.filter((path) => path.path !== url),
-              ]);
-              setFbx_models_files((prev) => [
-                ...prev.filter((path) => path.pathName !== url),
-              ]);
-            }}
-            addModel={(name: string, url: string, file: any) => {
-              setModelPaths((prev) => [...prev, { name: name, path: url }]);
-              setFbx_models_files((prev: any[]) => {
-                if (prev.find((elem) => elem.pathName === url)) {
-                  return prev;
-                }
-                const newFile = {
-                  pathName: url,
-                  name: name,
-                  file: file,
-                };
-                return [...prev, newFile];
-              });
-            }}
-            paths={modelPaths}
-          ></ModelList>
-        </Stack>
-
-        <Stack
-          direction="column"
-          style={{
-            width: "100%",
-            background: "white",
+          addModel={(name: string, url: string, file: any) => {
+            setModelPaths((prev) => [...prev, { name: name, path: url }]);
+            setFbx_models_files((prev: any[]) => {
+              if (prev.find((elem) => elem.pathName === url)) {
+                return prev;
+              }
+              const newFile = {
+                pathName: url,
+                name: name,
+                file: file,
+              };
+              return [...prev, newFile];
+            });
           }}
-          divider={<Divider orientation="horizontal" flexItem />}
-        >
-          <Stack
-            style={{
-              background: "#d9d9d9",
-            }}
-          >
-            {/* ToolBar */}
-            <ToolBar
-              setPerspective={setPerspective}
-              deleteObject={handleModelDelete}
-              exportObject={handleModelexport}
-              importObject={handleModelimport}
-              removeObject={handleModelRemoval}
-              objProps={currentObjectProps}
-              setObjProps={setCurrentObjectProps}
-              controlsRef={controlsRef}
-              setWallVisibility={setWallVisiblity}
-              saveScene={saveScene}
-              loadScene={loadScene}
-              setIsTestMode={setIsTestMode}
-              isTestMode={isTestMode}
-              setCurentObj={setCurrentObjectProps}
-              scene={props.scene}
-            ></ToolBar>
-          </Stack>
+          paths={modelPaths}
+        ></ModelList>
 
-          {/* Canvas */}
-          <Stack
-            style={{
-              border: "1px solid darkgray",
-              height: "100%",
-              flex: "1",
-            }}
-          >
-            <Canvas
-              onPointerMissed={() => {
-                setCurrentObjectProps(null);
-              }}
-            >
-              {/*TO ACCESS THE useThree hook in the Scene component*/}
-              <Scene
-                controlsRef={controlsRef}
-                perspektive={perspective}
-                currentObjectProps={currentObjectProps}
-                setCurrentObjectProps={setCurrentObjectProps}
-                models={models}
-                sceneRef={sceneRef}
-                wallVisibility={wallVisiblity}
-                testMode={isTestMode}
-              ></Scene>
-            </Canvas>
-          </Stack>
-          <WallList addWall={handleWallAdd}></WallList>
-        </Stack>
+        {/* ToolBar */}
+        <ToolBar
+          setPerspective={setPerspective}
+          deleteObject={handleModelDelete}
+          exportObject={handleModelexport}
+          importObject={handleModelimport}
+          removeObject={handleModelRemoval}
+          objProps={currentObjectProps}
+          setObjProps={setCurrentObjectProps}
+          controlsRef={controlsRef}
+          setWallVisibility={setWallVisiblity}
+          saveScene={saveScene}
+          loadScene={loadScene}
+          setIsTestMode={setIsTestMode}
+          isTestMode={isTestMode}
+          setCurentObj={setCurrentObjectProps}
+          scene={props.scene}
+        ></ToolBar>
+
+        {/* Canvas */}
+        <Canvas
+          onPointerMissed={() => {
+            setCurrentObjectProps(null);
+          }}
+          className="canvas"
+        >
+          {/*TO ACCESS THE useThree hook in the Scene component*/}
+          <Scene
+            controlsRef={controlsRef}
+            perspektive={perspective}
+            currentObjectProps={currentObjectProps}
+            setCurrentObjectProps={setCurrentObjectProps}
+            models={models}
+            sceneRef={sceneRef}
+            wallVisibility={wallVisiblity}
+            testMode={isTestMode}
+          ></Scene>
+        </Canvas>
+
+        <WallList addWall={handleWallAdd}></WallList>
 
         {/* PropertieContainer */}
         <Stack
@@ -645,6 +619,7 @@ export default function Main(props: {
             background: "#d9d9d9",
             width: "30%",
           }}
+          className="properties"
         >
           {selectedOption == "chat" ? (
             <Chat user={props.user} scene={props.scene}></Chat>

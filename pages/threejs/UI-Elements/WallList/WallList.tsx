@@ -18,6 +18,7 @@ export function WallList(props: {
       direction="column"
       height="100px"
       alignContent={"center"}
+      className="wallList"
     >
       <Typography textAlign={"center"} fontSize={"1.25rem"}>
         Walls

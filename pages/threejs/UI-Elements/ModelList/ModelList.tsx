@@ -15,6 +15,7 @@ export function ModelList(props: {
       direction="column"
       height="100%"
       alignContent={"center"}
+      className="modelList"
     >
       <Typography textAlign={"center"} fontSize={"1.25rem"}>
         Modelle
