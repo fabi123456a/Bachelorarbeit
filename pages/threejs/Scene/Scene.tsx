@@ -4,6 +4,7 @@ import { useThree } from "@react-three/fiber";
 import { useEffect, useState } from "react";
 import * as THREE from "three";
 import BoxGeoPivot from "../3D-Objects/BoxGeoPivot";
+import { Grid, Sky, Stars, Stats } from "@react-three/drei";
 
 export default function Scene(props: {
   controlsRef: React.RefObject<any>;
@@ -18,25 +19,25 @@ export default function Scene(props: {
   const { scene } = useThree();
   props.sceneRef.current = scene;
 
-  // gitter raster erstellen & einfügen
-  useEffect(() => {
-    // TODO: wird das raster mehrmals eingefügt??
-    if (props.perspektive == "normal") {
-      for (let j: number = -500; j < 500; j += 50) {
-        for (let i: number = -500; i < 500; i += 50) {
-          const geometry = new THREE.BoxGeometry(50, 0, 50);
-          const material = new THREE.MeshBasicMaterial({
-            color: 0xf5f5f5,
-            wireframe: true,
-            opacity: 0.5,
-          });
-          const mesh = new THREE.Mesh(geometry, material);
-          mesh.position.set(i, 0, j);
-          scene.add(mesh);
-        }
-      }
-    }
-  }, [scene, props.perspektive]);
+  // // gitter raster erstellen & einfügen
+  // useEffect(() => {
+  //   // TODO: wird das raster mehrmals eingefügt??
+  //   if (props.perspektive == "normal") {
+  //     for (let j: number = -500; j < 500; j += 50) {
+  //       for (let i: number = -500; i < 500; i += 50) {
+  //         const geometry = new THREE.BoxGeometry(50, 0, 50);
+  //         const material = new THREE.MeshBasicMaterial({
+  //           color: 0xf5f5f5,
+  //           wireframe: true,
+  //           opacity: 0.5,
+  //         });
+  //         const mesh = new THREE.Mesh(geometry, material);
+  //         mesh.position.set(i, 0, j);
+  //         scene.add(mesh);
+  //       }
+  //     }
+  //   }
+  // }, [scene, props.perspektive]);
 
   return (
     <>
@@ -93,6 +94,15 @@ export default function Scene(props: {
           ></BoxGeoPivot>
         ) : null
       )}
+      {/* ground plane */}
+      <mesh position={[0, 0, 0]} rotation={[Math.PI / -2, 0, 0]}>
+        <planeGeometry args={[1000, 1000, 30, 30]} />
+        <meshBasicMaterial wireframe side={THREE.DoubleSide} />
+      </mesh>
+
+      <Sky></Sky>
+      <Stars></Stars>
+      {/* <Stats className="stats" /> */}
       {/* Raum */}
       {/* <Room
         height={props.roomDimensions.height}

@@ -67,6 +67,10 @@ body {
   background: "green";
 }
 
+.scenListEntry:hover {
+  background-color: yellow;
+}
+
 /* new Scene */
 .newScene {
   margin-top: auto; /* damit am ende des containers */
@@ -152,7 +156,9 @@ body {
   background-color: yellow;
 }
 
-/* hover */
-.scenListEntry:hover {
-  background-color: yellow;
+/**/
+.stats {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
 }

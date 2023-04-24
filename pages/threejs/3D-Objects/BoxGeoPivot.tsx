@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { TransformControls } from "@react-three/drei";
+import { Html, TransformControls } from "@react-three/drei";
 import * as THREE from "three";
 import { Vector3 } from "three";
 import BoxGeometry from "./BoxGeometry";
+import { Button } from "@mui/material";
 
 // KOMPONENTE
 
@@ -107,12 +108,14 @@ function BoxGeoPivot(
           }
         }}
       >
-        <BoxGeometry
-          ref123={refMesh}
-          onclick={props.testMode ? null : setCurrentObj}
-          geometrie={{ positionXYZ: [0, 0, 0], scaleXYZ: [1, 1, 1] }}
-          testMode={props.testMode}
-        ></BoxGeometry>
+        <>
+          <BoxGeometry
+            ref123={refMesh}
+            onclick={props.testMode ? null : setCurrentObj}
+            geometrie={{ positionXYZ: [0, 0, 0], scaleXYZ: [1, 1, 1] }}
+            testMode={props.testMode}
+          ></BoxGeometry>
+        </>
       </TransformControls>
     </>
   );
