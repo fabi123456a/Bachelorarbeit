@@ -98,7 +98,7 @@ body {
 
   left: 5%;
   top: 10%;
-  height: 80%;
+  height: 72%;
   width: 17.5%;
   z-index: 10;
 }
@@ -108,10 +108,10 @@ body {
   background: green;
   position: absolute;
   height: 100px;
-  width: 50%;
+  width: 55%;
   left: 22.5%;
   right: 22.5%;
-  top: 5%;
+  top: 10%;
   z-index: 10;
 }
 
@@ -120,8 +120,8 @@ body {
   background: yellow;
   position: absolute;
   height: 100px;
-  width: 50%;
-  left: 22.5%;
+  width: 70%;
+  left: 5%;
   right: 22.5%;
   bottom: 5%;
   z-index: 10;
@@ -129,13 +129,12 @@ body {
 
 /* properties */
 .properties {
-  background: blue;
   position: absolute;
   right: 5%;
   top: 10%;
-  height: 80%;
-  width: 17.5%;
-  max-width: 17.5%;
+  height: 85%;
+  width: 20%;
+  max-width: 20%;
   z-index: 10;
 }
 

@@ -15,9 +15,6 @@ import Logout from "./login/logout";
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [actUser, setActUser] = useState<ModelUser>(null);
-
-  // anfangs json datei zum init der scene
-  //const [sceneID, setSceneID] = useState<string>(null);
   const [scene, setScene] = useState<ModelScene>(null);
 
   return (
