@@ -4,6 +4,7 @@ import { ThreeEvent, useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import * as THREE from "three";
 import { BoxHelper, Camera, LineBasicMaterial, Vector3 } from "three";
+import { BufferGeometry, Material, Mesh } from "three";
 // KOMPONENTE
 
 function SceneModel(
@@ -21,6 +22,9 @@ function SceneModel(
   // referenz auf das Mesh des FBX-Models
   const refMesh = useRef<THREE.Mesh>(null);
   const tcRef = useRef<any>(null);
+
+  // zum neu rändern fürs cube mesh
+  const [key, setKey] = useState(0);
 
   // function
   const setCurrentObj = () => {
@@ -59,9 +63,18 @@ function SceneModel(
     });
   };
 
+  // testen
+
+  // useEffect(() => {
+  //   alert(
+  //     "x: " + tcRef.current.position.x + ", z: " + tcRef.current.position.z
+  //   );
+  // }, [key]);
+
   return (
     <>
       <TransformControls
+        key={key}
         ref={tcRef}
         mode={props.editMode ? props.editMode : "scale"}
         showX={props.isSelected && props.showXTransform}
@@ -83,6 +96,10 @@ function SceneModel(
               // kamera rotation nur freigeben wenn camPerspektive normal (== "0") ist, bei othogonaler perpektive soll cam drehen nicht gehen
               props.controlsRef.current.enableRotate = true;
             }
+
+            // ...
+
+            setKey((prevKey) => prevKey + 1);
           }
         }}
         onMouseDown={(e) => {
@@ -99,6 +116,12 @@ function SceneModel(
             setCurrentObj();
           }
         }}
+        // TODO: für roten punkte auf höhe null immer beim verschieben
+        // onPointerMove={(e) => {
+        //   if (e) {
+        //     setKey((prevKey) => prevKey + 1);
+        //   }
+        // }}
       >
         <primitive
           onClick={() => {
@@ -109,6 +132,20 @@ function SceneModel(
           object={fbx.clone(true)}
         ></primitive>
       </TransformControls>
+
+      {/* Rotes Viereck */}
+      {/* {tcRef.current && (
+        <mesh
+          position={[
+            tcRef.current.object.position.x,
+            0,
+            tcRef.current.object.position.z,
+          ]}
+        >
+          <boxBufferGeometry args={[1, 1, 1]} />
+          <meshStandardMaterial color={"red"} />
+        </mesh> 
+      )}*/}
     </>
   );
 }
