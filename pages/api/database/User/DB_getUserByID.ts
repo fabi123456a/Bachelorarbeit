@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-
-import { ModelScene, ModelUser } from "./_models";
-import { prismaClient } from "./_prismaClient";
+import { prismaClient } from "../../prismaclient/_prismaClient";
+import { User } from "@prisma/client";
 
 export default async function DB_getUserByID(
   req: NextApiRequest,
@@ -10,7 +9,7 @@ export default async function DB_getUserByID(
   const b = req.body;
   const requestData = JSON.parse(b);
 
-  const user: ModelUser = await prismaClient.users.findFirst({
+  const user: User = await prismaClient.user.findFirst({
     where: { id: requestData["idUser"] },
   });
 

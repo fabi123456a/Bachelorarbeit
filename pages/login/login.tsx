@@ -1,10 +1,10 @@
 import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import { ModelUser } from "../api/_models";
+import { User } from "@prisma/client";
 
 const Home = (props: {
   setLoggedIn: (flag: boolean) => void;
-  setActUser: (user: ModelUser) => void;
+  setActUser: (user: User) => void;
 }) => {
   const [txtAnmeldeID, setTxtAmeldeID] = useState<string>("Fabian Thomas");
   const [txtPassword, setTxtPassword] = useState<string>("pw");
@@ -13,7 +13,7 @@ const Home = (props: {
   // checkt login & pw wenns stim kommt der user zurück
   const checkData = async () => {
     const response = await fetch(
-      `/api/DB_checkPassword?user=${txtAnmeldeID}&pw=${txtPassword}`
+      `/api/database/user/DB_checkPassword?user=${txtAnmeldeID}&pw=${txtPassword}`
     );
     const result = await response.json();
 
@@ -23,7 +23,7 @@ const Home = (props: {
   // beim start alte sessions löschen
   useEffect(() => {
     const deletOldSessions = async () => {
-      await fetch("/api/DB_deleteOldSessions");
+      await fetch("/api/database/sessions/DB_deleteOldSessions");
     };
     deletOldSessions();
   }, []);

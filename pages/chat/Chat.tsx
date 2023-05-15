@@ -1,21 +1,17 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import io from "Socket.IO-client";
-import {
-  ModelChatEntry,
-  ModelScene,
-  ModelSession,
-  ModelUser,
-} from "../api/_models";
+
+import { ChatEntry, Scene, Session, User } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { UserOnlineItem } from "./UserOnlineItem";
 
 let socket;
 
-export function Chat(props: { scene: ModelScene; user: ModelUser }) {
+export function Chat(props: { scene: Scene; user: User }) {
   const [text, setText] = useState<string>("");
-  const [msgs, setMsgs] = useState<ModelChatEntry[]>([]);
-  const [sessions, setSessions] = useState<ModelSession[]>([]);
+  const [msgs, setMsgs] = useState<ChatEntry[]>([]);
+  const [sessions, setSessions] = useState<Session[]>([]);
 
   useEffect(() => {
     const socketInitializer = async () => {
@@ -35,8 +31,10 @@ export function Chat(props: { scene: ModelScene; user: ModelUser }) {
 
   useEffect(() => {
     const getAllChatEntry = async () => {
-      const response = await fetch("/api/DB_getAllChatEntrys");
-      const result: ModelChatEntry[] = await response.json();
+      const response = await fetch(
+        "/api/database/chatEntry/DB_getAllChatEntrys"
+      );
+      const result: ChatEntry[] = await response.json();
       return result;
     };
     getAllChatEntry().then((chatEntrys) => {
@@ -46,11 +44,11 @@ export function Chat(props: { scene: ModelScene; user: ModelUser }) {
 
   useEffect(() => {
     const getAllSessions = async () => {
-      const response = await fetch("/api/DB_getAllSessions");
-      const result: ModelSession[] = await response.json();
+      const response = await fetch("/api/database/sessions/DB_getAllSessions");
+      const result: Session[] = await response.json();
       return result;
     };
-    getAllSessions().then((sessions: ModelSession[]) => {
+    getAllSessions().then((sessions: Session[]) => {
       setSessions(sessions);
     });
   }, []);
@@ -64,7 +62,7 @@ export function Chat(props: { scene: ModelScene; user: ModelUser }) {
     setText("");
 
     // model für chat eintrag erstellen
-    const chatEntry: ModelChatEntry = {
+    const chatEntry: ChatEntry = {
       id: "" + Math.random() * 1000,
       idScene: props.scene.id,
       idUser: props.user.id,
@@ -76,11 +74,11 @@ export function Chat(props: { scene: ModelScene; user: ModelUser }) {
     socket.emit("addChatEntry", chatEntry);
 
     // test sessio keep alive
-    await fetch("api/DB_sessionKeepAlive");
+    await fetch("api/database/sessions/DB_sessionKeepAlive");
   };
 
   const getUserByID = async (idUser: string) => {
-    const response = await fetch("/api/DB_getUserByID", {
+    const response = await fetch("/api/database/user/DB_getUserByID", {
       method: "POST",
       body: JSON.stringify({
         idUser: props.scene.idUserCreater,
@@ -107,7 +105,7 @@ export function Chat(props: { scene: ModelScene; user: ModelUser }) {
         <Stack
           sx={{ overflowY: "scroll", maxHeight: "300px", minHeight: "300px" }}
         >
-          {msgs.map((msg: ModelChatEntry) => {
+          {msgs.map((msg: ChatEntry) => {
             const color = counter % 2 === 0 ? "#abdbe3" : "#eab676";
             counter++;
 

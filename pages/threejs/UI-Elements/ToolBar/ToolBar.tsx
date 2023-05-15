@@ -19,7 +19,7 @@ import PublishIcon from "@mui/icons-material/Publish";
 import RemoveIcon from "@mui/icons-material/Remove";
 import io from "Socket.IO-client";
 import { useEffect } from "react";
-import { ModelScene } from "../../../api/_models";
+import { Scene } from "@prisma/client";
 
 let socket1;
 
@@ -38,7 +38,7 @@ function ToolBar(props: {
   setIsTestMode: (flag: boolean) => void;
   isTestMode: boolean;
   setCurentObj: (obj: TypeObjectProps) => void;
-  scene: ModelScene;
+  scene: Scene;
 }) {
   // funktion
   const checkIfAObjectIsSelected = (): boolean => {

@@ -1,5 +1,5 @@
 import { Server } from "Socket.IO";
-import { prismaClient } from "./_prismaClient";
+import { prismaClient } from "./prismaclient/_prismaClient";
 
 const SocketHandler = (req, res) => {
   if (res.socket.server.io) {

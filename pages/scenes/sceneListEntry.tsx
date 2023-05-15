@@ -1,20 +1,20 @@
 import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import { ModelScene, ModelUser } from "../api/_models";
+import { Scene, User } from "@prisma/client";
 import AddScene from "./addScne";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 const SceneListEntry = (props: {
-  scene: ModelScene;
-  setScene: (scene: ModelScene) => void;
+  scene: Scene;
+  setScene: (scene: Scene) => void;
   setReload: (i: number) => void;
 }) => {
   // user der die scene ertsellt hat
-  const [userCreator, setUserCreator] = useState<ModelUser>();
+  const [userCreator, setUserCreator] = useState<User>();
   const [mouseOver, setMouseOver] = useState<boolean>(false);
 
   const deleteSceneFromDB = async () => {
-    const response = await fetch("/api/DB_deleteSceneByID", {
+    const response = await fetch("/api/database/scenes/DB_deleteSceneByID", {
       method: "POST",
       body: JSON.stringify({
         idScene: props.scene.id,
@@ -25,7 +25,7 @@ const SceneListEntry = (props: {
   };
 
   const deleteSceneFromFS = async () => {
-    const response = await fetch("/api/FS_deleteSceneByID", {
+    const response = await fetch("/api/filesystem/FS_deleteSceneByID", {
       method: "POST",
       body: JSON.stringify({
         idScene: props.scene.id,
@@ -36,14 +36,14 @@ const SceneListEntry = (props: {
   };
 
   const getUserFromScene = async () => {
-    const response = await fetch("/api/DB_getUserByID", {
+    const response = await fetch("/api/database/user/DB_getUserByID", {
       method: "POST",
       body: JSON.stringify({
         idUser: props.scene.idUserCreater,
       }),
     });
 
-    const user = (await response.json()) as ModelUser;
+    const user = (await response.json()) as User;
 
     setUserCreator(user);
     //console.log("-------:: " + ((await response.json()) as ModelUser).loginID);

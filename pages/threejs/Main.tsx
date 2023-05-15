@@ -10,10 +10,7 @@ import * as THREE from "three";
 import { arrayBufferToBase64, base64ToBlob } from "./utils/converting";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import exportToGLTF from "./utils/exporting";
-
-//@ts-ignore
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
-import { ModelScene, ModelUser } from "../api/_models";
+import { Scenes, Users } from "@prisma/client";
 import { WallList } from "./UI-Elements/WallList/WallList";
 import { debug } from "console";
 import SceneModelList from "./UI-Elements/SceneModelList/SceneModelList";
@@ -24,12 +21,15 @@ import { Chat } from "../chat/Chat";
 import io from "Socket.IO-client";
 import MenuBar from "./UI-Elements/Menubar/menuBar";
 
+//@ts-ignore
+import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
+
 let socket;
 
 export default function Main(props: {
-  user: ModelUser;
-  scene: ModelScene;
-  setScene: (scene: ModelScene) => void;
+  user: Users;
+  scene: Scenes;
+  setScene: (scene: Scenes) => void;
 }) {
   // ---- STATES ----
   const [treeViewSelectedId, setTreeViewSelectedId] = useState<string>(null);
@@ -124,7 +124,7 @@ export default function Main(props: {
   useEffect(() => {
     // alle fbx modelle vom server laden
     const fetchData = async () => {
-      let response = await fetch("api/FS_getFbxModels");
+      let response = await fetch("api/filesystem/FS_getFbxModels");
       let result = await response.json();
       let fileNames: Array<string> = result["files"];
 
@@ -194,7 +194,7 @@ export default function Main(props: {
   // anfangs scene laden
   useEffect(() => {
     const handle = async () => {
-      const response = await fetch("/api/FS_getSceneByID", {
+      const response = await fetch("/api/filesystem/FS_getSceneByID", {
         method: "POST",
         body: JSON.stringify({
           sceneID: props.scene.id,
@@ -226,7 +226,7 @@ export default function Main(props: {
 
         if (msg == props.scene.id) {
           const handle = async () => {
-            const response = await fetch("/api/FS_getSceneByID", {
+            const response = await fetch("/api/filesystem/FS_getSceneByID", {
               method: "POST",
               body: JSON.stringify({
                 sceneID: props.scene.id,
@@ -368,7 +368,7 @@ export default function Main(props: {
 
     // auf server laden, scene mit gleichen id safen ist quasi scene speichern
 
-    const response = await fetch("/api/FS_uploadScene", {
+    const response = await fetch("/api/filesystem/FS_uploadScene", {
       method: "POST",
       body: JSON.stringify({
         jsonData: sceneJsonString,
@@ -543,7 +543,6 @@ export default function Main(props: {
           </Alert>
         </Snackbar>
 
-        
         {/* ModelList */}
         <ModelList
           addObject={handleModelAdd}

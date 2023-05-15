@@ -1,11 +1,11 @@
 import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import { ModelScene } from "../../../api/_models";
+import { Scene } from "@prisma/client";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 const MenuBar = (props: {
-  setScene: (scene: ModelScene) => void;
-  scene: ModelScene;
+  setScene: (scene: Scene) => void;
+  scene: Scene;
   isTestMode: boolean;
 }) => {
   return (

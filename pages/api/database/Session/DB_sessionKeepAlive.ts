@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { checkSessionID } from "./_checkSessionID";
-import { ModelScene, ModelSession } from "./_models";
-import { prismaClient } from "./_prismaClient";
+import { Session } from "@prisma/client";
+import { prismaClient } from "../../prismaclient/_prismaClient";
 
 export default async function DB_sessionKeepAlive(
   req: NextApiRequest,
@@ -9,7 +9,7 @@ export default async function DB_sessionKeepAlive(
 ) {
   const sessionID = req.cookies.sessionID;
 
-  await prismaClient.sessions.update({
+  await prismaClient.session.update({
     where: {
       id: sessionID,
     },

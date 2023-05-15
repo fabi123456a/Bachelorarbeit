@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { checkSessionID } from "./_checkSessionID";
-import { ModelScene } from "./_models";
-import { prismaClient } from "./_prismaClient";
+import { Session } from "@prisma/client";
+import { prismaClient } from "../../prismaclient/_prismaClient";
 
-export default async function DB_getAllSceneNames(
+export default async function DB_getAllSessions(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
@@ -12,12 +12,12 @@ export default async function DB_getAllSceneNames(
   const session = await checkSessionID(sessionID);
 
   if (session) {
-    const scenes: ModelScene[] = await prismaClient.scenes.findMany();
+    const sessions: Session[] = await prismaClient.session.findMany();
 
-    if (scenes == null)
-      res.status(200).json({ result: "fehler beim laden der Scenes" });
+    if (sessions == null)
+      res.status(200).json({ result: "fehler beim laden der Sessions" });
     else {
-      res.status(200).json(scenes);
+      res.status(200).json(sessions);
     }
   } else {
     console.log("ungültige Session ID: " + sessionID);

@@ -1,18 +1,15 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useRef, useState } from "react";
-import UsersList from "../admin/usersList";
-import { ModelScene, ModelUser } from "../api/_models";
+import UsersList from "../admin/user/usersList";
+import { Scene, User } from "@prisma/client";
 
 // einmal in DB und json file to FS
-const AddScene = (props: {
-  user: ModelUser;
-  setScene: (scene: ModelScene) => void;
-}) => {
+const AddScene = (props: { user: User; setScene: (scene: Scene) => void }) => {
   const [name, setName] = useState<string>();
-  const [sceneModel, setSceneModel] = useState<ModelScene>();
+  const [sceneModel, setSceneModel] = useState<Scene>();
 
   const addSceneToDB = async () => {
-    const response = await fetch("/api/DB_insertScene", {
+    const response = await fetch("/api/database/scenes/DB_insertScene", {
       method: "POST",
       body: JSON.stringify({
         idUserCreator: props.user.id,
@@ -26,7 +23,7 @@ const AddScene = (props: {
   };
 
   const addSceneToFS = async (idScene: string) => {
-    const response = await fetch("/api/FS_uploadScene", {
+    const response = await fetch("/api/filesystem/FS_uploadScene", {
       method: "POST",
       body: JSON.stringify({
         jsonData:
@@ -63,7 +60,7 @@ const AddScene = (props: {
             }
 
             // insert into DB then to FS
-            addSceneToDB().then((scene: ModelScene) => {
+            addSceneToDB().then((scene: Scene) => {
               addSceneToFS(scene.id).then(() => {
                 props.setScene(scene);
               });

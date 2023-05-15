@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { prismaClient } from "./_prismaClient";
+import { prismaClient } from "../../prismaclient/_prismaClient";
 
 export default async function DB_deleteOldSessions(
   req: NextApiRequest,
@@ -9,7 +9,7 @@ export default async function DB_deleteOldSessions(
   const oneMinuteAgo = new Date(Date.now() - 60 * 1000); // Datum vor 60 Sekunden
   const twentySecondsAgo = new Date(Date.now() - 20 * 1000); // Datum vor 20 Sekunden
 
-  await prismaClient.sessions.deleteMany({
+  await prismaClient.session.deleteMany({
     where: {
       startDate: {
         lt: twentyMinutesAgo,

@@ -8,33 +8,38 @@ import Login from "./login/login";
 import SceneList from "./scenes/sceneList";
 import Main from "./threejs/Main";
 import Stack from "@mui/material/Stack";
-import { ModelScene, ModelUser } from "./api/_models";
+import { User, Scene } from "@prisma/client";
 import CubeRotater from "./login/cubeRotater";
 import Logout from "./login/logout";
+import DatabaseTable from "./admin/data/databaseTable";
 
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const [actUser, setActUser] = useState<ModelUser>(null);
-  const [scene, setScene] = useState<ModelScene>(null);
+  const [actUser, setActUser] = useState<User>(null);
+  const [scene, setScene] = useState<Scene>(null);
 
   return (
-    <Stack className="index">
-      {loggedIn ? (
-        scene ? (
-          <Main scene={scene} setScene={setScene} user={actUser}></Main>
-        ) : (
-          <Stack sx={{ height: "100%", width: "100%", background: "" }}>
-            <SceneList setScene={setScene} user={actUser}></SceneList>
-          </Stack>
-        )
-      ) : (
-        <Login setLoggedIn={setLoggedIn} setActUser={setActUser}></Login>
-      )}
+    // <Stack className="index">
+    //   {loggedIn ? (
+    //     scene ? (
+    //       <Main scene={scene} setScene={setScene} user={actUser}></Main>
+    //     ) : (
+    //       <Stack sx={{ height: "100%", width: "100%", background: "" }}>
+    //         <SceneList setScene={setScene} user={actUser}></SceneList>
+    //       </Stack>
+    //     )
+    //   ) : (
+    //     <Login setLoggedIn={setLoggedIn} setActUser={setActUser}></Login>
+    //   )}
+    //   {/* <AdminArea></AdminArea> */}
+    //   {scene ? null : <CubeRotater loggedIn={loggedIn}></CubeRotater>}
+    //   {loggedIn ? (
+    //     <Logout setActUser={setActUser} setLoggedIn={setLoggedIn}></Logout>
+    //   ) : null}
+    // </Stack>
+    <Stack>
       {/* <AdminArea></AdminArea> */}
-      {scene ? null : <CubeRotater loggedIn={loggedIn}></CubeRotater>}
-      {loggedIn ? (
-        <Logout setActUser={setActUser} setLoggedIn={setLoggedIn}></Logout>
-      ) : null}
+      <DatabaseTable tableName="User"></DatabaseTable>
     </Stack>
   );
 };

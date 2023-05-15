@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { checkSessionID } from "./_checkSessionID";
-import { ModelChatEntry, ModelScene } from "./_models";
-import { prismaClient } from "./_prismaClient";
+import { checkSessionID } from "../Session/_checkSessionID";
+import { ChatEntry } from "@prisma/client";
+import { prismaClient } from "../../prismaclient/_prismaClient";
 
 export default async function DB_getAllChatEntrys(
   req: NextApiRequest,
@@ -12,9 +12,11 @@ export default async function DB_getAllChatEntrys(
   const session = await checkSessionID(sessionID);
 
   if (session) {
-    const chatEntrys: ModelChatEntry[] = await prismaClient.chatEntry.findMany({ orderBy: {
-      datum: 'desc' // oder 'desc' für absteigende Sortierung
-    }});
+    const chatEntrys: ChatEntry[] = await prismaClient.chatEntry.findMany({
+      orderBy: {
+        datum: "desc", // oder 'desc' für absteigende Sortierung
+      },
+    });
 
     if (chatEntrys == null)
       res.status(200).json({ result: "fehler beim laden der Scenes" });

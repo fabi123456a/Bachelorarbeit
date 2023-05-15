@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { prismaClient } from "./_prismaClient";
-import { OnDeviceTraining } from "@mui/icons-material";
+import { prismaClient } from "../../prismaclient/_prismaClient";
 
 export default async function DB_deleteOldSessions(
   req: NextApiRequest,
@@ -9,7 +8,7 @@ export default async function DB_deleteOldSessions(
   const requestData = JSON.parse(req.body);
   const idScene = requestData["idScene"];
 
-  const ergDelete = await prismaClient.scenes.deleteMany({
+  const ergDelete = await prismaClient.scene.deleteMany({
     where: {
       id: idScene,
     },

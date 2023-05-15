@@ -1,19 +1,16 @@
 import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import { ModelScene, ModelUser } from "../api/_models";
+import { User, Scene } from "@prisma/client";
 import AddScene from "./addScne";
 import SceneListEntry from "./sceneListEntry";
 
-const SceneList = (props: {
-  setScene: (scene: ModelScene) => void;
-  user: ModelUser;
-}) => {
-  const [scenes, setSenes] = useState<ModelScene[]>();
+const SceneList = (props: { setScene: (scene: Scene) => void; user: User }) => {
+  const [scenes, setSenes] = useState<Scene[]>();
   const [reload, setReload] = useState<number>();
 
   const getAllSceneNames = async () => {
-    const response = await fetch("/api/DB_getAllSceneNames");
-    const result: ModelScene[] = await response.json();
+    const response = await fetch("/api/database/scenes/DB_getAllSceneNames");
+    const result: Scene[] = await response.json();
     return result;
   };
 
@@ -42,7 +39,7 @@ const SceneList = (props: {
         }}
       >
         {scenes
-          ? scenes.map((scene: ModelScene) => {
+          ? scenes.map((scene: Scene) => {
               return (
                 <SceneListEntry
                   key={scene.id}
@@ -52,7 +49,7 @@ const SceneList = (props: {
                 ></SceneListEntry>
               );
             })
-          : null}
+          : "llefr"}
       </Stack>
       <AddScene user={props.user} setScene={props.setScene}></AddScene>
     </Stack>

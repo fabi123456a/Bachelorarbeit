@@ -8,7 +8,7 @@ const AddUser = (props: { setReload: (i: number) => void }) => {
 
   const addUser = async () => {
     const response = await fetch(
-      `/api/DB_insertUser?user=${anmeldeID}&pw=${password}` // password in body weil sonst kann man das lesen
+      `/api/database/user/DB_insertUser?user=${anmeldeID}&pw=${password}` // password in body weil sonst kann man das lesen
     );
     const result = await response.json();
 

@@ -13,15 +13,15 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { ModelUser } from "../api/_models";
+import { User } from "@prisma/client";
 import AddUser from "./addUser";
 
 const UsersList = () => {
-  const [users, setUsers] = useState<ModelUser[]>();
+  const [users, setUsers] = useState<User[]>();
   const [reload, setReload] = useState<number>(0);
 
   const getAllUsers = async () => {
-    const response = await fetch("/api/DB_getAllUser");
+    const response = await fetch("/api/database/user/DB_getAllUser");
     const result = await response.json();
 
     setUsers(result["result"]);
@@ -50,7 +50,7 @@ const UsersList = () => {
         </TableHead>
         <TableBody>
           {users
-            ? users.map((user: ModelUser) => (
+            ? users.map((user: User) => (
                 <TableRow key={user.id}>
                   <TableCell>{user.loginID}</TableCell>
                   <TableCell>{user.password}</TableCell>

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { ModelScene, ModelUser } from "./_models";
-import { prismaClient } from "./_prismaClient";
+import {Scene, User} from "@prisma/client";
+import { prismaClient } from "../../prismaclient/_prismaClient";
 
 export default async function DB_insertScene(
   req: NextApiRequest,
@@ -11,7 +11,7 @@ export default async function DB_insertScene(
 
   let idScene: number = getRandomInt(999999);
 
-  let sceneModel: ModelScene = {
+  let sceneModel: Scene = {
     id: idScene.toString(),
     idUserCreater: requestData["idUserCreator"],
     createDate: new Date(),
@@ -19,7 +19,7 @@ export default async function DB_insertScene(
     path: idScene + ".json",
   };
 
-  const result = await prismaClient.scenes.create({
+  const result = await prismaClient.scene.create({
     data: sceneModel,
   });
 

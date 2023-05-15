@@ -1,9 +1,9 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { ModelSession } from "../api/_models";
+import { Session } from "@prisma/client";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
-export function UserOnlineItem(props: { session: ModelSession }) {
+export function UserOnlineItem(props: { session: Session }) {
   return (
     <>
       <Stack direction={"row"}>

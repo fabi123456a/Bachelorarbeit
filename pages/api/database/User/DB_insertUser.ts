@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { NextApiRequest, NextApiResponse } from "next";
-import { checkSessionID } from "./_checkSessionID";
-import { prismaClient } from "./_prismaClient";
+import { checkSessionID } from "../Session/_checkSessionID";
+import { prismaClient } from "../../prismaclient/_prismaClient";
 
 export default async function test(req: NextApiRequest, res: NextApiResponse) {
   const pw = req.query.pw as string;
@@ -12,7 +12,7 @@ export default async function test(req: NextApiRequest, res: NextApiResponse) {
 
   if (session) {
     try {
-      const user = await prismaClient.users.create({
+      const user = await prismaClient.user.create({
         data: {
           id: randomUUID(),
           loginID: loginID,
