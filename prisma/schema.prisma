@@ -12,14 +12,12 @@ datasource db {
 
 // INFO: taballen name in singular
 
-// rename to User
 model User {
   id        String     @id 
   loginID   String  @unique
   password  String?
 }
 
-// rename to FbxModel
 model FbxModel {
   id      String     @id 
   name    String  

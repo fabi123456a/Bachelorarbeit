@@ -2,7 +2,7 @@ import { Button, Stack } from "@mui/material";
 import { User } from "@prisma/client";
 import { useEffect, useState } from "react";
 import UsersList from "./user/usersList";
-import DatabaseTable from "./data/databaseTable";
+import DatabaseTable from "./databaseTable/databaseTable";
 
 const AdminArea = () => {
   // const getData = async () => {

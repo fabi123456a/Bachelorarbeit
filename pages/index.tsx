@@ -11,7 +11,7 @@ import Stack from "@mui/material/Stack";
 import { User, Scene } from "@prisma/client";
 import CubeRotater from "./login/cubeRotater";
 import Logout from "./login/logout";
-import DatabaseTable from "./admin/data/databaseTable";
+import DatabaseTable from "./admin/databaseTable/databaseTable";
 
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);

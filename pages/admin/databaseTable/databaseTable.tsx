@@ -1,4 +1,5 @@
 import {
+  Button,
   Stack,
   Table,
   TableBody,
@@ -8,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import Insert from "./insert";
 
 const DatabaseTable = (props: { tableName: string }) => {
   const [data, setData] = useState<any[]>();
@@ -81,7 +83,9 @@ const DatabaseTable = (props: { tableName: string }) => {
             : null}
         </TableBody>
       </Table>
-      <Stack sx={{ margin: "24px" }}></Stack>
+      <Stack sx={{ margin: "24px" }}>
+        <Insert tableName={props.tableName} porperties={properties}></Insert>
+      </Stack>
     </Stack>
   );
 };
