@@ -4,6 +4,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableCellProps,
   TableHead,
   TableRow,
   Typography,
@@ -64,15 +65,7 @@ const DatabaseTable = (props: { tableName: string }) => {
                     <TableCell
                       key={dataRow[prop] + dataRow["id"] + prop}
                       onClick={() => {
-                        alert(
-                          prop +
-                            "," +
-                            dataRow[prop] +
-                            "," +
-                            dataRow["id"] +
-                            ", " +
-                            props.tableName
-                        );
+                        alert(prop);
                       }}
                     >
                       {dataRow[prop]}

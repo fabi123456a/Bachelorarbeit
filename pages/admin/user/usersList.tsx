@@ -21,7 +21,7 @@ const UsersList = () => {
   const [reload, setReload] = useState<number>(0);
 
   const getAllUsers = async () => {
-    const response = await fetch("/api/database/user/DB_getAllUser");
+    const response = await fetch("/api/database/User/DB_getAllUser");
     const result = await response.json();
 
     setUsers(result["result"]);

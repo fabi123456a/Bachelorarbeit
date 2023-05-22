@@ -19,28 +19,28 @@ const Home = () => {
   const [scene, setScene] = useState<Scene>(null);
 
   return (
-    // <Stack className="index">
-    //   {loggedIn ? (
-    //     scene ? (
-    //       <Main scene={scene} setScene={setScene} user={actUser}></Main>
-    //     ) : (
-    //       <Stack sx={{ height: "100%", width: "100%", background: "" }}>
-    //         <SceneList setScene={setScene} user={actUser}></SceneList>
-    //       </Stack>
-    //     )
-    //   ) : (
-    //     <Login setLoggedIn={setLoggedIn} setActUser={setActUser}></Login>
-    //   )}
-    //   {/* <AdminArea></AdminArea> */}
-    //   {scene ? null : <CubeRotater loggedIn={loggedIn}></CubeRotater>}
-    //   {loggedIn ? (
-    //     <Logout setActUser={setActUser} setLoggedIn={setLoggedIn}></Logout>
-    //   ) : null}
-    // </Stack>
-    <Stack>
+    <Stack className="index">
+      {loggedIn ? (
+        scene ? (
+          <Main scene={scene} setScene={setScene} user={actUser}></Main>
+        ) : (
+          <Stack sx={{ height: "100%", width: "100%", background: "" }}>
+            <SceneList setScene={setScene} user={actUser}></SceneList>
+          </Stack>
+        )
+      ) : (
+        <Login setLoggedIn={setLoggedIn} setActUser={setActUser}></Login>
+      )}
       {/* <AdminArea></AdminArea> */}
-      <DatabaseTable tableName="User"></DatabaseTable>
+      {scene ? null : <CubeRotater loggedIn={loggedIn}></CubeRotater>}
+      {loggedIn ? (
+        <Logout setActUser={setActUser} setLoggedIn={setLoggedIn}></Logout>
+      ) : null}
     </Stack>
+    // <Stack>
+    //   {/* <AdminArea></AdminArea> */}
+    //   <DatabaseTable tableName="User"></DatabaseTable>
+    // </Stack>
   );
 };
 

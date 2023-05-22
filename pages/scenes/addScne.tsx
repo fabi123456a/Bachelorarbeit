@@ -9,7 +9,7 @@ const AddScene = (props: { user: User; setScene: (scene: Scene) => void }) => {
   const [sceneModel, setSceneModel] = useState<Scene>();
 
   const addSceneToDB = async () => {
-    const response = await fetch("/api/database/scenes/DB_insertScene", {
+    const response = await fetch("/api/database/Scene/DB_insertScene", {
       method: "POST",
       body: JSON.stringify({
         idUserCreator: props.user.id,

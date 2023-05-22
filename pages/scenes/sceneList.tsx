@@ -9,7 +9,7 @@ const SceneList = (props: { setScene: (scene: Scene) => void; user: User }) => {
   const [reload, setReload] = useState<number>();
 
   const getAllSceneNames = async () => {
-    const response = await fetch("/api/database/scenes/DB_getAllSceneNames");
+    const response = await fetch("/api/database/Scene/DB_getAllSceneNames");
     const result: Scene[] = await response.json();
     return result;
   };

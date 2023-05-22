@@ -32,7 +32,7 @@ export function Chat(props: { scene: Scene; user: User }) {
   useEffect(() => {
     const getAllChatEntry = async () => {
       const response = await fetch(
-        "/api/database/chatEntry/DB_getAllChatEntrys"
+        "/api/database/ChatEntry/DB_getAllChatEntrys"
       );
       const result: ChatEntry[] = await response.json();
       return result;
@@ -44,7 +44,7 @@ export function Chat(props: { scene: Scene; user: User }) {
 
   useEffect(() => {
     const getAllSessions = async () => {
-      const response = await fetch("/api/database/sessions/DB_getAllSessions");
+      const response = await fetch("/api/database/Session/DB_getAllSessions");
       const result: Session[] = await response.json();
       return result;
     };
@@ -74,11 +74,11 @@ export function Chat(props: { scene: Scene; user: User }) {
     socket.emit("addChatEntry", chatEntry);
 
     // test sessio keep alive
-    await fetch("api/database/sessions/DB_sessionKeepAlive");
+    await fetch("api/database/Session/DB_sessionKeepAlive");
   };
 
   const getUserByID = async (idUser: string) => {
-    const response = await fetch("/api/database/user/DB_getUserByID", {
+    const response = await fetch("/api/database/User/DB_getUserByID", {
       method: "POST",
       body: JSON.stringify({
         idUser: props.scene.idUserCreater,

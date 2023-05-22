@@ -14,7 +14,7 @@ const SceneListEntry = (props: {
   const [mouseOver, setMouseOver] = useState<boolean>(false);
 
   const deleteSceneFromDB = async () => {
-    const response = await fetch("/api/database/scenes/DB_deleteSceneByID", {
+    const response = await fetch("/api/database/Scene/DB_deleteSceneByID", {
       method: "POST",
       body: JSON.stringify({
         idScene: props.scene.id,
@@ -36,7 +36,7 @@ const SceneListEntry = (props: {
   };
 
   const getUserFromScene = async () => {
-    const response = await fetch("/api/database/user/DB_getUserByID", {
+    const response = await fetch("/api/database/User/DB_getUserByID", {
       method: "POST",
       body: JSON.stringify({
         idUser: props.scene.idUserCreater,

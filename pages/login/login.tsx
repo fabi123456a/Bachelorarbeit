@@ -13,7 +13,7 @@ const Home = (props: {
   // checkt login & pw wenns stim kommt der user zurück
   const checkData = async () => {
     const response = await fetch(
-      `/api/database/user/DB_checkPassword?user=${txtAnmeldeID}&pw=${txtPassword}`
+      `/api/database/User/DB_checkPassword?user=${txtAnmeldeID}&pw=${txtPassword}`
     );
     const result = await response.json();
 
@@ -23,7 +23,7 @@ const Home = (props: {
   // beim start alte sessions löschen
   useEffect(() => {
     const deletOldSessions = async () => {
-      await fetch("/api/database/sessions/DB_deleteOldSessions");
+      await fetch("/api/database/Session/DB_deleteOldSessions");
     };
     deletOldSessions();
   }, []);
