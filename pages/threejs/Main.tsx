@@ -5,12 +5,12 @@ import { Alert, Button, Divider, Snackbar, Typography } from "@mui/material";
 import PropertieContainer from "./UI-Elements/PropertieContainer/PropertieContainer";
 import ToolBar from "./UI-Elements/ToolBar/ToolBar";
 import { ModelList } from "./UI-Elements/ModelList/ModelList";
-import Scene from "./Scene/Scene";
+import ThreeJsScene from "./Scene/Scene";
 import * as THREE from "three";
 import { arrayBufferToBase64, base64ToBlob } from "./utils/converting";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import exportToGLTF from "./utils/exporting";
-import { Scenes, Users } from "@prisma/client";
+import { Scene, User } from "@prisma/client";
 import { WallList } from "./UI-Elements/WallList/WallList";
 import { debug } from "console";
 import SceneModelList from "./UI-Elements/SceneModelList/SceneModelList";
@@ -27,9 +27,9 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 let socket;
 
 export default function Main(props: {
-  user: Users;
-  scene: Scenes;
-  setScene: (scene: Scenes) => void;
+  user: User;
+  scene: Scene;
+  setScene: (scene: Scene) => void;
 }) {
   // ---- STATES ----
   const [treeViewSelectedId, setTreeViewSelectedId] = useState<string>(null);
@@ -280,6 +280,8 @@ export default function Main(props: {
     const fbxLoader = new FBXLoader();
 
     for (const element of models) {
+      if (!element.modelPath) continue;
+
       await new Promise((resolve, reject) => {
         fbxLoader.load(element.modelPath, (object) => {
           object.scale.set(element.scale.x, element.scale.y, element.scale.z);
@@ -598,7 +600,7 @@ export default function Main(props: {
           className="canvas"
         >
           {/*TO ACCESS THE useThree hook in the Scene component*/}
-          <Scene
+          <ThreeJsScene
             controlsRef={controlsRef}
             perspektive={perspective}
             currentObjectProps={currentObjectProps}
@@ -607,7 +609,7 @@ export default function Main(props: {
             sceneRef={sceneRef}
             wallVisibility={wallVisiblity}
             testMode={isTestMode}
-          ></Scene>
+          ></ThreeJsScene>
         </Canvas>
 
         <WallList addWall={handleWallAdd}></WallList>

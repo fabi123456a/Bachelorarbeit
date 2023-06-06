@@ -93,19 +93,18 @@ body {
 
 /* modelList */
 .modelList {
-  background: red;
   position: absolute;
-
+  background: #d9d9d9;
   left: 5%;
   top: 10%;
-  height: 72%;
+  height: 75%;
   width: 17.5%;
   z-index: 10;
 }
 
 /* toolbar */
 .toolBar {
-  background: green;
+  background: #d9d9d9;
   position: absolute;
   height: 100px;
   width: 55%;
@@ -117,7 +116,6 @@ body {
 
 /* wallList */
 .wallList {
-  background: yellow;
   position: absolute;
   height: 100px;
   width: 70%;
@@ -140,7 +138,7 @@ body {
 
 /* canvas */
 .canvas {
-  background: darkorange;
+  background: white;
 }
 
 /* logout */

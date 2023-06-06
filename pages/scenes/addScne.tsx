@@ -40,14 +40,14 @@ const AddScene = (props: { user: User; setScene: (scene: Scene) => void }) => {
   return (
     <Stack className="newScene">
       <Typography sx={{ alignSelf: "center", fontWeight: "bold" }}>
-        Neue Szene erstellen:
+        Neu
       </Typography>
       <Stack
         direction={"row"}
         sx={{ justifyContent: "center", flexGrow: 1, background: "" }}
       >
         <TextField
-          label={"Scene name"}
+          label={"Name der Leitstelle"}
           onChange={(event) => {
             setName(event.target.value);
           }}
@@ -67,7 +67,7 @@ const AddScene = (props: { user: User; setScene: (scene: Scene) => void }) => {
             });
           }}
         >
-          Szene Erstellen
+          Erstellen
         </Button>
       </Stack>
     </Stack>

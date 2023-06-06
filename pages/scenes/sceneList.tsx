@@ -29,7 +29,7 @@ const SceneList = (props: { setScene: (scene: Scene) => void; user: User }) => {
   return (
     <Stack className="sceneList">
       <Typography sx={{ mb: "24px", fontWeight: "bold" }}>
-        Szene auswählen:
+        Leitstelle auswählen:
       </Typography>
       <Stack
         sx={{

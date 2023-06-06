@@ -6,8 +6,8 @@ const Home = (props: {
   setLoggedIn: (flag: boolean) => void;
   setActUser: (user: User) => void;
 }) => {
-  const [txtAnmeldeID, setTxtAmeldeID] = useState<string>("Fabian Thomas");
-  const [txtPassword, setTxtPassword] = useState<string>("pw");
+  const [txtAnmeldeID, setTxtAmeldeID] = useState<string>("john123");
+  const [txtPassword, setTxtPassword] = useState<string>("pass123");
   const loggedIn = useRef<boolean>(false);
 
   // checkt login & pw wenns stim kommt der user zurück
