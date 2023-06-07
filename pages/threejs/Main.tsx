@@ -99,7 +99,9 @@ export default function Main(props: {
     //   info: "behindWall",
     // },
   ]); // contains all models which are currently in the scene, models without path are walls
-  const [modelPaths, setModelPaths] = useState<TypeModel[]>([]); //Contains all Model Files and their name which can be selected via the ModelList
+  const [modelPaths, setModelPaths] = useState<TypeModel[]>([]); //Contains all FBX-Model Files and their name which can be selected via the ModelList
+  const [refresFbxModelPathsData, setRefreshFbxModelPathsData] =
+    useState<boolean>(false);
   const [currentObjectProps, setCurrentObjectProps] = useState<TypeObjectProps>(
     null!
   ); // currentObjectProps
@@ -120,7 +122,7 @@ export default function Main(props: {
 
   // ---- USE EFFECTS ----
 
-  // load all models for the state modelPaths, am anfang
+  // load all fbx-models for the state modelPaths, am anfang
   useEffect(() => {
     // alle fbx modelle vom server laden
     const fetchData = async () => {
@@ -139,7 +141,11 @@ export default function Main(props: {
     };
 
     fetchData();
-  }, []);
+  }, [refresFbxModelPathsData]);
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   //Shortcuts
   useEffect(() => {
@@ -245,6 +251,11 @@ export default function Main(props: {
   }, []);
 
   // ----- FUNCTIONS ----
+
+  const handleRefreshFbxModelPaths = () => {
+    setRefreshFbxModelPathsData((prevRefreshData) => !prevRefreshData);
+  };
+
   const handleModelAdd = (pfad: string) => {
     const objProps: TypeObjectProps = {
       id: "" + Math.random() * 1000,
@@ -571,6 +582,7 @@ export default function Main(props: {
             });
           }}
           paths={modelPaths}
+          setRefreshData={handleRefreshFbxModelPaths}
         ></ModelList>
 
         {/* ToolBar */}

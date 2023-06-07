@@ -2,12 +2,14 @@ import { Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import AddModelForm from "./AddModelForm";
 import { ModelListItem } from "./ModelListItem";
+import UploadFbx from "../../../fbxHandle/uploadFbx";
 
 export function ModelList(props: {
-  paths: { name: string; path: string }[];
+  paths: { name: string; path: string }[]; // enthält alle Pfade der FBX-Models die auf dem Server liegen
   addObject: (pfad: string) => void;
   addModel: (name: string, url: string, file: any) => void;
   deleteModel: (url: string) => void;
+  setRefreshData: () => void;
 }) {
   return (
     <Stack
@@ -31,7 +33,8 @@ export function ModelList(props: {
           ></ModelListItem>
         ))}
       </Stack>
-      <AddModelForm addModel={props.addModel} />
+      <UploadFbx setRefreshData={props.setRefreshData}></UploadFbx>
+      {/* <AddModelForm addModel={props.addModel} /> */}
     </Stack>
   );
 }

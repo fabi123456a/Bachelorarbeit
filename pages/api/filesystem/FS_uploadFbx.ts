@@ -12,7 +12,7 @@ export const config = {
 };
 
 // const
-const fbxFolderPath = "/public/fbx";
+const fbxFolderPath = "/public/ModelsFBX";
 
 const readFile = (
   req: NextApiRequest,

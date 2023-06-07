@@ -89,7 +89,7 @@ function SceneModel(
           if (props.testmode) return;
           //Checks if an event happened or if component just rerendered
           if (e) {
-            setCurrentObj();
+            setCurrentObj(); // TODO: mausUp soll nur currentObject setzen wenn es dasselbe wie bei onclick ist => prüfen ob es die selbe id ist
             console.log("Kamerarotation frei");
 
             if (props.camPerspektive === "normal") {

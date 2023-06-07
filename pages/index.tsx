@@ -12,6 +12,8 @@ import { User, Scene } from "@prisma/client";
 import CubeRotater from "./login/cubeRotater";
 import Logout from "./login/logout";
 import DatabaseTable from "./admin/databaseTable/databaseTable";
+import UploadFbx from "./fbxHandle/uploadFbx";
+import Register from "./login/register/register";
 
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -37,10 +39,13 @@ const Home = () => {
         <Logout setActUser={setActUser} setLoggedIn={setLoggedIn}></Logout>
       ) : null}
     </Stack>
+    //
+    //
     // <Stack>
     //   {/* <AdminArea></AdminArea> */}
     //   <DatabaseTable tableName="User"></DatabaseTable>
     // </Stack>
+    // <Register></Register>
   );
 };
 

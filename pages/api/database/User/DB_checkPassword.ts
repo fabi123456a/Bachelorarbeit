@@ -18,7 +18,7 @@ export default async function DB_checkPassword(
 
   if (selectedUser == null) res.status(200).json(null);
   else {
-    // neue Session hinzufügen
+    // neue Session mit der id des benutzers hinzufügen 
     const session: Session = await insertSession(selectedUser.id);
 
     // session in cookie

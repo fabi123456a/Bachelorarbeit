@@ -153,6 +153,12 @@ body {
   background-color: yellow;
 }
 
+/* registerrieren */
+.register {
+  height: 100%;
+  background: red;
+}
+
 /**/
 .stats {
   position: absolute;

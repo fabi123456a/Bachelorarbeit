@@ -3,7 +3,7 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
-const UploadFbx = (props: {}) => {
+const UploadFbx = (props: {setRefreshData: () => void;}) => {
   // states
   const [uploading, setUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File>();
@@ -21,7 +21,7 @@ const UploadFbx = (props: {}) => {
       }
 
       // prüfen ob es ein fbx datei ist
-      if (getDateiEndug(selectedFile) != "fbx") {
+      if (getDateiEndug(selectedFile).toLowerCase() != "fbx") {
         alert("es können nur fbx dateien hochgeladen werden!");
         setUploading(false);
         return;
@@ -33,7 +33,7 @@ const UploadFbx = (props: {}) => {
 
       // fetch
       //const { data } = await axios.post("/api/uploadFbx", formData);
-      await axios.post("/api/uploadFbx", formData);
+      await axios.post("/api/filesystem/FS_uploadFbx", formData);
     } catch (error: any) {
       console.log(error.response?.data);
     }
@@ -56,11 +56,13 @@ const UploadFbx = (props: {}) => {
         onClick={async () => {
           // datei auf server laden
           await handleUpload();
+          props.setRefreshData();
         }}
         disabled={uploading}
         variant={"outlined"}
       >
         {uploading ? "Uploading.." : "Upload"}
+        
       </Button>
     </Stack>
   );
