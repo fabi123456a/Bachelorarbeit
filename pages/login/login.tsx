@@ -1,27 +1,24 @@
 import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { User } from "@prisma/client";
-import { useRouter } from "next/router";
 
 const Home = (props: {
   setLoggedIn: (flag: boolean) => void;
   setActUser: (user: User) => void;
+  setRegister: (flag: boolean) => void;
 }) => {
-  const [txtAnmeldeID, setTxtAmeldeID] = useState<string>("john123");
-  const [txtPassword, setTxtPassword] = useState<string>("pass123");
+  const [txtAnmeldeID, setTxtAmeldeID] = useState<string>("");
+  const [txtPassword, setTxtPassword] = useState<string>("");
   const loggedIn = useRef<boolean>(false);
 
-  // next js router
-  const router = useRouter();
-
   const handleBtnRegisterClick = () => {
-    router.push("/login/register/register");
+    props.setRegister(true);
   };
 
   // checkt login & pw wenns stim kommt der user zurück
   const checkData = async () => {
     const response = await fetch(
-      `/api/database/User/DB_checkPassword?user=${txtAnmeldeID}&pw=${txtPassword}`
+      `/api/database/User/DB_checkPassword?user=${txtAnmeldeID}&pw=${txtPassword}` // TODO: in body packen
     );
     const result = await response.json();
 

@@ -2,14 +2,19 @@ import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { User } from "@prisma/client";
 
-const Register = (props: {}) => {
+const Register = (props: { setRegister: (flag: boolean) => void }) => {
   const [txtLoginID, setTxtLoginID] = useState<string>("");
   const [txtPw, setTxtPw] = useState<string>("");
 
   const handleBtnRegisterClick = async (loginID: string, pw: string) => {
-    const response = await fetch(
-      `/api/database/User/DB_insertUser?user=${loginID}&pw=${pw}` // password in body weil sonst kann man das lesen
-    );
+    const response = await fetch("/api/database/User/DB_insertUser", {
+      method: "POST",
+      body: JSON.stringify({
+        loginID: loginID,
+        pw: pw,
+      }),
+    });
+
     const result = await response.json();
 
     return result;
@@ -39,10 +44,24 @@ const Register = (props: {}) => {
         size="large"
         variant="contained"
         onClick={async () => {
-          handleBtnRegisterClick(txtLoginID, txtPw);
+          if (txtLoginID === "" || txtPw == "") {
+            alert("LoginID oder PW ist leer, bitte geben sie beides an.");
+            return;
+          }
+          let erg = handleBtnRegisterClick(txtLoginID, txtPw);
+
+          if (erg == null) alert("Registrierung fehlgeschlagen");
+          else props.setRegister(false);
         }}
       >
         Registrieren
+      </Button>
+      <Button
+        onClick={() => {
+          props.setRegister(false);
+        }}
+      >
+        Zurück
       </Button>
     </Stack>
   );

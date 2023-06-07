@@ -11,7 +11,11 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 
-const Insert = (props: { tableName: string; porperties: string[] }) => {
+const Insert = (props: {
+  tableName: string;
+  porperties: string[];
+  setReload: (zahl: number) => void;
+}) => {
   const [textFields, setTextFields] = useState<string[]>([]);
 
   const handleTextFieldChange = (index: number, value: string) => {
@@ -44,6 +48,9 @@ const Insert = (props: { tableName: string; porperties: string[] }) => {
 
   return (
     <Stack>
+      <Typography fontWeight={"bold"} fontSize={"20px"}>
+        Neuen {props.tableName} erstellen
+      </Typography>
       {props.porperties
         ? props.porperties.map((prop: string, index: number) => (
             <Stack>
@@ -55,7 +62,14 @@ const Insert = (props: { tableName: string; porperties: string[] }) => {
             </Stack>
           ))
         : null}
-      <Button onClick={handleInsert}>Insert</Button>
+      <Button
+        onClick={() => {
+          handleInsert();
+          props.setReload(Math.random());
+        }}
+      >
+        Insert
+      </Button>
     </Stack>
   );
 };

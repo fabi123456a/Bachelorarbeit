@@ -4,7 +4,11 @@ import { User, Scene } from "@prisma/client";
 import AddScene from "./addScne";
 import SceneListEntry from "./sceneListEntry";
 
-const SceneList = (props: { setScene: (scene: Scene) => void; user: User }) => {
+const SceneList = (props: {
+  setScene: (scene: Scene) => void;
+  user: User;
+  setAdminArea: (flag: boolean) => void;
+}) => {
   const [scenes, setSenes] = useState<Scene[]>();
   const [reload, setReload] = useState<number>();
 
@@ -49,9 +53,20 @@ const SceneList = (props: { setScene: (scene: Scene) => void; user: User }) => {
                 ></SceneListEntry>
               );
             })
-          : "llefr"}
+          : "noch keine Leitstellen-Konfiguration vorhanden. Erstellen Sie die erste Konfiguration..."}
       </Stack>
-      <AddScene user={props.user} setScene={props.setScene}></AddScene>
+      {props.user.readOnly !== "" ? null : (
+        <AddScene user={props.user} setScene={props.setScene}></AddScene>
+      )}
+      {props.user.loginID === "rr" ? (
+        <Button
+          onClick={() => {
+            props.setAdminArea(true);
+          }}
+        >
+          AdminArea
+        </Button>
+      ) : null}
     </Stack>
   );
 };

@@ -1,6 +1,5 @@
 import { Button, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import AdminArea from "./admin/adminArea";
 import AddSceneToDB from "./scenes/addScne";
 import GetFbx from "./fbxHandle/getFbx";
 import UploadFile from "./fbxHandle/uploadFbx";
@@ -17,6 +16,8 @@ import Register from "./login/register/register";
 
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [adminArea, setAdminArea] = useState<boolean>(false);
+  const [register, setRegister] = useState<boolean>(false); // wenn true wird register page angezeigt
   const [actUser, setActUser] = useState<User>(null);
   const [scene, setScene] = useState<Scene>(null);
 
@@ -25,19 +26,33 @@ const Home = () => {
       {loggedIn ? (
         scene ? (
           <Main scene={scene} setScene={setScene} user={actUser}></Main>
+        ) : adminArea ? (
+          <DatabaseTable
+            tableName="user"
+            setAdminArea={setAdminArea}
+          ></DatabaseTable>
         ) : (
           <Stack sx={{ height: "100%", width: "100%", background: "" }}>
-            <SceneList setScene={setScene} user={actUser}></SceneList>
+            <SceneList
+              setScene={setScene}
+              user={actUser}
+              setAdminArea={setAdminArea}
+            ></SceneList>
           </Stack>
         )
-      ) : (
-        <Login setLoggedIn={setLoggedIn} setActUser={setActUser}></Login>
+      ) : register ? null : (
+        <Login
+          setLoggedIn={setLoggedIn}
+          setActUser={setActUser}
+          setRegister={setRegister}
+        ></Login>
       )}
       {/* <AdminArea></AdminArea> */}
       {scene ? null : <CubeRotater loggedIn={loggedIn}></CubeRotater>}
       {loggedIn ? (
         <Logout setActUser={setActUser} setLoggedIn={setLoggedIn}></Logout>
       ) : null}
+      {register ? <Register setRegister={setRegister}></Register> : null}
     </Stack>
     //
     //
@@ -45,7 +60,6 @@ const Home = () => {
     //   {/* <AdminArea></AdminArea> */}
     //   <DatabaseTable tableName="User"></DatabaseTable>
     // </Stack>
-    // <Register></Register>
   );
 };
 

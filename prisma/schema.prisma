@@ -16,6 +16,7 @@ model User {
   id        String     @id 
   loginID   String  @unique
   password  String?
+  readOnly  String  // nur wenn leer gilt false ansonsten true
 }
 
 model FbxModel {
