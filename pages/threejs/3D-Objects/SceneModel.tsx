@@ -26,6 +26,10 @@ function SceneModel(
   // zum neu rändern fürs cube mesh
   const [key, setKey] = useState(0);
 
+  useEffect(() => {
+    tcRef.current.domElement.style.pointerEvents = "auto";
+  }, []);
+
   // function
   const setCurrentObj = () => {
     if (props.testmode) return;

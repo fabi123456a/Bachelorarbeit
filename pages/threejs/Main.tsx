@@ -32,7 +32,6 @@ export default function Main(props: {
   setScene: (scene: Scene) => void;
 }) {
   // ---- STATES ----
-  const [clickID, setClickID] = useState<string>(null);
   const [treeViewSelectedId, setTreeViewSelectedId] = useState<string>(null);
   const [showControlsInfo, setShowControlsInfo] = useState<boolean>(true);
   const [isTestMode, setIsTestMode] = useState<boolean>(false);

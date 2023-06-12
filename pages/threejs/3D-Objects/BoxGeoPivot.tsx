@@ -104,6 +104,7 @@ function BoxGeoPivot(
         onClick={(e) => {
           if (e) {
             e.stopPropagation();
+
             //insertBoundingBox();
           }
         }}
