@@ -13,7 +13,7 @@ import exportToGLTF from "./utils/exporting";
 import { Scene, User } from "@prisma/client";
 import { WallList } from "./UI-Elements/WallList/WallList";
 import { debug } from "console";
-import SceneModelList from "./UI-Elements/SceneModelList/SceneModelList";
+import SceneModelList from "./UI-Elements/SceneModelTreeView/SceneModelList";
 import { Radio } from "@mui/material";
 import { RadioGroup } from "@mui/material";
 import { FormControlLabel } from "@mui/material";

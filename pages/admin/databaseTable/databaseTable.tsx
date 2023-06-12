@@ -37,6 +37,7 @@ const DatabaseTable = (props: {
           method: "POST",
           body: JSON.stringify({
             tableName: props.tableName,
+            orderBy: "loginID",
           }),
         });
 

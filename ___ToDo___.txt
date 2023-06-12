@@ -3,3 +3,6 @@ buggs:
 - bei mouseUp wird ein anderes objekt selektiert
 - treeview bug (objekte tauchen mehrfach auf)
 - treeview name statt id
+- bei ausslogen alles states auf null setzen weil sons adminberreich zugänglich
+- str + v bei readonly deaktivieren
+- DB_INSERT user -> loginID: eeeeecewas, password: eee32dwewcx

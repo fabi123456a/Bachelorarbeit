@@ -7,14 +7,27 @@ export default async function DB_getAll(
 ) {
   const requestBody = JSON.parse(req.body);
   const tableName = requestBody["tableName"];
+  const orderBy = requestBody["orderBy"];
 
   try {
-    if (typeof tableName === "string") {
-      const data: any[] = await prismaClient[tableName].findMany();
-      console.log("DATA: " + data + ", " + tableName);
-      console.log("____ " + data[0]);
+    if (!orderBy) {
+      if (typeof tableName === "string") {
+        const data: any[] = await prismaClient[tableName].findMany();
+        console.log("DB_SELECT: findMany from: " + tableName);
 
-      res.status(200).json(data);
+        res.status(200).json(data);
+      }
+    } else {
+      if (typeof tableName === "string") {
+        const data: any[] = await prismaClient[tableName].findMany({
+          orderBy: {
+            [orderBy]: "asc", // asc aufsteigende Reihenfolge
+          },
+        });
+        console.log("DB_SELECT + ORDERBY: findMany from: " + tableName);
+
+        res.status(200).json(data);
+      }
     }
   } catch (error) {
     console.error(error);

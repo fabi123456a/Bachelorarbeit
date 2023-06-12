@@ -8,6 +8,7 @@ const SceneListEntry = (props: {
   scene: Scene;
   setScene: (scene: Scene) => void;
   setReload: (i: number) => void;
+  user: User;
 }) => {
   // user der die scene ertsellt hat
   const [userCreator, setUserCreator] = useState<User>();
@@ -84,25 +85,27 @@ const SceneListEntry = (props: {
         </Stack>
 
         {mouseOver ? (
-          <DeleteForeverIcon
-            color="error"
-            sx={{ alignSelf: "center", marginLeft: "auto" }}
-            onClick={async (e) => {
-              e.stopPropagation();
+          props.user.readOnly ? null : (
+            <DeleteForeverIcon
+              color="error"
+              sx={{ alignSelf: "center", marginLeft: "auto" }}
+              onClick={async (e) => {
+                e.stopPropagation();
 
-              let result = confirm(
-                "Wollen Sie wirklich die Scene " +
-                  props.scene.name +
-                  " löschen?"
-              );
-              if (result) {
-                await deleteSceneFromDB();
-                await deleteSceneFromFS();
+                let result = confirm(
+                  "Wollen Sie wirklich die Scene " +
+                    props.scene.name +
+                    " löschen?"
+                );
+                if (result) {
+                  await deleteSceneFromDB();
+                  await deleteSceneFromFS();
 
-                props.setReload(Math.random());
-              }
-            }}
-          ></DeleteForeverIcon>
+                  props.setReload(Math.random());
+                }
+              }}
+            ></DeleteForeverIcon>
+          )
         ) : null}
       </Stack>
       <Divider sx={{ mt: "4px", mb: "4px" }}></Divider>

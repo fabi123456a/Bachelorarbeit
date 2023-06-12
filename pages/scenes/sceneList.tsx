@@ -46,6 +46,7 @@ const SceneList = (props: {
           ? scenes.map((scene: Scene) => {
               return (
                 <SceneListEntry
+                  user={props.user}
                   key={scene.id}
                   scene={scene}
                   setScene={props.setScene}
