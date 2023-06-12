@@ -1,15 +1,6 @@
-import {
-  Button,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import Checkbox from "@mui/material/Checkbox";
 
 const EditData = (props: {
   setShowEdit: (flag: boolean) => void;
@@ -20,7 +11,14 @@ const EditData = (props: {
   setReload: (n: number) => void;
   dataType: string;
 }) => {
-  const [txt, setTxt] = useState<string>(props.currentData);
+  const [stringValue, setStringValue] = useState<string>(props.currentData);
+  const [boolValue, setBoolValue] = useState<boolean>(
+    props.dataType === "boolean"
+      ? props.currentData == "true" || props.currentData == "1"
+        ? true
+        : false
+      : null
+  );
 
   const editDataInDatabase = async () => {
     const response = await fetch("/api/database/DB_updateTable", {
@@ -29,21 +27,33 @@ const EditData = (props: {
         tableName: props.tableName,
         id: props.id,
         prop: props.porpertie,
-        newData: txt,
+        newData: props.dataType === "string" ? stringValue : boolValue,
       }),
     });
   };
 
   return (
     <Stack className="editData">
-      <Typography>{props.dataType}</Typography>
-      <TextField
-        label={props.porpertie}
-        value={txt}
-        onChange={(e) => {
-          setTxt(e.target.value);
-        }}
-      ></TextField>
+      <Typography>
+        {props.dataType + ", " + props.currentData + ", " + boolValue}
+      </Typography>
+      {props.dataType === "string" ? (
+        <TextField
+          label={props.porpertie}
+          value={stringValue}
+          onChange={(e) => {
+            setStringValue(e.target.value);
+          }}
+        ></TextField>
+      ) : null}
+      {props.dataType === "boolean" ? (
+        <Checkbox
+          checked={boolValue}
+          onChange={(e) => {
+            setBoolValue(e.target.checked);
+          }}
+        ></Checkbox>
+      ) : null}
       <Button
         onClick={() => {
           editDataInDatabase(); // TODO: prüfen ob das löschen überhaupt funktioniert hat

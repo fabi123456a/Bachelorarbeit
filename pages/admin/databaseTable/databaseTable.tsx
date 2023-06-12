@@ -4,7 +4,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableCellProps,
   TableHead,
   TableRow,
   Typography,
@@ -19,6 +18,7 @@ const DatabaseTable = (props: {
 }) => {
   const [data, setData] = useState<any[]>();
   const [properties, setProperties] = useState<string[]>();
+  const [types, setTypes] = useState<string[]>();
   const [reload, setReload] = useState<number>(0);
   const [showEditData, setShowEditData] = useState<boolean>(false);
 
@@ -26,6 +26,8 @@ const DatabaseTable = (props: {
   const [actDataRowID, setActDataRowID] = useState<string>("");
   const [actData, setActData] = useState<string>("");
   const [actDataType, setActDataType] = useState<string>("");
+
+  // {id: "x", loginID: "rr", password: "rr", readOnly: true}
 
   useEffect(() => {
     // lädt alle Daten aus props.tablename
@@ -44,7 +46,13 @@ const DatabaseTable = (props: {
         setData(result);
         setProperties(Object.keys(result[0]));
 
-        console.log(result[0]);
+        // const dataTypes = Object.values(result[0]).map((value) => typeof value);
+        // setX(dataTypes);
+        const dataTypes = Object.values(result[0]).map((value) => typeof value);
+
+        setTypes(dataTypes);
+
+        //console.log(result[0]);
       } catch (error) {
         console.error(error);
         setData(null);
@@ -99,12 +107,12 @@ const DatabaseTable = (props: {
                         setActDataType(typeof dataRow[prop]);
                       }}
                     >
-                      {dataRow[prop]}
-                      {/* {typeof dataRow[prop] === "boolean"
+                      {/* {dataRow[prop]} */}
+                      {typeof dataRow[prop] === "boolean"
                         ? dataRow[prop]
-                          ? "True11111"
-                          : "False1111" // Convert boolean to string representation
-                        : dataRow[prop]} */}
+                          ? "Ja"
+                          : "Nein" // Convert boolean to string representation
+                        : dataRow[prop]}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -117,6 +125,7 @@ const DatabaseTable = (props: {
           tableName={props.tableName}
           porperties={properties}
           setReload={setReload}
+          types={types}
         ></Insert>
       </Stack>
       {showEditData ? (

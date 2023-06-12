@@ -557,7 +557,7 @@ export default function Main(props: {
         </Snackbar>
 
         {/* ModelList j */}
-        {props.user.readOnly !== "" ? null : (
+        {!props.user.readOnly ? null : (
           <>
             <ModelList
               addObject={handleModelAdd}
