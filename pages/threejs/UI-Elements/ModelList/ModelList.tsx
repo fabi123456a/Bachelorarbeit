@@ -6,7 +6,7 @@ import UploadFbx from "../../../fbxHandle/uploadFbx";
 
 export function ModelList(props: {
   paths: { name: string; path: string }[]; // enthält alle Pfade der FBX-Models die auf dem Server liegen
-  addObject: (pfad: string) => void;
+  addObject: (pfad: string, info: string) => void;
   addModel: (name: string, url: string, file: any) => void;
   deleteModel: (url: string) => void;
   setRefreshData: () => void;

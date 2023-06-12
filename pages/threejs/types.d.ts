@@ -42,6 +42,7 @@ type TypeObjectProps = {
   showYTransform: boolean;
   showZTransform: boolean;
   modelPath: string;
+  name?: string;
   info?: string;
   color?: string;
 };

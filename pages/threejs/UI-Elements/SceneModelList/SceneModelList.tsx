@@ -42,6 +42,7 @@ export default function SceneModelList(props: {
               setSelectedId={handleTreeItemClick}
               selectedID={props.selectedId}
               deleteObject={props.deleteObject}
+              models={props.models}
             ></SceneModelListItem>
           ))}
         </TreeItem>

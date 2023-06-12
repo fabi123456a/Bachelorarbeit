@@ -21,7 +21,7 @@ export function WallList(props: {
       className="wallList"
     >
       <Typography textAlign={"center"} fontSize={"1.25rem"}>
-        Walls
+        Raumelemente
       </Typography>
       <Stack direction={"row"}>
         {names.map((name: string) => (

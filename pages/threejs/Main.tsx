@@ -32,6 +32,7 @@ export default function Main(props: {
   setScene: (scene: Scene) => void;
 }) {
   // ---- STATES ----
+  const [clickID, setClickID] = useState<string>(null);
   const [treeViewSelectedId, setTreeViewSelectedId] = useState<string>(null);
   const [showControlsInfo, setShowControlsInfo] = useState<boolean>(true);
   const [isTestMode, setIsTestMode] = useState<boolean>(false);
@@ -256,7 +257,7 @@ export default function Main(props: {
     setRefreshFbxModelPathsData((prevRefreshData) => !prevRefreshData);
   };
 
-  const handleModelAdd = (pfad: string) => {
+  const handleModelAdd = (pfad: string, info: string) => {
     const objProps: TypeObjectProps = {
       id: "" + Math.random() * 1000,
       editMode: "translate",
@@ -267,6 +268,7 @@ export default function Main(props: {
       position: { x: 0, y: 0, z: 0 },
       scale: { x: 0.02, y: 0.02, z: 0.02 },
       rotation: { x: 0, y: 0, z: 0 },
+      info: info,
     };
 
     setModels([...models, objProps]);
@@ -557,7 +559,7 @@ export default function Main(props: {
         </Snackbar>
 
         {/* ModelList j */}
-        {!props.user.readOnly ? null : (
+        {props.user.readOnly ? null : (
           <>
             <ModelList
               addObject={handleModelAdd}

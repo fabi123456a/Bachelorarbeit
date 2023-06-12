@@ -55,7 +55,7 @@ const SceneList = (props: {
             })
           : "noch keine Leitstellen-Konfiguration vorhanden. Erstellen Sie die erste Konfiguration..."}
       </Stack>
-      {!props.user.readOnly ? null : (
+      {props.user.readOnly ? null : (
         <AddScene user={props.user} setScene={props.setScene}></AddScene>
       )}
       {props.user.loginID === "rr" ? (
