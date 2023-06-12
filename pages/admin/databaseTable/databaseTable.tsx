@@ -26,6 +26,7 @@ const DatabaseTable = (props: {
   const [actDataRowID, setActDataRowID] = useState<string>("");
   const [actData, setActData] = useState<string>("");
   const [actDataType, setActDataType] = useState<string>("");
+  const [sortBy, setSortBy] = useState<string>(null);
 
   // {id: "x", loginID: "rr", password: "rr", readOnly: true}
 
@@ -37,7 +38,7 @@ const DatabaseTable = (props: {
           method: "POST",
           body: JSON.stringify({
             tableName: props.tableName,
-            orderBy: "loginID",
+            orderBy: sortBy,
           }),
         });
 
@@ -61,7 +62,7 @@ const DatabaseTable = (props: {
     }
 
     loadData();
-  }, [props.tableName, reload]);
+  }, [props.tableName, reload, sortBy]);
 
   return (
     <Stack>
@@ -82,7 +83,13 @@ const DatabaseTable = (props: {
           <TableRow>
             {properties
               ? properties.map((prop: string) => (
-                  <TableCell sx={{ fontWeight: "bold" }} key={prop}>
+                  <TableCell
+                    sx={{ fontWeight: "bold" }}
+                    key={prop}
+                    onClick={() => {
+                      setSortBy(prop);
+                    }}
+                  >
                     {prop}
                   </TableCell>
                 ))

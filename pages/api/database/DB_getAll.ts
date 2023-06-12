@@ -13,7 +13,7 @@ export default async function DB_getAll(
     if (!orderBy) {
       if (typeof tableName === "string") {
         const data: any[] = await prismaClient[tableName].findMany();
-        console.log("DB_SELECT: findMany from: " + tableName);
+        console.log("DB_SELECT -> findMany from: " + tableName);
 
         res.status(200).json(data);
       }
@@ -24,7 +24,9 @@ export default async function DB_getAll(
             [orderBy]: "asc", // asc aufsteigende Reihenfolge
           },
         });
-        console.log("DB_SELECT + ORDERBY: findMany from: " + tableName);
+        console.log(
+          "DB_SELECT + ORDERBY " + orderBy + " -> findMany from: " + tableName
+        );
 
         res.status(200).json(data);
       }

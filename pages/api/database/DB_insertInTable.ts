@@ -14,9 +14,9 @@ export default async function DB_insertInTable(
       const data: any[] = await prismaClient[tableName].create({
         data: data1,
       });
-      console.log("insert DATA: " + data1);
+      console.log("DB_INSERT: create: " + data1);
 
-      //res.status(200).json(data);
+      res.status(200).json(data);
     }
   } catch (error) {
     console.error(error);

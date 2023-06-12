@@ -153,6 +153,15 @@ body {
   background-color: yellow;
 }
 
+/* dataTable */
+.databaseTableCell:hover {
+  background: rgb(250, 255, 189);
+}
+
+.databaseTableRow:hover {
+  border: 1px solid green;
+}
+
 /* registerrieren */
 .register {
   height: 100%;

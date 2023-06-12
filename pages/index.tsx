@@ -27,10 +27,17 @@ const Home = () => {
         scene ? (
           <Main scene={scene} setScene={setScene} user={actUser}></Main>
         ) : adminArea ? (
-          <DatabaseTable
-            tableName="user"
-            setAdminArea={setAdminArea}
-          ></DatabaseTable>
+          <>
+            {/* TODO: auslagern in eigene Admin komponente*/}
+            <DatabaseTable
+              tableName="user"
+              setAdminArea={setAdminArea}
+            ></DatabaseTable>
+            {/* <DatabaseTable
+              tableName="scene"
+              setAdminArea={setAdminArea}
+            ></DatabaseTable> */}
+          </>
         ) : (
           <Stack sx={{ height: "100%", width: "100%", background: "" }}>
             <SceneList
