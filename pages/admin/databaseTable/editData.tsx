@@ -18,6 +18,7 @@ const EditData = (props: {
   id: string;
   currentData: string;
   setReload: (n: number) => void;
+  dataType: string;
 }) => {
   const [txt, setTxt] = useState<string>(props.currentData);
 
@@ -35,6 +36,7 @@ const EditData = (props: {
 
   return (
     <Stack className="editData">
+      <Typography>{props.dataType}</Typography>
       <TextField
         label={props.porpertie}
         value={txt}

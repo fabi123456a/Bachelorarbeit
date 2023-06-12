@@ -25,8 +25,10 @@ const DatabaseTable = (props: {
   const [actProp, setActProp] = useState<string>("");
   const [actDataRowID, setActDataRowID] = useState<string>("");
   const [actData, setActData] = useState<string>("");
+  const [actDataType, setActDataType] = useState<string>("");
 
   useEffect(() => {
+    // lädt alle Daten aus props.tablename
     async function loadData() {
       try {
         const response = await fetch("api/database/DB_getAll", {
@@ -41,8 +43,11 @@ const DatabaseTable = (props: {
 
         setData(result);
         setProperties(Object.keys(result[0]));
+
+        console.log(result[0]);
       } catch (error) {
         console.error(error);
+        setData(null);
       }
     }
 
@@ -91,9 +96,15 @@ const DatabaseTable = (props: {
                         setActDataRowID(dataRow["id"]);
                         setActData(dataRow[prop]);
                         setShowEditData(true);
+                        setActDataType(typeof dataRow[prop]);
                       }}
                     >
                       {dataRow[prop]}
+                      {/* {typeof dataRow[prop] === "boolean"
+                        ? dataRow[prop]
+                          ? "True11111"
+                          : "False1111" // Convert boolean to string representation
+                        : dataRow[prop]} */}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -116,6 +127,7 @@ const DatabaseTable = (props: {
           id={actDataRowID}
           currentData={actData}
           setReload={setReload}
+          dataType={actDataType}
         ></EditData>
       ) : null}
     </Stack>

@@ -12,6 +12,7 @@ export default async function DB_getAll(
     if (typeof tableName === "string") {
       const data: any[] = await prismaClient[tableName].findMany();
       console.log("DATA: " + data + ", " + tableName);
+      console.log("____ " + data[0]);
 
       res.status(200).json(data);
     }

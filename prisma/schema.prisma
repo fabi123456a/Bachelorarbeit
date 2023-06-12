@@ -16,7 +16,7 @@ model User {
   id        String     @id 
   loginID   String  @unique
   password  String?
-  readOnly  String  // nur wenn leer gilt false ansonsten true
+  readOnly  Boolean  
 }
 
 model FbxModel {
@@ -46,3 +46,6 @@ model ChatEntry {
   message String
   datum   DateTime
 }
+
+// delete user: delete from user
+// insert user: INSERT INTO user ("id", "loginID", "password", "readonly") VALUES ("x", "rr", "rr", false);

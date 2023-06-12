@@ -1,3 +1,4 @@
 buggs:
 
 - bei mouseUp wird ein anderes objekt selektiert
+- treeview bug (objekte tauchen mehrfach auf)
