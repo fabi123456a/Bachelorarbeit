@@ -7,6 +7,7 @@ buggs:
 - str + v bei readonly deaktivieren
 - DB_INSERT user -> loginID: eeeeecewas, password: eee32dwewcx
 - fbxlist load animation
+- im chat: name statt id outerjoin
 
 
 - leere databaseTable und dann insert geht nicht, weil die props von dem erstel geladenen datensatz erst gesetzt werden
