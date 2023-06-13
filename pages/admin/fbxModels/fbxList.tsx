@@ -47,7 +47,14 @@ const FbxList = (props: { setAdminArea: (flag: boolean) => void }) => {
       <Typography>Fbx-Models</Typography>
       <Stack>
         {files.map((file, index) => (
-          <Stack key={index} direction={"row"} sx={{ alignItems: "center" }}>
+          <Stack
+            key={index}
+            direction={"row"}
+            sx={{
+              alignItems: "center",
+              borderBottom: "1px solid black",
+            }}
+          >
             <ModelPreview fbxName={file}></ModelPreview>
             <Typography>{file}</Typography>
             <IconButton

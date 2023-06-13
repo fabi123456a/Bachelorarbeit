@@ -14,7 +14,7 @@ const AdminArea = (props: { setAdminArea: (flag: boolean) => void }) => {
           setFlag((prev) => !prev);
         }}
       >
-        Toogle
+        Wechseln
       </Button>
       {!flag ? (
         <DatabaseTable

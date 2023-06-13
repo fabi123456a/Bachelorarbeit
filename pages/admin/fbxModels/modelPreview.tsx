@@ -11,7 +11,12 @@ const ModelPreview = (props: { fbxName: string }) => {
 
   return (
     <Canvas
-      style={{ height: "200px", width: "200px", border: "1px solid black" }}
+      style={{
+        height: "200px",
+        width: "200px",
+        border: "1px solid black",
+        margin: "2px",
+      }}
     >
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} />

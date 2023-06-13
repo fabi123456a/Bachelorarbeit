@@ -19,12 +19,6 @@ model User {
   readOnly  Boolean  
 }
 
-model FbxModel {
-  id      String     @id 
-  name    String  
-  folder  String
-}
-
 model Scene {
   id             String     @id 
   idUserCreater  String 

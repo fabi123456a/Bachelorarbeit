@@ -72,7 +72,7 @@ const DatabaseTable = (props: {
           props.setAdminArea(false);
         }}
       >
-        Zurückgggggggg
+        Zurück
       </Button>
       <Typography sx={{ alignSelf: "center", pb: "12px" }}>
         {data ? props.tableName : null}

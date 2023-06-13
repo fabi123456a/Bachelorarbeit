@@ -6,7 +6,7 @@ buggs:
 - bei ausslogen alles states auf null setzen weil sons adminberreich zugänglich
 - str + v bei readonly deaktivieren
 - DB_INSERT user -> loginID: eeeeecewas, password: eee32dwewcx
-
+- fbxlist load animation
 
 
 - leere databaseTable und dann insert geht nicht, weil die props von dem erstel geladenen datensatz erst gesetzt werden

@@ -4,7 +4,7 @@ import { useThree } from "@react-three/fiber";
 import { useEffect, useState } from "react";
 import * as THREE from "three";
 import BoxGeoPivot from "../3D-Objects/BoxGeoPivot";
-import { Grid, Sky, Stars, Stats } from "@react-three/drei";
+import { Cylinder, Grid, Sky, Stars, Stats } from "@react-three/drei";
 
 export default function Scene(props: {
   controlsRef: React.RefObject<any>;

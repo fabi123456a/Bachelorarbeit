@@ -3,7 +3,7 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
-const UploadFbx = (props: {setRefreshData: () => void;}) => {
+const UploadFbx = (props: { setRefreshData: () => void }) => {
   // states
   const [uploading, setUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File>();
@@ -42,7 +42,7 @@ const UploadFbx = (props: {setRefreshData: () => void;}) => {
   };
 
   return (
-    <Stack direction={"row"}>
+    <Stack style={{ margin: "2px" }}>
       <input
         type="file"
         onChange={({ target }) => {
@@ -62,7 +62,6 @@ const UploadFbx = (props: {setRefreshData: () => void;}) => {
         variant={"outlined"}
       >
         {uploading ? "Uploading.." : "Upload"}
-        
       </Button>
     </Stack>
   );
