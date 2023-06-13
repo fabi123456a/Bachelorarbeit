@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 
 function ColorPicker(props: {
   setCurrentObjectProps: (props: TypeObjectProps) => void;
   currentObjectProps: TypeObjectProps;
 }) {
-  const [color, setColor] = useState("#ff0000"); // Farbwert im Status speichern
+  const [color, setColor] = useState(props.currentObjectProps?.color); // Farbwert im Status speichern
 
   const handleColorChange = (event) => {
     const newObjectProps = { ...props.currentObjectProps }; // Kopie von currentObjectProps erstellen
@@ -18,15 +18,19 @@ function ColorPicker(props: {
 
   return (
     <Stack>
-      Colorpicker
-      <input
-        type="color"
-        id="favcolor"
-        name="favcolor"
-        value={color}
-        onChange={handleColorChange}
-      />
-      <p>{color}</p>
+      {props.currentObjectProps ? (
+        <>
+          <Typography>Farbe ändern</Typography>
+          <input
+            type="color"
+            id="favcolor"
+            name="favcolor"
+            value={color}
+            onChange={handleColorChange}
+          />
+          <p>{color}</p>
+        </>
+      ) : null}
     </Stack>
   );
 }

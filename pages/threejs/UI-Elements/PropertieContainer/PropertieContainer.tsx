@@ -1,6 +1,7 @@
 import { Divider, Grid, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import NumberInput from "./NumberInput";
+import ColorPicker from "../Colorpicker/ColorPicker";
 
 // https://mui.com/material-ui/react-typography/#main-content
 // links oben auf die 2 Striche klicken,
@@ -159,6 +160,14 @@ function PropertieContainer({
               </Grid>
             </Grid>
           </Stack>
+          {objProps.modelPath == null || objProps.modelPath == "" ? (
+            <ColorPicker
+              currentObjectProps={objProps}
+              setCurrentObjectProps={
+                setObjProps as (props: TypeObjectProps) => void
+              }
+            ></ColorPicker>
+          ) : null}
         </Stack>
       ) : (
         ""
