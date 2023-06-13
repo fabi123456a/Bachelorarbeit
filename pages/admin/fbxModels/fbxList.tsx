@@ -1,13 +1,14 @@
-import { Divider, IconButton, Stack, Typography } from "@mui/material";
+import { Button, Divider, IconButton, Stack, Typography } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import ModelPreview from "./modelPreview";
 import { DeleteForeverOutlined } from "@mui/icons-material";
+import UploadFbx from "../../fbxHandle/uploadFbx";
 
 interface FileListResponse {
   files: string[];
 }
 
-const FbxList: React.FC = () => {
+const FbxList = (props: { setAdminArea: (flag: boolean) => void }) => {
   const [files, setFiles] = useState<string[]>([]);
   const [reload, setReload] = useState<boolean>(false);
 
@@ -36,6 +37,13 @@ const FbxList: React.FC = () => {
 
   return (
     <Stack>
+      <Button
+        onClick={() => {
+          props.setAdminArea(false);
+        }}
+      >
+        Zurück
+      </Button>
       <Typography>Fbx-Models</Typography>
       <Stack>
         {files.map((file, index) => (
@@ -44,15 +52,26 @@ const FbxList: React.FC = () => {
             <Typography>{file}</Typography>
             <IconButton
               onClick={async () => {
-                await handleFbxDelete(file);
-                setReload((prev) => !prev);
-                alert(file + " wurde erfolgreich gelöscht");
+                const confirmed = window.confirm(
+                  "Willst du " + file + " wirklich löschen?"
+                );
+
+                if (confirmed) {
+                  await handleFbxDelete(file);
+                  setReload((prev) => !prev);
+                  alert(file + " wurde erfolgreich gelöscht");
+                }
               }}
             >
               <DeleteForeverOutlined />
             </IconButton>
           </Stack>
         ))}
+        <UploadFbx
+          setRefreshData={() => {
+            setReload((prev) => !prev);
+          }}
+        ></UploadFbx>
       </Stack>
     </Stack>
   );

@@ -45,7 +45,7 @@ const Home = () => {
         ></Login>
       )}
       {/* <AdminArea></AdminArea> */}
-      {scene ? null : <CubeRotater loggedIn={loggedIn}></CubeRotater>}
+      {loggedIn ? null : <CubeRotater loggedIn={loggedIn}></CubeRotater>}
       {loggedIn ? (
         <Logout setActUser={setActUser} setLoggedIn={setLoggedIn}></Logout>
       ) : null}

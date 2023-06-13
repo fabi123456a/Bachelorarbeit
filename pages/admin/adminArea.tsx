@@ -22,7 +22,7 @@ const AdminArea = (props: { setAdminArea: (flag: boolean) => void }) => {
           setAdminArea={props.setAdminArea}
         ></DatabaseTable>
       ) : (
-        <FbxList></FbxList>
+        <FbxList setAdminArea={props.setAdminArea}></FbxList>
       )}
     </Stack>
   );
