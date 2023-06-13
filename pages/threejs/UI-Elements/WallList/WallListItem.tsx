@@ -27,6 +27,7 @@ export function WallListItem(props: {
             },
             rotation: { x: 0, y: 0, z: 0 },
             color: props.name == "floor" ? "#eee" : null, // der boden soll eine andere farbe bekommen
+            name: props.name,
             info: props.name,
           };
 

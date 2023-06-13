@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import * as THREE from "three";
 import BoxGeoPivot from "../3D-Objects/BoxGeoPivot";
 import { Cylinder, Grid, Sky, Stars, Stats } from "@react-three/drei";
+import Cylinderqq from "../3D-Objects/CylinderPivot";
 
 export default function Scene(props: {
   controlsRef: React.RefObject<any>;
@@ -73,25 +74,47 @@ export default function Scene(props: {
             testmode={props.testMode}
           ></SceneModel>
         ) : props.wallVisibility ? (
-          <BoxGeoPivot
-            key={model.id}
-            id={model.id}
-            controlsRef={props.controlsRef}
-            isSelected={model.id === props.currentObjectProps?.id}
-            editMode={model.editMode}
-            modelPath={model.modelPath}
-            showXTransform={model.showXTransform}
-            showYTransform={model.showYTransform}
-            showZTransform={model.showZTransform}
-            position={model.position}
-            scale={model.scale}
-            rotation={model.rotation}
-            camPerspektive={props.perspektive}
-            setCurrentObjectProps={props.setCurrentObjectProps}
-            info={model.info}
-            color={model.color}
-            testMode={props.testMode}
-          ></BoxGeoPivot>
+          model.info == "cylinder" ? (
+            <Cylinderqq
+              key={model.id}
+              id={model.id}
+              controlsRef={props.controlsRef}
+              isSelected={model.id === props.currentObjectProps?.id}
+              editMode={model.editMode}
+              modelPath={model.modelPath}
+              showXTransform={model.showXTransform}
+              showYTransform={model.showYTransform}
+              showZTransform={model.showZTransform}
+              position={model.position}
+              scale={model.scale}
+              rotation={model.rotation}
+              camPerspektive={props.perspektive}
+              setCurrentObjectProps={props.setCurrentObjectProps}
+              info={model.info}
+              color={model.color}
+              testMode={props.testMode}
+            ></Cylinderqq>
+          ) : (
+            <BoxGeoPivot
+              key={model.id}
+              id={model.id}
+              controlsRef={props.controlsRef}
+              isSelected={model.id === props.currentObjectProps?.id}
+              editMode={model.editMode}
+              modelPath={model.modelPath}
+              showXTransform={model.showXTransform}
+              showYTransform={model.showYTransform}
+              showZTransform={model.showZTransform}
+              position={model.position}
+              scale={model.scale}
+              rotation={model.rotation}
+              camPerspektive={props.perspektive}
+              setCurrentObjectProps={props.setCurrentObjectProps}
+              info={model.info}
+              color={model.color}
+              testMode={props.testMode}
+            ></BoxGeoPivot>
+          )
         ) : null
       )}
       {/* ground plane */}

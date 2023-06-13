@@ -19,9 +19,9 @@ type TypePosition = {
 
 // skalierung des Objects
 type TypeScale = {
-  x: number;
-  y: number;
-  z: number;
+  x: number; // beu cylinder -> radius
+  y: number; // bei cylinder -> höhe
+  z: number; // bei cylinder -> nix
 };
 
 // rotierung des Objects

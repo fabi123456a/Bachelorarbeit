@@ -25,7 +25,7 @@ export default function SceneModelListItem(props: {
   models: TypeObjectProps[];
 }) {
   const [rename, setRename] = useState<boolean>(false);
-  const [name, setName] = useState<string>(props.model.info);
+  const [name, setName] = useState<string>(props.model.name);
 
   const handleIconClick = (e, id: string) => {
     e.stopPropagation();
@@ -38,7 +38,7 @@ export default function SceneModelListItem(props: {
   const saveNewName = () => {
     props.models.forEach((model1) => {
       if (model1.id == props.model.id) {
-        model1.info = name;
+        model1.name = name;
       }
     });
   };
@@ -66,7 +66,7 @@ export default function SceneModelListItem(props: {
         <TreeItem
           key={props.model.id}
           nodeId={props.model.id}
-          label={props.model.info ? props.model.info : props.model.id}
+          label={props.model.name ? props.model.name : props.model.id}
           onClick={() => {
             // set selected id
             props.setSelectedId(props.model.id);

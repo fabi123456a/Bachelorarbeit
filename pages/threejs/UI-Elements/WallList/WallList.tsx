@@ -5,11 +5,12 @@ import { WallListItem } from "./WallListItem";
 export function WallList(props: {
   addWall: (objProps: TypeObjectProps) => void;
 }) {
-  const names: string[] = ["floor", "wall", "cube"];
+  const names: string[] = ["floor", "wall", "cube", "cylinder"];
   const data: object = {
     floor: { x: 50, y: 0.001, z: 50 },
     wall: { x: 0.001, y: 10, z: 50 },
     cube: { x: 5, y: 5, z: 5 },
+    cylinder: { x: 1, y: 4, z: 1 }, // bei cylineder x = radius, y = height, z = tiefe
   };
 
   return (

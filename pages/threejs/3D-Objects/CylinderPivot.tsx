@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Html, TransformControls } from "@react-three/drei";
+import { Cylinder, Html, TransformControls } from "@react-three/drei";
 import * as THREE from "three";
 import { Vector3 } from "three";
 import BoxGeometry from "./BoxGeometry";
@@ -7,7 +7,7 @@ import { Button } from "@mui/material";
 
 // KOMPONENTE
 
-function Cylinder(
+function Cylinderqq(
   props: TypeObjectProps & {
     isSelected: boolean;
     camPerspektive: string;
@@ -19,7 +19,6 @@ function Cylinder(
   // referenz auf das Mesh des FBX-Models
   const refMesh = useRef<THREE.Mesh>(null);
   const tcRef = useRef<any>(null);
-
 
   // function
   const setCurrentObj = () => {
@@ -97,17 +96,19 @@ function Cylinder(
           }
         }}
       >
-        <>
-          <BoxGeometry
-            ref123={refMesh}
-            onclick={props.testMode ? null : setCurrentObj}
-            geometrie={{ positionXYZ: [0, 0, 0], scaleXYZ: [1, 1, 1] }}
-            testMode={props.testMode}
-          ></BoxGeometry>
-        </>
+        {/* <Cylinder
+          args={[props.scale.x, props.scale.x, props.scale.y, 32]}
+          position={[props.position.x, props.position.y, props.position.z]}
+        /> */}
+        <Cylinder
+          args={[1, 1, 2, 32]}
+          position={[0, 0, 0]}
+          ref={refMesh}
+          onClick={props.testMode ? null : setCurrentObj}
+        />
       </TransformControls>
     </>
   );
 }
 
-export default Cylinder;
+export default Cylinderqq;
