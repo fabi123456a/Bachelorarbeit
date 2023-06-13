@@ -8,11 +8,8 @@ function BoxGeometry(props: {
   onclick?: () => void;
   ref123?: Ref<Mesh<BufferGeometry, Material | Material[]>>;
   testMode: boolean;
-  color?: string;
+  color: string;
 }) {
-  const defaultColor = "#328da8";
-  const highlightColor = "#fffb00";
-
   return (
     <>
       <mesh
@@ -29,7 +26,7 @@ function BoxGeometry(props: {
         }}
       >
         <boxBufferGeometry args={props.geometrie.scaleXYZ} />
-        <meshStandardMaterial color={props.color ? props.color : null} />
+        <meshStandardMaterial color={props.color} />
       </mesh>
     </>
   );

@@ -115,6 +115,7 @@ function BoxGeoPivot(
             onclick={props.testMode ? null : setCurrentObj}
             geometrie={{ positionXYZ: [0, 0, 0], scaleXYZ: [1, 1, 1] }}
             testMode={props.testMode}
+            color={props.color}
           ></BoxGeometry>
         </>
       </TransformControls>

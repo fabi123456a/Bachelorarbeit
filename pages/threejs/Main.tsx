@@ -607,7 +607,11 @@ export default function Main(props: {
               scene={props.scene}
             ></ToolBar>
 
-            <WallList addWall={handleWallAdd}></WallList>
+            <WallList
+              addWall={handleWallAdd}
+              currentObjectProps={currentObjectProps}
+              setCurrentObjectProps={setCurrentObjectProps}
+            ></WallList>
 
             {/* PropertieContainer */}
             <Stack

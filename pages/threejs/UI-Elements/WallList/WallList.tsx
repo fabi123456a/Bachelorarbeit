@@ -1,9 +1,12 @@
 import { Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { WallListItem } from "./WallListItem";
+import ColorPicker from "../Colorpicker/ColorPicker";
 
 export function WallList(props: {
   addWall: (objProps: TypeObjectProps) => void;
+  setCurrentObjectProps: (props: TypeObjectProps) => void;
+  currentObjectProps: TypeObjectProps;
 }) {
   const names: string[] = ["floor", "wall", "cube", "cylinder"];
   const data: object = {
@@ -33,6 +36,10 @@ export function WallList(props: {
             data={data}
           ></WallListItem>
         ))}
+        <ColorPicker
+          currentObjectProps={props.currentObjectProps}
+          setCurrentObjectProps={props.setCurrentObjectProps}
+        ></ColorPicker>
       </Stack>
     </Stack>
   );

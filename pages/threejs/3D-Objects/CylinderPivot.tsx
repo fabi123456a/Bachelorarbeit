@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Cylinder, Html, TransformControls } from "@react-three/drei";
 import * as THREE from "three";
-import { Vector3 } from "three";
+import { MeshBasicMaterial, Vector3 } from "three";
 import BoxGeometry from "./BoxGeometry";
 import { Button } from "@mui/material";
 
@@ -19,6 +19,10 @@ function Cylinderqq(
   // referenz auf das Mesh des FBX-Models
   const refMesh = useRef<THREE.Mesh>(null);
   const tcRef = useRef<any>(null);
+
+  const cylinderMaterial = new MeshBasicMaterial({
+    color: props.color,
+  });
 
   // function
   const setCurrentObj = () => {
@@ -105,6 +109,7 @@ function Cylinderqq(
           position={[0, 0, 0]}
           ref={refMesh}
           onClick={props.testMode ? null : setCurrentObj}
+          material={cylinderMaterial}
         />
       </TransformControls>
     </>
