@@ -1,15 +1,5 @@
 import Checkbox from "@mui/material/Checkbox";
-import {
-  Button,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 const Insert = (props: {

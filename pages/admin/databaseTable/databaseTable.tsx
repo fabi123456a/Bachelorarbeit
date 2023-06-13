@@ -67,7 +67,7 @@ const DatabaseTable = (props: {
   return (
     <Stack>
       <Button
-        style={{ height: "200px", background: "red" }}
+        style={null}
         onClick={() => {
           props.setAdminArea(false);
         }}

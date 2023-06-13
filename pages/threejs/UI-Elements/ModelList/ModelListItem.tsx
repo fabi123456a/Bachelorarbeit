@@ -2,7 +2,6 @@ import { Button, IconButton } from "@mui/material";
 import { Stack } from "@mui/system";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
-
 export function ModelListItem(props: {
   name: string;
   pfad: string;
@@ -18,14 +17,13 @@ export function ModelListItem(props: {
       >
         {props.name}
       </Button>
-      <IconButton
+      {/* <IconButton TODO: das löschen von fbxModels soll über admin afea gehen
         onClick={() => {
           props.deleteModel(props.pfad);
         }}
       >
         <DeleteForeverIcon></DeleteForeverIcon>
-      </IconButton>
-      
+      </IconButton> */}
     </Stack>
   );
 }

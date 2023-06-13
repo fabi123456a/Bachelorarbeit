@@ -31,7 +31,7 @@ const SceneList = (props: {
   }, [reload]);
 
   return (
-    <Stack className="sceneList">
+    <Stack className="">
       <Typography sx={{ mb: "24px", fontWeight: "bold" }}>
         Leitstelle auswählen:
       </Typography>

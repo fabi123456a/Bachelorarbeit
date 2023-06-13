@@ -13,6 +13,8 @@ import Logout from "./login/logout";
 import DatabaseTable from "./admin/databaseTable/databaseTable";
 import UploadFbx from "./fbxHandle/uploadFbx";
 import Register from "./login/register/register";
+import FbxList from "./admin/fbxModels/fbxList";
+import AdminArea from "./admin/adminArea";
 
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -27,25 +29,13 @@ const Home = () => {
         scene ? (
           <Main scene={scene} setScene={setScene} user={actUser}></Main>
         ) : adminArea ? (
-          <>
-            {/* TODO: auslagern in eigene Admin komponente*/}
-            <DatabaseTable
-              tableName="user"
-              setAdminArea={setAdminArea}
-            ></DatabaseTable>
-            {/* <DatabaseTable
-              tableName="scene"
-              setAdminArea={setAdminArea}
-            ></DatabaseTable> */}
-          </>
+          <AdminArea setAdminArea={setAdminArea}></AdminArea>
         ) : (
-          <Stack sx={{ height: "100%", width: "100%", background: "" }}>
-            <SceneList
-              setScene={setScene}
-              user={actUser}
-              setAdminArea={setAdminArea}
-            ></SceneList>
-          </Stack>
+          <SceneList
+            setScene={setScene}
+            user={actUser}
+            setAdminArea={setAdminArea}
+          ></SceneList>
         )
       ) : register ? null : (
         <Login
