@@ -19,6 +19,9 @@ const SocketHandler = (req, res) => {
           orderBy: {
             datum: "desc", // oder 'desc' für absteigende Sortierung
           },
+          include: {
+            user: true, // Hier wird die Beziehung zum User eingeschlossen
+          },
         });
         //socket.broadcast.emit("getChatEntry", chatEntrys);
         io.emit("getChatEntry", chatEntrys);

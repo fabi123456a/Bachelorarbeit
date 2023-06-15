@@ -16,6 +16,9 @@ export default async function DB_getAllChatEntrys(
     orderBy: {
       datum: "desc", // oder 'desc' für absteigende Sortierung
     },
+    include: {
+      user: true, // Hier wird die Beziehung zum User eingeschlossen
+    },
   });
 
   if (chatEntrys == null) res.status(200).json(null);

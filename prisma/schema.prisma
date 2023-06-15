@@ -17,6 +17,7 @@ model User {
   loginID   String  @unique
   password  String?
   readOnly  Boolean  
+  chatEntry ChatEntry[]
 }
 
 model Scene {
@@ -39,6 +40,7 @@ model ChatEntry {
   idUser  String     
   message String
   datum   DateTime
+  user    User       @relation(fields: [idUser], references: [id])
 }
 
 // delete user: delete from user

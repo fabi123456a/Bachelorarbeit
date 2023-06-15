@@ -5,12 +5,17 @@ import io from "Socket.IO-client";
 import { ChatEntry, Scene, Session, User } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { UserOnlineItem } from "./UserOnlineItem";
+import { prismaClient } from "../api/prismaclient/_prismaClient";
 
 let socket;
 
 export function Chat(props: { scene: Scene; user: User }) {
   const [text, setText] = useState<string>("");
-  const [msgs, setMsgs] = useState<ChatEntry[]>([]);
+  const [msgs, setMsgs] = useState<
+    (ChatEntry & {
+      user: User;
+    })[]
+  >([]);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [users, setUsers] = useState<User[]>([]);
 
@@ -37,7 +42,7 @@ export function Chat(props: { scene: Scene; user: User }) {
       const response = await fetch(
         "/api/database/ChatEntry/DB_getAllChatEntrys"
       );
-      const result: ChatEntry[] = await response.json();
+      const result = await response.json();
       return result;
     };
 
@@ -101,14 +106,6 @@ export function Chat(props: { scene: Scene; user: User }) {
     await fetch("api/database/Session/DB_sessionKeepAlive");
   };
 
-  const getUserById = (userId): User => {
-    let u: User = null;
-    users.forEach((user) => {
-      if (user.id === userId) u = user;
-    });
-    return u;
-  };
-
   let counter = 0;
 
   return (
@@ -124,21 +121,27 @@ export function Chat(props: { scene: Scene; user: User }) {
         <Stack
           sx={{ overflowY: "scroll", maxHeight: "300px", minHeight: "300px" }}
         >
-          {msgs.map((msg: ChatEntry) => {
-            const color = counter % 2 === 0 ? "#abdbe3" : "#eab676";
-            counter++;
+          {msgs.map(
+            (
+              msg: ChatEntry & {
+                user: User;
+              }
+            ) => {
+              const color = counter % 2 === 0 ? "#abdbe3" : "#eab676";
+              counter++;
 
-            return (
-              <Typography style={{ background: color }} key={msg.id}>
-                {new Date(msg.datum).toLocaleTimeString() +
-                  ": " +
-                  msg.message +
-                  " (" +
-                  getUserById(msg.idUser).loginID +
-                  ")"}
-              </Typography>
-            );
-          })}
+              return (
+                <Typography style={{ background: color }} key={msg.id}>
+                  {new Date(msg.datum).toLocaleTimeString() +
+                    ": " +
+                    msg.message +
+                    " (" +
+                    msg.user.loginID +
+                    ")"}
+                </Typography>
+              );
+            }
+          )}
         </Stack>
         <Stack sx={{ overflowY: "scroll" }}>
           <Typography>Online: </Typography>
