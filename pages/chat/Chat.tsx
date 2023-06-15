@@ -12,7 +12,9 @@ export function Chat(props: { scene: Scene; user: User }) {
   const [text, setText] = useState<string>("");
   const [msgs, setMsgs] = useState<ChatEntry[]>([]);
   const [sessions, setSessions] = useState<Session[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
+  // socket IO
   useEffect(() => {
     const socketInitializer = async () => {
       await fetch("/api/socket");
@@ -29,6 +31,7 @@ export function Chat(props: { scene: Scene; user: User }) {
     socketInitializer();
   }, []);
 
+  // alle chat einträge laden
   useEffect(() => {
     const getAllChatEntry = async () => {
       const response = await fetch(
@@ -37,11 +40,31 @@ export function Chat(props: { scene: Scene; user: User }) {
       const result: ChatEntry[] = await response.json();
       return result;
     };
+
     getAllChatEntry().then((chatEntrys) => {
       setMsgs(chatEntrys);
     });
   }, []);
 
+  // alle user laden um von id zu user zu mappen
+  useEffect(() => {
+    const getAllUser = async () => {
+      const response = await fetch("/api/database/DB_getAll", {
+        method: "POST",
+        body: JSON.stringify({
+          tableName: "user",
+        }),
+      });
+      const result: User[] = await response.json();
+      return result;
+    };
+
+    getAllUser().then((users: User[]) => {
+      setUsers(users);
+    });
+  }, []);
+
+  // laden wer alles online ist
   useEffect(() => {
     const getAllSessions = async () => {
       const response = await fetch("/api/database/Session/DB_getAllSessions");
@@ -57,6 +80,7 @@ export function Chat(props: { scene: Scene; user: User }) {
     setText(e.target.value);
   };
 
+  // socket IO chatEntry 'verteilen'
   const onClickHandler = async () => {
     // textfeld leeren
     setText("");
@@ -77,17 +101,12 @@ export function Chat(props: { scene: Scene; user: User }) {
     await fetch("api/database/Session/DB_sessionKeepAlive");
   };
 
-  const getUserByID = async (idUser: string) => {
-    const response = await fetch("/api/database/User/DB_getUserByID", {
-      method: "POST",
-      body: JSON.stringify({
-        idUser: props.scene.idUserCreater,
-      }),
+  const getUserById = (userId): User => {
+    let u: User = null;
+    users.forEach((user) => {
+      if (user.id === userId) u = user;
     });
-
-    const user = await response.json();
-
-    return user;
+    return u;
   };
 
   let counter = 0;
@@ -115,7 +134,7 @@ export function Chat(props: { scene: Scene; user: User }) {
                   ": " +
                   msg.message +
                   " (" +
-                  msg.idUser +
+                  getUserById(msg.idUser).loginID +
                   ")"}
               </Typography>
             );

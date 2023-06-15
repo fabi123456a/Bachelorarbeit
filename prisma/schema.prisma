@@ -36,7 +36,7 @@ model Session {
 model ChatEntry {
   id      String     @id 
   idScene String
-  idUser  String
+  idUser  String     
   message String
   datum   DateTime
 }
