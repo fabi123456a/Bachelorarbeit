@@ -8,6 +8,15 @@ buggs:
 - DB_INSERT user -> loginID: eeeeecewas, password: eee32dwewcx
 - fbxlist load animation
 - im chat: name statt id outerjoin
+- html auf eine seite des würfels
+- treeview testen wenn ganz viel drin ist
+- setCookie bzw get cookie geht nicht
+
+- react-three-fiber has been deprecated, please use @react-three/fiber (https://www.npmjs.com/package/@react-three/fiber) from now on
+
+
+
+-----------   BUG Reporting einbauen
 
 
 - leere databaseTable und dann insert geht nicht, weil die props von dem erstel geladenen datensatz erst gesetzt werden

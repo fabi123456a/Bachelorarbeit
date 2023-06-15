@@ -51,7 +51,14 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
           let erg = handleBtnRegisterClick(txtLoginID, txtPw);
 
           if (erg == null) alert("Registrierung fehlgeschlagen");
-          else props.setRegister(false);
+          else {
+            alert(
+              "Sie haben sich erfolgreich mit der LoginID '" +
+                txtLoginID +
+                "' registriert"
+            );
+            props.setRegister(false);
+          }
         }}
       >
         Registrieren

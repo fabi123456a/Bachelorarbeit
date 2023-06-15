@@ -2,13 +2,19 @@ import { randomUUID } from "crypto";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Session, User } from "@prisma/client";
 import { prismaClient } from "../../prismaclient/_prismaClient";
+import cookieParser from "cookie-parser";
 
 export default async function DB_checkPassword(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const pw = req.query.pw as string;
-  const user = req.query.user as string;
+  // const pw1 = req.query.pw as string;
+  // const user1 = req.query.user as string;
+
+  const b = req.body;
+  const requestData = JSON.parse(b);
+  const user = requestData["loginID"];
+  const pw = requestData["pw"];
 
   const selectedUser: User = await prismaClient.user.findFirst({
     where: {
@@ -16,13 +22,22 @@ export default async function DB_checkPassword(
     },
   });
 
-  if (selectedUser == null) res.status(200).json(null);
-  else {
-    // neue Session mit der id des benutzers hinzufügen 
+  if (selectedUser == null) {
+    console.log("DB_SELECT FIRST -> checkpassword FALSE");
+    res.status(200).json(null);
+  } else {
+    console.log("DB_SELECT FIRST -> checkpassword TRUE");
+
+    // neue Session mit der id des benutzers hinzufügen
     const session: Session = await insertSession(selectedUser.id);
+    console.log("DB_INSERT session -> sessionID: " + session.id);
 
     // session in cookie
-    res.setHeader("Set-Cookie", `sessionID=${session.id};HttpOnly`); // HTTPONLY
+    res.setHeader("Set-Cookie", `sessionID=${session.id};`); // TODO: HTTPONLY
+    console.log("SETCOOKIE -> " + session.id);
+
+    const cookieValue = res.getHeader("Set-Cookie");
+    console.log("x:" + JSON.stringify(cookieValue));
 
     // eingeloggten user + session zurücksenden
     res.status(200).json(selectedUser);

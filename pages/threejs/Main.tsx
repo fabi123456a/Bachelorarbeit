@@ -195,6 +195,9 @@ export default function Main(props: {
     setTreeViewSelectedId(currentObjectProps.id);
 
     prevObjectProps.current = currentObjectProps;
+
+    // session nalive keepen
+    fetch("api/database/Session/DB_sessionKeepAlive");
   }, [currentObjectProps]);
 
   // anfangs scene laden

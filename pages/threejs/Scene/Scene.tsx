@@ -6,6 +6,7 @@ import * as THREE from "three";
 import BoxGeoPivot from "../3D-Objects/BoxGeoPivot";
 import { Cylinder, Grid, Sky, Stars, Stats } from "@react-three/drei";
 import Cylinderqq from "../3D-Objects/CylinderPivot";
+import Cube from "../3D-Objects/test";
 
 export default function Scene(props: {
   controlsRef: React.RefObject<any>;
@@ -125,6 +126,8 @@ export default function Scene(props: {
           side={THREE.DoubleSide} /* color={0x000000} */
         />
       </mesh>
+
+      <Cube></Cube>
 
       {/* <Stats className="stats" /> */}
       {/* Raum */}

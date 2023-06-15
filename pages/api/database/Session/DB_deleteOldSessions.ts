@@ -9,11 +9,18 @@ export default async function DB_deleteOldSessions(
   const oneMinuteAgo = new Date(Date.now() - 60 * 1000); // Datum vor 60 Sekunden
   const twentySecondsAgo = new Date(Date.now() - 20 * 1000); // Datum vor 20 Sekunden
 
-  await prismaClient.session.deleteMany({
-    where: {
-      startDate: {
-        lt: twentyMinutesAgo,
+  try {
+    await prismaClient.session.deleteMany({
+      where: {
+        startDate: {
+          lt: twentySecondsAgo,
+        },
       },
-    },
-  });
+    });
+    console.log("DB_DELETE -> delteOldSessions");
+    res.send(true);
+  } catch (e) {
+    console.log("DB_DELETE: delteOldSessions FEHLGESCHLAGEN");
+    res.send(false);
+  }
 }

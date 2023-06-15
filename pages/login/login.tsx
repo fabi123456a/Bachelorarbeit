@@ -7,7 +7,7 @@ const Home = (props: {
   setActUser: (user: User) => void;
   setRegister: (flag: boolean) => void;
 }) => {
-  const [txtAnmeldeID, setTxtAmeldeID] = useState<string>("rr");
+  const [txtLoginID, setTxtLoginID] = useState<string>("rr");
   const [txtPassword, setTxtPassword] = useState<string>("rr");
   const loggedIn = useRef<boolean>(false);
 
@@ -17,9 +17,17 @@ const Home = (props: {
 
   // checkt login & pw wenns stim kommt der user zurück
   const checkData = async () => {
-    const response = await fetch(
-      `/api/database/User/DB_checkPassword?user=${txtAnmeldeID}&pw=${txtPassword}` // TODO: in body packen
-    );
+    // const response1 = await fetch(
+    //   `/api/database/User/DB_checkPassword?user=${txtAnmeldeID}&pw=${txtPassword}` // TODO: in body packen
+    // );
+
+    const response = await fetch("/api/database/User/DB_checkPassword", {
+      method: "POST",
+      body: JSON.stringify({
+        loginID: txtLoginID,
+        pw: txtPassword,
+      }),
+    });
     const result = await response.json();
 
     return result;
@@ -41,9 +49,9 @@ const Home = (props: {
       <TextField
         variant="filled"
         onChange={(event) => {
-          setTxtAmeldeID(event.target.value);
+          setTxtLoginID(event.target.value);
         }}
-        value={txtAnmeldeID}
+        value={txtLoginID}
       ></TextField>
       <Typography sx={{ fontWeight: "bold", fontSize: "22px", mt: "24px" }}>
         Passwort

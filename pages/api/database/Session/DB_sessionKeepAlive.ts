@@ -8,17 +8,18 @@ export default async function DB_sessionKeepAlive(
   res: NextApiResponse
 ) {
   const sessionID = req.cookies.sessionID;
+  console.log("cookie: " + sessionID);
 
-  await prismaClient.session.update({
-    where: {
-      id: sessionID,
-    },
-    data: {
-      startDate: new Date(),
-    },
-  });
+  // await prismaClient.session.update({
+  //   where: {
+  //     id: sessionID,
+  //   },
+  //   data: {
+  //     startDate: new Date(),
+  //   },
+  // });
 
-  console.log("session keep alive");
+  console.log("DB_UPDATE -> session keep alive");
   //   const session = await checkSessionID(sessionID);
 
   //   if (session) {
