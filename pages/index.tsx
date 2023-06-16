@@ -15,6 +15,7 @@ import UploadFbx from "./fbxHandle/uploadFbx";
 import Register from "./login/register/register";
 import FbxList from "./admin/fbxModels/fbxList";
 import AdminArea from "./admin/adminArea";
+import Feedback from "./feedback/feedback";
 
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -50,6 +51,7 @@ const Home = () => {
         <Logout setActUser={setActUser} setLoggedIn={setLoggedIn}></Logout>
       ) : null}
       {register ? <Register setRegister={setRegister}></Register> : null}
+      <Feedback></Feedback>
     </Stack>
     //
     //

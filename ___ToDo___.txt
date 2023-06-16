@@ -4,7 +4,7 @@ buggs:
 - treeview bug (objekte tauchen mehrfach auf)
 - treeview name statt id
 - bei ausslogen alles states auf null setzen weil sons adminberreich zugänglich
-- str + v bei readonly deaktivieren
+- strg + v bei readonly deaktivieren
 - DB_INSERT user -> loginID: eeeeecewas, password: eee32dwewcx
 - fbxlist load animation
 - im chat: name statt id outerjoin

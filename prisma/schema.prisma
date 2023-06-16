@@ -45,5 +45,10 @@ model ChatEntry {
   user    User       @relation(fields: [idUser], references: [id])
 }
 
+model Feedback {
+  id    String     @id 
+  text  String
+}
+
 // delete user: delete from user
 // insert user: INSERT INTO user ("id", "loginID", "password", "readonly") VALUES ("x", "rr", "rr", false);

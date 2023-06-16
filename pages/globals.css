@@ -181,6 +181,23 @@ body {
   width: 100%;
 }
 
+/* feedback */
+.feedbackIcon {
+  position: absolute;
+  bottom: 2%;
+  right: 2%;
+}
+
+.feedback {
+  position: absolute;
+  bottom: 50%;
+  right: 50%;
+  height: 20%;
+  width: 20%;
+  background: lightblue;
+  padding: 12px;
+}
+
 /**/
 .stats {
   position: absolute;
