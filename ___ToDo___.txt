@@ -14,9 +14,9 @@ buggs:
 
 - react-three-fiber has been deprecated, please use @react-three/fiber (https://www.npmjs.com/package/@react-three/fiber) from now on
 
+https://discourse.threejs.org/t/html-on-different-faces-of-cube/17281/7
+import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
 
-
------------   BUG Reporting einbauen
 
 
 - leere databaseTable und dann insert geht nicht, weil die props von dem erstel geladenen datensatz erst gesetzt werden
