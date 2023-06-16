@@ -18,6 +18,7 @@ model User {
   password  String?
   readOnly  Boolean  
   chatEntry ChatEntry[]
+  session Session[]
 }
 
 model Scene {
@@ -32,6 +33,7 @@ model Session {
   id        String     @id 
   idUser    String
   startDate DateTime
+  user      User       @relation(fields: [idUser], references: [id])
 }
 
 model ChatEntry {

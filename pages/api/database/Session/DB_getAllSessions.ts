@@ -12,7 +12,11 @@ export default async function DB_getAllSessions(
   const session = await checkSessionID(sessionID);
 
   if (session) {
-    const sessions: Session[] = await prismaClient.session.findMany();
+    const sessions: Session[] = await prismaClient.session.findMany({
+      include: {
+        user: true, // Hier wird die Beziehung zum User eingeschlossen
+      },
+    });
 
     if (sessions == null)
       res.status(200).json({ result: "fehler beim laden der Sessions" });

@@ -16,7 +16,11 @@ export function Chat(props: { scene: Scene; user: User }) {
       user: User;
     })[]
   >([]);
-  const [sessions, setSessions] = useState<Session[]>([]);
+  const [sessions, setSessions] = useState<
+    (Session & {
+      user: User;
+    })[]
+  >([]);
   const [users, setUsers] = useState<User[]>([]);
 
   // socket IO
@@ -76,9 +80,15 @@ export function Chat(props: { scene: Scene; user: User }) {
       const result: Session[] = await response.json();
       return result;
     };
-    getAllSessions().then((sessions: Session[]) => {
-      setSessions(sessions);
-    });
+    getAllSessions().then(
+      (
+        sessions: (Session & {
+          user: User;
+        })[]
+      ) => {
+        setSessions(sessions);
+      }
+    );
   }, []);
 
   const onChangeHandler = (e) => {

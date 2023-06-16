@@ -13,7 +13,7 @@ export default async function DB_deleteOldSessions(
     await prismaClient.session.deleteMany({
       where: {
         startDate: {
-          lt: twentySecondsAgo,
+          lt: twentyMinutesAgo,
         },
       },
     });
