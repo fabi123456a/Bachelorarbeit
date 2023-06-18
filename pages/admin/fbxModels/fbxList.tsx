@@ -2,7 +2,7 @@ import { Button, Divider, IconButton, Stack, Typography } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import ModelPreview from "./modelPreview";
 import { DeleteForeverOutlined } from "@mui/icons-material";
-import UploadFbx from "../../fbxHandle/uploadFbx";
+import UploadFbx from "../../threejs/UI-Elements/ModelList/fbxHandle/uploadFbx";
 
 interface FileListResponse {
   files: string[];

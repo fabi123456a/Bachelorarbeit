@@ -22,7 +22,7 @@ const UploadFbx = (props: { setRefreshData: () => void }) => {
 
       // prüfen ob es ein fbx datei ist
       if (getDateiEndug(selectedFile).toLowerCase() != "fbx") {
-        alert("es können nur fbx dateien hochgeladen werden!");
+        alert("Es können nur FBX Modelle hochgeladen werden!");
         setUploading(false);
         return;
       }

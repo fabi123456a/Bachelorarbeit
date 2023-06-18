@@ -11,11 +11,13 @@ export function ModelListItem(props: {
   return (
     <Stack style={{ margin: "8px" }} direction={"row"}>
       <Button
-        onClick={() => props.addObject(props.pfad, get_model_name(props.pfad))}
+        onClick={() =>
+          props.addObject(props.pfad, get_model_name(props.pfad.toLowerCase()))
+        }
         style={{ flex: "1" }}
         variant="contained"
       >
-        {props.name}
+        {props.name.toLowerCase().replace(".fbx", "")}
       </Button>
       {/* <IconButton TODO: das löschen von fbxModels soll über admin afea gehen
         onClick={() => {
