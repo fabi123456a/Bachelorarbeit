@@ -120,7 +120,7 @@ export function Chat(props: { scene: Scene; user: User }) {
 
   return (
     <>
-      <Stack sx={{ background: "red", maxHeight: "500px", minHeight: "500px" }}>
+      <Stack sx={{ background: "", maxHeight: "500px", minHeight: "500px" }}>
         <Stack direction={"row"}>
           <TextField onChange={onChangeHandler} value={text}></TextField>
           <Button variant="outlined" onClick={onClickHandler}>

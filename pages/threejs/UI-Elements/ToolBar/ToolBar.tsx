@@ -20,11 +20,12 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import io from "Socket.IO-client";
 import { useEffect } from "react";
 import { Scene } from "@prisma/client";
+import ShowHtml from "./world/showHtml";
 
 let socket1;
 
 function ToolBar(props: {
-  objProps: TypeObjectProps; // ist gleich die currentObjectProps
+  currentObjProps: TypeObjectProps; // ist gleich die currentObjectProps
   setObjProps: Function;
   controlsRef: React.RefObject<any>;
   deleteObject: (id: string) => void; // funktion um ein Object/Model aus der Szene zu entfernen
@@ -39,10 +40,12 @@ function ToolBar(props: {
   isTestMode: boolean;
   setCurentObj: (obj: TypeObjectProps) => void;
   scene: Scene;
+  setHtmlSettings: (flag: boolean) => void;
+  htmlSettings: boolean;
 }) {
   // funktion
   const checkIfAObjectIsSelected = (): boolean => {
-    if (!props.objProps) return false;
+    if (!props.currentObjProps) return false;
     return true;
   };
 
@@ -123,7 +126,7 @@ function ToolBar(props: {
             alignItems: "center",
           }}
         >
-          {props.objProps ? (
+          {props.currentObjProps ? (
             <>
               <FormLabel>Transform</FormLabel>
               <Stack direction={"row"} style={{ width: "100%" }}>
@@ -136,13 +139,13 @@ function ToolBar(props: {
                   {/* Verschieben */}
                   <IconButton
                     color={
-                      props.objProps.editMode === "translate"
+                      props.currentObjProps.editMode === "translate"
                         ? "primary"
                         : undefined
                     }
                     onClick={() => {
                       if (!checkIfAObjectIsSelected()) return;
-                      if (props.objProps.editMode === "translate") {
+                      if (props.currentObjProps.editMode === "translate") {
                         resetEditMode();
                         return;
                       }
@@ -154,13 +157,13 @@ function ToolBar(props: {
                   {/* Skalieren */}
                   <IconButton
                     color={
-                      props.objProps.editMode === "scale"
+                      props.currentObjProps.editMode === "scale"
                         ? "primary"
                         : undefined
                     }
                     onClick={() => {
                       if (!checkIfAObjectIsSelected()) return;
-                      if (props.objProps.editMode === "scale") {
+                      if (props.currentObjProps.editMode === "scale") {
                         resetEditMode();
                         return;
                       }
@@ -172,13 +175,13 @@ function ToolBar(props: {
                   {/* Rotieren */}
                   <IconButton
                     color={
-                      props.objProps.editMode === "rotate"
+                      props.currentObjProps.editMode === "rotate"
                         ? "primary"
                         : undefined
                     }
                     onClick={() => {
                       if (!checkIfAObjectIsSelected()) return;
-                      if (props.objProps.editMode === "rotate") {
+                      if (props.currentObjProps.editMode === "rotate") {
                         resetEditMode();
                         return;
                       }
@@ -190,7 +193,7 @@ function ToolBar(props: {
                   {/* Sperren */}
                   <IconButton
                     color={
-                      props.objProps.editMode === undefined
+                      props.currentObjProps.editMode === undefined
                         ? "primary"
                         : undefined
                     }
@@ -212,7 +215,7 @@ function ToolBar(props: {
 
                       let result = confirm("Das Objekt wird gelöscht...");
 
-                      if (result) props.deleteObject(props.objProps.id);
+                      if (result) props.deleteObject(props.currentObjProps.id);
                     }}
                   >
                     <DeleteForeverIcon></DeleteForeverIcon>
@@ -326,6 +329,18 @@ function ToolBar(props: {
             <Typography fontSize=".75rem">Save</Typography>
           </IconButton>
         </Stack>
+      </Stack>
+
+      <Divider orientation="vertical" flexItem />
+
+      {/* World setting*/}
+      <Stack justifyContent={"center"} alignItems={"center"}>
+        <Typography>Welt</Typography>
+        <ShowHtml
+          htmlSettings={props.htmlSettings}
+          setHtmlSettings={props.setHtmlSettings}
+          
+        ></ShowHtml>
       </Stack>
     </Stack>
   );

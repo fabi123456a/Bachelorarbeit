@@ -17,6 +17,7 @@ export default function Scene(props: {
   sceneRef: any;
   wallVisibility: boolean;
   testMode: boolean;
+  htmlSettings: boolean;
 }) {
   const { scene } = useThree();
   props.sceneRef.current = scene;
@@ -58,6 +59,7 @@ export default function Scene(props: {
       {props.models.map((model) =>
         model.modelPath ? ( // model nur einfügen wenn kein path da ist, weil dann ist es eine wand
           <SceneModel
+            visibleInOtherPerspective={model.visibleInOtherPerspective}
             controlsRef={props.controlsRef}
             key={model.id}
             id={model.id}
@@ -77,6 +79,7 @@ export default function Scene(props: {
         ) : props.wallVisibility ? (
           model.info == "cylinder" ? (
             <Cylinderqq
+              visibleInOtherPerspective={model.visibleInOtherPerspective}
               key={model.id}
               id={model.id}
               controlsRef={props.controlsRef}
@@ -98,22 +101,25 @@ export default function Scene(props: {
           ) : (
             <BoxGeoPivot
               key={model.id}
-              id={model.id}
+              // id={model.id}
               controlsRef={props.controlsRef}
               isSelected={model.id === props.currentObjectProps?.id}
-              editMode={model.editMode}
-              modelPath={model.modelPath}
-              showXTransform={model.showXTransform}
-              showYTransform={model.showYTransform}
-              showZTransform={model.showZTransform}
-              position={model.position}
-              scale={model.scale}
-              rotation={model.rotation}
+              // editMode={model.editMode}
+              // modelPath={model.modelPath}
+              // showXTransform={model.showXTransform}
+              // showYTransform={model.showYTransform}
+              // showZTransform={model.showZTransform}
+              // position={model.position}
+              // scale={model.scale}
+              // rotation={model.rotation}
               camPerspektive={props.perspektive}
               setCurrentObjectProps={props.setCurrentObjectProps}
-              info={model.info}
-              color={model.color}
+              objProps={model}
+              htmlSettings={props.htmlSettings}
               testMode={props.testMode}
+              // info={model.info}
+              // color={model.color}
+              // testMode={props.testMode}
             ></BoxGeoPivot>
           )
         ) : null

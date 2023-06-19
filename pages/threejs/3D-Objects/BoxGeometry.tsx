@@ -1,6 +1,7 @@
 import React, { Ref, useRef, useState } from "react";
 import * as THREE from "three";
 import { BufferGeometry, Material, Mesh } from "three";
+import HtmlSettings from "./htmlSettings";
 
 function BoxGeometry(props: {
   // position & skalieren der Box
@@ -9,6 +10,9 @@ function BoxGeometry(props: {
   ref123?: Ref<Mesh<BufferGeometry, Material | Material[]>>;
   testMode: boolean;
   color: string;
+  htmlSettings: boolean;
+  setCurentObj: (obj: TypeObjectProps) => void;
+  currentObjProps: TypeObjectProps;
 }) {
   return (
     <>
@@ -27,6 +31,13 @@ function BoxGeometry(props: {
       >
         <boxBufferGeometry args={props.geometrie.scaleXYZ} />
         <meshStandardMaterial color={props.color} />
+        {props.htmlSettings ? (
+          <HtmlSettings
+            flag={true}
+            currentObjProps={props.currentObjProps}
+            setCurentObj={props.setCurentObj}
+          ></HtmlSettings>
+        ) : null}
       </mesh>
     </>
   );

@@ -165,7 +165,6 @@ body {
 /* registerrieren */
 .register {
   height: 100%;
-  background: red;
 }
 
 /* edit data in Datatable */
@@ -173,7 +172,11 @@ body {
   position: fixed;
   top: 50%;
   left: 50%;
-  background: red;
+  background: lightgrey;
+  padding: 6px;
+  border-radius: 4px;
+
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 7px 8px;
 }
 
 /* adminArea */

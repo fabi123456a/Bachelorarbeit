@@ -113,6 +113,9 @@ export default function Main(props: {
   const [wallVisiblity, setWallVisiblity] = useState<boolean>(true); // to show the left or right wall or hide it when the camera mode changes
   const [valueGltf, setValueGltf] = useState<THREE.Group>(null!);
 
+  // htmlsettings
+  const [htmlsettings, setHtmlsettings] = useState<boolean>(false);
+
   const [refreshedSceneID, setRefreshedSceneID] = useState<string>("");
 
   // ---- REFS ----
@@ -271,6 +274,7 @@ export default function Main(props: {
       scale: { x: 0.02, y: 0.02, z: 0.02 },
       rotation: { x: 0, y: 0, z: 0 },
       name: name,
+      visibleInOtherPerspective: true,
     };
 
     setModels([...models, objProps]);
@@ -598,7 +602,7 @@ export default function Main(props: {
               exportObject={handleModelexport}
               importObject={handleModelimport}
               removeObject={handleModelRemoval}
-              objProps={currentObjectProps}
+              currentObjProps={currentObjectProps}
               setObjProps={setCurrentObjectProps}
               controlsRef={controlsRef}
               setWallVisibility={setWallVisiblity}
@@ -608,6 +612,8 @@ export default function Main(props: {
               isTestMode={isTestMode}
               setCurentObj={setCurrentObjectProps}
               scene={props.scene}
+              setHtmlSettings={setHtmlsettings}
+              htmlSettings={htmlsettings}
             ></ToolBar>
 
             <WallList addWall={handleWallAdd}></WallList>
@@ -673,6 +679,7 @@ export default function Main(props: {
             sceneRef={sceneRef}
             wallVisibility={wallVisiblity}
             testMode={isTestMode}
+            htmlSettings={htmlsettings}
           ></ThreeJsScene>
         </Canvas>
       </Stack>

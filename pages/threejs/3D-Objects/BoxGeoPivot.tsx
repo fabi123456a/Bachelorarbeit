@@ -4,18 +4,19 @@ import * as THREE from "three";
 import { Vector3 } from "three";
 import BoxGeometry from "./BoxGeometry";
 import { Button } from "@mui/material";
+import HtmlSettings from "./htmlSettings";
 
 // KOMPONENTE
 
-function BoxGeoPivot(
-  props: TypeObjectProps & {
-    isSelected: boolean;
-    camPerspektive: string;
-    controlsRef: React.RefObject<any>;
-    setCurrentObjectProps: (props: TypeObjectProps) => void;
-    testMode: boolean;
-  }
-) {
+function BoxGeoPivot(props: {
+  objProps: TypeObjectProps;
+  isSelected: boolean;
+  camPerspektive: string;
+  controlsRef: React.RefObject<any>;
+  setCurrentObjectProps: (props: TypeObjectProps) => void;
+  testMode: boolean;
+  htmlSettings: boolean;
+}) {
   // referenz auf das Mesh des FBX-Models
   const refMesh = useRef<THREE.Mesh>(null);
   const tcRef = useRef<any>(null);
@@ -35,7 +36,7 @@ function BoxGeoPivot(
     refMesh.current?.getWorldScale(vektorScale);
 
     props.setCurrentObjectProps({
-      id: props.id,
+      id: props.objProps.id,
       position: {
         x: vectorPosition.x,
         y: vectorPosition.y,
@@ -56,14 +57,10 @@ function BoxGeoPivot(
       showYTransform: true, //props.showYTransform,
       showZTransform: true, //props.showZTransform,
       modelPath: null,
-      info: props.info,
+      info: props.objProps.info,
+      visibleInOtherPerspective: props.objProps.visibleInOtherPerspective,
     });
   };
-
-  // color
-  const [color, setColor] = useState<string>(
-    props.color ? props.color : defaultColor
-  );
 
   useEffect(() => {
     //alert(props.info + props.color);
@@ -73,14 +70,26 @@ function BoxGeoPivot(
     <>
       <TransformControls
         ref={tcRef}
-        mode={props.editMode ? props.editMode : "scale"}
-        showX={props.isSelected && props.showXTransform}
-        showY={props.isSelected && props.showYTransform}
-        showZ={props.isSelected && props.showZTransform}
-        scale={[props.scale.x, props.scale.y, props.scale.z]}
-        rotation={[props.rotation.x, props.rotation.y, props.rotation.z]}
+        mode={props.objProps.editMode ? props.objProps.editMode : "scale"}
+        showX={props.isSelected && props.objProps.showXTransform}
+        showY={props.isSelected && props.objProps.showYTransform}
+        showZ={props.isSelected && props.objProps.showZTransform}
+        scale={[
+          props.objProps.scale.x,
+          props.objProps.scale.y,
+          props.objProps.scale.z,
+        ]}
+        rotation={[
+          props.objProps.rotation.x,
+          props.objProps.rotation.y,
+          props.objProps.rotation.z,
+        ]}
         position={
-          new Vector3(props.position.x, props.position.y, props.position.z)
+          new Vector3(
+            props.objProps.position.x,
+            props.objProps.position.y,
+            props.objProps.position.z
+          )
         }
         onMouseUp={(e) => {
           //Checks if an event happened or if component just rerendered
@@ -115,7 +124,10 @@ function BoxGeoPivot(
             onclick={props.testMode ? null : setCurrentObj}
             geometrie={{ positionXYZ: [0, 0, 0], scaleXYZ: [1, 1, 1] }}
             testMode={props.testMode}
-            color={props.color}
+            color={props.objProps.color}
+            htmlSettings={props.htmlSettings}
+            setCurentObj={props.setCurrentObjectProps}
+            currentObjProps={props.objProps}
           ></BoxGeometry>
         </>
       </TransformControls>
