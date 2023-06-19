@@ -57,27 +57,92 @@ export default function Scene(props: {
       <pointLight position={[10, 10, 10]} />
       {/* Modelle */}
       {props.models.map((model) =>
-        model.modelPath ? ( // model nur einfügen wenn kein path da ist, weil dann ist es eine wand
-          <SceneModel
-            visibleInOtherPerspective={model.visibleInOtherPerspective}
-            controlsRef={props.controlsRef}
-            key={model.id}
-            id={model.id}
-            isSelected={model.id === props.currentObjectProps?.id}
-            setCurrentObjectProps={props.setCurrentObjectProps}
-            editMode={model.editMode}
-            modelPath={model.modelPath}
-            showXTransform={model.showXTransform}
-            showYTransform={model.showYTransform}
-            showZTransform={model.showZTransform}
-            position={model.position}
-            scale={model.scale}
-            rotation={model.rotation}
-            camPerspektive={props.perspektive}
-            testmode={props.testMode}
-          ></SceneModel>
-        ) : props.wallVisibility ? (
-          model.info == "cylinder" ? (
+        props.perspektive == "normal" ? (
+          model.modelPath ? ( // model nur einfügen wenn kein path da ist, weil dann ist es eine wand
+            <SceneModel
+              visibleInOtherPerspective={model.visibleInOtherPerspective}
+              controlsRef={props.controlsRef}
+              key={model.id}
+              id={model.id}
+              isSelected={model.id === props.currentObjectProps?.id}
+              setCurrentObjectProps={props.setCurrentObjectProps}
+              editMode={model.editMode}
+              modelPath={model.modelPath}
+              showXTransform={model.showXTransform}
+              showYTransform={model.showYTransform}
+              showZTransform={model.showZTransform}
+              position={model.position}
+              scale={model.scale}
+              rotation={model.rotation}
+              camPerspektive={props.perspektive}
+              testmode={props.testMode}
+            ></SceneModel>
+          ) : model.info == "cylinder" ? (
+            <Cylinderqq
+              visibleInOtherPerspective={model.visibleInOtherPerspective}
+              key={model.id}
+              id={model.id}
+              controlsRef={props.controlsRef}
+              isSelected={model.id === props.currentObjectProps?.id}
+              editMode={model.editMode}
+              modelPath={model.modelPath}
+              showXTransform={model.showXTransform}
+              showYTransform={model.showYTransform}
+              showZTransform={model.showZTransform}
+              position={model.position}
+              scale={model.scale}
+              rotation={model.rotation}
+              camPerspektive={props.perspektive}
+              setCurrentObjectProps={props.setCurrentObjectProps}
+              info={model.info}
+              color={model.color}
+              testMode={props.testMode}
+            ></Cylinderqq>
+          ) : (
+            <BoxGeoPivot
+              key={model.id}
+              // id={model.id}
+              controlsRef={props.controlsRef}
+              isSelected={model.id === props.currentObjectProps?.id}
+              // editMode={model.editMode}
+              // modelPath={model.modelPath}
+              // showXTransform={model.showXTransform}
+              // showYTransform={model.showYTransform}
+              // showZTransform={model.showZTransform}
+              // position={model.position}
+              // scale={model.scale}
+              // rotation={model.rotation}
+              camPerspektive={props.perspektive}
+              setCurrentObjectProps={props.setCurrentObjectProps}
+              objProps={model}
+              htmlSettings={props.htmlSettings}
+              testMode={props.testMode}
+              // info={model.info}
+              // color={model.color}
+              // testMode={props.testMode}
+            ></BoxGeoPivot>
+          )
+        ) : model.visibleInOtherPerspective ? (
+          model.modelPath ? ( // model nur einfügen wenn kein path da ist, weil dann ist es eine wand
+            <SceneModel
+              visibleInOtherPerspective={model.visibleInOtherPerspective}
+              controlsRef={props.controlsRef}
+              key={model.id}
+              id={model.id}
+              isSelected={model.id === props.currentObjectProps?.id}
+              setCurrentObjectProps={props.setCurrentObjectProps}
+              editMode={model.editMode}
+              modelPath={model.modelPath}
+              showXTransform={model.showXTransform}
+              showYTransform={model.showYTransform}
+              showZTransform={model.showZTransform}
+              position={model.position}
+              scale={model.scale}
+              rotation={model.rotation}
+              camPerspektive={props.perspektive}
+              testmode={props.testMode}
+            ></SceneModel>
+          ) : model.info == "cylinder" ? (
             <Cylinderqq
               visibleInOtherPerspective={model.visibleInOtherPerspective}
               key={model.id}
