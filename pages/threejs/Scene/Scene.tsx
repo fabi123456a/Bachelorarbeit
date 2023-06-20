@@ -79,47 +79,25 @@ export default function Scene(props: {
             ></SceneModel>
           ) : model.info == "cylinder" ? (
             <Cylinderqq
-              visibleInOtherPerspective={model.visibleInOtherPerspective}
+              objProps={model}
               key={model.id}
-              id={model.id}
               controlsRef={props.controlsRef}
               isSelected={model.id === props.currentObjectProps?.id}
-              editMode={model.editMode}
-              modelPath={model.modelPath}
-              showXTransform={model.showXTransform}
-              showYTransform={model.showYTransform}
-              showZTransform={model.showZTransform}
-              position={model.position}
-              scale={model.scale}
-              rotation={model.rotation}
               camPerspektive={props.perspektive}
               setCurrentObjectProps={props.setCurrentObjectProps}
-              info={model.info}
-              color={model.color}
               testMode={props.testMode}
+              htmlSettings={props.htmlSettings}
             ></Cylinderqq>
           ) : (
             <BoxGeoPivot
               key={model.id}
-              // id={model.id}
               controlsRef={props.controlsRef}
               isSelected={model.id === props.currentObjectProps?.id}
-              // editMode={model.editMode}
-              // modelPath={model.modelPath}
-              // showXTransform={model.showXTransform}
-              // showYTransform={model.showYTransform}
-              // showZTransform={model.showZTransform}
-              // position={model.position}
-              // scale={model.scale}
-              // rotation={model.rotation}
               camPerspektive={props.perspektive}
               setCurrentObjectProps={props.setCurrentObjectProps}
               objProps={model}
               htmlSettings={props.htmlSettings}
               testMode={props.testMode}
-              // info={model.info}
-              // color={model.color}
-              // testMode={props.testMode}
             ></BoxGeoPivot>
           )
         ) : model.visibleInOtherPerspective ? (
@@ -144,24 +122,14 @@ export default function Scene(props: {
             ></SceneModel>
           ) : model.info == "cylinder" ? (
             <Cylinderqq
-              visibleInOtherPerspective={model.visibleInOtherPerspective}
+              objProps={model}
               key={model.id}
-              id={model.id}
               controlsRef={props.controlsRef}
               isSelected={model.id === props.currentObjectProps?.id}
-              editMode={model.editMode}
-              modelPath={model.modelPath}
-              showXTransform={model.showXTransform}
-              showYTransform={model.showYTransform}
-              showZTransform={model.showZTransform}
-              position={model.position}
-              scale={model.scale}
-              rotation={model.rotation}
               camPerspektive={props.perspektive}
               setCurrentObjectProps={props.setCurrentObjectProps}
-              info={model.info}
-              color={model.color}
               testMode={props.testMode}
+              htmlSettings={props.htmlSettings}
             ></Cylinderqq>
           ) : (
             <BoxGeoPivot

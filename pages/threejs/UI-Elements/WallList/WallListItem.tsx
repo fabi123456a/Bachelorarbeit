@@ -29,6 +29,7 @@ export function WallListItem(props: {
             color: props.name == "floor" ? "#eee" : null, // der boden soll eine andere farbe bekommen
             name: props.name,
             info: props.name,
+            visibleInOtherPerspective: true,
           };
 
           props.addWall(x);

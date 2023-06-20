@@ -4,24 +4,25 @@ import * as THREE from "three";
 import { MeshBasicMaterial, Vector3 } from "three";
 import BoxGeometry from "./BoxGeometry";
 import { Button } from "@mui/material";
+import HtmlSettings from "./htmlSettings";
 
 // KOMPONENTE
 
-function Cylinderqq(
-  props: TypeObjectProps & {
-    isSelected: boolean;
-    camPerspektive: string;
-    controlsRef: React.RefObject<any>;
-    setCurrentObjectProps: (props: TypeObjectProps) => void;
-    testMode: boolean;
-  }
-) {
+function Cylinderqq(props: {
+  objProps: TypeObjectProps;
+  isSelected: boolean;
+  camPerspektive: string;
+  controlsRef: React.RefObject<any>;
+  setCurrentObjectProps: (props: TypeObjectProps) => void;
+  testMode: boolean;
+  htmlSettings: boolean;
+}) {
   // referenz auf das Mesh des FBX-Models
   const refMesh = useRef<THREE.Mesh>(null);
   const tcRef = useRef<any>(null);
 
   const cylinderMaterial = new MeshBasicMaterial({
-    color: props.color,
+    color: props.objProps.color,
   });
 
   // function
@@ -35,7 +36,7 @@ function Cylinderqq(
     refMesh.current?.getWorldScale(vektorScale);
 
     props.setCurrentObjectProps({
-      id: props.id,
+      id: props.objProps.id,
       position: {
         x: vectorPosition.x,
         y: vectorPosition.y,
@@ -56,7 +57,8 @@ function Cylinderqq(
       showYTransform: true, //props.showYTransform,
       showZTransform: true, //props.showZTransform,
       modelPath: null,
-      info: props.info,
+      info: props.objProps.info,
+      visibleInOtherPerspective: props.objProps.visibleInOtherPerspective,
     });
   };
 
@@ -64,14 +66,26 @@ function Cylinderqq(
     <>
       <TransformControls
         ref={tcRef}
-        mode={props.editMode ? props.editMode : "scale"}
-        showX={props.isSelected && props.showXTransform}
-        showY={props.isSelected && props.showYTransform}
-        showZ={props.isSelected && props.showZTransform}
-        scale={[props.scale.x, props.scale.y, props.scale.z]}
-        rotation={[props.rotation.x, props.rotation.y, props.rotation.z]}
+        mode={props.objProps.editMode ? props.objProps.editMode : "scale"}
+        showX={props.isSelected && props.objProps.showXTransform}
+        showY={props.isSelected && props.objProps.showYTransform}
+        showZ={props.isSelected && props.objProps.showZTransform}
+        scale={[
+          props.objProps.scale.x,
+          props.objProps.scale.y,
+          props.objProps.scale.z,
+        ]}
+        rotation={[
+          props.objProps.rotation.x,
+          props.objProps.rotation.y,
+          props.objProps.rotation.z,
+        ]}
         position={
-          new Vector3(props.position.x, props.position.y, props.position.z)
+          new Vector3(
+            props.objProps.position.x,
+            props.objProps.position.y,
+            props.objProps.position.z
+          )
         }
         onMouseUp={(e) => {
           //Checks if an event happened or if component just rerendered
@@ -110,7 +124,13 @@ function Cylinderqq(
           ref={refMesh}
           onClick={props.testMode ? null : setCurrentObj}
           material={cylinderMaterial}
-        />
+        >
+          <HtmlSettings
+            setCurentObj={props.setCurrentObjectProps}
+            currentObjProps={props.objProps}
+            flag={props.htmlSettings}
+          ></HtmlSettings>
+        </Cylinder>
       </TransformControls>
     </>
   );
