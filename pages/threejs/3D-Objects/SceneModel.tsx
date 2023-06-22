@@ -64,6 +64,7 @@ function SceneModel(
       showYTransform: true, //props.showYTransform,
       showZTransform: true, //props.showZTransform,
       modelPath: props.modelPath,
+      visibleInOtherPerspective: true,
     });
   };
 

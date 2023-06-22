@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { MeshBasicMaterial, Vector3 } from "three";
 import BoxGeometry from "./BoxGeometry";
 import { Button } from "@mui/material";
-import HtmlSettings from "./htmlSettings";
+import HtmlSettings from "./HtmlSettings";
 
 // KOMPONENTE
 

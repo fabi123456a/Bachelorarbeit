@@ -1,7 +1,7 @@
 import React, { Ref, useRef, useState } from "react";
 import * as THREE from "three";
 import { BufferGeometry, Material, Mesh } from "three";
-import HtmlSettings from "./htmlSettings";
+import HtmlSettings from "./HtmlSettings";
 
 function BoxGeometry(props: {
   // position & skalieren der Box

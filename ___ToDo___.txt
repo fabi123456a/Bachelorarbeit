@@ -1,5 +1,7 @@
 buggs:
 
+- deprecated three js fiber
+
 - bei mouseUp wird ein anderes objekt selektiert
 - treeview bug (objekte tauchen mehrfach auf)
 - treeview name statt id

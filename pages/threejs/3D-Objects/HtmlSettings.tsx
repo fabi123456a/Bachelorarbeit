@@ -15,7 +15,7 @@ function HtmlSettings(props: {
         <Html>
           <Stack direction={"row"}>
             <Typography>{props.currentObjProps.name}</Typography>
-            <Typography>in anderen Perspektiven anzeigen</Typography>
+
             <Checkbox
               checked={props.currentObjProps.visibleInOtherPerspective}
               onClick={(e) => {
