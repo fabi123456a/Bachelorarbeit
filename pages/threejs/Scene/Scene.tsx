@@ -7,6 +7,7 @@ import BoxGeoPivot from "../3D-Objects/BoxGeoPivot";
 import { Cylinder, Grid, Sky, Stars, Stats } from "@react-three/drei";
 import Cylinderqq from "../3D-Objects/CylinderPivot";
 import Cube from "../3D-Objects/test";
+import { checkPropsForNull } from "../../../utils/checkIfPropIsNull";
 
 export default function Scene(props: {
   controlsRef: React.RefObject<any>;
@@ -41,6 +42,9 @@ export default function Scene(props: {
   //     }
   //   }
   // }, [scene, props.perspektive]);
+
+  // bedingtes rendern
+  if (checkPropsForNull(props)) return null;
 
   return (
     <>

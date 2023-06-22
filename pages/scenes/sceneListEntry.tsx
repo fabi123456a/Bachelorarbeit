@@ -54,7 +54,7 @@ const SceneListEntry = (props: {
     getUserFromScene();
   }, []);
 
-  return (
+  return props.scene && props.setReload && props.setScene && props.user ? (
     <>
       <Stack
         direction={"row"}
@@ -110,7 +110,7 @@ const SceneListEntry = (props: {
       </Stack>
       <Divider sx={{ mt: "4px", mb: "4px" }}></Divider>
     </>
-  );
+  ) : null;
 };
 
 export default SceneListEntry;

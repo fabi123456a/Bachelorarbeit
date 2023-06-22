@@ -5,6 +5,7 @@ import { Vector3 } from "three";
 import BoxGeometry from "./BoxGeometry";
 import { Button } from "@mui/material";
 import HtmlSettings from "./HtmlSettings";
+import { checkPropsForNull } from "../../../utils/checkIfPropIsNull";
 
 // KOMPONENTE
 
@@ -66,7 +67,12 @@ function BoxGeoPivot(props: {
     //alert(props.info + props.color);
   }, []);
 
-  return (
+  // bedingtes rendern
+  if (checkPropsForNull(props)) {
+    return null;
+  }
+
+  return props.objProps ? (
     <>
       <TransformControls
         ref={tcRef}
@@ -132,7 +138,7 @@ function BoxGeoPivot(props: {
         </>
       </TransformControls>
     </>
-  );
+  ) : null;
 }
 
 export default BoxGeoPivot;

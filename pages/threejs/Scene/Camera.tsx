@@ -5,6 +5,7 @@ import { FirstPersonControls } from "@react-three/drei";
 import { FlyControls } from "@react-three/drei";
 import { Vector3 } from "three";
 import { useFrame } from "react-three-fiber";
+import { checkPropsForNull } from "../../../utils/checkIfPropIsNull";
 
 export default function Camera(props: {
   controlsRef: React.RefObject<any>;
@@ -17,6 +18,9 @@ export default function Camera(props: {
     rightToMid: new THREE.Vector3(999, 0, 0),
     frontal: new THREE.Vector3(0, 0, 999),
   });
+
+    // bedingtes rendern
+    if (checkPropsForNull(props)) return null;
 
   return (
     <>

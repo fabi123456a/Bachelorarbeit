@@ -30,7 +30,7 @@ const SceneList = (props: {
     });
   }, [reload]);
 
-  return (
+  return props.setAdminArea && props.setScene && props.user ? (
     <Stack className="">
       <Typography sx={{ mb: "24px", fontWeight: "bold" }}>
         Leitstelle auswählen:
@@ -69,7 +69,7 @@ const SceneList = (props: {
         </Button>
       ) : null}
     </Stack>
-  );
+  ) : null;
 };
 
 export default SceneList;

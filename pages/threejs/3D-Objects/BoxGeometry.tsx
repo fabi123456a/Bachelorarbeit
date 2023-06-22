@@ -2,6 +2,7 @@ import React, { Ref, useRef, useState } from "react";
 import * as THREE from "three";
 import { BufferGeometry, Material, Mesh } from "three";
 import HtmlSettings from "./HtmlSettings";
+import { checkPropsForNull } from "../../../utils/checkIfPropIsNull";
 
 function BoxGeometry(props: {
   // position & skalieren der Box
@@ -14,7 +15,12 @@ function BoxGeometry(props: {
   setCurentObj: (obj: TypeObjectProps) => void;
   currentObjProps: TypeObjectProps;
 }) {
+
+  // bedingtes rendern
+  if (checkPropsForNull(props)) return null;
+  
   return (
+    props.currentObjProps?
     <>
       <mesh
         ref={props.ref123}
@@ -39,7 +45,7 @@ function BoxGeometry(props: {
           ></HtmlSettings>
         ) : null}
       </mesh>
-    </>
+    </>:null
   );
 }
 

@@ -41,6 +41,8 @@ const Cube = () => {
   // define the new attribute
   piece.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
 
+
+
   return <mesh ref={cubeRef} geometry={piece} material={material} />;
 };
 

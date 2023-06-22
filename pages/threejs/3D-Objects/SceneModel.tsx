@@ -5,6 +5,8 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import * as THREE from "three";
 import { BoxHelper, Camera, LineBasicMaterial, Vector3 } from "three";
 import { BufferGeometry, Material, Mesh } from "three";
+import { checkPropsForNull } from "../../../utils/checkIfPropIsNull";
+
 // KOMPONENTE
 
 function SceneModel(
@@ -75,6 +77,9 @@ function SceneModel(
   //     "x: " + tcRef.current.position.x + ", z: " + tcRef.current.position.z
   //   );
   // }, [key]);
+
+  // bedingtes rendern
+  if (checkPropsForNull(props)) return null;
 
   return (
     <>

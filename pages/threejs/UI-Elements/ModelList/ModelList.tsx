@@ -4,6 +4,7 @@ import AddModelForm from "./AddModelForm";
 
 import UploadFbx from "./fbxHandle/uploadFbx";
 import ModelListItem from "./ModelListItem";
+import { checkPropsForNull } from "../../../../utils/checkIfPropIsNull";
 
 export default function ModelList(props: {
   paths: { name: string; path: string }[]; // enthält alle Pfade der FBX-Models die auf dem Server liegen
@@ -12,6 +13,9 @@ export default function ModelList(props: {
   deleteModel: (url: string) => void;
   setRefreshData: () => void;
 }) {
+  // bedingtes rendern
+  if (checkPropsForNull(props)) return null;
+
   return (
     <Stack
       style={{ overflowY: "auto" }}

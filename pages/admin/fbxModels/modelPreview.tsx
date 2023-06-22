@@ -1,15 +1,15 @@
-import React, { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 import { Canvas, useLoader } from "react-three-fiber";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
-import THREE from "three";
-import { CircularProgress } from "@mui/material";
+import { OrbitControls } from "@react-three/drei";
 
-const ModelPreview = (props: { fbxName: string }) => {
+export default function ModelPreview(props: { fbxName: string }) {
   const fbxRef = useRef();
-  const fbxModel = useLoader(FBXLoader, "./ModelsFBX/" + props.fbxName);
+  const fbxModel = props.fbxName
+    ? useLoader(FBXLoader, "./ModelsFBX/" + props.fbxName)
+    : null;
 
-  return (
+  return props.fbxName ? (
     <Canvas
       style={{
         height: "200px",
@@ -23,7 +23,5 @@ const ModelPreview = (props: { fbxName: string }) => {
       <OrbitControls></OrbitControls>
       <primitive object={fbxModel.clone()} ref={fbxRef} />
     </Canvas>
-  );
-};
-
-export default ModelPreview;
+  ) : null;
+}

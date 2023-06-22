@@ -14,6 +14,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
+import { checkPropsForNull } from "../../../../utils/checkIfPropIsNull";
 
 export default function SceneModelListItem(props: {
   model: TypeObjectProps;
@@ -42,6 +43,9 @@ export default function SceneModelListItem(props: {
       }
     });
   };
+
+  // bedingtes rendern
+  if (checkPropsForNull(props)) return null;
 
   return (
     <>

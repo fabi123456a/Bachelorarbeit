@@ -5,6 +5,7 @@ import { MeshBasicMaterial, Vector3 } from "three";
 import BoxGeometry from "./BoxGeometry";
 import { Button } from "@mui/material";
 import HtmlSettings from "./HtmlSettings";
+import { checkPropsForNull } from "../../../utils/checkIfPropIsNull";
 
 // KOMPONENTE
 
@@ -21,9 +22,11 @@ function Cylinderqq(props: {
   const refMesh = useRef<THREE.Mesh>(null);
   const tcRef = useRef<any>(null);
 
-  const cylinderMaterial = new MeshBasicMaterial({
-    color: props.objProps.color,
-  });
+  const cylinderMaterial = props.objProps
+    ? new MeshBasicMaterial({
+        color: props.objProps.color,
+      })
+    : null;
 
   // function
   const setCurrentObj = () => {
@@ -62,7 +65,7 @@ function Cylinderqq(props: {
     });
   };
 
-  return (
+  return props.objProps ? (
     <>
       <TransformControls
         ref={tcRef}
@@ -133,7 +136,7 @@ function Cylinderqq(props: {
         </Cylinder>
       </TransformControls>
     </>
-  );
+  ) : null;
 }
 
 export default Cylinderqq;

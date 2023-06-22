@@ -1,6 +1,7 @@
 import { Button, IconButton } from "@mui/material";
 import { Stack } from "@mui/system";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { checkPropsForNull } from "../../../../utils/checkIfPropIsNull";
 
 export default function ModelListItem(props: {
   name: string;
@@ -8,6 +9,9 @@ export default function ModelListItem(props: {
   addObject: (pfad: string, info: string) => void;
   deleteModel: (url: string) => void;
 }) {
+  // bedingtes rendern
+  if (checkPropsForNull(props)) return null;
+
   return (
     <Stack style={{ margin: "8px" }} direction={"row"}>
       <Button

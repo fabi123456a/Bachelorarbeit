@@ -5,6 +5,7 @@ import TreeView from "@mui/lab/TreeView";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import SceneModelListItem from "./ScenModeListItem";
+import { checkPropsForNull } from "../../../../utils/checkIfPropIsNull";
 
 export default function SceneModelList(props: {
   models: TypeObjectProps[];
@@ -18,6 +19,9 @@ export default function SceneModelList(props: {
   const handleTreeItemClick = (id) => {
     setSelectedId(id);
   };
+
+  // bedingtes rendern
+  if (checkPropsForNull(props)) return null;
 
   return (
     <Stack
