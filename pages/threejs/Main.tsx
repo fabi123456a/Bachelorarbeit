@@ -565,103 +565,108 @@ export default function Main(props: {
         </Snackbar>
 
         {/* ModelList j */}
-        {props.user.readOnly ? null : (
-          <>
-            <ModelList
-              addObject={handleModelAdd}
-              deleteModel={(url: string) => {
-                setModelPaths((prev) => [
-                  ...prev.filter((path) => path.path !== url),
-                ]);
-                setFbx_models_files((prev) => [
-                  ...prev.filter((path) => path.pathName !== url),
-                ]);
-              }}
-              addModel={(name: string, url: string, file: any) => {
-                setModelPaths((prev) => [...prev, { name: name, path: url }]);
-                setFbx_models_files((prev: any[]) => {
-                  if (prev.find((elem) => elem.pathName === url)) {
-                    return prev;
-                  }
-                  const newFile = {
-                    pathName: url,
-                    name: name,
-                    file: file,
-                  };
-                  return [...prev, newFile];
-                });
-              }}
-              paths={modelPaths}
-              setRefreshData={handleRefreshFbxModelPaths}
-            ></ModelList>
+        {props.user ? (
+          props.user.readOnly ? null : (
+            <>
+              <ModelList
+                addObject={handleModelAdd}
+                deleteModel={(url: string) => {
+                  setModelPaths((prev) => [
+                    ...prev.filter((path) => path.path !== url),
+                  ]);
+                  setFbx_models_files((prev) => [
+                    ...prev.filter((path) => path.pathName !== url),
+                  ]);
+                }}
+                addModel={(name: string, url: string, file: any) => {
+                  setModelPaths((prev) => [...prev, { name: name, path: url }]);
+                  setFbx_models_files((prev: any[]) => {
+                    if (prev.find((elem) => elem.pathName === url)) {
+                      return prev;
+                    }
+                    const newFile = {
+                      pathName: url,
+                      name: name,
+                      file: file,
+                    };
+                    return [...prev, newFile];
+                  });
+                }}
+                paths={modelPaths}
+                setRefreshData={handleRefreshFbxModelPaths}
+              ></ModelList>
 
-            {/* ToolBar */}
-            <ToolBar
-              setPerspective={setPerspective}
-              deleteObject={handleModelDelete}
-              exportObject={handleModelexport}
-              importObject={handleModelimport}
-              removeObject={handleModelRemoval}
-              currentObjProps={currentObjectProps}
-              setObjProps={setCurrentObjectProps}
-              controlsRef={controlsRef}
-              setWallVisibility={setWallVisiblity}
-              saveScene={saveScene}
-              loadScene={loadScene}
-              setIsTestMode={setIsTestMode}
-              isTestMode={isTestMode}
-              setCurentObj={setCurrentObjectProps}
-              scene={props.scene}
-              setHtmlSettings={setHtmlsettings}
-              htmlSettings={htmlsettings}
-            ></ToolBar>
+              {/* ToolBar */}
+              <ToolBar
+                setPerspective={setPerspective}
+                deleteObject={handleModelDelete}
+                exportObject={handleModelexport}
+                importObject={handleModelimport}
+                removeObject={handleModelRemoval}
+                currentObjProps={currentObjectProps}
+                setObjProps={setCurrentObjectProps}
+                controlsRef={controlsRef}
+                setWallVisibility={setWallVisiblity}
+                saveScene={saveScene}
+                loadScene={loadScene}
+                setIsTestMode={setIsTestMode}
+                isTestMode={isTestMode}
+                setCurentObj={setCurrentObjectProps}
+                scene={props.scene}
+                setHtmlSettings={setHtmlsettings}
+                htmlSettings={htmlsettings}
+              ></ToolBar>
 
-            <WallList addWall={handleWallAdd}></WallList>
+              <WallList addWall={handleWallAdd}></WallList>
 
-            {/* PropertieContainer */}
-            <Stack
-              style={{
-                background: "#d9d9d9",
-                width: "30%",
-              }}
-              className="properties"
-            >
-              {selectedOption == "chat" ? (
-                <Chat user={props.user} scene={props.scene}></Chat>
-              ) : (
-                <>
-                  <PropertieContainer
-                    objProps={currentObjectProps}
-                    setObjProps={setCurrentObjectProps}
-                  ></PropertieContainer>
-                  <Divider sx={{ margin: "8px" }}></Divider>
-                  <SceneModelList
-                    models={models}
-                    currentObjProps={currentObjectProps}
-                    setCurrentObj={setCurrentObjectProps}
-                    deleteObject={handleModelDelete}
-                    selectedId={treeViewSelectedId}
-                  ></SceneModelList>
-                </>
-              )}
+              {/* PropertieContainer */}
+              <Stack
+                style={{
+                  background: "#d9d9d9",
+                  width: "30%",
+                }}
+                className="properties"
+              >
+                {selectedOption == "chat" ? (
+                  <Chat user={props.user} scene={props.scene}></Chat>
+                ) : (
+                  <>
+                    <PropertieContainer
+                      objProps={currentObjectProps}
+                      setObjProps={setCurrentObjectProps}
+                    ></PropertieContainer>
+                    <Divider sx={{ margin: "8px" }}></Divider>
+                    <SceneModelList
+                      models={models}
+                      currentObjProps={currentObjectProps}
+                      setCurrentObj={setCurrentObjectProps}
+                      deleteObject={handleModelDelete}
+                      selectedId={treeViewSelectedId}
+                    ></SceneModelList>
+                  </>
+                )}
 
-              <RadioGroup value={selectedOption} onChange={handleOptionChange}>
-                <Stack direction={"row"}>
-                  <FormControlLabel
-                    value="chat"
-                    control={<Radio />}
-                    label="Chat"
-                  />
-                  <FormControlLabel
-                    value="properties"
-                    control={<Radio />}
-                    label="Eigenschaften"
-                  />
-                </Stack>
-              </RadioGroup>
-            </Stack>
-          </>
-        )}
+                <RadioGroup
+                  value={selectedOption}
+                  onChange={handleOptionChange}
+                >
+                  <Stack direction={"row"}>
+                    <FormControlLabel
+                      value="chat"
+                      control={<Radio />}
+                      label="Chat"
+                    />
+                    <FormControlLabel
+                      value="properties"
+                      control={<Radio />}
+                      label="Eigenschaften"
+                    />
+                  </Stack>
+                </RadioGroup>
+              </Stack>
+            </>
+          )
+        ) : null}
         {/* Canvas */}
         <Canvas
           onPointerMissed={() => {

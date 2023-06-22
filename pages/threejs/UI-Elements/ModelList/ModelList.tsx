@@ -16,7 +16,7 @@ export default function ModelList(props: {
   // bedingtes rendern
   if (checkPropsForNull(props)) return null;
 
-  return (
+  return props.paths ? (
     <Stack
       style={{ overflowY: "auto" }}
       direction="column"
@@ -41,5 +41,5 @@ export default function ModelList(props: {
       <UploadFbx setRefreshData={props.setRefreshData}></UploadFbx>
       {/* <AddModelForm addModel={props.addModel} /> */}
     </Stack>
-  );
+  ) : null;
 }

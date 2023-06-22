@@ -26,7 +26,9 @@ export default function SceneModelListItem(props: {
   models: TypeObjectProps[];
 }) {
   const [rename, setRename] = useState<boolean>(false);
-  const [name, setName] = useState<string>(props.model.name);
+  const [name, setName] = useState<string>(
+    props.model ? props.model.name : null
+  );
 
   const handleIconClick = (e, id: string) => {
     e.stopPropagation();
@@ -47,7 +49,7 @@ export default function SceneModelListItem(props: {
   // bedingtes rendern
   if (checkPropsForNull(props)) return null;
 
-  return (
+  return props.model ? (
     <>
       {rename ? (
         <Stack direction={"row"}>
@@ -109,5 +111,5 @@ export default function SceneModelListItem(props: {
         ></TreeItem>
       )}
     </>
-  );
+  ) : null;
 }

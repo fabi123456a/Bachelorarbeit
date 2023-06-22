@@ -4,18 +4,6 @@ import { useFrame, useThree } from "react-three-fiber";
 
 const Cube = () => {
   const cubeRef = useRef<THREE.Mesh>();
-  const { camera } = useThree();
-
-  useFrame((_, delta) => {
-    if (cubeRef.current) {
-      cubeRef.current.rotation.x += delta / 2;
-      cubeRef.current.rotation.y += delta / 1;
-    }
-  });
-
-  useEffect(() => {
-    camera.position.z = 4;
-  }, [camera]);
 
   const piece = new THREE.BoxGeometry(1, 1, 1).toNonIndexed();
   const material = new THREE.MeshBasicMaterial({
@@ -40,8 +28,6 @@ const Cube = () => {
 
   // define the new attribute
   piece.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
-
-
 
   return <mesh ref={cubeRef} geometry={piece} material={material} />;
 };

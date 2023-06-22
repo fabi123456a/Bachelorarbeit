@@ -23,7 +23,7 @@ export default function SceneModelList(props: {
   // bedingtes rendern
   if (checkPropsForNull(props)) return null;
 
-  return (
+  return props.models ? (
     <Stack
       sx={{
         height: "300px",
@@ -52,5 +52,5 @@ export default function SceneModelList(props: {
         </TreeItem>
       </TreeView>
     </Stack>
-  );
+  ) : null;
 }

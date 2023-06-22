@@ -23,9 +23,12 @@ const MenuBar = (props: {
         <ArrowBackIosIcon></ArrowBackIosIcon>
         Back
       </Button>
-      <Typography>
-        Scene: {props.scene.name}, testMode: {props.isTestMode ? "ja" : "nein"}
-      </Typography>
+      {props.scene ? (
+        <Typography>
+          Scene: {props.scene.name}, testMode:{" "}
+          {props.isTestMode ? "ja" : "nein"}
+        </Typography>
+      ) : null}
     </Stack>
   );
 };

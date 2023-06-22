@@ -12,7 +12,7 @@ export default function ModelListItem(props: {
   // bedingtes rendern
   if (checkPropsForNull(props)) return null;
 
-  return (
+  return props.pfad ? (
     <Stack style={{ margin: "8px" }} direction={"row"}>
       <Button
         onClick={() =>
@@ -31,7 +31,7 @@ export default function ModelListItem(props: {
         <DeleteForeverIcon></DeleteForeverIcon>
       </IconButton> */}
     </Stack>
-  );
+  ) : null;
 }
 
 function get_model_name(path: string): string {

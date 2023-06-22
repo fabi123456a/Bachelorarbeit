@@ -19,7 +19,9 @@ function SceneModel(
   }
 ) {
   // lädt das FBX-Model
-  const fbx: THREE.Group = useLoader(FBXLoader, props.modelPath);
+  const fbx: THREE.Group = props.modelPath
+    ? useLoader(FBXLoader, props.modelPath)
+    : null;
 
   // referenz auf das Mesh des FBX-Models
   const refMesh = useRef<THREE.Mesh>(null);
@@ -29,7 +31,7 @@ function SceneModel(
   const [key, setKey] = useState(0);
 
   useEffect(() => {
-    tcRef.current.domElement.style.pointerEvents = "auto";
+    tcRef ? (tcRef.current.domElement.style.pointerEvents = "auto") : null;
   }, []);
 
   // function
@@ -81,7 +83,7 @@ function SceneModel(
   // bedingtes rendern
   if (checkPropsForNull(props)) return null;
 
-  return (
+  return props.id ? (
     <>
       <TransformControls
         key={key}
@@ -157,7 +159,7 @@ function SceneModel(
         </mesh> 
       )}*/}
     </>
-  );
+  ) : null;
 }
 
 export default SceneModel;
