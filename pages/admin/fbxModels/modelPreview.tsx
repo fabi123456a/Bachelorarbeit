@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Canvas, useLoader } from "react-three-fiber";
+import { Canvas, useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { OrbitControls } from "@react-three/drei";
 

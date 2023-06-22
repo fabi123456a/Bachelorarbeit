@@ -1,10 +1,7 @@
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import * as THREE from "three";
-import { FirstPersonControls } from "@react-three/drei";
 import { FlyControls } from "@react-three/drei";
-import { Vector3 } from "three";
-import { useFrame } from "react-three-fiber";
 import { checkPropsForNull } from "../../../utils/checkIfPropIsNull";
 
 export default function Camera(props: {
@@ -19,10 +16,10 @@ export default function Camera(props: {
     frontal: new THREE.Vector3(0, 0, 999),
   });
 
-    // bedingtes rendern
-    if (checkPropsForNull(props)) return null;
+  // bedingtes rendern
+  if (checkPropsForNull(props)) return null;
 
-  return (
+  return props.controlsRef ? (
     <>
       {props.testMode ? (
         <FlyControls
@@ -56,30 +53,5 @@ export default function Camera(props: {
         </OrthographicCamera>
       )}
     </>
-  );
-}
-
-///* enableRotate={props.lockCamera ? false : true} */
-
-{
-  /* <OrbitControls
-        ref={props.controlsRef}
-        enableZoom={false}
-        enablePan={false}
-        minPolarAngle={Math.PI / 2}
-        maxPolarAngle={Math.PI / 2}
-        position={new Vector3(1, 10, 1)}
-
-      /> */
-}
-
-{
-  /* <FlyControls
-          ref={props.controlsRef}
-          movementSpeed={5}
-          rollSpeed={0.5}
-          dragToLook={true}
-          args={[cameraRef.current]}
-          position={[10, 30, 20]}
-        /> */
+  ) : null;
 }

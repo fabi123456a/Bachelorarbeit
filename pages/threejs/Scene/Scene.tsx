@@ -20,8 +20,10 @@ export default function Scene(props: {
   testMode: boolean;
   htmlSettings: boolean;
 }) {
-  const { scene } = useThree();
-  props.sceneRef.current = scene;
+  if (props.currentObjectProps) {
+    const { scene } = useThree();
+    props.sceneRef.current = scene;
+  }
 
   // // gitter raster erstellen & einfügen
   // useEffect(() => {
@@ -43,10 +45,7 @@ export default function Scene(props: {
   //   }
   // }, [scene, props.perspektive]);
 
-  // bedingtes rendern
-  if (checkPropsForNull(props)) return null;
-
-  return (
+  return props.models ? (
     <>
       {/* Canvas nimmt größe von parent container */}
       {/* Canvas richtet eine Szene & Kamera ein */}
@@ -182,5 +181,5 @@ export default function Scene(props: {
         rightWall={props.wallVisibility.rightWall}
       /> */}
     </>
-  );
+  ) : null;
 }
