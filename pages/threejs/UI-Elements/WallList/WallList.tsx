@@ -1,9 +1,9 @@
 import { Typography } from "@mui/material";
 import { Stack } from "@mui/system";
-import { WallListItem } from "./WallListItem";
+import WallListItem from "./WallListItem";
 import ColorPicker from "../Colorpicker/ColorPicker";
 
-export function WallList(props: {
+export default function WallList(props: {
   addWall: (objProps: TypeObjectProps) => void;
 }) {
   const names: string[] = ["floor", "wall", "cube", "cylinder"];

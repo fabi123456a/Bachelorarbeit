@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Session, User } from "@prisma/client";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
-export function UserOnlineItem(props: {
+export default function UserOnlineItem(props: {
   session: Session & {
     user: User;
   };

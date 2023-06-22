@@ -6,7 +6,7 @@ import { FlyControls } from "@react-three/drei";
 import { Vector3 } from "three";
 import { useFrame } from "react-three-fiber";
 
-export function Camera(props: {
+export default function Camera(props: {
   controlsRef: React.RefObject<any>;
   perspektive: string;
   testMode: boolean;

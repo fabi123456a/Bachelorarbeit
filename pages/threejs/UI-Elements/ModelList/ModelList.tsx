@@ -1,10 +1,11 @@
 import { Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import AddModelForm from "./AddModelForm";
-import { ModelListItem } from "./ModelListItem";
-import UploadFbx from "./fbxHandle/uploadFbx";
 
-export function ModelList(props: {
+import UploadFbx from "./fbxHandle/uploadFbx";
+import ModelListItem from "./ModelListItem";
+
+export default function ModelList(props: {
   paths: { name: string; path: string }[]; // enthält alle Pfade der FBX-Models die auf dem Server liegen
   addObject: (pfad: string, info: string) => void;
   addModel: (name: string, url: string, file: any) => void;

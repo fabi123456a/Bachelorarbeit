@@ -1,5 +1,5 @@
 import SceneModel from "../3D-Objects/SceneModel";
-import { Camera } from "./Camera";
+import Camera from "./Camera";
 import { useThree } from "@react-three/fiber";
 import { useEffect, useState } from "react";
 import * as THREE from "three";

@@ -2,7 +2,7 @@ import { Button, IconButton } from "@mui/material";
 import { Stack } from "@mui/system";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
-export function ModelListItem(props: {
+export default function ModelListItem(props: {
   name: string;
   pfad: string;
   addObject: (pfad: string, info: string) => void;

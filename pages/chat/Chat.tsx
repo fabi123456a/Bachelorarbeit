@@ -4,12 +4,12 @@ import io from "Socket.IO-client";
 
 import { ChatEntry, Scene, Session, User } from "@prisma/client";
 import { randomUUID } from "crypto";
-import { UserOnlineItem } from "./UserOnlineItem";
 import { prismaClient } from "../api/prismaclient/_prismaClient";
+import UserOnlineItem from "./UserOnlineItem";
 
 let socket;
 
-export function Chat(props: { scene: Scene; user: User }) {
+export default function Chat(props: { scene: Scene; user: User }) {
   const [text, setText] = useState<string>("");
   const [msgs, setMsgs] = useState<
     (ChatEntry & {

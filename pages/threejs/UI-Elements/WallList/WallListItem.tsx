@@ -2,7 +2,7 @@ import { Button, IconButton, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
-export function WallListItem(props: {
+export default function WallListItem(props: {
   name: string;
   data: object;
   addWall: (objProps: TypeObjectProps) => void;
