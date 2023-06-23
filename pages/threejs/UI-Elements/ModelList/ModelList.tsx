@@ -9,8 +9,6 @@ import { checkPropsForNull } from "../../../../utils/checkIfPropIsNull";
 export default function ModelList(props: {
   paths: { name: string; path: string }[]; // enthält alle Pfade der FBX-Models die auf dem Server liegen
   addObject: (pfad: string, info: string) => void;
-  addModel: (name: string, url: string, file: any) => void;
-  deleteModel: (url: string) => void;
   setRefreshData: () => void;
 }) {
   // bedingtes rendern
@@ -34,12 +32,10 @@ export default function ModelList(props: {
             key={path.path}
             pfad={path.path}
             addObject={props.addObject}
-            deleteModel={props.deleteModel}
           ></ModelListItem>
         ))}
       </Stack>
       <UploadFbx setRefreshData={props.setRefreshData}></UploadFbx>
-      {/* <AddModelForm addModel={props.addModel} /> */}
     </Stack>
   ) : null;
 }

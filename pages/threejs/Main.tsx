@@ -37,7 +37,7 @@ export default function Main(props: {
   const [isTestMode, setIsTestMode] = useState<boolean>(false);
   const [fbx_models_files, setFbx_models_files] = useState<any[]>([]); //Contains all FBX Model Files which can be selected via the ModelList Component. Is needed to save the Scene and all FBX Model Files
   const [models, setModels] = useState<TypeObjectProps[]>([]); // contains all models which are currently in the scene, models without path are walls - walls and fbxModels
-  const [modelPaths, setModelPaths] = useState<TypeModel[]>([]); //Contains all FBX-Model Files and their name which can be selected via the ModelList
+  const [modelPathsFS, setModelPathsFS] = useState<TypeModel[]>([]); //Contains all FBX-Model Files and their name which can be selected via the ModelList, wird am anfang von FS geladen
   const [refresFbxModelPathsData, setRefreshFbxModelPathsData] =
     useState<boolean>(false);
   const [currentObjectProps, setCurrentObjectProps] = useState<TypeObjectProps>(
@@ -78,7 +78,7 @@ export default function Main(props: {
         typeModels[i] = { name: nameFile, path: "./ModelsFBX/" + nameFile };
       }
 
-      setModelPaths(typeModels);
+      setModelPathsFS(typeModels);
     };
 
     fetchData();
@@ -320,6 +320,7 @@ export default function Main(props: {
 
   // save Scene
   async function saveScene() {
+    console.log(".." + fbx_models_files);
     const files = await Promise.all(
       fbx_models_files.map(async (fileData) => {
         const { pathName, name, file } = fileData;
@@ -327,8 +328,6 @@ export default function Main(props: {
         return { pathName, name, file: base64 };
       })
     );
-
-    console.log(files);
 
     const toSaveObj = {
       //roomDimensions: roomDimensions,
@@ -369,55 +368,6 @@ export default function Main(props: {
     );
   }
 
-  // load Scene
-  async function loadScene(file: File | null) {
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const data = JSON.parse(e?.target?.result as string);
-      if (!isExportedScene(data)) {
-        alert("The File type is not correct");
-        return;
-      }
-
-      const modifiedPaths = await Promise.all(
-        data.fbx_models?.map(async (fbx_model: any) => {
-          const url = URL.createObjectURL(base64ToBlob(fbx_model.file)); //generate a Path from the decoded base64 ArrayBuffe String, the default type is "" and means it is a binary file
-          return {
-            name: fbx_model.name,
-            oldPathName: fbx_model.pathName,
-            newPathName: url,
-          };
-        })
-      );
-
-      // if (data.roomDimensions) {
-      //   setRoomDimensions({ ...data.roomDimensions });
-      // }
-
-      setModelPaths((prev) => [
-        ...prev,
-        ...modifiedPaths.map((fbx_model) => {
-          return { name: fbx_model.name, path: fbx_model.newPathName };
-        }),
-      ]);
-
-      setModels([
-        ...data.models.map((model: any) => {
-          const newPathName = modifiedPaths.find((modelFbxPath) => {
-            return modelFbxPath?.oldPathName === model?.modelPath;
-          });
-          return {
-            ...model,
-            modelPath: newPathName?.newPathName ?? model.modelPath,
-          };
-        }),
-      ]);
-    };
-    reader.readAsText(file);
-  }
-
   async function loadScene2(data2: string) {
     const data = JSON.parse(data2);
     if (!isExportedScene(data)) {
@@ -440,7 +390,7 @@ export default function Main(props: {
     //   setRoomDimensions({ ...data.roomDimensions });
     // }
 
-    setModelPaths((prev) => [
+    setModelPathsFS((prev) => [
       ...prev,
       ...modifiedPaths.map((fbx_model) => {
         return { name: fbx_model.name, path: fbx_model.newPathName };
@@ -528,29 +478,7 @@ export default function Main(props: {
             <>
               <ModelList
                 addObject={handleModelAdd}
-                deleteModel={(url: string) => {
-                  setModelPaths((prev) => [
-                    ...prev.filter((path) => path.path !== url),
-                  ]);
-                  setFbx_models_files((prev) => [
-                    ...prev.filter((path) => path.pathName !== url),
-                  ]);
-                }}
-                addModel={(name: string, url: string, file: any) => {
-                  setModelPaths((prev) => [...prev, { name: name, path: url }]);
-                  setFbx_models_files((prev: any[]) => {
-                    if (prev.find((elem) => elem.pathName === url)) {
-                      return prev;
-                    }
-                    const newFile = {
-                      pathName: url,
-                      name: name,
-                      file: file,
-                    };
-                    return [...prev, newFile];
-                  });
-                }}
-                paths={modelPaths}
+                paths={modelPathsFS}
                 setRefreshData={handleRefreshFbxModelPaths}
               ></ModelList>
 
@@ -566,7 +494,6 @@ export default function Main(props: {
                 controlsRef={controlsRef}
                 setWallVisibility={setWallVisiblity}
                 saveScene={saveScene}
-                loadScene={loadScene}
                 setIsTestMode={setIsTestMode}
                 isTestMode={isTestMode}
                 setCurentObj={setCurrentObjectProps}
@@ -649,3 +576,54 @@ export default function Main(props: {
     </Stack>
   );
 }
+
+/*
+  // load Scene
+  async function loadScene(file: File | null) {
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const data = JSON.parse(e?.target?.result as string);
+      if (!isExportedScene(data)) {
+        alert("The File type is not correct");
+        return;
+      }
+
+      const modifiedPaths = await Promise.all(
+        data.fbx_models?.map(async (fbx_model: any) => {
+          const url = URL.createObjectURL(base64ToBlob(fbx_model.file)); //generate a Path from the decoded base64 ArrayBuffe String, the default type is "" and means it is a binary file
+          return {
+            name: fbx_model.name,
+            oldPathName: fbx_model.pathName,
+            newPathName: url,
+          };
+        })
+      );
+
+      // if (data.roomDimensions) {
+      //   setRoomDimensions({ ...data.roomDimensions });
+      // }
+
+      setModelPathsFS((prev) => [
+        ...prev,
+        ...modifiedPaths.map((fbx_model) => {
+          return { name: fbx_model.name, path: fbx_model.newPathName };
+        }),
+      ]);
+
+      setModels([
+        ...data.models.map((model: any) => {
+          const newPathName = modifiedPaths.find((modelFbxPath) => {
+            return modelFbxPath?.oldPathName === model?.modelPath;
+          });
+          return {
+            ...model,
+            modelPath: newPathName?.newPathName ?? model.modelPath,
+          };
+        }),
+      ]);
+    };
+    reader.readAsText(file);
+  }
+*/

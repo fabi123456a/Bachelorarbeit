@@ -7,7 +7,6 @@ export default function ModelListItem(props: {
   name: string;
   pfad: string;
   addObject: (pfad: string, info: string) => void;
-  deleteModel: (url: string) => void;
 }) {
   // bedingtes rendern
   if (checkPropsForNull(props)) return null;

@@ -35,7 +35,6 @@ function ToolBar(props: {
   setPerspective: (perspective: string) => void; // funktion setzt die Kamera Perspektive -> "0"=normal, "1"=topDown, "2"=frontal, "3"=leftMid, "4"=rightMid
   setWallVisibility: (flag: boolean) => void;
   saveScene: () => void;
-  loadScene: (file: File | null) => void;
   setIsTestMode: (flag: boolean) => void;
   isTestMode: boolean;
   setCurentObj: (obj: TypeObjectProps) => void;
