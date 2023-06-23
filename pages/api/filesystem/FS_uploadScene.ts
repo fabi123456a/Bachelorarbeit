@@ -10,6 +10,8 @@ export default async function FS_uploadScene(
   const body = req.body;
   const jsonObject = JSON.parse(body);
 
+  console.log("FS_uploadScene \n\n" + JSON.stringify(jsonObject));
+
   const filePath = path.join(
     process.cwd(),
     "public",

@@ -329,7 +329,7 @@ export default function Main(props: {
 
     const toSaveObj = {
       //roomDimensions: roomDimensions,
-      models: [...models], // models sind die geometrien wie walls, floor, cube, cylinder
+      models: [...models], // models enthält alles was in der scene ist. Walls und FBX-Models
       //fbx_models: files,
     };
     const sceneJsonString = JSON.stringify(toSaveObj);
@@ -337,16 +337,7 @@ export default function Main(props: {
     console.log("safe Scene");
     console.log(sceneJsonString);
 
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(
-      new Blob([sceneJsonString], { type: "application/json" })
-    );
-    link.download = "Scene";
-    document.body.appendChild(link);
-    //link.click();
-    document.body.removeChild(link);
-
-    // auf server laden, scene mit gleichen id safen ist quasi scene speichern
+    // auf server laden, scene mit gleichen id uploaden ist quasi scene speichern
 
     const response = await fetch("/api/filesystem/FS_uploadScene", {
       method: "POST",
