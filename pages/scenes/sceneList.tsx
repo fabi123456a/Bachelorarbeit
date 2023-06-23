@@ -9,7 +9,7 @@ const SceneList = (props: {
   user: User;
   setAdminArea: (flag: boolean) => void;
 }) => {
-  const [scenes, setSenes] = useState<Scene[]>();
+  const [scenes, setScenes] = useState<Scene[]>();
   const [reload, setReload] = useState<number>();
 
   const getAllSceneNames = async () => {
@@ -20,13 +20,13 @@ const SceneList = (props: {
 
   useEffect(() => {
     getAllSceneNames().then((scenes) => {
-      setSenes(scenes);
+      setScenes(scenes);
     });
   }, []);
 
   useEffect(() => {
     getAllSceneNames().then((scenes) => {
-      setSenes(scenes);
+      setScenes(scenes);
     });
   }, [reload]);
 

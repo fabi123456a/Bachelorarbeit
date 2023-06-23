@@ -35,7 +35,6 @@ export default function Main(props: {
   const [treeViewSelectedId, setTreeViewSelectedId] = useState<string>(null);
   const [showControlsInfo, setShowControlsInfo] = useState<boolean>(true);
   const [isTestMode, setIsTestMode] = useState<boolean>(false);
-  const [fbx_models_files, setFbx_models_files] = useState<any[]>([]); //Contains all FBX Model Files which can be selected via the ModelList Component. Is needed to save the Scene and all FBX Model Files
   const [models, setModels] = useState<TypeObjectProps[]>([]); // contains all models which are currently in the scene, models without path are walls - walls and fbxModels
   const [modelPathsFS, setModelPathsFS] = useState<TypeModel[]>([]); //Contains all FBX-Model Files and their name which can be selected via the ModelList, wird am anfang von FS geladen
   const [refresFbxModelPathsData, setRefreshFbxModelPathsData] =
@@ -144,9 +143,9 @@ export default function Main(props: {
     console.log(currentObjectProps);
   }, [currentObjectProps]);
 
-  // anfangs scene laden
+  // anfangs scene laden, nach dem eine scene in der sceneList ausgewählt wurde
   useEffect(() => {
-    const handle = async () => {
+    const getSceneJsonString = async () => {
       const response = await fetch("/api/filesystem/FS_getSceneByID", {
         method: "POST",
         body: JSON.stringify({
@@ -156,9 +155,9 @@ export default function Main(props: {
 
       const result = await response.json();
 
-      loadScene2(result["data"]);
+      loadSceneFromJsonString(result["data"]);
     };
-    handle();
+    getSceneJsonString();
   }, []);
 
   // scene neu socket.io laden
@@ -188,7 +187,7 @@ export default function Main(props: {
 
             const result = await response.json();
 
-            loadScene2(result["data"]);
+            loadSceneFromJsonString(result["data"]);
           };
           handle();
         }
@@ -319,22 +318,25 @@ export default function Main(props: {
   };
 
   // save Scene
-  async function saveScene() {
-    console.log(".." + fbx_models_files);
-    const files = await Promise.all(
-      fbx_models_files.map(async (fileData) => {
-        const { pathName, name, file } = fileData;
-        const base64 = arrayBufferToBase64(await file.arrayBuffer()); //Convert the arrayBuffer of the file to a base64 encoded string
-        return { pathName, name, file: base64 };
-      })
-    );
+  async function safeSceneInFS() {
+    // const files = await Promise.all(
+    //   fbx_models_files.map(async (fileData) => {
+    //     const { pathName, name, file } = fileData;
+    //     const base64 = arrayBufferToBase64(await file.arrayBuffer()); //Convert the arrayBuffer of the file to a base64 encoded string
+    //     return { pathName, name, file: base64 };
+    //   })
+    // );
 
     const toSaveObj = {
       //roomDimensions: roomDimensions,
       models: [...models], // models sind die geometrien wie walls, floor, cube, cylinder
-      fbx_models: files,
+      //fbx_models: files,
     };
     const sceneJsonString = JSON.stringify(toSaveObj);
+
+    console.log("safe Scene");
+    console.log(sceneJsonString);
+
     const link = document.createElement("a");
     link.href = URL.createObjectURL(
       new Blob([sceneJsonString], { type: "application/json" })
@@ -358,57 +360,27 @@ export default function Main(props: {
     alert("Scene wurde erfolgreich gespeichert (" + result["result"] + ")");
   }
 
-  function isExportedScene(data: any): data is ExportedScene {
+  function isExportedScene(data: any) {
     return (
       typeof data === "object" &&
       data !== null &&
       // "roomDimensions" in data &&
-      "models" in data &&
-      "fbx_models" in data
+      "models" in data
     );
   }
 
-  async function loadScene2(data2: string) {
-    const data = JSON.parse(data2);
+  async function loadSceneFromJsonString(jsonDataString: string) {
+    const data = JSON.parse(jsonDataString);
+    console.log("loadScene2");
+    console.log(data.models);
+
+    // prüfen ob der JSON string korrekt ist
     if (!isExportedScene(data)) {
-      alert("The File type is not correct");
+      alert("The JSON data string is not compatible");
       return;
     }
 
-    const modifiedPaths = await Promise.all(
-      data.fbx_models?.map(async (fbx_model: any) => {
-        const url = URL.createObjectURL(base64ToBlob(fbx_model.file)); //generate a Path from the decoded base64 ArrayBuffe String, the default type is "" and means it is a binary file
-        return {
-          name: fbx_model.name,
-          oldPathName: fbx_model.pathName,
-          newPathName: url,
-        };
-      })
-    );
-
-    // if (data.roomDimensions) {
-    //   setRoomDimensions({ ...data.roomDimensions });
-    // }
-
-    setModelPathsFS((prev) => [
-      ...prev,
-      ...modifiedPaths.map((fbx_model) => {
-        return { name: fbx_model.name, path: fbx_model.newPathName };
-      }),
-    ]);
-
-    setModels([
-      ...models,
-      ...data.models.map((model: any) => {
-        const newPathName = modifiedPaths.find((modelFbxPath) => {
-          return modelFbxPath?.oldPathName === model?.modelPath;
-        });
-        return {
-          ...model,
-          modelPath: newPathName?.newPathName ?? model.modelPath,
-        };
-      }),
-    ]);
+    setModels(data.models);
   }
 
   const [selectedOption, setSelectedOption] = useState("");
@@ -493,7 +465,7 @@ export default function Main(props: {
                 setObjProps={setCurrentObjectProps}
                 controlsRef={controlsRef}
                 setWallVisibility={setWallVisiblity}
-                saveScene={saveScene}
+                saveScene={safeSceneInFS}
                 setIsTestMode={setIsTestMode}
                 isTestMode={isTestMode}
                 setCurentObj={setCurrentObjectProps}
