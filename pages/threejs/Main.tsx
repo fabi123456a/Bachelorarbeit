@@ -36,69 +36,7 @@ export default function Main(props: {
   const [showControlsInfo, setShowControlsInfo] = useState<boolean>(true);
   const [isTestMode, setIsTestMode] = useState<boolean>(false);
   const [fbx_models_files, setFbx_models_files] = useState<any[]>([]); //Contains all FBX Model Files which can be selected via the ModelList Component. Is needed to save the Scene and all FBX Model Files
-  const [models, setModels] = useState<TypeObjectProps[]>([
-    // {
-    //   // ground
-    //   id: "fewrtgregvdg",
-    //   position: { x: 0, y: 0, z: 0 },
-    //   scale: { x: 50, y: 0.001, z: 50 },
-    //   rotation: { x: 0, y: 0, z: 0 },
-    //   editMode: undefined,
-    //   showXTransform: false,
-    //   showYTransform: false,
-    //   showZTransform: false,
-    //   modelPath: null,
-    //   removeObjHighlight: () => {},
-    //   highlightObj: () => {},
-    //   info: "floor",
-    //   color: "#eee",
-    // },
-    // {
-    //   // right wall
-    //   id: "efewdgvew434",
-    //   position: { x: 25, y: 5, z: 0 },
-    //   scale: { x: 0.001, y: 10, z: 50 },
-    //   rotation: { x: 0, y: 0, z: 0 },
-    //   editMode: undefined,
-    //   showXTransform: false,
-    //   showYTransform: false,
-    //   showZTransform: false,
-    //   modelPath: null,
-    //   removeObjHighlight: () => {},
-    //   highlightObj: () => {},
-    //   info: "rightWall",
-    // },
-    // {
-    //   // left wall
-    //   id: "efewdgv5555ew434lllll",
-    //   position: { x: -25, y: 5, z: 0 },
-    //   scale: { x: 0.001, y: 10, z: 50 },
-    //   rotation: { x: 0, y: 0, z: 0 },
-    //   editMode: undefined,
-    //   showXTransform: false,
-    //   showYTransform: false,
-    //   showZTransform: false,
-    //   modelPath: null,
-    //   removeObjHighlight: () => {},
-    //   highlightObj: () => {},
-    //   info: "leftWall",
-    // },
-    // {
-    //   // hinten wall
-    //   id: "rfwefedsfdsdddd",
-    //   position: { x: 0, y: 5, z: -25 },
-    //   scale: { x: 50, y: 10, z: 0.001 },
-    //   rotation: { x: 0, y: 0, z: 0 },
-    //   editMode: undefined,
-    //   showXTransform: false,
-    //   showYTransform: false,
-    //   showZTransform: false,
-    //   modelPath: null,
-    //   removeObjHighlight: () => {},
-    //   highlightObj: () => {},
-    //   info: "behindWall",
-    // },
-  ]); // contains all models which are currently in the scene, models without path are walls
+  const [models, setModels] = useState<TypeObjectProps[]>([]); // contains all models which are currently in the scene, models without path are walls - walls and fbxModels
   const [modelPaths, setModelPaths] = useState<TypeModel[]>([]); //Contains all FBX-Model Files and their name which can be selected via the ModelList
   const [refresFbxModelPathsData, setRefreshFbxModelPathsData] =
     useState<boolean>(false);
@@ -201,6 +139,9 @@ export default function Main(props: {
 
     // session nalive keepen
     fetch("api/database/Session/DB_sessionKeepAlive");
+
+    // zum debuggebn
+    console.log(currentObjectProps);
   }, [currentObjectProps]);
 
   // anfangs scene laden
@@ -256,6 +197,13 @@ export default function Main(props: {
     socketInitializer();
   }, []);
 
+  //debuggen
+
+  useEffect(() => {
+    console.log("Objekte in der szene hat sich geändert");
+    console.log(models);
+  }, [models]);
+
   // ----- FUNCTIONS ----
 
   const handleRefreshFbxModelPaths = () => {
@@ -275,7 +223,11 @@ export default function Main(props: {
       rotation: { x: 0, y: 0, z: 0 },
       name: name,
       visibleInOtherPerspective: true,
+      color: pfad ? null : "red",
+      info: "",
     };
+    console.log("handleModelAdd");
+    console.log(objProps);
 
     setModels([...models, objProps]);
 
@@ -284,8 +236,11 @@ export default function Main(props: {
 
   // wall add, damit sind walls floors und cubes gemeint, also alles aus wallList
   const handleWallAdd = (objProps: TypeObjectProps) => {
+    console.log(objProps);
+
     setModels([...models, objProps]);
     setCurrentObjectProps(objProps);
+
     // objProps.insertBoundingBox(); // TODO:
   };
 
@@ -372,9 +327,12 @@ export default function Main(props: {
         return { pathName, name, file: base64 };
       })
     );
+
+    console.log(files);
+
     const toSaveObj = {
       //roomDimensions: roomDimensions,
-      models: [...models],
+      models: [...models], // models sind die geometrien wie walls, floor, cube, cylinder
       fbx_models: files,
     };
     const sceneJsonString = JSON.stringify(toSaveObj);
@@ -691,59 +649,3 @@ export default function Main(props: {
     </Stack>
   );
 }
-
-// modelPaths
-// [
-//   { name: "Car", path: "./ModelsFBX/car.fbx" },
-//   { name: "Mercedes", path: "./ModelsFBX/mercedes.fbx" },
-//   { name: "Couch", path: "./ModelsFBX/couch.fbx" },
-//   { name: "Low Poly Tree", path: "./ModelsFBX/lowpolytree.fbx" },
-//   { name: "Sofa", path: "./ModelsFBX/sofa.fbx" },
-//   { name: "Table And Chairs", path: "./ModelsFBX/tableandchairs.fbx" },
-//   { name: "Monitor", path: "./ModelsFBX/Monitor.FBX" },
-//   { name: "Chair", path: "./ModelsFBX/Chair.FBX" },
-//   { name: "Computer Desk", path: "./ModelsFBX/Computer Desk.FBX" },
-// ]
-
-// [
-//   {
-//     id: "123567",
-//     position: { x: -2, y: 0, z: 0 },
-//     scale: { x: 0.06, y: 0.06, z: 0.06 },
-//     rotation: { x: 0, y: 0, z: 0 },
-//     editMode: undefined,
-//     showXTransform: false,
-//     showYTransform: false,
-//     showZTransform: false,
-//     modelPath: "./ModelsFBX/Computer Desk.FBX",
-//     removeBoundingBox: () => {},
-//   },
-//   {
-//     id: "12321321367",
-//     position: { x: -1, y: 0, z: 0 },
-//     scale: { x: 0.03, y: 0.03, z: 0.03 },
-//     rotation: { x: 0, y: -1.6, z: 0 },
-//     editMode: undefined,
-//     showXTransform: false,
-//     showYTransform: false,
-//     showZTransform: false,
-//     modelPath: "./ModelsFBX/Chair.FBX",
-//     removeBoundingBox: () => {},
-//   },
-//   {
-//     id: "123211231233321367",
-//     position: {
-//       x: 2.0517650695421015,
-//       y: 1.83353328885948,
-//       z: 3.489659672608047,
-//     },
-//     scale: { x: 0.03, y: 0.03, z: 0.03 },
-//     rotation: { x: 0, y: 1.6, z: 0 },
-//     editMode: undefined,
-//     showXTransform: false,
-//     showYTransform: false,
-//     showZTransform: false,
-//     modelPath: "./ModelsFBX/Monitor.FBX",
-//     removeBoundingBox: () => {},
-//   },
-// ]

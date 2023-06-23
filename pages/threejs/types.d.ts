@@ -43,9 +43,9 @@ type TypeObjectProps = {
   showZTransform: boolean;
   modelPath: string;
   visibleInOtherPerspective: boolean;
-  name?: string;
-  info?: string;
-  color?: string;
+  name: string;
+  info: string;
+  color: string;
 };
 type TypeCamPerspektive = {
   topDown: boolean;

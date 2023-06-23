@@ -15,12 +15,10 @@ function BoxGeometry(props: {
   setCurentObj: (obj: TypeObjectProps) => void;
   currentObjProps: TypeObjectProps;
 }) {
-
   // bedingtes rendern
-  if (checkPropsForNull(props)) return null;
-  
-  return (
-    props.currentObjProps?
+  //if (checkPropsForNull(props)) return null;
+
+  return props.geometrie ? (
     <>
       <mesh
         ref={props.ref123}
@@ -35,8 +33,14 @@ function BoxGeometry(props: {
           }
         }}
       >
-        <boxBufferGeometry args={props.geometrie.scaleXYZ} />
-        <meshStandardMaterial color={props.color} />
+        <boxGeometry
+          args={[
+            props.geometrie.scaleXYZ[0],
+            props.geometrie.scaleXYZ[1],
+            props.geometrie.scaleXYZ[2],
+          ]}
+        />
+        <meshStandardMaterial color={props.color ? props.color : "red"} />
         {props.htmlSettings ? (
           <HtmlSettings
             flag={true}
@@ -45,8 +49,10 @@ function BoxGeometry(props: {
           ></HtmlSettings>
         ) : null}
       </mesh>
-    </>:null
-  );
+    </>
+  ) : null;
 }
 
 export default BoxGeometry;
+
+//args={props.geometrie.scaleXYZ}

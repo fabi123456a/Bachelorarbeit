@@ -31,7 +31,8 @@ function SceneModel(
   const [key, setKey] = useState(0);
 
   useEffect(() => {
-    tcRef ? (tcRef.current.domElement.style.pointerEvents = "auto") : null;
+    // TODO: braucht man das?
+    // tcRef ? (tcRef.current.domElement.style.pointerEvents = "auto") : null;
   }, []);
 
   // function
@@ -69,6 +70,9 @@ function SceneModel(
       showZTransform: true, //props.showZTransform,
       modelPath: props.modelPath,
       visibleInOtherPerspective: true,
+      name: props.name,
+      color: props.color ? props.color : "red",
+      info: props.info ? props.info : "",
     });
   };
 
@@ -79,9 +83,6 @@ function SceneModel(
   //     "x: " + tcRef.current.position.x + ", z: " + tcRef.current.position.z
   //   );
   // }, [key]);
-
-  // bedingtes rendern
-  if (checkPropsForNull(props)) return null;
 
   return props.id ? (
     <>
@@ -144,20 +145,6 @@ function SceneModel(
           object={fbx.clone(true)}
         ></primitive>
       </TransformControls>
-
-      {/* Rotes Viereck */}
-      {/* {tcRef.current && (
-        <mesh
-          position={[
-            tcRef.current.object.position.x,
-            0,
-            tcRef.current.object.position.z,
-          ]}
-        >
-          <boxBufferGeometry args={[1, 1, 1]} />
-          <meshStandardMaterial color={"red"} />
-        </mesh> 
-      )}*/}
     </>
   ) : null;
 }

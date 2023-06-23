@@ -12,6 +12,8 @@ export default function WallListItem(props: {
       <Button
         variant="outlined"
         onClick={() => {
+          console.log(props.data);
+          console.log(props.name);
           let x: TypeObjectProps = {
             id: "" + Math.random() * 1000,
             editMode: "translate",
@@ -26,13 +28,15 @@ export default function WallListItem(props: {
               z: props.data[props.name]["z"],
             },
             rotation: { x: 0, y: 0, z: 0 },
-            color: props.name == "floor" ? "#eee" : null, // der boden soll eine andere farbe bekommen
+            color: props.name == "floor" ? "#eee" : "#065623", // der boden soll eine andere farbe bekommen
             name: props.name,
-            info: props.name,
+            info: "",
             visibleInOtherPerspective: true,
           };
 
           props.addWall(x);
+          console.log("walladd: " + x);
+          console.log(x);
         }}
       >
         {props.name}

@@ -60,6 +60,8 @@ function BoxGeoPivot(props: {
       modelPath: null,
       info: props.objProps.info,
       visibleInOtherPerspective: props.objProps.visibleInOtherPerspective,
+      name: props.objProps.name,
+      color: props.objProps.color ? props.objProps.color : "red",
     });
   };
 
@@ -68,9 +70,9 @@ function BoxGeoPivot(props: {
   }, []);
 
   // bedingtes rendern
-  if (checkPropsForNull(props)) {
-    return null;
-  }
+  // if (checkPropsForNull(props)) {
+  //   return null;
+  // }
 
   return props.objProps ? (
     <>

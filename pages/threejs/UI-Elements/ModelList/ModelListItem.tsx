@@ -12,12 +12,12 @@ export default function ModelListItem(props: {
   // bedingtes rendern
   if (checkPropsForNull(props)) return null;
 
-  return props.pfad ? (
+  return props.name ? (
     <Stack style={{ margin: "8px" }} direction={"row"}>
       <Button
-        onClick={() =>
-          props.addObject(props.pfad, get_model_name(props.pfad.toLowerCase()))
-        }
+        onClick={() => {
+          props.addObject(props.pfad, get_model_name(props.pfad.toLowerCase()));
+        }}
         style={{ flex: "1" }}
         variant="contained"
       >

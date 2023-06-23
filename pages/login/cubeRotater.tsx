@@ -49,7 +49,7 @@ export default function CubeRotater(props: { loggedIn: boolean }) {
       <FollowMouse
         mesh={
           <mesh position={[0, 0, 0]}>
-            <boxBufferGeometry args={[1.5, 1.5, 1.5]} />
+            <boxGeometry args={[1.5, 1.5, 1.5]} />
             <meshNormalMaterial />
           </mesh>
         }

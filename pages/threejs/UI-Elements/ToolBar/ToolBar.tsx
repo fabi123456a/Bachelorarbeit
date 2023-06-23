@@ -320,6 +320,7 @@ function ToolBar(props: {
             style={{ ...(buttonWithTextStyle as any) }}
             title="Save current Scene"
             onClick={() => {
+              alert("xx");
               props.saveScene();
 
               socket1.emit("sceneRefresh", props.scene.id);
@@ -339,7 +340,6 @@ function ToolBar(props: {
         <ShowHtml
           htmlSettings={props.htmlSettings}
           setHtmlSettings={props.setHtmlSettings}
-          
         ></ShowHtml>
       </Stack>
     </Stack>
