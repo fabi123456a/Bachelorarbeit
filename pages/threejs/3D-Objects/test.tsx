@@ -1,35 +1,48 @@
 import * as THREE from "three";
 import { useEffect, useRef } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
+import { TextureLoader } from "three/src/loaders/TextureLoader";
+import { useLoader } from "@react-three/fiber";
 
 const Cube = () => {
-  const cubeRef = useRef<THREE.Mesh>();
+  const [colorMap, displacementMap, normalMap, roughnessMap, aoMap] = useLoader(
+    TextureLoader,
+    [
+      "./textures/wood/Substance_Graph_BaseColor.jpg",
+      "./textures/wood/Substance_Graph_Height.jpg",
+      "./textures/wood/Substance_Graph_Normal.jpg",
+      "./textures/wood/Substance_Graph_Roughness.jpg",
+      "./textures/wood/Substance_Graph_AmbientOcclusion.jpg",
+    ]
+  );
 
-  const piece = new THREE.BoxGeometry(1, 1, 1).toNonIndexed();
-  const material = new THREE.MeshBasicMaterial({
-    vertexColors: true,
-  });
-  const positionAttribute = piece.getAttribute("position");
-  const colors = [];
-
-  const color = new THREE.Color();
-
-  for (let i = 0; i < positionAttribute.count; i += 6) {
-    color.setHex(0xffffff * Math.random());
-
-    colors.push(color.r, color.g, color.b);
-    colors.push(color.r, color.g, color.b);
-    colors.push(color.r, color.g, color.b);
-
-    colors.push(color.r, color.g, color.b);
-    colors.push(color.r, color.g, color.b);
-    colors.push(color.r, color.g, color.b);
-  }
-
-  // define the new attribute
-  piece.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
-
-  return <mesh ref={cubeRef} geometry={piece} material={material} />;
+  return (
+    <mesh>
+      <sphereGeometry args={[1, 32, 32]} />
+      <meshStandardMaterial
+        map={colorMap}
+        displacementMap={displacementMap}
+        normalMap={normalMap}
+        roughnessMap={roughnessMap}
+        aoMap={aoMap}
+      />
+    </mesh>
+  );
 };
 
 export default Cube;
+
+/*
+      PAVING STONES
+      "./textures/pavingStones/PavingStones092_1K_Color.jpg",
+      "./textures/pavingStones/PavingStones092_1K_Displacement.jpg",
+      "./textures/pavingStones/PavingStones092_1K_NormalGL.jpg",
+      "./textures/pavingStones/PavingStones092_1K_Roughness.jpg",
+      "./textures/pavingStones/PavingStones092_1K_AmbientOcclusion.jpg",
+
+      WOOD
+      "./textures/wood/Substance_Graph_BaseColor.jpg",
+      "./textures/wood/Substance_Graph_Height.jpg",
+      "./textures/wood/Substance_Graph_Normal.jpg",
+      "./textures/wood/Substance_Graph_Roughness.jpg",
+      "./textures/wood/Substance_Graph_AmbientOcclusion.jpg",
+*/

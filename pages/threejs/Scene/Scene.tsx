@@ -160,7 +160,7 @@ export default function Scene(props: {
         />
       </mesh>
 
-      {/* <Cube></Cube> */}
+      <Cube></Cube>
 
       {/* <Stats className="stats" /> */}
       {/* Raum */}
