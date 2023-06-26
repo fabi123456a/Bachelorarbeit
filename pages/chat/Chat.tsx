@@ -1,6 +1,7 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import io from "Socket.IO-client";
+import io from 'socket.io-client';
+
 
 import { ChatEntry, Scene, Session, User } from "@prisma/client";
 import { randomUUID } from "crypto";

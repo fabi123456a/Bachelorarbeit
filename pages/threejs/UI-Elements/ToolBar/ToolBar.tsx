@@ -17,7 +17,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
 import PublishIcon from "@mui/icons-material/Publish";
 import RemoveIcon from "@mui/icons-material/Remove";
-import io from "Socket.IO-client";
+import io from "socket.io-client";
 import { useEffect } from "react";
 import { Scene } from "@prisma/client";
 import ShowHtml from "./world/showHtml";

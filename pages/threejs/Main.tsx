@@ -18,7 +18,7 @@ import { Radio } from "@mui/material";
 import { RadioGroup } from "@mui/material";
 import { FormControlLabel } from "@mui/material";
 import Chat from "../chat/Chat";
-import io from "Socket.IO-client";
+import io from "socket.io-client";
 import MenuBar from "./UI-Elements/Menubar/menuBar";
 
 //@ts-ignore
