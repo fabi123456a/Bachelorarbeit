@@ -319,7 +319,7 @@ function ToolBar(props: {
             style={{ ...(buttonWithTextStyle as any) }}
             title="Save current Scene"
             onClick={() => {
-              props.saveScene();
+              props.saveScene(); // TODO: await props.safeScene
 
               socket1.emit("sceneRefresh", props.scene.id);
             }}
