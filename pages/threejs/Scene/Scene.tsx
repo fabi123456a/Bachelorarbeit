@@ -25,12 +25,10 @@ export default function Scene(props: {
   //   props.sceneRef.current = scene;
   // }
 
-  const { scene } = useThree();
-  props.sceneRef.current = scene;
-
-  // useEffect(() => {
-  //   alert(props.models.length);
-  // }, [props.models]);
+  if (props.perspektive != null) {
+    const { scene } = useThree();
+    props.sceneRef.current = scene;
+  }
 
   return props.models ? (
     <>
