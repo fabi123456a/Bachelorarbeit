@@ -62,6 +62,7 @@ function BoxGeoPivot(props: {
       visibleInOtherPerspective: props.objProps.visibleInOtherPerspective,
       name: props.objProps.name,
       color: props.objProps.color ? props.objProps.color : "red",
+      texture: props.objProps ? props.objProps.texture : null,
     });
   };
 
@@ -135,7 +136,7 @@ function BoxGeoPivot(props: {
             color={props.objProps.color}
             htmlSettings={props.htmlSettings}
             setCurentObj={props.setCurrentObjectProps}
-            currentObjProps={props.objProps}
+            objProps={props.objProps}
           ></BoxGeometry>
         </>
       </TransformControls>

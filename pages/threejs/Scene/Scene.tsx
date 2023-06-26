@@ -67,6 +67,7 @@ export default function Scene(props: {
               color={null}
               info={""}
               name={model.name}
+              texture={null}
             ></SceneModel>
           ) : model.info == "cylinder" ? (
             <Cylinderqq
@@ -113,6 +114,7 @@ export default function Scene(props: {
               color={null}
               info={""}
               name={model.name}
+              texture={null}
             ></SceneModel>
           ) : model.info == "cylinder" ? (
             <Cylinderqq
@@ -160,7 +162,7 @@ export default function Scene(props: {
         />
       </mesh>
 
-      <Cube></Cube>
+      {/* <Cube></Cube> */}
 
       {/* <Stats className="stats" /> */}
       {/* Raum */}

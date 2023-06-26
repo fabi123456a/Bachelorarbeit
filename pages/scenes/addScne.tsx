@@ -29,10 +29,10 @@ const AddScene = (props: { user: User; setScene: (scene: Scene) => void }) => {
         // editMode nicht angegeeben??
         jsonData:
           "{" +
-          '"models":[{"id":"Boden","position":{"x":0,"y":0,"z":0},"scale":{"x":50,"y":0.001,"z":50},"rotation":{"x":0,"y":0,"z":0}, "visibleInOtherPerspective": true,"showXTransform":false,"showYTransform":false,"showZTransform":false,"modelPath":null,"info":"", "name": "Boden", "color":"#eee"}' +
-          ',{"id":"rechte Wand","position":{"x":25,"y":5,"z":0},"scale":{"x":0.001,"y":10,"z":50},"rotation":{"x":0,"y":0,"z":0},"visibleInOtherPerspective": true,"showXTransform":false,"showYTransform":false,"showZTransform":false,"modelPath":null,"info":"", "name": "rechte Wand", "color":"#065623"}' +
-          ',{"id":"linke Wand","position":{"x":-25,"y":5,"z":0},"scale":{"x":0.001,"y":10,"z":50},"rotation":{"x":0,"y":0,"z":0},"visibleInOtherPerspective": true,"showXTransform":false,"showYTransform":false,"showZTransform":false,"modelPath":null,"info":"", "name": "linke Wand", "color":"#065623"}' +
-          ',{"id":"Wand","position":{"x":0,"y":5,"z":-25},"scale":{"x":50,"y":10,"z":0.001},"rotation":{"x":0,"y":0,"z":0},"visibleInOtherPerspective": true,"showXTransform":false,"showYTransform":false,"showZTransform":false,"modelPath":null,"info":"", "name": "hinten Wand", "color":"#065623"}],"fbx_models":[]}', // leere scene daten
+          '"models":[{"id":"Boden","position":{"x":0,"y":0,"z":0},"scale":{"x":50,"y":0.001,"z":50},"rotation":{"x":0,"y":0,"z":0}, "visibleInOtherPerspective": true,"showXTransform":false,"showYTransform":false,"showZTransform":false,"modelPath":null,"info":"", "name": "Boden", "color":"#eee", "texture": null}' +
+          ',{"id":"rechte Wand","position":{"x":25,"y":5,"z":0},"scale":{"x":0.001,"y":10,"z":50},"rotation":{"x":0,"y":0,"z":0},"visibleInOtherPerspective": true,"showXTransform":false,"showYTransform":false,"showZTransform":false,"modelPath":null,"info":"", "name": "rechte Wand", "color":"#065623", "texture": null}' +
+          ',{"id":"linke Wand","position":{"x":-25,"y":5,"z":0},"scale":{"x":0.001,"y":10,"z":50},"rotation":{"x":0,"y":0,"z":0},"visibleInOtherPerspective": true,"showXTransform":false,"showYTransform":false,"showZTransform":false,"modelPath":null,"info":"", "name": "linke Wand", "color":"#065623", "texture": null}' +
+          ',{"id":"Wand","position":{"x":0,"y":5,"z":-25},"scale":{"x":50,"y":10,"z":0.001},"rotation":{"x":0,"y":0,"z":0},"visibleInOtherPerspective": true,"showXTransform":false,"showYTransform":false,"showZTransform":false,"modelPath":null,"info":"", "name": "hinten Wand", "color":"#065623", "texture": null}]}', // leere scene daten
         sceneID: idScene,
       }),
     });

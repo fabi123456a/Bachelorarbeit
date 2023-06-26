@@ -10,6 +10,7 @@ function ColorPicker(props: {
   const handleColorChange = (event) => {
     const newObjectProps = { ...props.currentObjectProps }; // Kopie von currentObjectProps erstellen
     newObjectProps.color = event.target.value; // Farbwert aktualisieren
+    newObjectProps.texture = undefined;
 
     props.setCurrentObjectProps(newObjectProps); // Aktualisierte Object-Props übergeben
 

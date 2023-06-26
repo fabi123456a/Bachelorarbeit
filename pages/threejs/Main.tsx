@@ -224,6 +224,7 @@ export default function Main(props: {
       visibleInOtherPerspective: true,
       color: pfad ? null : "red",
       info: "",
+      texture: null,
     };
     console.log("handleModelAdd");
     console.log(objProps);

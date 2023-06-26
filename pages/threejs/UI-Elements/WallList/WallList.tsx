@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import WallListItem from "./WallListItem";
-import ColorPicker from "../Colorpicker/ColorPicker";
+import ColorPicker from "../PropertieContainer/Colorpicker/ColorPicker";
 
 export default function WallList(props: {
   addWall: (objProps: TypeObjectProps) => void;

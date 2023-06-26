@@ -1,8 +1,10 @@
-import React, { Ref, useRef, useState } from "react";
+import React, { Ref, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { BufferGeometry, Material, Mesh } from "three";
 import HtmlSettings from "./HtmlSettings";
 import { checkPropsForNull } from "../../../utils/checkIfPropIsNull";
+import { TextureLoader } from "three/src/loaders/TextureLoader";
+import { useLoader } from "@react-three/fiber";
 
 function BoxGeometry(props: {
   // position & skalieren der Box
@@ -13,46 +15,110 @@ function BoxGeometry(props: {
   color: string;
   htmlSettings: boolean;
   setCurentObj: (obj: TypeObjectProps) => void;
-  currentObjProps: TypeObjectProps;
+  objProps: TypeObjectProps;
 }) {
-  // bedingtes rendern
-  //if (checkPropsForNull(props)) return null;
+  const [isLoading, setIsLoading] = useState(true);
+  const [colorMap, displacementMap, normalMap, roughnessMap, aoMap] = props
+    .objProps.texture
+    ? useLoader(TextureLoader, [
+        `./textures/${props.objProps.texture}/Substance_Graph_BaseColor.jpg`,
+        `./textures/${props.objProps.texture}/Substance_Graph_Height.jpg`,
+        `./textures/${props.objProps.texture}/Substance_Graph_Normal.jpg`,
+        `./textures/${props.objProps.texture}/Substance_Graph_Roughness.jpg`,
+        `./textures/${props.objProps.texture}/Substance_Graph_AmbientOcclusion.jpg`,
+      ])
+    : [];
 
-  return props.geometrie ? (
-    <>
-      <mesh
-        ref={props.ref123}
-        position={[
-          props.geometrie.positionXYZ[0],
-          props.geometrie.positionXYZ[1],
-          props.geometrie.positionXYZ[2],
+  useEffect(() => {
+    if (colorMap && displacementMap && normalMap && roughnessMap && aoMap) {
+      setIsLoading(false);
+    }
+  }, [colorMap, displacementMap, normalMap, roughnessMap, aoMap]);
+
+  if (isLoading && props.objProps.texture) {
+    return null;
+  }
+
+  return props.objProps ? (
+    <mesh
+      ref={props.ref123}
+      position={[
+        props.geometrie.positionXYZ[0],
+        props.geometrie.positionXYZ[1],
+        props.geometrie.positionXYZ[2],
+      ]}
+      onClick={(e) => {
+        if (e) {
+          props.onclick ? props.onclick() : null;
+        }
+      }}
+    >
+      <boxGeometry
+        args={[
+          props.geometrie.scaleXYZ[0],
+          props.geometrie.scaleXYZ[1],
+          props.geometrie.scaleXYZ[2],
         ]}
-        onClick={(e) => {
-          if (e) {
-            props.onclick ? props.onclick() : null;
-          }
-        }}
-      >
-        <boxGeometry
-          args={[
-            props.geometrie.scaleXYZ[0],
-            props.geometrie.scaleXYZ[1],
-            props.geometrie.scaleXYZ[2],
-          ]}
-        />
-        <meshStandardMaterial color={props.color ? props.color : "red"} />
-        {props.htmlSettings ? (
-          <HtmlSettings
-            flag={true}
-            currentObjProps={props.currentObjProps}
-            setCurentObj={props.setCurentObj}
-          ></HtmlSettings>
-        ) : null}
-      </mesh>
-    </>
+      />
+      <meshStandardMaterial
+        map={props.objProps.texture ? colorMap : null}
+        displacementMap={props.objProps.texture ? displacementMap : null}
+        normalMap={props.objProps.texture ? normalMap : null}
+        roughnessMap={props.objProps.texture ? roughnessMap : null}
+        aoMap={props.objProps.texture ? aoMap : null}
+        color={props.objProps ? props.color : "red"}
+      />
+      {/* <meshStandardMaterial color={props.color ? props.color : "red"} /> */}
+
+      {props.htmlSettings ? (
+        <HtmlSettings
+          flag={true}
+          currentObjProps={props.objProps}
+          setCurentObj={props.setCurentObj}
+        ></HtmlSettings>
+      ) : null}
+    </mesh>
   ) : null;
 }
 
 export default BoxGeometry;
 
 //args={props.geometrie.scaleXYZ}
+
+/*
+[
+        "./textures/" +
+          props.currentObjProps.texture +
+          "/Substance_Graph_BaseColor.jpg",
+        "./textures/" +
+          props.currentObjProps.texture +
+          "/Substance_Graph_Height.png",
+        "./textures/" +
+          props.currentObjProps.texture +
+          "/Substance_Graph_Normal.jpg",
+        "./textures/" +
+          props.currentObjProps.texture +
+          "/Substance_Graph_Roughness.jpg",
+        "./textures/" +
+          props.currentObjProps.texture +
+          "/Substance_Graph_AmbientOcclusion.jpg",
+      ]
+*/
+
+{
+  /* <meshStandardMaterial
+          map={colorMap}
+          //displacementMap={displacementMap}
+          normalMap={normalMap}
+          roughnessMap={roughnessMap}
+          aoMap={aoMap}
+        /> 
+        
+        <meshStandardMaterial
+          map={colorMap}
+          displacementMap={displacementMap}
+          normalMap={normalMap}
+          roughnessMap={roughnessMap}
+          aoMap={aoMap}
+        />*/
+}

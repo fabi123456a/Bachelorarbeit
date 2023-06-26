@@ -46,6 +46,7 @@ type TypeObjectProps = {
   name: string;
   info: string;
   color: string;
+  texture: string;
 };
 type TypeCamPerspektive = {
   topDown: boolean;
