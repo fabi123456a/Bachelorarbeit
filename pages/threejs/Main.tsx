@@ -137,7 +137,7 @@ export default function Main(props: {
     prevObjectProps.current = currentObjectProps;
 
     // session nalive keepen
-    fetch("api/database/Session/DB_sessionKeepAlive");
+    // fetch("api/database/Session/DB_sessionKeepAlive"); // TODO: session keep alive
 
     // zum debuggebn
     console.log(currentObjectProps);

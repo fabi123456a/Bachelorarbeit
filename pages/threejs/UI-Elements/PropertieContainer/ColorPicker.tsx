@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Stack, Typography } from "@mui/material";
 
 function ColorPicker(props: {
@@ -16,6 +16,10 @@ function ColorPicker(props: {
 
     setColor(event.target.value); // Aktualisiere den Farbwert im Status
   };
+
+  useEffect(() => {
+    setColor(props.currentObjectProps.color);
+  }, [props.currentObjectProps.color]);
 
   return (
     <Stack>

@@ -30,7 +30,10 @@ function BoxGeometry(props: {
     : [];
 
   useEffect(() => {
-    if (colorMap && displacementMap && normalMap && roughnessMap && aoMap) {
+    if (
+      (colorMap && displacementMap && normalMap && roughnessMap && aoMap) ||
+      !props.objProps.texture
+    ) {
       setIsLoading(false);
     }
   }, [colorMap, displacementMap, normalMap, roughnessMap, aoMap]);
@@ -60,14 +63,26 @@ function BoxGeometry(props: {
           props.geometrie.scaleXYZ[2],
         ]}
       />
-      <meshStandardMaterial
-        map={props.objProps.texture ? colorMap : null}
-        displacementMap={props.objProps.texture ? displacementMap : null}
-        normalMap={props.objProps.texture ? normalMap : null}
-        roughnessMap={props.objProps.texture ? roughnessMap : null}
-        aoMap={props.objProps.texture ? aoMap : null}
+      {colorMap && displacementMap && normalMap && roughnessMap && aoMap ? (
+        <meshStandardMaterial
+          map={colorMap}
+          //displacementMap={displacementMap}
+          normalMap={normalMap}
+          roughnessMap={roughnessMap}
+          aoMap={aoMap}
+          color={props.objProps ? props.color : "red"}
+        />
+      ) : (
+        <meshStandardMaterial color={props.color ? props.color : "red"} />
+      )}
+      {/* <meshStandardMaterial
+        map={colorMap}
+        displacementMap={displacementMap}
+        normalMap={normalMap}
+        roughnessMap={roughnessMap}
+        aoMap={aoMap}
         color={props.objProps ? props.color : "red"}
-      />
+      /> */}
       {/* <meshStandardMaterial color={props.color ? props.color : "red"} /> */}
 
       {props.htmlSettings ? (

@@ -41,7 +41,7 @@ export default function Scene(props: {
         testMode={props.testMode}
       ></Camera>
       {/* Licht */}
-      <ambientLight intensity={0.1} />
+      <ambientLight intensity={1} />
       <pointLight position={[10, 10, 10]} />
       {/* Modelle */}
       {props.models.map((model) =>
@@ -162,7 +162,7 @@ export default function Scene(props: {
         />
       </mesh>
 
-      {/* <Cube></Cube> */}
+      <Cube></Cube>
 
       {/* <Stats className="stats" /> */}
       {/* Raum */}

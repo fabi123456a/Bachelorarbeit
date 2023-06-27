@@ -1,7 +1,7 @@
 import { Divider, Grid, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import NumberInput from "./NumberInput";
-import ColorPicker from "./Colorpicker/ColorPicker";
+import ColorPicker from "./ColorPicker";
 import TextureSelector from "./textureSelector";
 
 // https://mui.com/material-ui/react-typography/#main-content
@@ -9,18 +9,15 @@ import TextureSelector from "./textureSelector";
 // dann sieht man alle Komponenten, mit beispielen, von MUI die man verwenden kann
 
 // in objProps stehen die properties des currentObjects + funktionen wie z.B showPivotControlAxis
-function PropertieContainer({
-  objProps,
-  setObjProps,
-}: {
+function PropertieContainer(props: {
   setObjProps: Function;
   objProps: TypeObjectProps;
 }) {
   function handlePositionChange(position: string, value: number) {
-    let newPosition: any = { ...objProps.position };
+    let newPosition: any = { ...props.objProps.position };
     newPosition[position] = value;
 
-    setObjProps((prev: TypeObjectProps) => {
+    props.setObjProps((prev: TypeObjectProps) => {
       return {
         ...prev,
         position: newPosition,
@@ -29,10 +26,10 @@ function PropertieContainer({
   }
 
   function handleScaleChange(position: string, value: number) {
-    let newScale: any = { ...objProps.scale };
+    let newScale: any = { ...props.objProps.scale };
     newScale[position] = value;
 
-    setObjProps((prev: TypeObjectProps) => {
+    props.setObjProps((prev: TypeObjectProps) => {
       return {
         ...prev,
         scale: newScale,
@@ -41,10 +38,10 @@ function PropertieContainer({
   }
 
   function handleRotationChange(position: string, value: number) {
-    let newRotation: any = { ...objProps.rotation };
+    let newRotation: any = { ...props.objProps.rotation };
     newRotation[position] = value;
 
-    setObjProps((prev: TypeObjectProps) => {
+    props.setObjProps((prev: TypeObjectProps) => {
       return {
         ...prev,
         rotation: newRotation,
@@ -59,7 +56,7 @@ function PropertieContainer({
       </Typography>
 
       <Divider />
-      {objProps ? (
+      {props.objProps ? (
         <Stack direction={"column"} padding="0.5rem">
           <Typography fontSize="20px">Ausgewähltes Objekt</Typography>
           <Typography>Position</Typography>
@@ -67,7 +64,7 @@ function PropertieContainer({
             <Grid item xs={4}>
               <NumberInput
                 label="x"
-                value={objProps ? objProps.position.x : ""}
+                value={props.objProps ? props.objProps.position.x : ""}
                 onChange={(e) =>
                   handlePositionChange("x", parseFloat(e.target.value) || 0)
                 }
@@ -76,7 +73,7 @@ function PropertieContainer({
             <Grid item xs={4}>
               <NumberInput
                 label="y"
-                value={objProps ? objProps.position.y : ""}
+                value={props.objProps ? props.objProps.position.y : ""}
                 onChange={(e) =>
                   handlePositionChange("y", parseFloat(e.target.value) || 0)
                 }
@@ -85,7 +82,7 @@ function PropertieContainer({
             <Grid item xs={4}>
               <NumberInput
                 label="z"
-                value={objProps ? objProps.position.z : ""}
+                value={props.objProps ? props.objProps.position.z : ""}
                 onChange={(e) =>
                   handlePositionChange("z", parseFloat(e.target.value) || 0)
                 }
@@ -103,7 +100,7 @@ function PropertieContainer({
               <Grid item xs={4}>
                 <NumberInput
                   label="width"
-                  value={objProps ? objProps.scale.x : ""}
+                  value={props.objProps ? props.objProps.scale.x : ""}
                   onChange={(e) =>
                     handleScaleChange("x", parseFloat(e.target.value) || 0)
                   }
@@ -112,7 +109,7 @@ function PropertieContainer({
               <Grid item xs={4}>
                 <NumberInput
                   label="height"
-                  value={objProps ? objProps.scale.y : ""}
+                  value={props.objProps ? props.objProps.scale.y : ""}
                   onChange={(e) =>
                     handleScaleChange("y", parseFloat(e.target.value) || 0)
                   }
@@ -121,7 +118,7 @@ function PropertieContainer({
               <Grid item xs={4}>
                 <NumberInput
                   label="depth"
-                  value={objProps ? objProps.scale.z : ""}
+                  value={props.objProps ? props.objProps.scale.z : ""}
                   onChange={(e) =>
                     handleScaleChange("z", parseFloat(e.target.value) || 0)
                   }
@@ -135,7 +132,7 @@ function PropertieContainer({
               <Grid item xs={4}>
                 <NumberInput
                   label="x"
-                  value={objProps ? objProps.rotation.x : ""}
+                  value={props.objProps ? props.objProps.rotation.x : ""}
                   onChange={(e) =>
                     handleRotationChange("x", parseFloat(e.target.value) || 0)
                   }
@@ -144,7 +141,7 @@ function PropertieContainer({
               <Grid item xs={4}>
                 <NumberInput
                   label="y"
-                  value={objProps ? objProps.rotation.y : ""}
+                  value={props.objProps ? props.objProps.rotation.y : ""}
                   onChange={(e) =>
                     handleRotationChange("y", parseFloat(e.target.value) || 0)
                   }
@@ -153,7 +150,7 @@ function PropertieContainer({
               <Grid item xs={4}>
                 <NumberInput
                   label="z"
-                  value={objProps ? objProps.rotation.z : ""}
+                  value={props.objProps ? props.objProps.rotation.z : ""}
                   onChange={(e) =>
                     handleRotationChange("z", parseFloat(e.target.value) || 0)
                   }
@@ -161,19 +158,20 @@ function PropertieContainer({
               </Grid>
             </Grid>
           </Stack>
-          {objProps.modelPath == null || objProps.modelPath == "" ? (
+          {!props.objProps.modelPath ? (
             <>
               <ColorPicker
-                currentObjectProps={objProps}
+                currentObjectProps={props.objProps}
                 setCurrentObjectProps={
-                  setObjProps as (props: TypeObjectProps) => void
+                  props.setObjProps as (props: TypeObjectProps) => void
                 }
               ></ColorPicker>
               <TextureSelector
-                currentObjProps={objProps}
+                currentObjProps={props.objProps}
                 setCurrentObjProps={
-                  setObjProps as (props: TypeObjectProps) => void
+                  props.setObjProps as (props: TypeObjectProps) => void
                 }
+                texture={props.objProps.texture}
               ></TextureSelector>
             </>
           ) : null}

@@ -7,20 +7,21 @@ const Cube = () => {
   const [colorMap, displacementMap, normalMap, roughnessMap, aoMap] = useLoader(
     TextureLoader,
     [
-      "./textures/sciFi/Substance_Graph_BaseColor.jpg",
-      "./textures/sciFi/Substance_Graph_Height.png",
-      "./textures/sciFi/Substance_Graph_Normal.jpg",
-      "./textures/sciFi/Substance_Graph_Roughness.jpg",
-      "./textures/sciFi/Substance_Graph_AmbientOcclusion.jpg",
+      "./textures/stoff/Substance_Graph_BaseColor.jpg",
+      "./textures/stoff/Substance_Graph_Height.jpg",
+      "./textures/stoff/Substance_Graph_Normal.jpg",
+      "./textures/stoff/Substance_Graph_Roughness.jpg",
+      "./textures/stoff/Substance_Graph_AmbientOcclusion.jpg",
     ]
   );
 
   return (
     <mesh>
-      <sphereGeometry args={[1, 32, 32]} />
+      {/* <sphereGeometry args={[1, 32, 32]} /> */}
+      <boxGeometry args={[5, 5, 5]} />
       <meshStandardMaterial
         map={colorMap}
-        //displacementMap={displacementMap}
+        // displacementMap={displacementMap}
         normalMap={normalMap}
         roughnessMap={roughnessMap}
         aoMap={aoMap}
