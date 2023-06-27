@@ -16,6 +16,7 @@ export default function ShowHtml(props: {
   return (
     <Stack>
       <IconButton
+        title="Show objetcs in other perspective"
         onClick={() => {
           props.setHtmlSettings(!props.htmlSettings);
         }}
