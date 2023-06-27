@@ -18,27 +18,29 @@ function BoxGeometry(props: {
   objProps: TypeObjectProps;
 }) {
   const [isLoading, setIsLoading] = useState(true);
-  const [colorMap, displacementMap, normalMap, roughnessMap, aoMap] = props
-    .objProps.texture
-    ? useLoader(TextureLoader, [
-        `./textures/${props.objProps.texture}/Substance_Graph_BaseColor.jpg`,
-        `./textures/${props.objProps.texture}/Substance_Graph_Height.jpg`,
-        `./textures/${props.objProps.texture}/Substance_Graph_Normal.jpg`,
-        `./textures/${props.objProps.texture}/Substance_Graph_Roughness.jpg`,
-        `./textures/${props.objProps.texture}/Substance_Graph_AmbientOcclusion.jpg`,
-      ])
-    : [];
+  const [colorMap, displacementMap, normalMap, roughnessMap, aoMap] =
+    props.objProps
+      ? props.objProps.texture
+        ? useLoader(TextureLoader, [
+            `./textures/${props.objProps.texture}/Substance_Graph_BaseColor.jpg`,
+            `./textures/${props.objProps.texture}/Substance_Graph_Height.jpg`,
+            `./textures/${props.objProps.texture}/Substance_Graph_Normal.jpg`,
+            `./textures/${props.objProps.texture}/Substance_Graph_Roughness.jpg`,
+            `./textures/${props.objProps.texture}/Substance_Graph_AmbientOcclusion.jpg`,
+          ])
+        : []
+      : [];
 
   useEffect(() => {
     if (
       (colorMap && displacementMap && normalMap && roughnessMap && aoMap) ||
-      !props.objProps.texture
+      (props.objProps && !props.objProps.texture)
     ) {
       setIsLoading(false);
     }
   }, [colorMap, displacementMap, normalMap, roughnessMap, aoMap]);
 
-  if (isLoading && props.objProps.texture) {
+  if (isLoading && props.objProps && props.objProps.texture) {
     return null;
   }
 

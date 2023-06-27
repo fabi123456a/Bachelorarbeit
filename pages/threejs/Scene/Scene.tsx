@@ -162,17 +162,9 @@ export default function Scene(props: {
         />
       </mesh>
 
-      <Cube></Cube>
+      {/* <Cube></Cube> */}
 
       {/* <Stats className="stats" /> */}
-      {/* Raum */}
-      {/* <Room
-        height={props.roomDimensions.height}
-        width={props.roomDimensions.width}
-        depth={props.roomDimensions.depth}
-        leftWall={props.wallVisibility.leftWall}
-        rightWall={props.wallVisibility.rightWall}
-      /> */}
     </>
   ) : null;
 }

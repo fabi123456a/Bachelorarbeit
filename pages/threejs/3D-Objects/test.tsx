@@ -4,30 +4,31 @@ import { TextureLoader } from "three/src/loaders/TextureLoader";
 import { useLoader } from "@react-three/fiber";
 
 const Cube = () => {
-  const [colorMap, displacementMap, normalMap, roughnessMap, aoMap] = useLoader(
-    TextureLoader,
-    [
-      "./textures/stoff/Substance_Graph_BaseColor.jpg",
-      "./textures/stoff/Substance_Graph_Height.jpg",
-      "./textures/stoff/Substance_Graph_Normal.jpg",
-      "./textures/stoff/Substance_Graph_Roughness.jpg",
-      "./textures/stoff/Substance_Graph_AmbientOcclusion.jpg",
-    ]
-  );
+  // const [colorMap, displacementMap, normalMap, roughnessMap, aoMap] = useLoader(
+  //   TextureLoader,
+  //   [
+  //     "./textures/stoff/Substance_Graph_BaseColor.jpg",
+  //     "./textures/stoff/Substance_Graph_Height.jpg",
+  //     "./textures/stoff/Substance_Graph_Normal.jpg",
+  //     "./textures/stoff/Substance_Graph_Roughness.jpg",
+  //     "./textures/stoff/Substance_Graph_AmbientOcclusion.jpg",
+  //   ]
+  // );
 
-  return (
-    <mesh>
-      {/* <sphereGeometry args={[1, 32, 32]} /> */}
-      <boxGeometry args={[5, 5, 5]} />
-      <meshStandardMaterial
-        map={colorMap}
-        // displacementMap={displacementMap}
-        normalMap={normalMap}
-        roughnessMap={roughnessMap}
-        aoMap={aoMap}
-      />
-    </mesh>
-  );
+  // return (
+  //   <mesh>
+  //     {/* <sphereGeometry args={[1, 32, 32]} /> */}
+  //     <boxGeometry args={[5, 5, 5]} />
+  //     <meshStandardMaterial
+  //       map={colorMap}
+  //       // displacementMap={displacementMap}
+  //       normalMap={normalMap}
+  //       roughnessMap={roughnessMap}
+  //       aoMap={aoMap}
+  //     />
+  //   </mesh>
+  // );
+  return null;
 };
 
 export default Cube;

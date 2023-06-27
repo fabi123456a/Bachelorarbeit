@@ -18,8 +18,8 @@ function ColorPicker(props: {
   };
 
   useEffect(() => {
-    setColor(props.currentObjectProps.color);
-  }, [props.currentObjectProps.color]);
+    setColor(props.currentObjectProps ? props.currentObjectProps.color : "");
+  }, [props.currentObjectProps]); // props.currentObjectProps.color geht nicht wegen build deswegen props.currentObjectProps
 
   return (
     <Stack>

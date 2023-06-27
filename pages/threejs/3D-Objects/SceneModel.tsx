@@ -73,6 +73,7 @@ function SceneModel(
       name: props.name,
       color: props.color ? props.color : "red",
       info: props.info ? props.info : "",
+      texture: "",
     });
   };
 

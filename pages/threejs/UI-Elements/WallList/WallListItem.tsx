@@ -32,6 +32,7 @@ export default function WallListItem(props: {
             name: props.name,
             info: "",
             visibleInOtherPerspective: true,
+            texture: "",
           };
 
           props.addWall(x);
