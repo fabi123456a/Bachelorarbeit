@@ -28,6 +28,12 @@ export default function PerspectiveSelector(props: {
         onClick={() => {
           props.setIsTestMode(!props.isTestMode);
           props.setCurrentObj(null);
+
+          !props.isTestMode
+            ? alert(
+                "TESTMODUS AKTIV \n\n BEWEGUNG \n w = nach vorne \n a = nach links \n s = nach hinten \n d = nach rechts \n r = hoch \n f = runter \n\n KAMERA \n q = kamera nach links neigen \n e = kamera nach rechts neigen \n maus + linke Maustaste = umgucken"
+              )
+            : null;
         }}
         color={props.isTestMode ? "success" : "default"}
       >

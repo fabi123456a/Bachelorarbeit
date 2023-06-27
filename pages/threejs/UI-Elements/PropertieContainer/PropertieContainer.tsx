@@ -58,7 +58,7 @@ function PropertieContainer(props: {
       <Divider />
       {props.objProps ? (
         <Stack direction={"column"} padding="0.5rem">
-          <Typography fontSize="20px">Ausgewähltes Objekt</Typography>
+          <Typography fontWeight={"bolder"}>Ausgewähltes Objekt</Typography>
           <Typography>Position</Typography>
           <Grid container spacing={2}>
             <Grid item xs={4}>

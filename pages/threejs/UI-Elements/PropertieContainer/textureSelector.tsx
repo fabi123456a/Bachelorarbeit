@@ -33,6 +33,7 @@ export default function TextureSelector(props: {
 
   return (
     <>
+      <Typography fontWeight={"bolder"}>Texture</Typography>
       <Select
         value={texture}
         label="Texture"
@@ -75,8 +76,27 @@ export default function TextureSelector(props: {
           ></img>
           StoneFloor
         </MenuItem>
-        {/* <MenuItem value={"metal"}>Metal</MenuItem>
-        <MenuItem value={"sciFi"}>SciFiction</MenuItem> */}
+        <MenuItem value={"metal"}>
+          <img
+            src="./textures/metal/Substance_Graph_BaseColor.jpg"
+            height={"50px"}
+          ></img>
+          Metal
+        </MenuItem>
+        <MenuItem value={"sciFi"}>
+          <img
+            src="./textures/sciFi/Substance_Graph_BaseColor.jpg"
+            height={"50px"}
+          ></img>
+          SciFiction
+        </MenuItem>
+        <MenuItem value={"gravel"}>
+          <img
+            src="./textures/gravel/Substance_Graph_BaseColor.jpg"
+            height={"50px"}
+          ></img>
+          Gravel
+        </MenuItem>
       </Select>
     </>
   );

@@ -20,7 +20,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import io from "socket.io-client";
 import { useEffect } from "react";
 import { Scene } from "@prisma/client";
-import ShowHtml from "./world/showHtml";
+import ShowHtml from "./showHtml";
 
 let socket1;
 

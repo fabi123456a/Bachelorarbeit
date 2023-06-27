@@ -25,7 +25,7 @@ function ColorPicker(props: {
     <Stack>
       {props.currentObjectProps ? (
         <>
-          <Typography>Farbe ändern</Typography>
+          <Typography fontWeight={"bolder"}>Farbe ändern</Typography>
           <input
             type="color"
             id="favcolor"
