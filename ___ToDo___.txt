@@ -1,20 +1,16 @@
 buggs:
 
-- deprecated three js fiber
 
 - bei mouseUp wird ein anderes objekt selektiert
 - treeview bug (objekte tauchen mehrfach auf)
-- treeview name statt id
 - bei ausslogen alles states auf null setzen weil sons adminberreich zugänglich
-- strg + v bei readonly deaktivieren
 - DB_INSERT user -> loginID: eeeeecewas, password: eee32dwewcx
 - fbxlist load animation
-- im chat: name statt id outerjoin
-- html auf eine seite des würfels
+- html 
 - treeview testen wenn ganz viel drin ist
 - setCookie bzw get cookie geht nicht
 
-- react-three-fiber has been deprecated, please use @react-three/fiber (https://www.npmjs.com/package/@react-three/fiber) from now on
+
 
 https://discourse.threejs.org/t/html-on-different-faces-of-cube/17281/7
 import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';

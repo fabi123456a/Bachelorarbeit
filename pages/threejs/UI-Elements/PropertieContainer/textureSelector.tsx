@@ -1,4 +1,6 @@
+import { Image } from "@mui/icons-material";
 import {
+  Button,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -31,17 +33,51 @@ export default function TextureSelector(props: {
 
   return (
     <>
-      <Select value={texture} label="Texture" onChange={handleChange}>
+      <Select
+        value={texture}
+        label="Texture"
+        onChange={handleChange}
+        sx={{ overflowX: "scroll" }}
+      >
         <MenuItem value={""}>keine Texture</MenuItem>
-        <MenuItem value={"stoff"}>Stoff</MenuItem>
-        <MenuItem value={"wood"}>Holz</MenuItem>
-        <MenuItem value={"pavingStones"}>PavingStones</MenuItem>
-        <MenuItem value={"woodMetal"}>WoodMetal</MenuItem>
-        <MenuItem value={"stoneFloor"}>StoneFloor</MenuItem>
+        <MenuItem value={"stoff"}>
+          <img
+            src="./textures/stoff/Substance_Graph_BaseColor.jpg"
+            height={"50px"}
+          ></img>{" "}
+          Stoff
+        </MenuItem>
+        <MenuItem value={"wood"}>
+          <img
+            src="./textures/wood/Substance_Graph_BaseColor.jpg"
+            height={"50px"}
+          ></img>
+          Holz
+        </MenuItem>
+        <MenuItem value={"pavingStones"}>
+          <img
+            src="./textures/pavingStones/Substance_Graph_BaseColor.jpg"
+            height={"50px"}
+          ></img>
+          PavingStones
+        </MenuItem>
+        <MenuItem value={"woodMetal"}>
+          <img
+            src="./textures/woodMetal/Substance_Graph_BaseColor.jpg"
+            height={"50px"}
+          ></img>
+          WoodMetal
+        </MenuItem>
+        <MenuItem value={"stoneFloor"}>
+          <img
+            src="./textures/stoneFloor/Substance_Graph_BaseColor.jpg"
+            height={"50px"}
+          ></img>
+          StoneFloor
+        </MenuItem>
         {/* <MenuItem value={"metal"}>Metal</MenuItem>
         <MenuItem value={"sciFi"}>SciFiction</MenuItem> */}
       </Select>
-      <Typography>{props.texture ? props.texture : "keine Texture"}</Typography>
     </>
   );
 }
