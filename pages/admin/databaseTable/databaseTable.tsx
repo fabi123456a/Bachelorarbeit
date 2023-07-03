@@ -12,10 +12,7 @@ import { useEffect, useState } from "react";
 import Insert from "./insert";
 import EditData from "./editData";
 
-const DatabaseTable = (props: {
-  tableName: string;
-  setAdminArea: (flag: boolean) => void;
-}) => {
+const DatabaseTable = (props: { tableName: string }) => {
   const [data, setData] = useState<any[]>();
   const [properties, setProperties] = useState<string[]>();
   const [types, setTypes] = useState<string[]>();
@@ -66,14 +63,6 @@ const DatabaseTable = (props: {
 
   return (
     <Stack>
-      <Button
-        style={null}
-        onClick={() => {
-          props.setAdminArea(false);
-        }}
-      >
-        Zurück
-      </Button>
       <Typography sx={{ alignSelf: "center", pb: "12px" }}>
         {data ? props.tableName : null}
       </Typography>

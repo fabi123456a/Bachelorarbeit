@@ -14,20 +14,10 @@ const AdminArea = (props: {
   return props.user ? (
     !props.user.readOnly ? (
       <Stack className="adminArea">
-        <Button
-          onClick={() => {
-            setFlag((prev) => !prev);
-          }}
-        >
-          Wechseln
-        </Button>
         {!flag ? (
-          <DatabaseTable
-            tableName="user"
-            setAdminArea={props.setAdminArea}
-          ></DatabaseTable>
+          <DatabaseTable tableName="user"></DatabaseTable>
         ) : (
-          <FbxList setAdminArea={props.setAdminArea}></FbxList>
+          <FbxList></FbxList>
         )}
       </Stack>
     ) : (

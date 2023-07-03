@@ -8,7 +8,7 @@ interface FileListResponse {
   files: string[];
 }
 
-const FbxList = (props: { setAdminArea: (flag: boolean) => void }) => {
+const FbxList = (props: {}) => {
   const [files, setFiles] = useState<string[]>([]);
   const [reload, setReload] = useState<boolean>(false);
 
@@ -37,13 +37,6 @@ const FbxList = (props: { setAdminArea: (flag: boolean) => void }) => {
 
   return (
     <Stack>
-      <Button
-        onClick={() => {
-          props.setAdminArea(false);
-        }}
-      >
-        Zurück
-      </Button>
       <Typography>Fbx-Models</Typography>
       <Stack>
         {files.map((file, index) => (

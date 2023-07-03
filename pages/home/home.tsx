@@ -5,6 +5,7 @@ import NavigateBar from "./navigateBar";
 import { useState } from "react";
 import AdminArea from "../admin/adminArea";
 import Settings from "../settings/settings";
+import FbxList from "../admin/fbxModels/fbxList";
 
 const Home = (props: {
   setScene: (scene: Scene) => void;
@@ -13,8 +14,9 @@ const Home = (props: {
   setLoggedIn: (flag: boolean) => void;
 }) => {
   const [adminArea, setAdminArea] = useState<boolean>(false);
-  const [settings, setSettings] = useState<boolean>(true);
+  const [settings, setSettings] = useState<boolean>(false);
   const [scenes, setScenes] = useState<boolean>(true);
+  const [fbxModels, setFbxModels] = useState<boolean>(false);
 
   return (
     <Stack className="home">
@@ -24,6 +26,7 @@ const Home = (props: {
         setSettings={setSettings}
         setActUser={props.setActUser}
         setLoggedIn={props.setLoggedIn}
+        setFbxModels={setFbxModels}
       ></NavigateBar>
       {scenes ? (
         <SceneList user={props.user} setScene={props.setScene}></SceneList>
@@ -31,6 +34,8 @@ const Home = (props: {
         <AdminArea setAdminArea={setAdminArea} user={props.user}></AdminArea>
       ) : settings ? (
         <Settings></Settings>
+      ) : fbxModels ? (
+        <FbxList></FbxList>
       ) : null}
     </Stack>
   );

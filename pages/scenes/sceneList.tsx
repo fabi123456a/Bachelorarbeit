@@ -15,7 +15,7 @@ import SceneListEntry from "./sceneListEntry";
 const SceneList = (props: { setScene: (scene: Scene) => void; user: User }) => {
   const [scenes, setScenes] = useState<Scene[]>();
   const [reload, setReload] = useState<number>();
-  const [cmboBox, setCmboBox] = useState<string>(props.user.id);
+  const [cmboBox, setCmboBox] = useState<string>("-1"); // -1 wenn alle
 
   const getAllSceneNames = async () => {
     if (cmboBox == "-1") {

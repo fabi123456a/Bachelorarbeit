@@ -6,6 +6,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import BuildIcon from "@mui/icons-material/Build";
 import AppsIcon from "@mui/icons-material/Apps";
 import Logout from "../login/logout";
+import ReorderIcon from "@mui/icons-material/Reorder";
 import { useState } from "react";
 
 const NavigateBar = (props: {
@@ -14,6 +15,7 @@ const NavigateBar = (props: {
   setSettings: (flag: boolean) => void;
   setActUser: (user: User) => void;
   setLoggedIn: (flag: boolean) => void;
+  setFbxModels: (flag: boolean) => void;
 }) => {
   const [activeButton, setActiveButton] = useState("scenes");
 
@@ -30,6 +32,7 @@ const NavigateBar = (props: {
         onClick={() => {
           props.setAdminArea(false);
           props.setSettings(false);
+          props.setFbxModels(false);
           props.setSecens(true);
 
           setActiveButton("scenes");
@@ -46,6 +49,7 @@ const NavigateBar = (props: {
         onClick={() => {
           props.setSecens(false);
           props.setSettings(false);
+          props.setFbxModels(false);
           props.setAdminArea(true);
 
           setActiveButton("adminArea");
@@ -55,6 +59,23 @@ const NavigateBar = (props: {
         <AdminPanelSettingsIcon></AdminPanelSettingsIcon>
       </IconButton>
 
+      {/* fbxModels */}
+      <IconButton
+        className="iconButton"
+        color={activeButton == "fbxModels" ? "primary" : "default"}
+        onClick={() => {
+          props.setSecens(false);
+          props.setSettings(false);
+          props.setAdminArea(false);
+          props.setFbxModels(true);
+
+          setActiveButton("fbxModels");
+        }}
+        title="FBX-Models"
+      >
+        <ReorderIcon></ReorderIcon>
+      </IconButton>
+
       {/* settings */}
       <IconButton
         className="iconButton"
@@ -62,6 +83,7 @@ const NavigateBar = (props: {
         onClick={() => {
           props.setAdminArea(false);
           props.setSecens(false);
+          props.setFbxModels(false);
           props.setSettings(true);
 
           setActiveButton("settings");
