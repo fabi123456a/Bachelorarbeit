@@ -1,4 +1,4 @@
-import { Divider, IconButton, Stack } from "@mui/material";
+import { Divider, IconButton, MenuItem, Select, Stack } from "@mui/material";
 import SceneList from "../scenes/sceneList";
 import { Scene, User } from "@prisma/client";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";

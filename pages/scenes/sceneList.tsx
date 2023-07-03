@@ -1,4 +1,12 @@
-import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  Divider,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { User, Scene } from "@prisma/client";
 import AddScene from "./addScne";
@@ -7,11 +15,28 @@ import SceneListEntry from "./sceneListEntry";
 const SceneList = (props: { setScene: (scene: Scene) => void; user: User }) => {
   const [scenes, setScenes] = useState<Scene[]>();
   const [reload, setReload] = useState<number>();
+  const [cmboBox, setCmboBox] = useState<string>(props.user.id);
 
   const getAllSceneNames = async () => {
-    const response = await fetch("/api/database/Scene/DB_getAllSceneNames");
-    const result: Scene[] = await response.json();
-    return result;
+    if (cmboBox == "-1") {
+      const response = await fetch("/api/database/Scene/DB_getAllSceneNames", {
+        method: "POST",
+        body: JSON.stringify({
+          id: null,
+        }),
+      });
+      const result: Scene[] = await response.json();
+      return result;
+    } else {
+      const response = await fetch("/api/database/Scene/DB_getAllSceneNames", {
+        method: "POST",
+        body: JSON.stringify({
+          id: cmboBox,
+        }),
+      });
+      const result: Scene[] = await response.json();
+      return result;
+    }
   };
 
   useEffect(() => {
@@ -24,10 +49,22 @@ const SceneList = (props: { setScene: (scene: Scene) => void; user: User }) => {
     getAllSceneNames().then((scenes) => {
       setScenes(scenes);
     });
-  }, [reload]);
+  }, [reload, cmboBox]);
 
   return props.setScene && props.user ? (
     <Stack className="sceneList">
+      <Select
+        label="Sortierung"
+        onChange={(e) => {
+          setCmboBox(e.target.value as string);
+        }}
+        value={cmboBox}
+        size="small"
+        className="select"
+      >
+        <MenuItem value={props.user.id}>nur meine anzeigen</MenuItem>
+        <MenuItem value={"-1"}>alle anzeigen</MenuItem>
+      </Select>
       <Stack className="sceneListEntriesContainer">
         {scenes
           ? scenes.map((scene: Scene) => {
