@@ -12,14 +12,15 @@ import CubeRotater from "./login/cubeRotater";
 import Logout from "./login/logout";
 import DatabaseTable from "./admin/databaseTable/databaseTable";
 import UploadFbx from "./threejs/UI-Elements/ModelList/fbxHandle/uploadFbx";
-import Register from "./login/register/register";
+import Register from "./login/register";
 import FbxList from "./admin/fbxModels/fbxList";
 import AdminArea from "./admin/adminArea";
 import Feedback from "./feedback/feedback";
+import Home from "./home/home";
 
-const Home = () => {
+const Index = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const [adminArea, setAdminArea] = useState<boolean>(false);
+
   const [register, setRegister] = useState<boolean>(false); // wenn true wird register page angezeigt
   const [actUser, setActUser] = useState<User>(null);
   const [scene, setScene] = useState<Scene>(null);
@@ -29,14 +30,13 @@ const Home = () => {
       {loggedIn ? (
         scene ? (
           <Main scene={scene} setScene={setScene} user={actUser}></Main>
-        ) : adminArea ? (
-          <AdminArea setAdminArea={setAdminArea}></AdminArea>
         ) : (
-          <SceneList
+          <Home
             setScene={setScene}
             user={actUser}
-            setAdminArea={setAdminArea}
-          ></SceneList>
+            setActUser={setActUser}
+            setLoggedIn={setLoggedIn}
+          ></Home>
         )
       ) : register ? null : (
         <Login
@@ -47,19 +47,10 @@ const Home = () => {
       )}
       {/* <AdminArea></AdminArea> */}
       {loggedIn ? null : <CubeRotater loggedIn={loggedIn}></CubeRotater>}
-      {loggedIn ? (
-        <Logout setActUser={setActUser} setLoggedIn={setLoggedIn}></Logout>
-      ) : null}
       {register ? <Register setRegister={setRegister}></Register> : null}
       <Feedback></Feedback>
     </Stack>
-    //
-    //
-    // <Stack>
-    //   {/* <AdminArea></AdminArea> */}
-    //   <DatabaseTable tableName="User"></DatabaseTable>
-    // </Stack>
   );
 };
 
-export default Home;
+export default Index;

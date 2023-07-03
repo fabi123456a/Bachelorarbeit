@@ -55,61 +55,55 @@ const SceneListEntry = (props: {
   }, []);
 
   return props.scene && props.setReload && props.setScene && props.user ? (
-    <>
-      <Stack
-        direction={"row"}
-        sx={{ margin: "4px" }}
-        className="scenListEntry"
-        onClick={() => {
-          props.setScene(props.scene);
-        }}
-        onMouseEnter={() => {
-          setMouseOver(true);
-        }}
-        onMouseLeave={() => {
-          setMouseOver(false);
-        }}
-      >
-        <Stack>
-          <Typography sx={{ fontWeight: "bold" }}>
-            {props.scene.name}
-          </Typography>
-          <Typography>
-            {userCreator
-              ? "Ersteller: " +
-                userCreator.loginID +
-                ", ertsellt am: " +
-                new Date(props.scene.createDate).toLocaleDateString()
-              : null}
-          </Typography>
-        </Stack>
-
-        {mouseOver ? (
-          props.user.readOnly ? null : (
-            <DeleteForeverIcon
-              color="error"
-              sx={{ alignSelf: "center", marginLeft: "auto" }}
-              onClick={async (e) => {
-                e.stopPropagation();
-
-                let result = confirm(
-                  "Wollen Sie wirklich die Scene " +
-                    props.scene.name +
-                    " löschen?"
-                );
-                if (result) {
-                  await deleteSceneFromDB();
-                  await deleteSceneFromFS();
-
-                  props.setReload(Math.random());
-                }
-              }}
-            ></DeleteForeverIcon>
-          )
-        ) : null}
+    <Stack
+      direction={"row"}
+      className="sceneListEntry"
+      onClick={() => {
+        props.setScene(props.scene);
+      }}
+      onMouseEnter={() => {
+        setMouseOver(true);
+      }}
+      onMouseLeave={() => {
+        setMouseOver(false);
+      }}
+    >
+      <Stack>
+        <Typography sx={{ fontWeight: "bold" }}>{props.scene.name}</Typography>
+        <Typography>
+          {userCreator
+            ? "Ersteller: " +
+              userCreator.loginID +
+              ", ertsellt am: " +
+              new Date(props.scene.createDate).toLocaleDateString()
+            : null}
+        </Typography>
       </Stack>
-      <Divider sx={{ mt: "4px", mb: "4px" }}></Divider>
-    </>
+
+      {mouseOver ? (
+        props.user.readOnly ? null : (
+          <DeleteForeverIcon
+            color="error"
+            sx={{ alignSelf: "center", marginLeft: "auto" }}
+            onClick={async (e) => {
+              e.stopPropagation();
+
+              let result = confirm(
+                "Wollen Sie wirklich die Scene " +
+                  props.scene.name +
+                  " löschen?"
+              );
+              if (result) {
+                await deleteSceneFromDB();
+                await deleteSceneFromFS();
+
+                props.setReload(Math.random());
+              }
+            }}
+          ></DeleteForeverIcon>
+        )
+      ) : null}
+    </Stack>
   ) : null;
 };
 

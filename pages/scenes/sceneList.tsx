@@ -4,11 +4,7 @@ import { User, Scene } from "@prisma/client";
 import AddScene from "./addScne";
 import SceneListEntry from "./sceneListEntry";
 
-const SceneList = (props: {
-  setScene: (scene: Scene) => void;
-  user: User;
-  setAdminArea: (flag: boolean) => void;
-}) => {
+const SceneList = (props: { setScene: (scene: Scene) => void; user: User }) => {
   const [scenes, setScenes] = useState<Scene[]>();
   const [reload, setReload] = useState<number>();
 
@@ -30,18 +26,9 @@ const SceneList = (props: {
     });
   }, [reload]);
 
-  return props.setAdminArea && props.setScene && props.user ? (
-    <Stack className="">
-      <Typography sx={{ mb: "24px", fontWeight: "bold" }}>
-        Leitstelle auswählen:
-      </Typography>
-      <Stack
-        sx={{
-          overflowY: "auto",
-          width: "70%",
-          flexGrow: 1,
-        }}
-      >
+  return props.setScene && props.user ? (
+    <Stack className="sceneList">
+      <Stack className="sceneListEntriesContainer">
         {scenes
           ? scenes.map((scene: Scene) => {
               return (
@@ -55,19 +42,11 @@ const SceneList = (props: {
               );
             })
           : "noch keine Leitstellen-Konfiguration vorhanden. Erstellen Sie die erste Konfiguration..."}
+        {/* bei readonly user ausblenden */}
+        {props.user.readOnly ? null : (
+          <AddScene user={props.user} setScene={props.setScene}></AddScene>
+        )}
       </Stack>
-      {props.user.readOnly ? null : (
-        <AddScene user={props.user} setScene={props.setScene}></AddScene>
-      )}
-      {props.user.loginID === "rr" ? (
-        <Button
-          onClick={() => {
-            props.setAdminArea(true);
-          }}
-        >
-          AdminArea
-        </Button>
-      ) : null}
     </Stack>
   ) : null;
 };

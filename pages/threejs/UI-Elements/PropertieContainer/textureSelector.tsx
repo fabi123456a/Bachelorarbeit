@@ -22,7 +22,7 @@ export default function TextureSelector(props: {
 
     const newObjectProps = { ...props.currentObjProps };
     newObjectProps.texture = value;
-    newObjectProps.color = "#ffffff";
+    newObjectProps.color = "";
 
     props.setCurrentObjProps(newObjectProps);
   };

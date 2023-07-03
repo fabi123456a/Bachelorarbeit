@@ -7,8 +7,8 @@ const Home = (props: {
   setActUser: (user: User) => void;
   setRegister: (flag: boolean) => void;
 }) => {
-  const [txtLoginID, setTxtLoginID] = useState<string>("");
-  const [txtPassword, setTxtPassword] = useState<string>("");
+  const [txtLoginID, setTxtLoginID] = useState<string>("r");
+  const [txtPassword, setTxtPassword] = useState<string>("r");
   const loggedIn = useRef<boolean>(false);
 
   const handleBtnRegisterClick = () => {
@@ -42,46 +42,44 @@ const Home = (props: {
   }, []);
 
   return (
-    <Stack className="login">
-      <Typography sx={{ fontWeight: "bold", fontSize: "22px" }}>
-        AnmeldeID
-      </Typography>
-      <TextField
-        variant="filled"
-        onChange={(event) => {
-          setTxtLoginID(event.target.value);
-        }}
-        value={txtLoginID}
-      ></TextField>
-      <Typography sx={{ fontWeight: "bold", fontSize: "22px", mt: "24px" }}>
-        Passwort
-      </Typography>
-      <TextField
-        variant="filled"
-        onChange={(event) => {
-          setTxtPassword(event.target.value);
-        }}
-        value={txtPassword}
-      ></TextField>
-      <Button
-        sx={{ mt: "24px" }}
-        size="large"
-        variant="contained"
-        onClick={async () => {
-          const user = await checkData();
+    <Stack className="">
+      <Stack className="login">
+        <Typography className="txtStyle1">AnmeldeID</Typography>
+        <TextField
+          variant="filled"
+          onChange={(event) => {
+            setTxtLoginID(event.target.value);
+          }}
+          value={txtLoginID}
+        ></TextField>
+        <Typography className="txtStyle1">Passwort</Typography>
+        <TextField
+          variant="filled"
+          onChange={(event) => {
+            setTxtPassword(event.target.value);
+          }}
+          value={txtPassword}
+        ></TextField>
+        <Button
+          sx={{ mt: "24px" }}
+          size="large"
+          variant="contained"
+          onClick={async () => {
+            const user = await checkData();
 
-          loggedIn.current = user != null ? true : false;
-          if (loggedIn.current == true) {
-            props.setLoggedIn(true);
-            props.setActUser(user);
-          } else {
-            alert("anmeldeID oder Passwortr ist nicht korrekt.");
-          }
-        }}
-      >
-        Login
-      </Button>
-      <Button onClick={handleBtnRegisterClick}>Register</Button>
+            loggedIn.current = user != null ? true : false;
+            if (loggedIn.current == true) {
+              props.setLoggedIn(true);
+              props.setActUser(user);
+            } else {
+              alert("anmeldeID oder Passwortr ist nicht korrekt.");
+            }
+          }}
+        >
+          Login
+        </Button>
+        <Button onClick={handleBtnRegisterClick}>Register</Button>
+      </Stack>
     </Stack>
   );
 };

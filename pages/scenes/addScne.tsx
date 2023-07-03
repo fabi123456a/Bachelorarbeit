@@ -44,13 +44,8 @@ const AddScene = (props: { user: User; setScene: (scene: Scene) => void }) => {
 
   return (
     <Stack className="newScene">
-      <Typography sx={{ alignSelf: "center", fontWeight: "bold" }}>
-        Neu
-      </Typography>
-      <Stack
-        direction={"row"}
-        sx={{ justifyContent: "center", flexGrow: 1, background: "" }}
-      >
+      <Typography>Neu</Typography>
+      <Stack>
         <TextField
           label={"Name der Leitstelle"}
           onChange={(event) => {
