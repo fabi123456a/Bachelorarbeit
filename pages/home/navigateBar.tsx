@@ -16,6 +16,7 @@ const NavigateBar = (props: {
   setActUser: (user: User) => void;
   setLoggedIn: (flag: boolean) => void;
   setFbxModels: (flag: boolean) => void;
+  setScene: (scene: Scene) => void;
 }) => {
   const [activeButton, setActiveButton] = useState("scenes");
 
@@ -97,6 +98,7 @@ const NavigateBar = (props: {
       <Logout
         setActUser={props.setActUser}
         setLoggedIn={props.setLoggedIn}
+        setScene={props.setScene}
       ></Logout>
     </Stack>
   );

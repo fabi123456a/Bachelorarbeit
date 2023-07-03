@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import ModelPreview from "./modelPreview";
 import { DeleteForeverOutlined } from "@mui/icons-material";
 import UploadFbx from "../../threejs/UI-Elements/ModelList/fbxHandle/uploadFbx";
+import FbxListEntry from "./fbxListEntry";
 
 interface FileListResponse {
   files: string[];
@@ -10,16 +11,7 @@ interface FileListResponse {
 
 const FbxList = (props: {}) => {
   const [files, setFiles] = useState<string[]>([]);
-  const [reload, setReload] = useState<boolean>(false);
-
-  const handleFbxDelete = async (fbxModel: string) => {
-    await fetch("api/filesystem/FS_deleteFbxModel", {
-      method: "POST",
-      body: JSON.stringify({
-        fbxModel: fbxModel,
-      }),
-    });
-  };
+  const [reload, setReload] = useState<number>(0);
 
   useEffect(() => {
     const fetchFiles = async () => {
@@ -37,39 +29,13 @@ const FbxList = (props: {}) => {
 
   return (
     <Stack>
-      <Typography>Fbx-Models</Typography>
-      <Stack>
+      <Stack className="fbxList">
         {files.map((file, index) => (
-          <Stack
-            key={index}
-            direction={"row"}
-            sx={{
-              alignItems: "center",
-              borderBottom: "1px solid black",
-            }}
-          >
-            <ModelPreview fbxName={file}></ModelPreview>
-            <Typography>{file}</Typography>
-            <IconButton
-              onClick={async () => {
-                const confirmed = window.confirm(
-                  "Willst du " + file + " wirklich löschen?"
-                );
-
-                if (confirmed) {
-                  await handleFbxDelete(file);
-                  setReload((prev) => !prev);
-                  alert(file + " wurde erfolgreich gelöscht");
-                }
-              }}
-            >
-              <DeleteForeverOutlined />
-            </IconButton>
-          </Stack>
+          <FbxListEntry file={file} setReload={setReload}></FbxListEntry>
         ))}
         <UploadFbx
           setRefreshData={() => {
-            setReload((prev) => !prev);
+            setReload(Math.random());
           }}
         ></UploadFbx>
       </Stack>

@@ -42,7 +42,7 @@ const UploadFbx = (props: { setRefreshData: () => void }) => {
   };
 
   return (
-    <Stack style={{ margin: "2px" }}>
+    <Stack className="roundedShadow centerH">
       <input
         type="file"
         onChange={({ target }) => {
@@ -61,7 +61,7 @@ const UploadFbx = (props: { setRefreshData: () => void }) => {
         disabled={uploading}
         variant={"outlined"}
       >
-        {uploading ? "Uploading.." : "Upload"}
+        {uploading ? "Uploading.." : "Hinzufügen"}
       </Button>
     </Stack>
   );

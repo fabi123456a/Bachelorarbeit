@@ -62,8 +62,8 @@ const SceneList = (props: { setScene: (scene: Scene) => void; user: User }) => {
         size="small"
         className="select"
       >
-        <MenuItem value={props.user.id}>nur meine anzeigen</MenuItem>
-        <MenuItem value={"-1"}>alle anzeigen</MenuItem>
+        <MenuItem value={props.user.id}>nur meine</MenuItem>
+        <MenuItem value={"-1"}>alle</MenuItem>
       </Select>
       <Stack className="sceneListEntriesContainer">
         {scenes

@@ -7,12 +7,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import { User } from "@prisma/client";
+import { Scene, User } from "@prisma/client";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 const Logout = (props: {
   setLoggedIn: (flag: boolean) => void;
   setActUser: (user: User) => void;
+  setScene: (scene: Scene) => void;
 }) => {
   return (
     <IconButton className="iconButton">
@@ -20,6 +21,7 @@ const Logout = (props: {
         onClick={() => {
           props.setActUser(null);
           props.setLoggedIn(null);
+          props.setScene(null);
         }}
       ></LogoutIcon>
     </IconButton>

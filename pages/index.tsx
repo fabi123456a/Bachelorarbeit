@@ -20,7 +20,6 @@ import Home from "./home/home";
 
 const Index = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
-
   const [register, setRegister] = useState<boolean>(false); // wenn true wird register page angezeigt
   const [actUser, setActUser] = useState<User>(null);
   const [scene, setScene] = useState<Scene>(null);

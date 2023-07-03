@@ -258,3 +258,29 @@ body {
   /* box-shadow: 0px 7px 14px 0px rgba(0, 0, 0, 0.5); */
   margin: 18px;
 }
+
+/* databaseTable */
+
+.roundedShadow {
+  margin: 18px;
+  padding: 8px;
+
+  transition: box-shadow 0.5s, background-color 0.5s;
+
+  box-shadow: 7px 7px 14px 2px rgba(0, 0, 0, 0.5);
+  border-radius: 20px;
+}
+
+/* fbxList */
+
+.fbxList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+/* allgemein */
+
+.centerH {
+  justify-content: center;
+}

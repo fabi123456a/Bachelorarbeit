@@ -62,62 +62,65 @@ const DatabaseTable = (props: { tableName: string }) => {
   }, [props.tableName, reload, sortBy]);
 
   return (
-    <Stack>
-      <Typography sx={{ alignSelf: "center", pb: "12px" }}>
-        {data ? props.tableName : null}
-      </Typography>
+    <Stack className="roundedShadow">
+      <Stack className="">
+        <Typography sx={{ alignSelf: "center", pb: "12px" }}>
+          {data ? props.tableName : null}
+        </Typography>
 
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            {properties
-              ? properties.map((prop: string) => (
-                  <TableCell
-                    sx={{ fontWeight: "bold" }}
-                    key={prop}
-                    onClick={() => {
-                      setSortBy(prop);
-                    }}
-                  >
-                    {prop}
-                  </TableCell>
-                ))
-              : null}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data
-            ? data.map((dataRow: any) => (
-                <TableRow key={dataRow["id"]}>
-                  {properties.map((prop: string) => (
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              {properties
+                ? properties.map((prop: string) => (
                     <TableCell
-                      key={dataRow[prop] + dataRow["id"] + prop}
+                      sx={{ fontWeight: "bold" }}
+                      key={prop}
                       onClick={() => {
-                        if (prop === "id") {
-                          alert("ID's ändern ist eine schlechte Idee :(");
-                          return;
-                        }
-                        setActProp(prop);
-                        setActDataRowID(dataRow["id"]);
-                        setActData(dataRow[prop]);
-                        setShowEditData(true);
-                        setActDataType(typeof dataRow[prop]);
+                        setSortBy(prop);
                       }}
                     >
-                      {/* {dataRow[prop]} */}
-                      {typeof dataRow[prop] === "boolean"
-                        ? dataRow[prop]
-                          ? "Ja"
-                          : "Nein" // Convert boolean to string representation
-                        : dataRow[prop]}
+                      {prop}
                     </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            : null}
-        </TableBody>
-      </Table>
-      <Stack sx={{ margin: "24px" }}>
+                  ))
+                : null}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data
+              ? data.map((dataRow: any) => (
+                  <TableRow key={dataRow["id"]}>
+                    {properties.map((prop: string) => (
+                      <TableCell
+                        key={dataRow[prop] + dataRow["id"] + prop}
+                        onClick={() => {
+                          if (prop === "id") {
+                            alert("ID's ändern ist eine schlechte Idee :(");
+                            return;
+                          }
+                          setActProp(prop);
+                          setActDataRowID(dataRow["id"]);
+                          setActData(dataRow[prop]);
+                          setShowEditData(true);
+                          setActDataType(typeof dataRow[prop]);
+                        }}
+                      >
+                        {/* {dataRow[prop]} */}
+                        {typeof dataRow[prop] === "boolean"
+                          ? dataRow[prop]
+                            ? "Ja"
+                            : "Nein" // Convert boolean to string representation
+                          : dataRow[prop]}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              : null}
+          </TableBody>
+        </Table>
+      </Stack>
+
+      <Stack className="">
         <Insert
           tableName={props.tableName}
           porperties={properties}

@@ -9,16 +9,10 @@ const AdminArea = (props: {
   setAdminArea: (flag: boolean) => void;
   user: User;
 }) => {
-  const [flag, setFlag] = useState<boolean>(false);
-
   return props.user ? (
     !props.user.readOnly ? (
       <Stack className="adminArea">
-        {!flag ? (
-          <DatabaseTable tableName="user"></DatabaseTable>
-        ) : (
-          <FbxList></FbxList>
-        )}
+        <DatabaseTable tableName="user"></DatabaseTable>
       </Stack>
     ) : (
       <Typography>

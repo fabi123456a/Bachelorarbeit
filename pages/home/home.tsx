@@ -27,6 +27,7 @@ const Home = (props: {
         setActUser={props.setActUser}
         setLoggedIn={props.setLoggedIn}
         setFbxModels={setFbxModels}
+        setScene={props.setScene}
       ></NavigateBar>
       {scenes ? (
         <SceneList user={props.user} setScene={props.setScene}></SceneList>
