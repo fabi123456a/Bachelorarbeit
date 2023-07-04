@@ -10,7 +10,7 @@ import * as THREE from "three";
 import { arrayBufferToBase64, base64ToBlob } from "../../utils/converting";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import exportToGLTF from "../../utils/exporting";
-import { Scene, User } from "@prisma/client";
+import { Model, Scene, User } from "@prisma/client";
 import WallList from "./UI-Elements/WallList/WallList";
 import { debug } from "console";
 import SceneModelList from "./UI-Elements/SceneModelTreeView/SceneModelList";
@@ -20,6 +20,7 @@ import { FormControlLabel } from "@mui/material";
 import Chat from "../chat/Chat";
 import io from "socket.io-client";
 import MenuBar from "./UI-Elements/Menubar/menuBar";
+import { v4 as uuidv4 } from "uuid";
 
 //@ts-ignore
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
@@ -83,10 +84,6 @@ export default function Main(props: {
     fetchData();
   }, [refresFbxModelPathsData]);
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
   //Shortcuts
   useEffect(() => {
     function handleShortcuts(event: KeyboardEvent) {
@@ -143,22 +140,33 @@ export default function Main(props: {
     console.log(currentObjectProps);
   }, [currentObjectProps]);
 
-  // anfangs scene laden, nach dem eine scene in der sceneList ausgewählt wurde
+  // anfangs scene laden, nach dem eine scene in der sceneList ausgewählt wurde und models mit setModels setzen
   useEffect(() => {
-    const getSceneJsonString = async () => {
-      const response = await fetch("/api/filesystem/FS_getSceneByID", {
-        method: "POST",
-        body: JSON.stringify({
-          sceneID: props.scene.id,
-        }),
+    const getSceneModels = async (idScene: string) => {
+      const modelsRequest = await fetch(
+        "/api/database/Model/DB_getAllModelsByID",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            idScene: props.scene.id,
+          }),
+        }
+      );
+
+      const models: Model[] = await modelsRequest.json();
+
+      const typeObjectProps: TypeObjectProps[] = [];
+
+      // models vom Typ Model (prismaClient) zu TypeObjectProps ändern
+      models.forEach((model: Model) => {
+        const obj: TypeObjectProps = convertModelToTypeObjectProps(model);
+        typeObjectProps.push(obj);
       });
 
-      const result = await response.json();
-
-      loadSceneFromJsonString(result["data"]);
+      setModels(typeObjectProps);
     };
-    getSceneJsonString();
-  }, []);
+    getSceneModels(props.scene.id);
+  }, [props.scene]);
 
   // scene neu socket.io laden
   useEffect(() => {
@@ -187,7 +195,7 @@ export default function Main(props: {
 
             const result = await response.json();
 
-            loadSceneFromJsonString(result["data"]);
+            //TODO: setModels
           };
           handle();
         }
@@ -196,14 +204,78 @@ export default function Main(props: {
     socketInitializer();
   }, []);
 
-  //debuggen
-
-  useEffect(() => {
-    console.log("Objekte in der szene hat sich geändert");
-    console.log(models);
-  }, [models]);
-
   // ----- FUNCTIONS ----
+
+  function convertModelToTypeObjectProps(model: Model) {
+    const position = {
+      x: model.positionX,
+      y: model.positionY,
+      z: model.positionZ,
+    };
+
+    const scale = {
+      x: model.scaleX,
+      y: model.scaleY,
+      z: model.scaleZ,
+    };
+
+    const rotation = {
+      x: model.rotationX,
+      y: model.rotationY,
+      z: model.rotationZ,
+    };
+
+    const typeObjectProps = {
+      id: model.id,
+      position: position,
+      scale: scale,
+      rotation: rotation,
+      editMode: undefined,
+      showXTransform: model.showXTransform,
+      showYTransform: model.showYTransform,
+      showZTransform: model.showZTransform,
+      modelPath: model.modelPath || "",
+      visibleInOtherPerspective: model.visibleInOtherPerspective,
+      name: model.name,
+      info: model.info || "",
+      color: model.color,
+      texture: model.texture || "",
+    };
+
+    return typeObjectProps;
+  }
+
+  function convertTypeObjectPropsToModel(
+    typeObjectProps: TypeObjectProps,
+    idScene: string,
+    version: number
+  ) {
+    const model: Model = {
+      id: new uuidv4(), // neue id wegen datum feld
+      idScene: idScene,
+      positionX: typeObjectProps.position.x,
+      positionY: typeObjectProps.position.y,
+      positionZ: typeObjectProps.position.z,
+      scaleX: typeObjectProps.scale.x,
+      scaleY: typeObjectProps.scale.y,
+      scaleZ: typeObjectProps.scale.z,
+      rotationX: typeObjectProps.rotation.x,
+      rotationY: typeObjectProps.rotation.y,
+      rotationZ: typeObjectProps.rotation.z,
+      visibleInOtherPerspective: typeObjectProps.visibleInOtherPerspective,
+      showXTransform: typeObjectProps.showXTransform,
+      showYTransform: typeObjectProps.showYTransform,
+      showZTransform: typeObjectProps.showZTransform,
+      modelPath: typeObjectProps.modelPath,
+      info: typeObjectProps.info,
+      name: typeObjectProps.name,
+      color: typeObjectProps.color,
+      texture: typeObjectProps.texture,
+      version: version,
+    };
+
+    return model;
+  }
 
   const handleRefreshFbxModelPaths = () => {
     setRefreshFbxModelPathsData((prevRefreshData) => !prevRefreshData);
@@ -319,60 +391,64 @@ export default function Main(props: {
   };
 
   // save Scene
-  async function safeSceneInFS() {
-    // const files = await Promise.all(
-    //   fbx_models_files.map(async (fileData) => {
-    //     const { pathName, name, file } = fileData;
-    //     const base64 = arrayBufferToBase64(await file.arrayBuffer()); //Convert the arrayBuffer of the file to a base64 encoded string
-    //     return { pathName, name, file: base64 };
-    //   })
-    // );
+  async function saveScene() {
+    // scene speicher,also alle models in DB speichern
 
-    const toSaveObj = {
-      //roomDimensions: roomDimensions,
-      models: [...models], // models enthält alles was in der scene ist. Walls und FBX-Models
-      //fbx_models: files,
-    };
-    const sceneJsonString = JSON.stringify(toSaveObj);
+    // neu version in scene speichern
+    await changeSceneVersion(props.scene.id, props.scene.newestVersion + 1);
 
-    console.log("safe Scene");
-    console.log(sceneJsonString);
+    // dann alle neu einfügen
+    models.forEach(async (objProp: TypeObjectProps) => {
+      let model: Model;
 
-    // auf server laden, scene mit gleichen id uploaden ist quasi scene speichern
+      model = convertTypeObjectPropsToModel(
+        objProp,
+        props.scene.id,
+        props.scene.newestVersion + 1
+      );
 
-    const response = await fetch("/api/filesystem/FS_uploadScene", {
-      method: "POST",
-      body: JSON.stringify({
-        jsonData: sceneJsonString,
-        sceneID: props.scene.id,
-      }),
+      console.log("model");
+      console.log(model);
+
+      await insertModelToDB(model);
     });
-    const result = await response.json();
-
-    alert("Scene wurde erfolgreich gespeichert (" + result["result"] + ")");
   }
 
-  function isExportedScene(data: any) {
-    return (
-      typeof data === "object" &&
-      data !== null &&
-      // "roomDimensions" in data &&
-      "models" in data
-    );
+  async function changeSceneVersion(idScene: String, version: number) {
+    const response = await fetch("/api/database/Scene/DB_changeNewestVersion", {
+      method: "POST",
+      body: JSON.stringify({ idScene: idScene, version: version }),
+    });
+    const responseModel = await response.json();
+
+    // weitere prüfungen
+    // ...
   }
 
-  async function loadSceneFromJsonString(jsonDataString: string) {
-    const data = JSON.parse(jsonDataString);
-    console.log("loadScene2");
-    console.log(data.models);
+  // klappt aber wird nicht mehr benötigt wegen datum im model feld
+  async function deleteAllModelsFromSceneInDB(idScene: String) {
+    const response = await fetch("/api/database/Model/DB_deleteAllModelsByID", {
+      method: "POST",
+      body: JSON.stringify({ idScene: idScene }),
+    });
+    const responseModel = await response.json();
 
-    // prüfen ob der JSON string korrekt ist
-    if (!isExportedScene(data)) {
-      alert("The JSON data string is not compatible");
-      return;
-    }
+    // weitere prüfungen
+    // ...
+  }
 
-    setModels(data.models);
+  async function insertModelToDB(model: Model) {
+    const response = await fetch("/api/database/Model/DB_insertModel", {
+      method: "POST",
+      body: JSON.stringify(model),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const responseModel = await response.json();
+
+    // weitere prüfungen des eingefügten models
+    // ...
   }
 
   const [selectedOption, setSelectedOption] = useState("");
@@ -457,7 +533,7 @@ export default function Main(props: {
                 setObjProps={setCurrentObjectProps}
                 controlsRef={controlsRef}
                 setWallVisibility={setWallVisiblity}
-                saveScene={safeSceneInFS}
+                saveScene={saveScene}
                 setIsTestMode={setIsTestMode}
                 isTestMode={isTestMode}
                 setCurentObj={setCurrentObjectProps}
@@ -540,54 +616,3 @@ export default function Main(props: {
     </Stack>
   );
 }
-
-/*
-  // load Scene
-  async function loadScene(file: File | null) {
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const data = JSON.parse(e?.target?.result as string);
-      if (!isExportedScene(data)) {
-        alert("The File type is not correct");
-        return;
-      }
-
-      const modifiedPaths = await Promise.all(
-        data.fbx_models?.map(async (fbx_model: any) => {
-          const url = URL.createObjectURL(base64ToBlob(fbx_model.file)); //generate a Path from the decoded base64 ArrayBuffe String, the default type is "" and means it is a binary file
-          return {
-            name: fbx_model.name,
-            oldPathName: fbx_model.pathName,
-            newPathName: url,
-          };
-        })
-      );
-
-      // if (data.roomDimensions) {
-      //   setRoomDimensions({ ...data.roomDimensions });
-      // }
-
-      setModelPathsFS((prev) => [
-        ...prev,
-        ...modifiedPaths.map((fbx_model) => {
-          return { name: fbx_model.name, path: fbx_model.newPathName };
-        }),
-      ]);
-
-      setModels([
-        ...data.models.map((model: any) => {
-          const newPathName = modifiedPaths.find((modelFbxPath) => {
-            return modelFbxPath?.oldPathName === model?.modelPath;
-          });
-          return {
-            ...model,
-            modelPath: newPathName?.newPathName ?? model.modelPath,
-          };
-        }),
-      ]);
-    };
-    reader.readAsText(file);
-  }
-*/

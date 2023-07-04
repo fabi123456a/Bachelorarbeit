@@ -26,7 +26,7 @@ model Scene {
   idUserCreater  String 
   name           String
   createDate     DateTime
-  path           String
+  newestVersion  Int
 }
 
 model Session {
@@ -51,16 +51,17 @@ model Feedback {
 }
 
 model Model {
-  id                   Int     @id
-  positionX            Int
-  positionY            Int
-  positionZ            Int
+  id                   String     @id
+  idScene              String
+  positionX            Float
+  positionY            Float
+  positionZ            Float
   scaleX               Float
   scaleY               Float
   scaleZ               Float
-  rotationX            Int
-  rotationY            Int
-  rotationZ            Int
+  rotationX            Float
+  rotationY            Float
+  rotationZ            Float
   visibleInOtherPerspective Boolean
   showXTransform       Boolean
   showYTransform       Boolean
@@ -70,6 +71,7 @@ model Model {
   name                 String
   color                String
   texture              String?
+  version              Int
 }
 
 

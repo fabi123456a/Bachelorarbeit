@@ -1,17 +1,20 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useRef, useState } from "react";
-import UsersList from "../admin/user_OLD/usersList";
-import { Scene, User } from "@prisma/client";
+import { Model, Scene, User } from "@prisma/client";
+import { v4 as uuidv4 } from "uuid";
 
 // einmal in DB und json file to FS
 const AddScene = (props: { user: User; setScene: (scene: Scene) => void }) => {
   const [name, setName] = useState<string>();
   const [sceneModel, setSceneModel] = useState<Scene>();
+  const refSceneID = useRef<string>(uuidv4());
 
   const addSceneToDB = async () => {
+    refSceneID.current = uuidv4();
     const response = await fetch("/api/database/Scene/DB_insertScene", {
       method: "POST",
       body: JSON.stringify({
+        id: refSceneID.current,
         idUserCreator: props.user.id,
         name: name,
       }),
@@ -22,24 +25,18 @@ const AddScene = (props: { user: User; setScene: (scene: Scene) => void }) => {
     return result;
   };
 
-  const addSceneToFS = async (idScene: string) => {
-    const response = await fetch("/api/filesystem/FS_uploadScene", {
+  const addModelsToDB = async (model: Model) => {
+    const response = await fetch("/api/database/Model/DB_insertModel", {
       method: "POST",
-      body: JSON.stringify({
-        // editMode nicht angegeeben??
-        jsonData:
-          "{" +
-          '"models":[{"id":"Boden","position":{"x":0,"y":0,"z":0},"scale":{"x":50,"y":0.001,"z":50},"rotation":{"x":0,"y":0,"z":0}, "visibleInOtherPerspective": true,"showXTransform":false,"showYTransform":false,"showZTransform":false,"modelPath":null,"info":"", "name": "Boden", "color":"#eee", "texture": null}' +
-          ',{"id":"rechte Wand","position":{"x":25,"y":5,"z":0},"scale":{"x":0.001,"y":10,"z":50},"rotation":{"x":0,"y":0,"z":0},"visibleInOtherPerspective": true,"showXTransform":false,"showYTransform":false,"showZTransform":false,"modelPath":null,"info":"", "name": "rechte Wand", "color":"#065623", "texture": null}' +
-          ',{"id":"linke Wand","position":{"x":-25,"y":5,"z":0},"scale":{"x":0.001,"y":10,"z":50},"rotation":{"x":0,"y":0,"z":0},"visibleInOtherPerspective": true,"showXTransform":false,"showYTransform":false,"showZTransform":false,"modelPath":null,"info":"", "name": "linke Wand", "color":"#065623", "texture": null}' +
-          ',{"id":"Wand","position":{"x":0,"y":5,"z":-25},"scale":{"x":50,"y":10,"z":0.001},"rotation":{"x":0,"y":0,"z":0},"visibleInOtherPerspective": true,"showXTransform":false,"showYTransform":false,"showZTransform":false,"modelPath":null,"info":"", "name": "hinten Wand", "color":"#065623", "texture": null}]}', // leere scene daten
-        sceneID: idScene,
-      }),
+      body: JSON.stringify(model),
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
+
     const result = await response.json();
 
-    alert("FS: " + result["result"]);
-    return result["result"];
+    return result;
   };
 
   return (
@@ -59,11 +56,15 @@ const AddScene = (props: { user: User; setScene: (scene: Scene) => void }) => {
               return;
             }
 
-            // insert into DB then to FS
-            addSceneToDB().then((scene: Scene) => {
-              addSceneToFS(scene.id).then(() => {
-                props.setScene(scene);
-              });
+            // insert scene into DB
+            const scene: Scene = await addSceneToDB();
+
+            // models into DB hinzufügen
+            const modelsEmptyRoom: Model[] = getEmptyRoom(scene.id);
+            alert(modelsEmptyRoom.length);
+
+            modelsEmptyRoom.forEach(async (model: Model) => {
+              await addModelsToDB(model);
             });
           }}
         >
@@ -75,3 +76,114 @@ const AddScene = (props: { user: User; setScene: (scene: Scene) => void }) => {
 };
 
 export default AddScene;
+
+function getEmptyRoom(idScene: string): Model[] {
+  let emptyRoom: Model[] = [];
+
+  let boden: Model = {
+    id: uuidv4(),
+    idScene: idScene,
+    positionX: 0,
+    positionY: 0,
+    positionZ: 0,
+    scaleX: 50,
+    scaleY: 0.001,
+    scaleZ: 50,
+    rotationX: 0,
+    rotationY: 0,
+    rotationZ: 0,
+    visibleInOtherPerspective: true,
+    showXTransform: false,
+    showYTransform: false,
+    showZTransform: false,
+    modelPath: null,
+    texture: null,
+    info: "",
+    color: "#eee",
+    name: "Boden",
+    version: 0,
+  };
+  emptyRoom.push(boden);
+
+  let rightWall: Model = {
+    id: uuidv4(),
+    idScene: idScene,
+    positionX: 25,
+    positionY: 5,
+    positionZ: 0,
+    scaleX: 0.001,
+    scaleY: 10,
+    scaleZ: 50,
+    rotationX: 0,
+    rotationY: 0,
+    rotationZ: 0,
+    visibleInOtherPerspective: true,
+    showXTransform: false,
+    showYTransform: false,
+    showZTransform: false,
+    modelPath: null,
+    texture: null,
+    info: "",
+    color: "#eee",
+    name: "rechte Wand",
+    version: 0,
+  };
+  emptyRoom.push(rightWall);
+
+  let leftWall: Model = {
+    id: uuidv4(),
+    idScene: idScene,
+    positionX: -25,
+    positionY: 5,
+    positionZ: 0,
+    scaleX: 0.001,
+    scaleY: 10,
+    scaleZ: 50,
+    rotationX: 0,
+    rotationY: 0,
+    rotationZ: 0,
+    visibleInOtherPerspective: true,
+    showXTransform: false,
+    showYTransform: false,
+    showZTransform: false,
+    modelPath: null,
+    texture: null,
+    info: "",
+    color: "#eee",
+    name: "linke Wand",
+    version: 0,
+  };
+  emptyRoom.push(leftWall);
+
+  let backWall: Model = {
+    id: uuidv4(),
+    idScene: idScene,
+    positionX: 0,
+    positionY: 5,
+    positionZ: -25,
+    scaleX: 50,
+    scaleY: 10,
+    scaleZ: 0.001,
+    rotationX: 0,
+    rotationY: 0,
+    rotationZ: 0,
+    visibleInOtherPerspective: true,
+    showXTransform: false,
+    showYTransform: false,
+    showZTransform: false,
+    modelPath: null,
+    texture: null,
+    info: "",
+    color: "#eee",
+    name: "hinten Wand",
+    version: 0,
+  };
+  emptyRoom.push(backWall);
+
+  return emptyRoom;
+}
+
+// '"models":[{"id":"Boden","position":{"x":0,"y":0,"z":0},"scale":{"x":50,"y":0.001,"z":50},"rotation":{"x":0,"y":0,"z":0}, "visibleInOtherPerspective": true,"showXTransform":false,"showYTransform":false,"showZTransform":false,"modelPath":null,"info":"", "name": "Boden", "color":"#eee", "texture": null}' +
+//           ',{"id":"rechte Wand","position":{"x":25,"y":5,"z":0},"scale":{"x":0.001,"y":10,"z":50},"rotation":{"x":0,"y":0,"z":0},"visibleInOtherPerspective": true,"showXTransform":false,"showYTransform":false,"showZTransform":false,"modelPath":null,"info":"", "name": "rechte Wand", "color":"#065623", "texture": null}' +
+//           ',{"id":"linke Wand","position":{"x":-25,"y":5,"z":0},"scale":{"x":0.001,"y":10,"z":50},"rotation":{"x":0,"y":0,"z":0},"visibleInOtherPerspective": true,"showXTransform":false,"showYTransform":false,"showZTransform":false,"modelPath":null,"info":"", "name": "linke Wand", "color":"#065623", "texture": null}' +
+//           ',{"id":"Wand","position":{"x":0,"y":5,"z":-25},"scale":{"x":50,"y":10,"z":0.001},"rotation":{"x":0,"y":0,"z":0},"visibleInOtherPerspective": true,"showXTransform":false,"showYTransform":false,"showZTransform":false,"modelPath":null,"info":"", "name": "hinten Wand", "color":"#065623", "texture": null}]}', // leere scene daten

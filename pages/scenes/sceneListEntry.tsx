@@ -60,6 +60,7 @@ const SceneListEntry = (props: {
       className="sceneListEntry"
       onClick={() => {
         props.setScene(props.scene);
+        //alert(props.scene.id);
       }}
       onMouseEnter={() => {
         setMouseOver(true);
