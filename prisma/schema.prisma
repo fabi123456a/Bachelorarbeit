@@ -50,5 +50,28 @@ model Feedback {
   text  String
 }
 
+model Model {
+  id                   Int     @id
+  positionX            Int
+  positionY            Int
+  positionZ            Int
+  scaleX               Float
+  scaleY               Float
+  scaleZ               Float
+  rotationX            Int
+  rotationY            Int
+  rotationZ            Int
+  visibleInOtherPerspective Boolean
+  showXTransform       Boolean
+  showYTransform       Boolean
+  showZTransform       Boolean
+  modelPath            String?
+  info                 String?
+  name                 String
+  color                String
+  texture              String?
+}
+
+
 // delete user: delete from user
 // insert user: INSERT INTO user ("id", "loginID", "password", "readonly") VALUES ("x", "rr", "rr", false);

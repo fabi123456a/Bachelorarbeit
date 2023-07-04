@@ -1,4 +1,11 @@
-import { Button, Divider, IconButton, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Divider,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import ModelPreview from "./modelPreview";
 import { DeleteForeverOutlined } from "@mui/icons-material";
@@ -12,6 +19,7 @@ interface FileListResponse {
 const FbxList = (props: {}) => {
   const [files, setFiles] = useState<string[]>([]);
   const [reload, setReload] = useState<number>(0);
+  const [isLoading, setIsloading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchFiles = async () => {
@@ -19,6 +27,7 @@ const FbxList = (props: {}) => {
         const response = await fetch("api/filesystem/FS_getFbxModels");
         const data: FileListResponse = await response.json();
         setFiles(data.files);
+        setIsloading(false);
       } catch (error) {
         console.log(error);
       }
@@ -27,7 +36,11 @@ const FbxList = (props: {}) => {
     fetchFiles();
   }, [reload]);
 
-  return (
+  return isLoading ? (
+    <Stack className="fullHeightWidth centerH centerV">
+      <CircularProgress className="loading"></CircularProgress>
+    </Stack>
+  ) : (
     <Stack>
       <Stack className="fbxList">
         {files.map((file, index) => (

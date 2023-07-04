@@ -43,7 +43,7 @@ const AddScene = (props: { user: User; setScene: (scene: Scene) => void }) => {
   };
 
   return (
-    <Stack className="newScene">
+    <Stack className="newScene centerH">
       <Typography>Neu</Typography>
       <Stack>
         <TextField

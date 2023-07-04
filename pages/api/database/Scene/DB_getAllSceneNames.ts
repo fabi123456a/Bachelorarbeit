@@ -29,19 +29,14 @@ export default async function DB_getAllSceneNames(
 
   let scenes: Scene[];
 
-  console.log("...... " + idUser);
-
   if (idUser) {
     scenes = await prismaClient.scene.findMany({
       where: {
         idUserCreater: { equals: idUser },
       },
     });
-
-    console.log("...... " + scenes.length);
   } else {
     scenes = await prismaClient.scene.findMany();
-    console.log("...z.z.z. " + scenes.length);
   }
 
   if (scenes == null) res.status(200).json(null);

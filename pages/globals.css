@@ -279,8 +279,23 @@ body {
   flex-wrap: wrap;
 }
 
+/* fbxList */
+
+.loading {
+  transform: scale(2.4);
+}
+
 /* allgemein */
 
 .centerH {
   justify-content: center;
+}
+
+.centerV {
+  align-items: center;
+}
+
+.fullHeightWidth {
+  height: 100%;
+  width: 100%;
 }

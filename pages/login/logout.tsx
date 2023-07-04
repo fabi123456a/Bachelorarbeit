@@ -19,9 +19,15 @@ const Logout = (props: {
     <IconButton className="iconButton">
       <LogoutIcon
         onClick={() => {
-          props.setActUser(null);
-          props.setLoggedIn(null);
-          props.setScene(null);
+          const confirmed = window.confirm(
+            "Wollen Sie sich wirklich ausloggen?"
+          );
+
+          if (confirmed) {
+            props.setActUser(null);
+            props.setLoggedIn(null);
+            props.setScene(null);
+          }
         }}
       ></LogoutIcon>
     </IconButton>
