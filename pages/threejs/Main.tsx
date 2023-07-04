@@ -1,7 +1,15 @@
 import Stack from "@mui/material/Stack";
 import { useState, useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Alert, Button, Divider, Snackbar, Typography } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Divider,
+  MenuItem,
+  Select,
+  Snackbar,
+  Typography,
+} from "@mui/material";
 import PropertieContainer from "./UI-Elements/PropertieContainer/PropertieContainer";
 import ToolBar from "./UI-Elements/ToolBar/ToolBar";
 import ModelList from "./UI-Elements/ModelList/ModelList";
@@ -51,9 +59,13 @@ export default function Main(props: {
   const [wallVisiblity, setWallVisiblity] = useState<boolean>(true); // to show the left or right wall or hide it when the camera mode changes
   const [valueGltf, setValueGltf] = useState<THREE.Group>(null!);
 
+  // sceneVersion
+  const [scenVersion, setScenVersion] = useState<number>(
+    props.scene.newestVersion
+  );
+
   // htmlsettings
   const [htmlsettings, setHtmlsettings] = useState<boolean>(false);
-
   const [refreshedSceneID, setRefreshedSceneID] = useState<string>("");
 
   // ---- REFS ----
@@ -149,6 +161,7 @@ export default function Main(props: {
           method: "POST",
           body: JSON.stringify({
             idScene: props.scene.id,
+            version: scenVersion,
           }),
         }
       );
@@ -166,7 +179,7 @@ export default function Main(props: {
       setModels(typeObjectProps);
     };
     getSceneModels(props.scene.id);
-  }, [props.scene]);
+  }, [props.scene, scenVersion]);
 
   // scene neu socket.io laden
   useEffect(() => {
@@ -251,7 +264,7 @@ export default function Main(props: {
     version: number
   ) {
     const model: Model = {
-      id: new uuidv4(), // neue id wegen datum feld
+      id: Math.random().toString(), // neue id wegen datum feld, new uuid4() ging nicht
       idScene: idScene,
       positionX: typeObjectProps.position.x,
       positionY: typeObjectProps.position.y,
@@ -394,8 +407,7 @@ export default function Main(props: {
   async function saveScene() {
     // scene speicher,also alle models in DB speichern
 
-    // neu version in scene speichern
-    await changeSceneVersion(props.scene.id, props.scene.newestVersion + 1);
+    const newVersion = props.scene.newestVersion + 1;
 
     // dann alle neu einfügen
     models.forEach(async (objProp: TypeObjectProps) => {
@@ -404,7 +416,7 @@ export default function Main(props: {
       model = convertTypeObjectPropsToModel(
         objProp,
         props.scene.id,
-        props.scene.newestVersion + 1
+        newVersion
       );
 
       console.log("model");
@@ -412,6 +424,15 @@ export default function Main(props: {
 
       await insertModelToDB(model);
     });
+
+    // neu version in scene speichern
+    await changeSceneVersion(props.scene.id, newVersion);
+    const updatedScene = {
+      ...props.scene,
+      newestVersion: newVersion,
+    };
+    props.setScene(updatedScene);
+    setScenVersion(newVersion);
   }
 
   async function changeSceneVersion(idScene: String, version: number) {
@@ -460,6 +481,19 @@ export default function Main(props: {
   // ---- COMPONENT ----
   return (
     <Stack className="main">
+      <Typography>{scenVersion}</Typography>
+      <Select
+        onChange={(e) => {
+          setScenVersion(e.target.value as number);
+        }}
+        value={scenVersion}
+      >
+        {Array.from({ length: props.scene.newestVersion }, (_, index) => (
+          <MenuItem key={index} value={index + 1}>{`Version ${
+            index + 1
+          }`}</MenuItem>
+        ))}
+      </Select>
       <MenuBar
         setScene={props.setScene}
         scene={props.scene}

@@ -17,6 +17,7 @@ const AddScene = (props: { user: User; setScene: (scene: Scene) => void }) => {
         id: refSceneID.current,
         idUserCreator: props.user.id,
         name: name,
+        version: 0,
       }),
     });
 
@@ -61,7 +62,6 @@ const AddScene = (props: { user: User; setScene: (scene: Scene) => void }) => {
 
             // models into DB hinzufügen
             const modelsEmptyRoom: Model[] = getEmptyRoom(scene.id);
-            alert(modelsEmptyRoom.length);
 
             modelsEmptyRoom.forEach(async (model: Model) => {
               await addModelsToDB(model);

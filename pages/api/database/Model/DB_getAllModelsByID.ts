@@ -10,9 +10,10 @@ export default async function DB_getAllModelsByID(
   const requestData = JSON.parse(b);
 
   const idScene = requestData["idScene"];
+  const version = requestData["version"];
 
   const models: Model[] = await prismaClient.model.findMany({
-    where: { idScene: idScene },
+    where: { idScene: idScene, version: version },
   });
 
   if (models == null) {
