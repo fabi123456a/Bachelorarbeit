@@ -25,17 +25,6 @@ const SceneListEntry = (props: {
     return response;
   };
 
-  const deleteSceneFromFS = async () => {
-    const response = await fetch("/api/filesystem/FS_deleteSceneByID", {
-      method: "POST",
-      body: JSON.stringify({
-        idScene: props.scene.id,
-      }),
-    });
-
-    return response;
-  };
-
   const getUserFromScene = async () => {
     const response = await fetch("/api/database/User/DB_getUserByID", {
       method: "POST",
@@ -96,7 +85,7 @@ const SceneListEntry = (props: {
               );
               if (result) {
                 await deleteSceneFromDB();
-                await deleteSceneFromFS();
+                // TODO: delte modles by sceneID
 
                 props.setReload(Math.random());
               }
