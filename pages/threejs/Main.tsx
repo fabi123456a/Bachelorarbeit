@@ -219,6 +219,7 @@ export default function Main(props: {
 
   // ----- FUNCTIONS ----
 
+  // Model (prisma) -> TypeObjectProps
   function convertModelToTypeObjectProps(model: Model) {
     const position = {
       x: model.positionX,
@@ -258,6 +259,7 @@ export default function Main(props: {
     return typeObjectProps;
   }
 
+  // TypeObjectProps -> Model (prisma)
   function convertTypeObjectPropsToModel(
     typeObjectProps: TypeObjectProps,
     idScene: string,
