@@ -42,7 +42,7 @@ const Home = (props: {
   }, []);
 
   return (
-    <Stack className="">
+    <Stack className="loginContainer">
       <Stack className="login">
         <Typography className="txtStyle1">AnmeldeID</Typography>
         <TextField

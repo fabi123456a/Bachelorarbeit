@@ -45,7 +45,6 @@ const Index = () => {
         ></Login>
       )}
       {/* <AdminArea></AdminArea> */}
-      {loggedIn ? null : <CubeRotater loggedIn={loggedIn}></CubeRotater>}
       {register ? <Register setRegister={setRegister}></Register> : null}
       <Feedback></Feedback>
     </Stack>
