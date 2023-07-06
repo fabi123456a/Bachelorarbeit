@@ -44,7 +44,11 @@ export default function Chat(props: { scene: Scene; user: User }) {
   useEffect(() => {
     const getAllChatEntry = async () => {
       const response = await fetch(
-        "/api/database/ChatEntry/DB_getAllChatEntrys" // TODO: nur chatentrys der scene laden
+        "/api/database/ChatEntry/DB_getAllChatEntrys",
+        {
+          method: "POST",
+          body: JSON.stringify({ idScene: props.scene.id }),
+        }
       );
       const result = await response.json();
       return result;

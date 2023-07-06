@@ -12,15 +12,14 @@ import LockIcon from "@mui/icons-material/Lock";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ThreeSixtyIcon from "@mui/icons-material/ThreeSixty";
 import PerspectiveSelector from "./PerspectiveSelector";
-import DownloadIcon from "@mui/icons-material/Download";
 import SaveIcon from "@mui/icons-material/Save";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
-import PublishIcon from "@mui/icons-material/Publish";
-import RemoveIcon from "@mui/icons-material/Remove";
 import io from "socket.io-client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Scene } from "@prisma/client";
 import ShowHtml from "./showHtml";
+import CloseIcon from "@mui/icons-material/Close";
+import BrightnessLowIcon from "@mui/icons-material/BrightnessLow";
 
 let socket1;
 
@@ -42,7 +41,8 @@ function ToolBar(props: {
   setHtmlSettings: (flag: boolean) => void;
   htmlSettings: boolean;
 }) {
-  // funktion
+  const [visible, setVisible] = useState<boolean>(true);
+
   const checkIfAObjectIsSelected = (): boolean => {
     if (!props.currentObjProps) return false;
     return true;
@@ -108,14 +108,7 @@ function ToolBar(props: {
   }, []);
 
   return (
-    <Stack
-      direction={"row"}
-      alignItems="stretch"
-      alignContent="center"
-      gap="1rem"
-      justifyContent="center"
-      className="toolBar"
-    >
+    <Stack className="toolBar roundedShadow">
       {/* Transform: Verschieben, Rotieren & Skalieren */}
       <Stack direction={"row"}>
         <FormControl
@@ -265,56 +258,6 @@ function ToolBar(props: {
             <ImportExportIcon></ImportExportIcon>
             <Typography fontSize=".75rem">Export</Typography>
           </IconButton>
-          {/* <IconButton
-            title="View GLTF scene"
-            style={{ ...(buttonWithTextStyle as any) }}
-            onClick={() => {
-              const inputElement = document.createElement("input");
-              inputElement.type = "file";
-              document.body.appendChild(inputElement);
-              inputElement.click();
-              document.body.removeChild(inputElement);
-              inputElement.addEventListener("change", (e) => {
-                const target = e.target as HTMLInputElement;
-                if (target?.files && target?.files[0]) {
-                  props.importObject(target.files[0]);
-                }
-              });
-            }}
-          >
-            <PublishIcon></PublishIcon>
-            <Typography fontSize=".75rem">Add View</Typography>
-          </IconButton> */}
-          {/* <IconButton
-            title="Remove Gltf Scene View"
-            style={{ ...(buttonWithTextStyle as any) }}
-            onClick={() => {
-              props.removeObject();
-            }}
-          >
-            <RemoveIcon></RemoveIcon>
-            <Typography fontSize=".75rem">Remove View</Typography>
-          </IconButton> */}
-          {/* <IconButton
-            title="Load Scene"
-            style={{ ...(buttonWithTextStyle as any) }}
-            onClick={() => {
-              const inputElement = document.createElement("input");
-              inputElement.type = "file";
-              document.body.appendChild(inputElement);
-              inputElement.click();
-              document.body.removeChild(inputElement);
-              inputElement.addEventListener("change", (e) => {
-                const target = e.target as HTMLInputElement;
-                if (target?.files && target?.files[0]) {
-                  props.loadScene(target.files[0]);
-                }
-              });
-            }}
-          >
-            <DownloadIcon></DownloadIcon>
-            <Typography fontSize=".75rem">Load</Typography>
-          </IconButton> */}
           <IconButton
             style={{ ...(buttonWithTextStyle as any) }}
             title="Save current Scene"

@@ -62,13 +62,17 @@ const DatabaseTable = (props: { tableName: string }) => {
   }, [props.tableName, reload, sortBy]);
 
   return (
-    <Stack className="roundedShadow databaseTable">
-      <Stack className="">
-        <Typography sx={{ alignSelf: "center", pb: "12px" }}>
-          {data ? props.tableName : null}
+    <Stack className="databaseTableContainer">
+      <Stack className="roundedShadow">
+        <Typography
+          sx={{ alignSelf: "center", pb: "12px" }}
+          fontWeight={"bold"}
+          fontSize={"20px"}
+        >
+          {data ? "alle " + props.tableName + "'s" : null}
         </Typography>
 
-        <Table size="small">
+        <Table size="small" className="">
           <TableHead>
             <TableRow>
               {properties
@@ -120,7 +124,7 @@ const DatabaseTable = (props: { tableName: string }) => {
         </Table>
       </Stack>
 
-      <Stack className="">
+      <Stack className="roundedShadow">
         <Insert
           tableName={props.tableName}
           porperties={properties}

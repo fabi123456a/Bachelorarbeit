@@ -17,18 +17,19 @@ export default function ModelListItem(props: {
         onClick={() => {
           props.addObject(props.pfad, get_model_name(props.pfad.toLowerCase()));
         }}
-        style={{ flex: "1" }}
+        className="modelListEntry"
         variant="contained"
       >
         {props.name.toLowerCase().replace(".fbx", "")}
       </Button>
-      {/* <IconButton TODO: das löschen von fbxModels soll über admin afea gehen
+      {/* <Stack
+        className="roundedShadow modelListEntry"
         onClick={() => {
-          props.deleteModel(props.pfad);
+          props.addObject(props.pfad, get_model_name(props.pfad.toLowerCase()));
         }}
       >
-        <DeleteForeverIcon></DeleteForeverIcon>
-      </IconButton> */}
+        {props.name.toLowerCase().replace(".fbx", "")}
+      </Stack> */}
     </Stack>
   ) : null;
 }

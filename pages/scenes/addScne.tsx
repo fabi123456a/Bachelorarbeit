@@ -52,6 +52,7 @@ const AddScene = (props: {
           onChange={(event) => {
             setName(event.target.value);
           }}
+          value={name}
         ></TextField>
         <Button
           onClick={async () => {
@@ -72,6 +73,9 @@ const AddScene = (props: {
 
             // sceneList neu laden
             props.setReload(Math.random());
+
+            //inhalt textfeld zuücksetzenb
+            setName("");
           }}
         >
           Erstellen

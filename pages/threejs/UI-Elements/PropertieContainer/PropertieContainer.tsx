@@ -50,7 +50,7 @@ function PropertieContainer(props: {
   }
 
   return (
-    <Stack style={{ gap: "1rem", background: "" }}>
+    <Stack className="properties roundedShadow">
       <Typography textAlign={"center"} fontSize={"1.25rem"}>
         Eigenschaften
       </Typography>

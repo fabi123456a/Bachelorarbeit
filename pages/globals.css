@@ -93,6 +93,7 @@ body {
   height: 100%;
   width: 100%;
   background: "green";
+  overflow-y: scroll;
   /* background: red; */
 }
 
@@ -151,7 +152,7 @@ body {
 /* Menubar */
 .menuBar {
   height: 5%;
-  background: rgb(168, 183, 192);
+  background: #1c8445;
   align-items: center;
 }
 
@@ -159,11 +160,31 @@ body {
 .modelList {
   position: absolute;
   background: #d9d9d9;
-  left: 5%;
-  top: 10%;
-  height: 75%;
-  width: 17.5%;
+  left: 2%;
+  top: 5%;
+  height: 75vh;
+  width: 27vh;
   z-index: 10;
+  display: none;
+}
+
+.modelListEntry {
+  flex-grow: 1;
+}
+
+.modelListEntryContainer {
+  background: white;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border-radius: 20px;
+}
+
+.showModelListBtn {
+  position: absolute;
+  z-index: 100;
+  left: 2%;
+  top: 5%;
+  background: white;
 }
 
 /* toolbar */
@@ -171,33 +192,51 @@ body {
   background: #d9d9d9;
   position: absolute;
   height: 100px;
-  width: 55%;
-  left: 22.5%;
-  right: 22.5%;
-  top: 10%;
+  left: 20.5%;
+  top: 5%;
   z-index: 10;
+
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  align-content: center;
+  justify-content: center;
+  gap: 1rem;
 }
 
 /* wallList */
 .wallList {
+  background: #d9d9d9;
   position: absolute;
-  height: 100px;
-  width: 70%;
-  left: 5%;
-  right: 22.5%;
   bottom: 5%;
-  z-index: 10;
+  left: 30%;
+  z-index: 100;
+}
+
+.showWallListBtn {
+  position: absolute;
+  z-index: 100;
+  left: 2%;
+  top: 13%;
+  background: white;
 }
 
 /* properties */
 .properties {
+  background: #d9d9d9;
   position: absolute;
-  right: 5%;
-  top: 10%;
-  height: 85%;
-  width: 20%;
+  right: 3%;
+  top: 5%;
+  width: 25vh;
   max-width: 20%;
   z-index: 10;
+}
+
+/* sceneTreeView */
+.sceneTreeView {
+  position: absolute;
+  background: #d9d9d9;
+  z-index: 100;
 }
 
 /* canvas */
@@ -206,6 +245,13 @@ body {
 }
 
 /* dataTable */
+
+.databaseTableContainer {
+  background: white;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
 .databaseTableCell:hover {
   background: rgb(250, 255, 189);
 }
@@ -234,11 +280,6 @@ body {
 /* adminArea */
 .adminArea {
   width: 100%;
-}
-
-/* databaseTable */
-.databaseTable {
-  background: white;
 }
 
 /* feedback */
@@ -275,7 +316,7 @@ body {
   margin: 18px;
 }
 
-/* databaseTable */
+/* roundedShadow */
 
 .roundedShadow {
   margin: 18px;

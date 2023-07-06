@@ -20,17 +20,12 @@ export default function SceneModelList(props: {
     setSelectedId(id);
   };
 
-  // bedingtes rendern
-  if (checkPropsForNull(props)) return null;
+  // useEffect(() => {
+  //   alert(props.models.length);
+  // }, [props]);
 
   return props.models ? (
-    <Stack
-      sx={{
-        height: "300px",
-        overflowY: "auto",
-        overflowX: "hidden",
-      }}
-    >
+    <Stack className="sceneTreeView roundedShadow">
       <TreeView
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}

@@ -1,11 +1,15 @@
 import { Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import WallListItem from "./WallListItem";
-import ColorPicker from "../PropertieContainer/ColorPicker";
+import CloseIcon from "@mui/icons-material/Close";
+import { useState } from "react";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 
 export default function WallList(props: {
   addWall: (objProps: TypeObjectProps) => void;
 }) {
+  const [visible, setVisible] = useState<boolean>(true);
+
   const names: string[] = ["floor", "wall", "cube", "cylinder"];
   const data: object = {
     floor: { x: 50, y: 0.001, z: 50 },
@@ -14,14 +18,20 @@ export default function WallList(props: {
     cylinder: { x: 1, y: 4, z: 1 }, // bei cylineder x = radius, y = height, z = tiefe
   };
 
-  return (
+  return visible ? (
     <Stack
-      sx={{ background: "lightgray" }}
-      direction="column"
-      height="100px"
-      alignContent={"center"}
-      className="wallList"
+      // sx={{ background: "lightgray" }}
+      // direction="column"
+      // height="100px"
+      // alignContent={"center"}
+      className="wallList roundedShadow"
     >
+      <CloseIcon
+        className="iconButton"
+        onClick={() => {
+          setVisible(false);
+        }}
+      ></CloseIcon>
       <Typography textAlign={"center"} fontSize={"1.25rem"}>
         Raumelemente
       </Typography>
@@ -35,6 +45,14 @@ export default function WallList(props: {
           ></WallListItem>
         ))}
       </Stack>
+    </Stack>
+  ) : (
+    <Stack className="showWallListBtn roundedShadow iconButton">
+      <FormatListBulletedIcon
+        onClick={() => {
+          setVisible(true);
+        }}
+      />
     </Stack>
   );
 }

@@ -483,27 +483,17 @@ export default function Main(props: {
   // ---- COMPONENT ----
   return (
     <Stack className="main">
-      <Typography>{scenVersion}</Typography>
-      <Select
-        onChange={(e) => {
-          setScenVersion(e.target.value as number);
-        }}
-        value={scenVersion}
-      >
-        {Array.from({ length: props.scene.newestVersion }, (_, index) => (
-          <MenuItem key={index} value={index + 1}>{`Version ${
-            index + 1
-          }`}</MenuItem>
-        ))}
-      </Select>
+      {/* controls/ui-elemnts in main */}
+
+      {/* menubar */}
       <MenuBar
         setScene={props.setScene}
         scene={props.scene}
         isTestMode={isTestMode}
+        sceneVersion={scenVersion}
+        setSceneVersion={setScenVersion}
       ></MenuBar>
-      {/* <Typography>
-        Scene: {props.scene.name}, testMode: {isTestMode ? "ja" : "nein"}
-      </Typography> */}
+
       <Stack
         direction="row"
         style={{ height: "100%", background: "#d9d9d9", overflowY: "auto" }}
@@ -581,50 +571,22 @@ export default function Main(props: {
               <WallList addWall={handleWallAdd}></WallList>
 
               {/* PropertieContainer */}
-              <Stack
-                style={{
-                  background: "#d9d9d9",
-                  width: "30%",
-                }}
-                className="properties"
-              >
-                {selectedOption == "chat" ? (
-                  <Chat user={props.user} scene={props.scene}></Chat>
-                ) : (
-                  <>
-                    <PropertieContainer
-                      objProps={currentObjectProps}
-                      setObjProps={setCurrentObjectProps}
-                    ></PropertieContainer>
-                    <Divider sx={{ margin: "8px" }}></Divider>
-                    <SceneModelList
-                      models={models}
-                      currentObjProps={currentObjectProps}
-                      setCurrentObj={setCurrentObjectProps}
-                      deleteObject={handleModelDelete}
-                      selectedId={treeViewSelectedId}
-                    ></SceneModelList>
-                  </>
-                )}
 
-                <RadioGroup
-                  value={selectedOption}
-                  onChange={handleOptionChange}
-                >
-                  <Stack direction={"row"}>
-                    <FormControlLabel
-                      value="chat"
-                      control={<Radio />}
-                      label="Chat"
-                    />
-                    <FormControlLabel
-                      value="properties"
-                      control={<Radio />}
-                      label="Eigenschaften"
-                    />
-                  </Stack>
-                </RadioGroup>
-              </Stack>
+              {/* <Chat user={props.user} scene={props.scene}></Chat> */}
+
+              <PropertieContainer
+                objProps={currentObjectProps}
+                setObjProps={setCurrentObjectProps}
+              ></PropertieContainer>
+
+              {/* treeview */}
+              <SceneModelList
+                models={models}
+                currentObjProps={currentObjectProps}
+                setCurrentObj={setCurrentObjectProps}
+                deleteObject={handleModelDelete}
+                selectedId={treeViewSelectedId}
+              ></SceneModelList>
             </>
           )
         ) : null}

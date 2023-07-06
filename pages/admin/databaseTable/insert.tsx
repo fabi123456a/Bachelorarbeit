@@ -1,6 +1,7 @@
 import Checkbox from "@mui/material/Checkbox";
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const Insert = (props: {
   tableName: string;
@@ -32,7 +33,8 @@ const Insert = (props: {
     const obj: { [key: string]: any } = {};
 
     keys.forEach((key) => {
-      obj[key] = values[props.porperties.indexOf(key)]; // Du kannst den initialen Wert hier anpassen, falls erforderlich
+      if (key == "id") obj[key] = uuidv4();
+      else obj[key] = values[props.porperties.indexOf(key)];
     });
 
     return obj;
@@ -49,30 +51,46 @@ const Insert = (props: {
 
   return (
     <Stack>
-      <Typography fontWeight={"bold"} fontSize={"20px"}>
+      <Typography
+        fontWeight={"bold"}
+        fontSize={"20px"}
+        sx={{ alignSelf: "center" }}
+      >
         Neuen {props.tableName} erstellen
       </Typography>
       {props.porperties
-        ? props.porperties.map((prop: string, index: number) => (
-            <Stack key={prop}>
-              <Typography>
-                {prop} , {props.types[index]}
-              </Typography>
-              {props.types[index] == "string" ? (
-                <TextField
-                  key={prop}
-                  label={prop}
-                  onChange={(e) => handleTextFieldChange(index, e.target.value)}
-                ></TextField>
-              ) : (
-                <Checkbox
-                  onChange={(e) => {
-                    handleTextFieldChange(index, e.target.checked);
-                  }}
-                ></Checkbox>
-              )}
-            </Stack>
-          ))
+        ? props.porperties.map((prop: string, index: number) => {
+            if (prop === "id") {
+              return null; // Überspringe den Code für "id"
+            }
+
+            return (
+              <Stack key={prop}>
+                {/* <Typography>
+                  {prop}, {props.types[index]}
+                </Typography> */}
+                {props.types[index] === "string" ? (
+                  <TextField
+                    sx={{ margin: "8px", maxWidth: "200px" }}
+                    key={prop}
+                    label={prop}
+                    onChange={(e) =>
+                      handleTextFieldChange(index, e.target.value)
+                    }
+                  ></TextField>
+                ) : (
+                  <Stack direction={"row"} className="centerV">
+                    <Checkbox
+                      onChange={(e) => {
+                        handleTextFieldChange(index, e.target.checked);
+                      }}
+                    ></Checkbox>
+                    <Typography>nur lesen</Typography>
+                  </Stack>
+                )}
+              </Stack>
+            );
+          })
         : null}
       <Button
         onClick={() => {
@@ -87,7 +105,7 @@ const Insert = (props: {
           props.setReload(Math.random());
         }}
       >
-        Insert
+        Hinzufügen
       </Button>
     </Stack>
   );
