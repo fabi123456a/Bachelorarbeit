@@ -52,6 +52,8 @@ const MenuBar = (props: {
           }`}</MenuItem>
         ))}
       </Select>
+
+      <img src="./logo/Logo-Icon-final.png" className="logoMenubar"></img>
     </Stack>
   );
 };

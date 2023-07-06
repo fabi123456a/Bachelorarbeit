@@ -49,7 +49,10 @@ export default function SceneModelList(props: {
             defaultExpanded={["scene"]}
             sx={{ overflowY: "auto", overflowX: "hidden" }}
           >
-            <TreeItem nodeId="scene" label="Scene">
+            <TreeItem
+              nodeId="scene"
+              label={<Typography fontWeight="bold">Szene</Typography>}
+            >
               {props.models.map((model) => (
                 // <Typography>{model.name}</Typography>
                 <SceneModelListItem

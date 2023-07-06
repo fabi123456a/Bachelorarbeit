@@ -165,8 +165,8 @@ body {
 .modelList {
   position: absolute;
   background: #d9d9d9;
-  left: 2%;
-  top: 5%;
+  left: 28vh;
+  top: 16vh;
   height: 75vh;
   width: 27vh;
   z-index: 10;
@@ -213,7 +213,7 @@ body {
   position: absolute;
   height: 100px;
   left: 25%;
-  top: 5%;
+  top: 6vh;
   z-index: 10;
   cursor: grabbing;
   min-width: 50%;
@@ -256,8 +256,8 @@ body {
 .properties {
   background: #d9d9d9;
   position: absolute;
-  right: 3%;
-  top: 5%;
+  right: 1.5vh;
+  top: 6vh;
   width: 25vh;
   max-width: 20%;
   z-index: 10;
@@ -280,6 +280,8 @@ body {
   cursor: grabbing;
   max-height: 80vh;
   min-width: 20vh;
+  left: 1.5vh;
+  top: 6vh;
 }
 
 .treeViewBtn {
@@ -431,4 +433,12 @@ body {
 .fullHeightWidth {
   height: 100%;
   width: 100%;
+}
+
+.logoMenubar {
+  transform: scale(0.04);
+  position: absolute;
+  background: white;
+  margin-top: 0px;
+  left: -210px;
 }

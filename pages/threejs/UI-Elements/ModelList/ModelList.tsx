@@ -13,7 +13,7 @@ export default function ModelList(props: {
   addObject: (pfad: string, info: string) => void;
   setRefreshData: () => void;
 }) {
-  const [visible, setVisible] = useState<boolean>(true);
+  const [visible, setVisible] = useState<boolean>(false);
 
   // bedingtes rendern
   if (checkPropsForNull(props)) return null;

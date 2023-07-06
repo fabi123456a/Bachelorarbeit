@@ -57,12 +57,12 @@ function PropertieContainer(props: {
   return visible ? (
     <Draggable>
       <Stack className="properties roundedShadow">
-        <CloseIcon
+        {/* <CloseIcon
           className="iconButton"
           onClick={() => {
             setVisible(false);
           }}
-        ></CloseIcon>
+        ></CloseIcon> */}
         <Typography textAlign={"center"} fontSize={"1.25rem"}>
           Eigenschaften
         </Typography>
@@ -189,7 +189,9 @@ function PropertieContainer(props: {
             ) : null}
           </Stack>
         ) : (
-          ""
+          <Typography fontSize={"small"} color="grey">
+            kein Objekt ausgewählt
+          </Typography>
         )}
       </Stack>
     </Draggable>
