@@ -62,7 +62,7 @@ const DatabaseTable = (props: { tableName: string }) => {
   }, [props.tableName, reload, sortBy]);
 
   return (
-    <Stack className="roundedShadow">
+    <Stack className="roundedShadow databaseTable">
       <Stack className="">
         <Typography sx={{ alignSelf: "center", pb: "12px" }}>
           {data ? props.tableName : null}

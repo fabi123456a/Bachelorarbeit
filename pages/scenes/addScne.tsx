@@ -4,9 +4,12 @@ import { Model, Scene, User } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 
 // einmal in DB und json file to FS
-const AddScene = (props: { user: User; setScene: (scene: Scene) => void }) => {
+const AddScene = (props: {
+  user: User;
+  setScene: (scene: Scene) => void;
+  setReload: (i: number) => void;
+}) => {
   const [name, setName] = useState<string>();
-  const [sceneModel, setSceneModel] = useState<Scene>();
   const refSceneID = useRef<string>(uuidv4());
 
   const addSceneToDB = async () => {
@@ -66,6 +69,9 @@ const AddScene = (props: { user: User; setScene: (scene: Scene) => void }) => {
             modelsEmptyRoom.forEach(async (model: Model) => {
               await addModelsToDB(model);
             });
+
+            // sceneList neu laden
+            props.setReload(Math.random());
           }}
         >
           Erstellen

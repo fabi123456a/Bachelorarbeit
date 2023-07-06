@@ -1,7 +1,6 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import io from 'socket.io-client';
-
+import io from "socket.io-client";
 
 import { ChatEntry, Scene, Session, User } from "@prisma/client";
 import { randomUUID } from "crypto";
@@ -45,7 +44,7 @@ export default function Chat(props: { scene: Scene; user: User }) {
   useEffect(() => {
     const getAllChatEntry = async () => {
       const response = await fetch(
-        "/api/database/ChatEntry/DB_getAllChatEntrys"
+        "/api/database/ChatEntry/DB_getAllChatEntrys" // TODO: nur chatentrys der scene laden
       );
       const result = await response.json();
       return result;
@@ -122,6 +121,7 @@ export default function Chat(props: { scene: Scene; user: User }) {
   return (
     <>
       <Stack sx={{ background: "", maxHeight: "500px", minHeight: "500px" }}>
+        <Typography>Chat: {props.scene.name}</Typography>
         <Stack direction={"row"}>
           <TextField onChange={onChangeHandler} value={text}></TextField>
           <Button variant="outlined" onClick={onClickHandler}>

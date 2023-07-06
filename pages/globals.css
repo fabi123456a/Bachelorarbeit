@@ -58,6 +58,11 @@ body {
   flex-direction: row;
   height: 100%;
   width: 100%;
+
+  background-image: url("../public/logo/Logo-Icon-final.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 60%;
 }
 
 /* accountImgComtainer */
@@ -77,7 +82,7 @@ body {
   align-items: center;
   padding: 8px;
   width: 7vh;
-  background: rgb(109, 141, 119);
+  background: #1c8445;
 
   box-shadow: 0px 7px 14px 0px rgba(0, 0, 0, 0.5);
 }
@@ -99,9 +104,9 @@ body {
 }
 
 .sceneListEntry {
-  background-color: tan;
-  height: 18vh;
-  width: 18vh;
+  background-color: #c9cdcd;
+  height: 24vh;
+  width: 24vh;
   margin: 18px;
   padding: 8px;
 
@@ -113,27 +118,27 @@ body {
 
 .sceneListEntry:hover {
   background-color: rgb(234, 224, 24);
-  height: 19vh;
-  width: 19vh;
+  /* height: 19vh;
+  width: 19vh; */
   box-shadow: 7px 7px 14px 10px rgba(0, 0, 0, 0.5);
 }
 
 .newScene {
-  height: 18vh;
-  width: 18vh;
+  height: 24vh;
+  width: 24vh;
   margin: 18px;
   padding: 8px;
+  background: white;
 
-  transition: width 0.5s, height 0.5s, box-shadow 0.5s, background-color 0.5s;
+  transition: width 0.5s, height 0.5s, box-shadow 0.5s;
 
   box-shadow: 0px 7px 14px 0px rgba(0, 0, 0, 0.5);
   border-radius: 20px;
 }
 
 .newScene:hover {
-  background-color: rgb(213, 213, 213);
-  height: 19vh;
-  width: 19vh;
+  /* height: 19vh;
+  width: 19vh; */
   box-shadow: 7px 7px 14px 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -231,6 +236,11 @@ body {
   width: 100%;
 }
 
+/* databaseTable */
+.databaseTable {
+  background: white;
+}
+
 /* feedback */
 .feedbackIcon {
   position: absolute;
@@ -249,6 +259,12 @@ body {
 }
 
 /* IconButton */
+
+.iconButton {
+  color: black;
+  transform: scale(1.1);
+}
+
 .iconButton:hover {
   transform: scale(1.4);
 }
@@ -277,9 +293,30 @@ body {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  overflow-y: scroll;
 }
 
-/* fbxList */
+.fbxListEntry {
+  background: white;
+  transition: box-shadow 0.5s;
+}
+
+.fbxListEntry:hover {
+  box-shadow: 7px 7px 14px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* addFbxModel */
+
+.addFbxModel {
+  background: white;
+  transition: box-shadow 0.5s;
+}
+
+.addFbxModel:hover {
+  box-shadow: 7px 7px 14px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* loading */
 
 .loading {
   transform: scale(2.4);

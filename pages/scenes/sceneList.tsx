@@ -81,7 +81,11 @@ const SceneList = (props: { setScene: (scene: Scene) => void; user: User }) => {
           : "noch keine Leitstellen-Konfiguration vorhanden. Erstellen Sie die erste Konfiguration..."}
         {/* bei readonly user ausblenden */}
         {props.user.readOnly ? null : (
-          <AddScene user={props.user} setScene={props.setScene}></AddScene>
+          <AddScene
+            user={props.user}
+            setScene={props.setScene}
+            setReload={setReload}
+          ></AddScene>
         )}
       </Stack>
     </Stack>

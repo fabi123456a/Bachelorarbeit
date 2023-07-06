@@ -18,7 +18,7 @@ const FbxListEntry = (props: {
   };
 
   return (
-    <Stack className="roundedShadow">
+    <Stack className="roundedShadow fbxListEntry">
       <ModelPreview fbxName={props.file}></ModelPreview>
       <Typography>{props.file}</Typography>
       <IconButton

@@ -42,7 +42,7 @@ const UploadFbx = (props: { setRefreshData: () => void }) => {
   };
 
   return (
-    <Stack className="roundedShadow centerH">
+    <Stack className="roundedShadow centerH addFbxModel">
       <input
         type="file"
         onChange={({ target }) => {
