@@ -195,6 +195,7 @@ body {
   left: 20.5%;
   top: 5%;
   z-index: 10;
+  cursor: grabbing;
 
   display: flex;
   flex-direction: row;
@@ -202,6 +203,14 @@ body {
   align-content: center;
   justify-content: center;
   gap: 1rem;
+}
+
+.showToolbarBtn {
+  position: absolute;
+  z-index: 100;
+  left: 31vh;
+  bottom: 1vh;
+  background: white;
 }
 
 /* wallList */
@@ -216,8 +225,8 @@ body {
 .showWallListBtn {
   position: absolute;
   z-index: 100;
-  left: 2%;
-  top: 13%;
+  left: 1vh;
+  bottom: 1vh;
   background: white;
 }
 
@@ -230,12 +239,30 @@ body {
   width: 25vh;
   max-width: 20%;
   z-index: 10;
+  cursor: grabbing;
 }
 
-/* sceneTreeView */
+.showPropsBtn {
+  position: absolute;
+  z-index: 100;
+  left: 41.5vh;
+  bottom: 1vh;
+  background: white;
+}
+
+/* scene treeView */
 .sceneTreeView {
   position: absolute;
   background: #d9d9d9;
+  z-index: 100;
+  cursor: grabbing;
+}
+
+.treeViewBtn {
+  position: absolute;
+  background: white;
+  left: 19vh;
+  bottom: 1vh;
   z-index: 100;
 }
 
@@ -308,6 +335,10 @@ body {
 
 .iconButton:hover {
   transform: scale(1.4);
+}
+
+.minOpenBtn:hover {
+  transform: scale(1.05);
 }
 
 /* select */

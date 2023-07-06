@@ -6,6 +6,7 @@ import {
   NativeSelect,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import TreeItem from "@mui/lab/TreeItem";
@@ -30,7 +31,7 @@ export default function SceneModelListItem(props: {
     props.model ? props.model.name : null
   );
 
-  const handleIconClick = (e, id: string) => {
+  const handleDeleteClick = (e, id: string) => {
     e.stopPropagation();
 
     let result = confirm("Das Objekt wird gelöscht...");
@@ -45,9 +46,6 @@ export default function SceneModelListItem(props: {
       }
     });
   };
-
-  // bedingtes rendern
-  if (checkPropsForNull(props)) return null;
 
   return props.model ? (
     <>
@@ -67,8 +65,7 @@ export default function SceneModelListItem(props: {
             ok
           </Button>
         </Stack>
-      ) : null}
-      {rename ? null : (
+      ) : (
         <TreeItem
           key={props.model.id}
           nodeId={props.model.id}
@@ -89,7 +86,7 @@ export default function SceneModelListItem(props: {
               <Stack direction={"row"}>
                 {/* <Button onClick={(e) => handleIconClick(e, props.model.id)}> */}
                 <DeleteForeverIcon
-                  onClick={(e) => handleIconClick(e, props.model.id)}
+                  onClick={(e) => handleDeleteClick(e, props.model.id)}
                 />
 
                 <DriveFileRenameOutlineIcon

@@ -1,11 +1,18 @@
-import { FormControl, FormLabel, NativeSelect, Stack } from "@mui/material";
+import {
+  FormControl,
+  FormLabel,
+  NativeSelect,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import TreeItem from "@mui/lab/TreeItem";
 import TreeView from "@mui/lab/TreeView";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import SceneModelListItem from "./ScenModeListItem";
-import { checkPropsForNull } from "../../../../utils/checkIfPropIsNull";
+import Draggable from "react-draggable";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function SceneModelList(props: {
   models: TypeObjectProps[];
@@ -15,6 +22,7 @@ export default function SceneModelList(props: {
   selectedId: string;
 }) {
   const [selectedId, setSelectedId] = useState<string>(props.selectedId);
+  const [visible, setVisible] = useState<boolean>(true);
 
   const handleTreeItemClick = (id) => {
     setSelectedId(id);
@@ -25,27 +33,47 @@ export default function SceneModelList(props: {
   // }, [props]);
 
   return props.models ? (
-    <Stack className="sceneTreeView roundedShadow">
-      <TreeView
-        defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpandIcon={<ChevronRightIcon />}
-        defaultExpanded={["scene"]}
+    visible ? (
+      <Draggable>
+        <Stack className="sceneTreeView roundedShadow">
+          <CloseIcon
+            className="iconButton"
+            onClick={() => {
+              setVisible(false);
+            }}
+          ></CloseIcon>
+          <TreeView
+            defaultCollapseIcon={<ExpandMoreIcon />}
+            defaultExpandIcon={<ChevronRightIcon />}
+            defaultExpanded={["scene"]}
+          >
+            <TreeItem nodeId="scene" label="Scene">
+              {props.models.map((model) => (
+                // <Typography>{model.name}</Typography>
+                <SceneModelListItem
+                  currentObjProps={props.currentObjProps}
+                  setCurrentObj={props.setCurrentObj}
+                  model={model}
+                  key={model.id}
+                  setSelectedId={handleTreeItemClick}
+                  selectedID={props.selectedId}
+                  deleteObject={props.deleteObject}
+                  models={props.models}
+                ></SceneModelListItem>
+              ))}
+            </TreeItem>
+          </TreeView>
+        </Stack>
+      </Draggable>
+    ) : (
+      <Stack
+        className="roundedShadow treeViewBtn minOpenBtn"
+        onClick={() => {
+          setVisible(true);
+        }}
       >
-        <TreeItem nodeId="scene" label="Scene">
-          {props.models.map((model) => (
-            <SceneModelListItem
-              currentObjProps={props.currentObjProps}
-              setCurrentObj={props.setCurrentObj}
-              model={model}
-              key={model.id}
-              setSelectedId={handleTreeItemClick}
-              selectedID={props.selectedId}
-              deleteObject={props.deleteObject}
-              models={props.models}
-            ></SceneModelListItem>
-          ))}
-        </TreeItem>
-      </TreeView>
-    </Stack>
+        <Typography>TreeView</Typography>
+      </Stack>
+    )
   ) : null;
 }

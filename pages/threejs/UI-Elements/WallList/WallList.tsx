@@ -4,6 +4,7 @@ import WallListItem from "./WallListItem";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import Draggable from "react-draggable";
 
 export default function WallList(props: {
   addWall: (objProps: TypeObjectProps) => void;
@@ -19,40 +20,43 @@ export default function WallList(props: {
   };
 
   return visible ? (
-    <Stack
-      // sx={{ background: "lightgray" }}
-      // direction="column"
-      // height="100px"
-      // alignContent={"center"}
-      className="wallList roundedShadow"
-    >
-      <CloseIcon
-        className="iconButton"
-        onClick={() => {
-          setVisible(false);
-        }}
-      ></CloseIcon>
-      <Typography textAlign={"center"} fontSize={"1.25rem"}>
-        Raumelemente
-      </Typography>
-      <Stack direction={"row"}>
-        {names.map((name: string) => (
-          <WallListItem
-            key={name}
-            name={name}
-            addWall={props.addWall}
-            data={data}
-          ></WallListItem>
-        ))}
+    <Draggable>
+      <Stack
+        // sx={{ background: "lightgray" }}
+        // direction="column"
+        // height="100px"
+        // alignContent={"center"}
+        className="wallList roundedShadow"
+      >
+        <CloseIcon
+          className="iconButton"
+          onClick={() => {
+            setVisible(false);
+          }}
+        ></CloseIcon>
+        <Typography textAlign={"center"} fontSize={"1.25rem"}>
+          Raumelemente
+        </Typography>
+        <Stack direction={"row"}>
+          {names.map((name: string) => (
+            <WallListItem
+              key={name}
+              name={name}
+              addWall={props.addWall}
+              data={data}
+            ></WallListItem>
+          ))}
+        </Stack>
       </Stack>
-    </Stack>
+    </Draggable>
   ) : (
-    <Stack className="showWallListBtn roundedShadow iconButton">
-      <FormatListBulletedIcon
-        onClick={() => {
-          setVisible(true);
-        }}
-      />
+    <Stack
+      className="showWallListBtn roundedShadow minOpenBtn"
+      onClick={() => {
+        setVisible(true);
+      }}
+    >
+      <Typography>Raum Elemente</Typography>
     </Stack>
   );
 }

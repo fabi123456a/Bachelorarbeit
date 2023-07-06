@@ -181,40 +181,35 @@ export default function Main(props: {
     getSceneModels(props.scene.id);
   }, [props.scene, scenVersion]);
 
-  // scene neu socket.io laden
+  // scene neu socket.io laden // TODO:
   useEffect(() => {
-    const socketInitializer = async () => {
-      await fetch("/api/socket");
-      socket = io();
-
-      // socket.on("connect", () => {
-      //   console.log("connected");
-      // });
-
-      socket.on("getSceneRefresh", (msg) => {
-        // msg => scene id von der seite die jemand gespeichert hat
-        //setInput([...input, msg]);xxxx
-        console.log("scene wurde refresht: " + msg);
-        setRefreshedSceneID(msg);
-
-        if (msg == props.scene.id) {
-          const handle = async () => {
-            const response = await fetch("/api/filesystem/FS_getSceneByID", {
-              method: "POST",
-              body: JSON.stringify({
-                sceneID: props.scene.id,
-              }),
-            });
-
-            const result = await response.json();
-
-            //TODO: setModels
-          };
-          handle();
-        }
-      });
-    };
-    socketInitializer();
+    // const socketInitializer = async () => {
+    //   await fetch("/api/socket");
+    //   socket = io();
+    //   // socket.on("connect", () => {
+    //   //   console.log("connected");
+    //   // });
+    //   socket.on("getSceneRefresh", (msg) => {
+    //     // msg => scene id von der seite die jemand gespeichert hat
+    //     //setInput([...input, msg]);xxxx
+    //     console.log("scene wurde refresht: " + msg);
+    //     setRefreshedSceneID(msg);
+    //     if (msg == props.scene.id) {
+    //       const handle = async () => {
+    //         const response = await fetch("/api/filesystem/FS_getSceneByID", {
+    //           method: "POST",
+    //           body: JSON.stringify({
+    //             sceneID: props.scene.id,
+    //           }),
+    //         });
+    //         const result = await response.json();
+    //         //TODO: setModels
+    //       };
+    //       handle();
+    //     }
+    //   });
+    // };
+    // socketInitializer();
   }, []);
 
   // ----- FUNCTIONS ----
@@ -590,6 +585,7 @@ export default function Main(props: {
             </>
           )
         ) : null}
+
         {/* Canvas */}
         <Canvas
           onPointerMissed={() => {
