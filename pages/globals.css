@@ -440,5 +440,9 @@ body {
   position: absolute;
   background: white;
   margin-top: 0px;
-  left: -210px;
+  left: -50vh;
+}
+
+.scaleMini{
+  
 }
