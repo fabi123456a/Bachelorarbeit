@@ -200,7 +200,7 @@ function PropertieContainer(props: {
         setVisible(true);
       }}
     >
-      <Typography>Raum Elemente</Typography>
+      <Typography>Eigenschaften</Typography>
     </Stack>
   );
 }

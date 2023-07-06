@@ -533,7 +533,7 @@ export default function Main(props: {
           </Alert>
         </Snackbar>
 
-        {/* ModelList j */}
+        {/* ui elements ausblenden bei readonly */}
         {props.user ? (
           props.user.readOnly ? null : (
             <>
@@ -567,7 +567,7 @@ export default function Main(props: {
 
               {/* PropertieContainer */}
 
-              {/* <Chat user={props.user} scene={props.scene}></Chat> */}
+              <Chat user={props.user} scene={props.scene}></Chat>
 
               <PropertieContainer
                 objProps={currentObjectProps}

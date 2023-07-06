@@ -6,6 +6,7 @@ import ModelListItem from "./ModelListItem";
 import { checkPropsForNull } from "../../../../utils/checkIfPropIsNull";
 import { useState } from "react";
 import ReorderIcon from "@mui/icons-material/Reorder";
+import Draggable from "react-draggable";
 
 export default function ModelList(props: {
   paths: { name: string; path: string }[]; // enthält alle Pfade der FBX-Models die auf dem Server liegen
@@ -18,40 +19,44 @@ export default function ModelList(props: {
   if (checkPropsForNull(props)) return null;
 
   return props.paths && visible ? (
-    <Stack
-      className="modelList roundedShadow"
-      direction="column"
-      height="100%"
-      alignContent={"center"}
-    >
-      <CloseIcon
-        className="iconButton"
-        onClick={() => {
-          setVisible(false);
-        }}
-      />
+    <Draggable>
+      <Stack
+        className="modelList roundedShadow"
+        direction="column"
+        height="100%"
+        alignContent={"center"}
+      >
+        <CloseIcon
+          className="iconButton"
+          onClick={() => {
+            setVisible(false);
+          }}
+        />
 
-      <Typography textAlign={"center"} fontSize={"1.25rem"}>
-        Modelle
-      </Typography>
-      <Stack className="modelListEntryContainer">
-        {props.paths.map((path) => (
-          <ModelListItem
-            name={path.name}
-            key={path.path}
-            pfad={path.path}
-            addObject={props.addObject}
-          ></ModelListItem>
-        ))}
+        <Typography textAlign={"center"} fontSize={"1.25rem"}>
+          Modelle
+        </Typography>
+        <Stack className="modelListEntryContainer">
+          {props.paths.map((path) => (
+            <ModelListItem
+              name={path.name}
+              key={path.path}
+              pfad={path.path}
+              addObject={props.addObject}
+            ></ModelListItem>
+          ))}
+        </Stack>
+        <UploadFbx setRefreshData={props.setRefreshData}></UploadFbx>
       </Stack>
-      <UploadFbx setRefreshData={props.setRefreshData}></UploadFbx>
-    </Stack>
+    </Draggable>
   ) : (
     <Stack
-      className="showModelListBtn roundedShadow iconButton"
-      onClick={() => setVisible(true)}
+      className="showModelListBtn roundedShadow minOpenBtn"
+      onClick={() => {
+        setVisible(true);
+      }}
     >
-      <ReorderIcon></ReorderIcon>
+      <Typography>3D Modelle</Typography>
     </Stack>
   );
 }

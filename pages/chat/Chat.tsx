@@ -6,6 +6,9 @@ import { ChatEntry, Scene, Session, User } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { prismaClient } from "../api/prismaclient/_prismaClient";
 import UserOnlineItem from "./UserOnlineItem";
+import Draggable from "react-draggable";
+import CloseIcon from "@mui/icons-material/Close";
+import ChatIcon from "@mui/icons-material/Chat";
 
 let socket;
 
@@ -22,6 +25,8 @@ export default function Chat(props: { scene: Scene; user: User }) {
     })[]
   >([]);
   const [users, setUsers] = useState<User[]>([]);
+  const [visible, setVisible] = useState<boolean>(true);
+  const [fontSize1, setFontSize] = useState<string>("12px");
 
   // socket IO
   useEffect(() => {
@@ -122,19 +127,39 @@ export default function Chat(props: { scene: Scene; user: User }) {
 
   let counter = 0;
 
-  return (
-    <>
-      <Stack sx={{ background: "", maxHeight: "500px", minHeight: "500px" }}>
-        <Typography>Chat: {props.scene.name}</Typography>
+  return visible ? (
+    <Draggable>
+      <Stack
+        className="chat roundedShadow"
+        sx={{
+          maxHeight: "300px",
+          minHeight: "300px",
+          maxWidth: "200px",
+          minWidth: "200px",
+        }}
+      >
+        <CloseIcon
+          className="iconButton"
+          onClick={() => {
+            setVisible(false);
+          }}
+        ></CloseIcon>
         <Stack direction={"row"}>
-          <TextField onChange={onChangeHandler} value={text}></TextField>
+          <TextField
+            onChange={onChangeHandler}
+            value={text}
+            size="small"
+            sx={{ fontSize: fontSize1 }}
+          ></TextField>
           <Button variant="outlined" onClick={onClickHandler}>
             send
           </Button>
         </Stack>
 
         <Stack
-          sx={{ overflowY: "scroll", maxHeight: "300px", minHeight: "300px" }}
+          sx={{
+            overflowY: "scroll",
+          }}
         >
           {msgs.map(
             (
@@ -146,7 +171,10 @@ export default function Chat(props: { scene: Scene; user: User }) {
               counter++;
 
               return (
-                <Typography style={{ background: color }} key={msg.id}>
+                <Typography
+                  style={{ background: color, fontSize: fontSize1 }}
+                  key={msg.id}
+                >
                   {new Date(msg.datum).toLocaleTimeString() +
                     ": " +
                     msg.message +
@@ -159,23 +187,27 @@ export default function Chat(props: { scene: Scene; user: User }) {
           )}
         </Stack>
         <Stack sx={{ overflowY: "scroll" }}>
-          <Typography>Online: </Typography>
+          <Typography fontSize={{ fontSize: fontSize1 }}>Online: </Typography>
           {sessions.map((session) => {
             return (
               <UserOnlineItem
                 session={session}
                 key={session.id}
+                fontSize={fontSize1}
               ></UserOnlineItem>
             );
           })}
         </Stack>
       </Stack>
-
-      {/* <TextField></TextField>
-      <Typography>{value}</Typography>
-      <Button variant="outlined" onClick={onClickHandler}>
-        send
-      </Button> */}
-    </>
+    </Draggable>
+  ) : (
+    <Stack
+      className="showChatBtn roundedShadow minOpenBtn"
+      onClick={() => {
+        setVisible(true);
+      }}
+    >
+      <ChatIcon></ChatIcon>
+    </Stack>
   );
 }
