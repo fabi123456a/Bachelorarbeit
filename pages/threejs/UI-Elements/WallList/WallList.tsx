@@ -9,7 +9,7 @@ import Draggable from "react-draggable";
 export default function WallList(props: {
   addWall: (objProps: TypeObjectProps) => void;
 }) {
-  const [visible, setVisible] = useState<boolean>(true);
+  const [visible, setVisible] = useState<boolean>(false);
 
   const names: string[] = ["floor", "wall", "cube", "cylinder"];
   const data: object = {

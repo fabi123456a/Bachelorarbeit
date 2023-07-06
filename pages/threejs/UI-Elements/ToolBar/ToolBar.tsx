@@ -110,12 +110,12 @@ function ToolBar(props: {
   return visible ? (
     <Draggable>
       <Stack className="toolBar roundedShadow">
-        <CloseIcon
+        {/* <CloseIcon
           className="iconButton"
           onClick={() => {
             setVisible(false);
           }}
-        ></CloseIcon>
+        ></CloseIcon> */}
         {/* Transform: Verschieben, Rotieren & Skalieren */}
         <Stack direction={"row"}>
           <FormControl

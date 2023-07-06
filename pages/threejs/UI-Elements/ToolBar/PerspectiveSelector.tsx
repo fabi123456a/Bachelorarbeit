@@ -24,7 +24,7 @@ export default function PerspectiveSelector(props: {
       }}
     >
       <FormLabel>Perspektive</FormLabel>
-      <IconButton
+      {/* <IconButton
         onClick={() => {
           props.setIsTestMode(!props.isTestMode);
           props.setCurrentObj(null);
@@ -38,11 +38,12 @@ export default function PerspectiveSelector(props: {
         color={props.isTestMode ? "success" : "default"}
       >
         <DirectionsWalkIcon />
-      </IconButton>
+      </IconButton> */}
       {props.isTestMode ? null : (
         <NativeSelect
           disableUnderline
           onChange={(e) => {
+            e.stopPropagation();
             const camPerspective: string = e.target.value;
 
             if (camPerspective !== "normal") {

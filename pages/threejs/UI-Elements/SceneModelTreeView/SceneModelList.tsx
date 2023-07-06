@@ -1,6 +1,7 @@
 import {
   FormControl,
   FormLabel,
+  Hidden,
   NativeSelect,
   Stack,
   Typography,
@@ -36,16 +37,17 @@ export default function SceneModelList(props: {
     visible ? (
       <Draggable>
         <Stack className="sceneTreeView roundedShadow">
-          <CloseIcon
+          {/* <CloseIcon
             className="iconButton"
             onClick={() => {
               setVisible(false);
             }}
-          ></CloseIcon>
+          ></CloseIcon> */}
           <TreeView
             defaultCollapseIcon={<ExpandMoreIcon />}
             defaultExpandIcon={<ChevronRightIcon />}
             defaultExpanded={["scene"]}
+            sx={{ overflowY: "auto", overflowX: "hidden" }}
           >
             <TreeItem nodeId="scene" label="Scene">
               {props.models.map((model) => (

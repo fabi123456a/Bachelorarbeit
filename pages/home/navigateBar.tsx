@@ -1,4 +1,11 @@
-import { Divider, IconButton, MenuItem, Select, Stack } from "@mui/material";
+import {
+  Divider,
+  IconButton,
+  MenuItem,
+  Select,
+  Stack,
+  Typography,
+} from "@mui/material";
 import SceneList from "../scenes/sceneList";
 import { Scene, User } from "@prisma/client";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
@@ -17,13 +24,18 @@ const NavigateBar = (props: {
   setLoggedIn: (flag: boolean) => void;
   setFbxModels: (flag: boolean) => void;
   setScene: (scene: Scene) => void;
+  user: User;
 }) => {
   const [activeButton, setActiveButton] = useState("scenes");
 
   return (
     <Stack className="navigateBar">
       <Stack className="accountImgComtainer">
-        <AccountCircleIcon className="iconButton"></AccountCircleIcon>
+        <Typography variant="h5">
+          {props.user.loginID.length == 1
+            ? props.user.loginID
+            : props.user.loginID.substring(0, 2).toUpperCase()}
+        </Typography>
       </Stack>
 
       {/* sceneList */}

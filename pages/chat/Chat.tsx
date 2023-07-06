@@ -25,7 +25,7 @@ export default function Chat(props: { scene: Scene; user: User }) {
     })[]
   >([]);
   const [users, setUsers] = useState<User[]>([]);
-  const [visible, setVisible] = useState<boolean>(true);
+  const [visible, setVisible] = useState<boolean>(false);
   const [fontSize1, setFontSize] = useState<string>("12px");
 
   // socket IO
