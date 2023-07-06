@@ -33,7 +33,7 @@ const NavigateBar = (props: {
       <Stack className="accountImgComtainer">
         <Typography variant="h5">
           {props.user.loginID.length == 1
-            ? props.user.loginID
+            ? props.user.loginID.toUpperCase()
             : props.user.loginID.substring(0, 2).toUpperCase()}
         </Typography>
       </Stack>

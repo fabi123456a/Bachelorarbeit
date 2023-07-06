@@ -63,7 +63,11 @@ function PropertieContainer(props: {
             setVisible(false);
           }}
         ></CloseIcon> */}
-        <Typography textAlign={"center"} fontSize={"1.25rem"}>
+        <Typography
+          textAlign={"center"}
+          fontSize={"1.25rem"}
+          fontWeight={"bold"}
+        >
           Eigenschaften
         </Typography>
 
