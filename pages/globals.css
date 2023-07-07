@@ -92,6 +92,11 @@ body {
   border-radius: 4px;
 }
 
+/* membersList */
+.membersList {
+  background: white;
+}
+
 /* navigateBar */
 .navigateBar {
   display: flex;

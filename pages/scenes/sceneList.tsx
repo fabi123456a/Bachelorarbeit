@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import { User, Scene } from "@prisma/client";
+import { User, Scene, SceneMemberShip } from "@prisma/client";
 import AddScene from "./addScne";
 import SceneListEntry from "./sceneListEntry";
 import SceneDetails from "./sceneDetails/sceneDetail";
@@ -18,40 +18,68 @@ const SceneList = (props: { setScene: (scene: Scene) => void; user: User }) => {
   const [reload, setReload] = useState<number>();
   const [cmboBox, setCmboBox] = useState<string>("-1"); // -1 wenn alle
   const [actScene, setActScene] = useState<Scene>(null);
+  const [memberships, setMemberships] = useState<
+    SceneMemberShip &
+      {
+        scene: Scene;
+      }[]
+  >(null);
 
-  const getAllSceneNames = async () => {
-    if (cmboBox == "-1") {
-      const response = await fetch("/api/database/Scene/DB_getAllSceneNames", {
-        method: "POST",
-        body: JSON.stringify({
-          id: null,
-        }),
-      });
-      const result: Scene[] = await response.json();
-      return result;
-    } else {
-      const response = await fetch("/api/database/Scene/DB_getAllSceneNames", {
-        method: "POST",
-        body: JSON.stringify({
-          id: cmboBox,
-        }),
-      });
-      const result: Scene[] = await response.json();
-      return result;
-    }
-  };
+  // const getAllScenes = async () => {
+  //   if (cmboBox == "-1") {
+  //     const response = await fetch("/api/database/Scene/DB_getAllSceneNames", {
+  //       method: "POST",
+  //       body: JSON.stringify({
+  //         id: null,
+  //       }),
+  //     });
+  //     const result: Scene[] = await response.json();
+  //     return result;
+  //   } else {
+  //     const response = await fetch("/api/database/Scene/DB_getAllSceneNames", {
+  //       method: "POST",
+  //       body: JSON.stringify({
+  //         id: cmboBox,
+  //       }),
+  //     });
+  //     const result: Scene[] = await response.json();
+  //     return result;
+  //   }
+  // };
 
   useEffect(() => {
-    getAllSceneNames().then((scenes) => {
-      setScenes(scenes);
-    });
+    // getAllScenes().then((scenes) => {
+    //   setScenes(scenes);
+    // });
+
+    getAllSceneMemberships();
   }, []);
 
   useEffect(() => {
-    getAllSceneNames().then((scenes) => {
-      setScenes(scenes);
-    });
+    // getAllScenes().then((scenes) => {
+    //   setScenes(scenes);
+    // });
   }, [reload, cmboBox]);
+
+  const getAllSceneMemberships = async () => {
+    const requestMemberships = await fetch(
+      "/api/database/Membership/DB_getAllMembershipsByUserID",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          idUser: props.user.id,
+        }),
+      }
+    );
+    const memberships: SceneMemberShip &
+      {
+        scene: Scene;
+      }[] = await requestMemberships.json();
+    //setMemberships(memberships);
+
+    const extractedScenes = memberships.map((membership) => membership.scene);
+    setScenes(extractedScenes);
+  };
 
   return props.setScene && props.user ? (
     actScene ? (
@@ -59,6 +87,7 @@ const SceneList = (props: { setScene: (scene: Scene) => void; user: User }) => {
         scene={actScene}
         setSelectedScene={setActScene}
         setScene={props.setScene}
+        loggedInUser={props.user}
       ></SceneDetails>
     ) : (
       <Stack className="sceneList">

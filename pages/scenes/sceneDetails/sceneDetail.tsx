@@ -8,11 +8,17 @@ const SceneDetails = (props: {
   scene: Scene;
   setSelectedScene: (scene: Scene) => void;
   setScene: (scene: Scene) => void;
+  loggedInUser: User;
 }) => {
   //const [scenes, setScenes] = useState<Scene[]>();
-  const [user, setUser] = useState<User>();
+  const [creator, setCreator] = useState<User>();
   const [modelsCount, setModelsCount] = useState<number>();
-  const [members, setMembers] = useState<SceneMemberShip[]>();
+  const [members, setMembers] = useState<
+    (SceneMemberShip & {
+      user: User;
+    })[]
+  >();
+  const [reload, setReload] = useState<number>(0);
 
   const getUserFromIdCreator = async (idCreator: string): Promise<User> => {
     const response = await fetch("/api/database/User/DB_getUserByID", {
@@ -52,17 +58,19 @@ const SceneDetails = (props: {
       }
     );
 
-    const members: SceneMemberShip[] = await membersRequest.json();
+    const members: (SceneMemberShip & {
+      user: User;
+    })[] = await membersRequest.json();
     setMembers(members);
   };
 
   useEffect(() => {
     getUserFromIdCreator(props.scene.idUserCreater).then((user: User) => {
-      setUser(user);
+      setCreator(user);
     });
     getSceneModelsCount(props.scene.id);
     getAllSceneMembers(props.scene.id);
-  }, []);
+  }, [reload]);
   return (
     <Stack>
       <IconButton
@@ -82,14 +90,20 @@ const SceneDetails = (props: {
           ertsellt am:
           {new Date(props.scene.createDate).toLocaleDateString()}
         </Typography>
-        <Typography>Creator: {user?.loginID}</Typography>
+        <Typography>Creator: {creator?.loginID}</Typography>
         <Typography>Version: {props.scene.newestVersion}</Typography>
         <Typography>
           Anzahl Objekte: {modelsCount ? modelsCount : "lädt.."}
         </Typography>
       </Stack>
 
-      <MembersList members={members}></MembersList>
+      <MembersList
+        members={members}
+        scene={props.scene}
+        setReload={setReload}
+        loggedInUser={props.loggedInUser}
+        userCreator={creator}
+      ></MembersList>
 
       <Button
         onClick={() => {

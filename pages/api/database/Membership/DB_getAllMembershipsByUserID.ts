@@ -6,35 +6,37 @@ import Scene from "../../../threejs/Scene/Scene";
 
 // fügt einen neuen user in die database ein
 // wenn es funktioniert hat, wird das user object zurückgeliefert ansonsten NULL
-export default async function DB_getAllMembersBySceneID(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const b = req.body;
   const requestData = JSON.parse(b);
-  const idScene = requestData["idScene"];
+  const idUser = requestData["idUser"];
 
   try {
-    const members: SceneMemberShip[] =
+    const memberships: SceneMemberShip[] =
       await prismaClient.sceneMemberShip.findMany({
         where: {
-          idScene: idScene,
+          idUser: idUser,
         },
         include: {
-          user: true,
+          scene: true,
         },
       });
 
-    if (members) {
-      console.log("DB: scene members der Scene geladen " + idScene);
-      res.status(200).json(members);
+    if (memberships) {
+      console.log("DB: scene members ships von idUSer " + idUser + " geladen");
+      console.log(memberships);
+      res.status(200).json(memberships);
     }
   } catch (err) {
     console.log(
-      "DB: memberships mit der sceneID " +
-        idScene +
-        " konnte NICHT hinzugefügt werden"
+      "DB: memberships mit der von idUser " +
+        idUser +
+        " konnte NICHT geladen werden"
     );
+    console.log(err);
     res.status(200).json(null);
   }
 }

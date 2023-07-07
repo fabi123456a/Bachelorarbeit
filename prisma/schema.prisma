@@ -19,6 +19,7 @@ model User {
   readOnly  Boolean  
   chatEntry ChatEntry[]
   session Session[]
+  memberships SceneMemberShip[]
 }
 
 model Scene {
@@ -27,6 +28,7 @@ model Scene {
   name           String
   createDate     DateTime
   newestVersion  Int
+  memberships    SceneMemberShip[]
 }
 
 model SceneMemberShip {
@@ -35,6 +37,8 @@ model SceneMemberShip {
   idUser         String
   entryDate      DateTime
   readOnly       Boolean
+  user           User       @relation(fields: [idUser], references: [id])
+  scene           Scene       @relation(fields: [idScene], references: [id])
 }
 
 model Session {

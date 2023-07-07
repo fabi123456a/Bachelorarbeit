@@ -2,40 +2,44 @@ import { Button, IconButton, Stack, Typography } from "@mui/material";
 import { Model, Scene, SceneMemberShip, User } from "@prisma/client";
 import { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import MembersListEntry from "./membersListEntry";
+import AddMember from "./insertMember";
 
-const MembersList = (props: { members: SceneMemberShip[] }) => {
-  //const [scenes, setScenes] = useState<Scene[]>();
-  //   const [user, setUser] = useState<User>();
-
-  //   const getAllSceneMembers = async (idScene: string) => {
-  //     const membersRequest = await fetch(
-  //       "/api/database/Membership/DB_getAllMembersBySceneID",
-  //       {
-  //         method: "POST",
-  //         body: JSON.stringify({
-  //           idScene: props.scene.id,
-  //         }),
-  //       }
-  //     );
-
-  //     const members: SceneMemberShip[] = await membersRequest.json();
-  //     setMembers(members);
-  //   };
-
-  //   useEffect(() => {
-  //     getUserFromIdCreator(props.scene.idUserCreater).then((user: User) => {
-  //       setUser(user);
-  //     });
-  //     getSceneModelsCount(props.scene.id);
-  //     getAllSceneMembers(props.scene.id);
-  //   }, []);
-
+const MembersList = (props: {
+  members: (SceneMemberShip & {
+    user: User;
+  })[];
+  scene: Scene;
+  setReload: (n: number) => void;
+  loggedInUser: User;
+  userCreator: User;
+}) => {
   return props.members ? (
-    <Stack className="roundedShadow">
+    <Stack className="roundedShadow membersList">
       <Typography fontWeight={"bold"}>Member</Typography>
-      {props.members.map((member: SceneMemberShip) => {
-        return <Typography>{member.idUser}</Typography>;
-      })}
+      {props.members.map(
+        (
+          membership: SceneMemberShip & {
+            user: User;
+          }
+        ) => {
+          return (
+            <MembersListEntry
+              membership={membership}
+              setReload={props.setReload}
+              creator={props.userCreator}
+              loggedInUser={props.loggedInUser}
+            ></MembersListEntry>
+          );
+        }
+      )}
+      {props.loggedInUser.id == props.userCreator.id ? (
+        <AddMember
+          scene={props.scene}
+          members={props.members}
+          setReload={props.setReload}
+        ></AddMember>
+      ) : null}
     </Stack>
   ) : (
     <Stack>lädt..</Stack>
