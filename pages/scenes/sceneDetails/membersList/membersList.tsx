@@ -32,6 +32,7 @@ const MembersList = (props: { members: SceneMemberShip[] }) => {
 
   return props.members ? (
     <Stack className="roundedShadow">
+      <Typography fontWeight={"bold"}>Member</Typography>
       {props.members.map((member: SceneMemberShip) => {
         return <Typography>{member.idUser}</Typography>;
       })}

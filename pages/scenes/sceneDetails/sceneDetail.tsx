@@ -2,6 +2,7 @@ import { Button, IconButton, Stack, Typography } from "@mui/material";
 import { Model, Scene, SceneMemberShip, User } from "@prisma/client";
 import { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import MembersList from "./membersList/membersList";
 
 const SceneDetails = (props: {
   scene: Scene;
@@ -88,14 +89,7 @@ const SceneDetails = (props: {
         </Typography>
       </Stack>
 
-      <Stack className="roundedShadow">
-        <Typography fontWeight={"bold"}>Members: </Typography>
-        {members
-          ? members.map((membership: SceneMemberShip) => (
-              <Typography>{membership.idUser}</Typography>
-            ))
-          : null}
-      </Stack>
+      <MembersList members={members}></MembersList>
 
       <Button
         onClick={() => {
