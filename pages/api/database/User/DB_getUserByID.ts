@@ -8,13 +8,17 @@ export default async function DB_getUserByID(
 ) {
   const b = req.body;
   const requestData = JSON.parse(b);
+  const idUser = requestData["idUser"];
 
   const user: User = await prismaClient.user.findFirst({
-    where: { id: requestData["idUser"] },
+    where: { id: idUser },
   });
 
-  if (user == null) res.status(200).json({ result: false });
-  else {
+  if (user == null) {
+    res.status(200).json(null);
+    console.log("DB: user mit id NICHT gefunden " + idUser);
+  } else {
+    console.log("DB: user mit id gefunden " + idUser);
     res.status(200).json(user);
   }
 }

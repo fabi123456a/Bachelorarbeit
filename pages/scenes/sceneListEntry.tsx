@@ -9,6 +9,7 @@ const SceneListEntry = (props: {
   setScene: (scene: Scene) => void;
   setReload: (i: number) => void;
   user: User;
+  setSelectedScene: (scene: Scene) => void;
 }) => {
   // user der die scene ertsellt hat
   const [userCreator, setUserCreator] = useState<User>();
@@ -66,8 +67,8 @@ const SceneListEntry = (props: {
       direction={"row"}
       className="sceneListEntry"
       onClick={() => {
-        props.setScene(props.scene);
-        //alert(props.scene.id);
+        //props.setScene(props.scene);
+        props.setSelectedScene(props.scene);
       }}
       onMouseEnter={() => {
         setMouseOver(true);

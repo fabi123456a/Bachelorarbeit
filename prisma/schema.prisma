@@ -29,6 +29,14 @@ model Scene {
   newestVersion  Int
 }
 
+model SceneMemberShip {
+  id             String     @id 
+  idScene        String 
+  idUser         String
+  entryDate      DateTime
+  readOnly       Boolean
+}
+
 model Session {
   id        String     @id 
   idUser    String

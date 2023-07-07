@@ -17,6 +17,7 @@ import FbxList from "./admin/fbxModels/fbxList";
 import AdminArea from "./admin/adminArea";
 import Feedback from "./feedback/feedback";
 import Home from "./home/home";
+import SceneDetails from "./scenes/sceneDetails/sceneDetail";
 
 const Index = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -46,7 +47,7 @@ const Index = () => {
       )}
       {/* <AdminArea></AdminArea> */}
       {register ? <Register setRegister={setRegister}></Register> : null}
-      <Feedback></Feedback>
+      {/* <Feedback></Feedback> */}
     </Stack>
   );
 };

@@ -29,6 +29,29 @@ const AddScene = (props: {
     return result;
   };
 
+  // der creator ist auch in membership drin
+  const addMemberShipToDB = async (
+    idScene: string,
+    idUser: string,
+    readonly: boolean
+  ) => {
+    const response = await fetch(
+      "/api/database/Membership/DB_insertMemberShip",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          idScene: idScene,
+          idUser: idUser,
+          readonly: readonly,
+        }),
+      }
+    );
+
+    const result = await response.json();
+
+    return result;
+  };
+
   const addModelsToDB = async (model: Model) => {
     const response = await fetch("/api/database/Model/DB_insertModel", {
       method: "POST",
@@ -63,6 +86,9 @@ const AddScene = (props: {
 
             // insert scene into DB
             const scene: Scene = await addSceneToDB();
+
+            // membership
+            await addMemberShipToDB(refSceneID.current, props.user.id, false);
 
             // models into DB hinzufügen
             const modelsEmptyRoom: Model[] = getEmptyRoom(scene.id);
