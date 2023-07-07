@@ -99,7 +99,7 @@ const DatabaseTable = (props: { tableName: string }) => {
                         key={dataRow[prop] + dataRow["id"] + prop}
                         onClick={() => {
                           if (prop === "id") {
-                            alert("ID's ändern ist eine schlechte Idee :(");
+                            //alert("ID's ändern ist eine schlechte Idee :(");
                             return;
                           }
                           setActProp(prop);
