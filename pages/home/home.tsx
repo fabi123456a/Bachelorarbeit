@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import SceneList from "../scenes/sceneList";
 import { Scene, User } from "@prisma/client";
 import NavigateBar from "./navigateBar";
@@ -6,6 +6,7 @@ import { useState } from "react";
 import AdminArea from "../admin/adminArea";
 import Settings from "../settings/settings";
 import FbxList from "../admin/fbxModels/fbxList";
+import Textures from "../textures/textures";
 
 const Home = (props: {
   setScene: (scene: Scene) => void;
@@ -17,6 +18,7 @@ const Home = (props: {
   const [settings, setSettings] = useState<boolean>(false);
   const [scenes, setScenes] = useState<boolean>(true);
   const [fbxModels, setFbxModels] = useState<boolean>(false);
+  const [textures, setTextures] = useState<boolean>(false);
 
   return (
     <Stack className="home">
@@ -29,6 +31,7 @@ const Home = (props: {
         setFbxModels={setFbxModels}
         setScene={props.setScene}
         user={props.user}
+        setTextures={setTextures}
       ></NavigateBar>
       {scenes ? (
         <SceneList user={props.user} setScene={props.setScene}></SceneList>
@@ -42,6 +45,8 @@ const Home = (props: {
         <Settings></Settings>
       ) : fbxModels ? (
         <FbxList></FbxList>
+      ) : textures ? (
+        <Textures></Textures>
       ) : null}
     </Stack>
   );

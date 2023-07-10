@@ -14,6 +14,7 @@ import BuildIcon from "@mui/icons-material/Build";
 import AppsIcon from "@mui/icons-material/Apps";
 import Logout from "../login/logout";
 import ReorderIcon from "@mui/icons-material/Reorder";
+import TextureIcon from "@mui/icons-material/Texture";
 import { useState } from "react";
 
 const NavigateBar = (props: {
@@ -24,6 +25,7 @@ const NavigateBar = (props: {
   setLoggedIn: (flag: boolean) => void;
   setFbxModels: (flag: boolean) => void;
   setScene: (scene: Scene) => void;
+  setTextures: (flag: boolean) => void;
   user: User;
 }) => {
   const [activeButton, setActiveButton] = useState("scenes");
@@ -63,6 +65,8 @@ const NavigateBar = (props: {
           props.setSecens(false);
           props.setSettings(false);
           props.setFbxModels(false);
+          props.setTextures(false);
+
           props.setAdminArea(true);
 
           setActiveButton("adminArea");
@@ -80,6 +84,8 @@ const NavigateBar = (props: {
           props.setSecens(false);
           props.setSettings(false);
           props.setAdminArea(false);
+          props.setTextures(false);
+
           props.setFbxModels(true);
 
           setActiveButton("fbxModels");
@@ -87,6 +93,25 @@ const NavigateBar = (props: {
         title="FBX-Models"
       >
         <ReorderIcon></ReorderIcon>
+      </IconButton>
+
+      {/* Tetxtures */}
+      <IconButton
+        className="iconButton"
+        color={activeButton == "fbxModels" ? "primary" : "default"}
+        onClick={() => {
+          props.setSecens(false);
+          props.setSettings(false);
+          props.setAdminArea(false);
+          props.setFbxModels(false);
+
+          props.setTextures(true);
+
+          setActiveButton("textures");
+        }}
+        title="FBX-Models"
+      >
+        <TextureIcon></TextureIcon>
       </IconButton>
 
       {/* settings */}
@@ -97,6 +122,8 @@ const NavigateBar = (props: {
           props.setAdminArea(false);
           props.setSecens(false);
           props.setFbxModels(false);
+          props.setTextures(false);
+
           props.setSettings(true);
 
           setActiveButton("settings");

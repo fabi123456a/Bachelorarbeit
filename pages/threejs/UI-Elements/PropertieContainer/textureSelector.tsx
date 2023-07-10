@@ -15,6 +15,7 @@ export default function TextureSelector(props: {
   texture: string;
 }) {
   const [texture, setTexture] = useState(props.texture ? props.texture : "");
+  const [textures, setTextures] = useState<string[]>(null);
 
   const handleChange = (event: SelectChangeEvent) => {
     let value: string = event.target.value as string;
@@ -27,9 +28,23 @@ export default function TextureSelector(props: {
     props.setCurrentObjProps(newObjectProps);
   };
 
+  const getAllTexturesFromFS = async () => {
+    const requestTextures = await fetch("api/filesystem/FS_getTextures");
+
+    const textures = requestTextures.json();
+
+    // alert(textures);
+
+    return textures;
+  };
+
   useEffect(() => {
     setTexture(props.texture);
   }, [props.texture]);
+
+  useEffect(() => {
+    getAllTexturesFromFS().then((textures: string[]) => setTextures(textures));
+  }, []);
 
   return (
     <>
@@ -41,7 +56,20 @@ export default function TextureSelector(props: {
         sx={{ overflowX: "scroll" }}
       >
         <MenuItem value={""}>keine Texture</MenuItem>
-        <MenuItem value={"stoff"}>
+        {textures
+          ? textures.map((tex: string) => (
+              <MenuItem value={tex}>
+                <img
+                  src={`./textures/${tex}/Substance_Graph_BaseColor.jpg`}
+                  height={"50px"}
+                  style={{ marginRight: "8px" }}
+                ></img>{" "}
+                {tex}
+              </MenuItem>
+            ))
+          : null}
+
+        {/* <MenuItem value={"stoff"}>
           <img
             src="./textures/stoff/Substance_Graph_BaseColor.jpg"
             height={"50px"}
@@ -96,7 +124,7 @@ export default function TextureSelector(props: {
             height={"50px"}
           ></img>
           Gravel
-        </MenuItem>
+        </MenuItem> */}
       </Select>
     </>
   );
