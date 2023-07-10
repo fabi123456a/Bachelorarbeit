@@ -82,8 +82,11 @@ const MembersListEntry = (props: {
           </Stack>
         ) : (
           <Stack direction={"row"} sx={{ alignItems: "center" }}>
-            <Checkbox checked={checkbox} disabled></Checkbox>
-            <Typography>readonly</Typography>
+            {props.membership.readOnly ? (
+              <Typography sx={{ ml: "8px", color: "grey" }}>
+                readonly
+              </Typography>
+            ) : null}
           </Stack>
         )}
 
