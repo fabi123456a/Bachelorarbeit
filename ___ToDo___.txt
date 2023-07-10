@@ -1,13 +1,9 @@
 TODO:
 
-- logo
-- SceneData in database speichern und nicht im FS
+- chat 
 - bei mouseUp wird ein anderes objekt selektiert
-- treeview bug (objekte tauchen mehrfach auf)
-- bei ausslogen alles states auf null setzen weil sons adminberreich zugänglich
 - DB_INSERT user -> loginID: eeeeecewas, password: eee32dwewcx
-- fbxlist load animation
-- setCookie bzw get cookie geht nicht
+- COOKIES setCookie bzw get cookie geht nicht
 - leere databaseTable und dann insert geht nicht, weil die props von dem erstel geladenen datensatz erst gesetzt werden
 
 

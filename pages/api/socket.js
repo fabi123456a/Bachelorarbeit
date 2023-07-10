@@ -11,7 +11,6 @@ const SocketHandler = (req, res) => {
     io.on("connection", (socket) => {
       // chat
       socket.on("addChatEntry", async (chatEntry) => {
-        console.log("========" + chatEntry["message"]);
         const selectedUser = await prismaClient.chatEntry.create({
           data: chatEntry,
         });

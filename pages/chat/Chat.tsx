@@ -9,6 +9,7 @@ import UserOnlineItem from "./UserOnlineItem";
 import Draggable from "react-draggable";
 import CloseIcon from "@mui/icons-material/Close";
 import ChatIcon from "@mui/icons-material/Chat";
+import { v4 as uuidv4 } from "uuid";
 
 let socket;
 
@@ -49,11 +50,7 @@ export default function Chat(props: { scene: Scene; user: User }) {
   useEffect(() => {
     const getAllChatEntry = async () => {
       const response = await fetch(
-        "/api/database/ChatEntry/DB_getAllChatEntrys",
-        {
-          method: "POST",
-          body: JSON.stringify({ idScene: props.scene.id }),
-        }
+        "/api/database/ChatEntry/DB_getAllChatEntrys"
       );
       const result = await response.json();
       return result;
@@ -111,7 +108,7 @@ export default function Chat(props: { scene: Scene; user: User }) {
 
     // model für chat eintrag erstellen
     const chatEntry: ChatEntry = {
-      id: "" + Math.random() * 1000,
+      id: uuidv4(),
       idScene: props.scene.id,
       idUser: props.user.id,
       message: text,
