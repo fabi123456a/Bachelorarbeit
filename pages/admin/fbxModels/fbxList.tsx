@@ -11,12 +11,13 @@ import ModelPreview from "./modelPreview";
 import { DeleteForeverOutlined } from "@mui/icons-material";
 import UploadFbx from "../../threejs/UI-Elements/ModelList/fbxHandle/uploadFbx";
 import FbxListEntry from "./fbxListEntry";
+import { User } from "@prisma/client";
 
 interface FileListResponse {
   files: string[];
 }
 
-const FbxList = (props: {}) => {
+const FbxList = (props: { loggedInUser: User }) => {
   const [files, setFiles] = useState<string[]>([]);
   const [reload, setReload] = useState<number>(0);
   const [isLoading, setIsloading] = useState<boolean>(true);
@@ -44,13 +45,19 @@ const FbxList = (props: {}) => {
     <Stack>
       <Stack className="fbxList">
         {files.map((file, index) => (
-          <FbxListEntry file={file} setReload={setReload}></FbxListEntry>
+          <FbxListEntry
+            file={file}
+            setReload={setReload}
+            loggedInUser={props.loggedInUser}
+          ></FbxListEntry>
         ))}
-        <UploadFbx
-          setRefreshData={() => {
-            setReload(Math.random());
-          }}
-        ></UploadFbx>
+        {props.loggedInUser.readOnly ? null : (
+          <UploadFbx
+            setRefreshData={() => {
+              setReload(Math.random());
+            }}
+          ></UploadFbx>
+        )}
       </Stack>
     </Stack>
   );

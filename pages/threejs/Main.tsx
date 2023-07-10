@@ -478,7 +478,6 @@ export default function Main(props: {
   // ---- COMPONENT ----
   return (
     <Stack className="main">
-      {/* controls/ui-elemnts in main */}
 
       {/* menubar */}
       <MenuBar
@@ -537,6 +536,7 @@ export default function Main(props: {
         {props.user ? (
           props.user.readOnly ? null : (
             <>
+              {/* ModelList */}
               <ModelList
                 addObject={handleModelAdd}
                 paths={modelPathsFS}
@@ -563,12 +563,13 @@ export default function Main(props: {
                 htmlSettings={htmlsettings}
               ></ToolBar>
 
+              {/* Wallist */}
               <WallList addWall={handleWallAdd}></WallList>
 
-              {/* PropertieContainer */}
-
+              {/* Chat */}
               <Chat user={props.user} scene={props.scene}></Chat>
 
+              {/* PropertieContainer */}
               <PropertieContainer
                 objProps={currentObjectProps}
                 setObjProps={setCurrentObjectProps}
@@ -586,7 +587,7 @@ export default function Main(props: {
           )
         ) : null}
 
-        {/* Canvas */}
+        {/* Canvas/ThreeJS-scene */}
         <Canvas
           onPointerMissed={() => {
             setCurrentObjectProps(null);

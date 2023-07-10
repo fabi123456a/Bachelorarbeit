@@ -44,9 +44,9 @@ const Home = (props: {
       ) : settings ? (
         <Settings></Settings>
       ) : fbxModels ? (
-        <FbxList></FbxList>
+        <FbxList loggedInUser={props.user}></FbxList>
       ) : textures ? (
-        <Textures></Textures>
+        <Textures loggedInUser={props.user}></Textures>
       ) : null}
     </Stack>
   );

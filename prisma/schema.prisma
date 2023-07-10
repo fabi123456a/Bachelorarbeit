@@ -17,6 +17,7 @@ model User {
   loginID   String  @unique
   password  String?
   readOnly  Boolean  
+  isAdmin   Boolean
   chatEntry ChatEntry[]
   session Session[]
   memberships SceneMemberShip[]

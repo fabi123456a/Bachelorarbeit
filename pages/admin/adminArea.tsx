@@ -30,7 +30,7 @@ const AdminArea = (props: {
   }, []);
 
   return props.user ? (
-    !props.user.readOnly ? (
+    props.user.isAdmin ? (
       <Stack className="adminArea">
         <DatabaseTable tableName="user" showInsert={true}></DatabaseTable>
         <Divider orientation="horizontal"></Divider>

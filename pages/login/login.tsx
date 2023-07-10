@@ -7,8 +7,8 @@ const Home = (props: {
   setActUser: (user: User) => void;
   setRegister: (flag: boolean) => void;
 }) => {
-  const [txtLoginID, setTxtLoginID] = useState<string>("r");
-  const [txtPassword, setTxtPassword] = useState<string>("r");
+  const [txtLoginID, setTxtLoginID] = useState<string>("admin");
+  const [txtPassword, setTxtPassword] = useState<string>("123");
   const loggedIn = useRef<boolean>(false);
 
   const handleBtnRegisterClick = () => {

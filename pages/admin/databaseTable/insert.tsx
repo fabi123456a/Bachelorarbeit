@@ -85,7 +85,7 @@ const Insert = (props: {
                         handleTextFieldChange(index, e.target.checked);
                       }}
                     ></Checkbox>
-                    <Typography>nur lesen</Typography>
+                    <Typography>{prop}</Typography>
                   </Stack>
                 )}
               </Stack>

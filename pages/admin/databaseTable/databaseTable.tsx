@@ -62,7 +62,7 @@ const DatabaseTable = (props: { tableName: string; showInsert: boolean }) => {
   }, [props.tableName, reload, sortBy]);
 
   return (
-    <Stack className="databaseTableContainer">
+    <Stack className="databaseTableContainer roundedShadow">
       <Stack className="roundedShadow">
         <Typography
           sx={{ alignSelf: "center", pb: "12px" }}
