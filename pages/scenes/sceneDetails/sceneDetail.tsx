@@ -9,6 +9,7 @@ const SceneDetails = (props: {
   setSelectedScene: (scene: Scene) => void;
   setScene: (scene: Scene) => void;
   loggedInUser: User;
+  ownMembership: SceneMemberShip;
 }) => {
   //const [scenes, setScenes] = useState<Scene[]>();
   const [creator, setCreator] = useState<User>();
@@ -81,6 +82,7 @@ const SceneDetails = (props: {
       >
         <ArrowBackIosIcon></ArrowBackIosIcon>
       </IconButton>
+      {props.ownMembership?.readOnly ? "readonly" : "lesen/schreiben"}
       <Typography variant="h5">
         Konfiguration: <b>{props.scene.name}</b>
       </Typography>
@@ -110,7 +112,7 @@ const SceneDetails = (props: {
         }}
         variant="contained"
       >
-        Konfigurieren
+        Konfiguration betreten
       </Button>
     </Stack>
   );

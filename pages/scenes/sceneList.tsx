@@ -13,11 +13,16 @@ import AddScene from "./addScne";
 import SceneListEntry from "./sceneListEntry";
 import SceneDetails from "./sceneDetails/sceneDetail";
 
-const SceneList = (props: { setScene: (scene: Scene) => void; user: User }) => {
+const SceneList = (props: {
+  setScene: (scene: Scene) => void;
+  user: User;
+  setActSceneMembership: (mebership: SceneMemberShip) => void;
+}) => {
   const [scenes, setScenes] = useState<Scene[]>();
   const [reload, setReload] = useState<number>();
   const [cmboBox, setCmboBox] = useState<string>("-1"); // -1 wenn alle
   const [actScene, setActScene] = useState<Scene>(null);
+  const [sceneMembership, setSceneMembership] = useState<SceneMemberShip>(null);
   const [memberships, setMemberships] = useState<
     SceneMemberShip &
       {
@@ -47,13 +52,36 @@ const SceneList = (props: { setScene: (scene: Scene) => void; user: User }) => {
   //   }
   // };
 
-  useEffect(() => {
-    // getAllScenes().then((scenes) => {
-    //   setScenes(scenes);
-    // });
+  const getMembershipFromSceneID = async (idUser: string, idScene: string) => {
+    const requestedMembership = await fetch(
+      "/api/database/Membership/DB_getMembershipBySceneID",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          idUser: idUser,
+          idScene: idScene,
+        }),
+      }
+    );
 
+    const mebership = await requestedMembership.json();
+
+    return mebership;
+  };
+
+  useEffect(() => {
     getAllSceneMemberships();
   }, [reload]);
+
+  useEffect(() => {
+    if (!actScene) return;
+    getMembershipFromSceneID(props.user.id, actScene.id).then(
+      (membership: SceneMemberShip) => {
+        setSceneMembership(membership);
+        props.setActSceneMembership(membership);
+      }
+    );
+  }, [actScene]);
 
   useEffect(() => {
     // getAllScenes().then((scenes) => {
@@ -88,6 +116,7 @@ const SceneList = (props: { setScene: (scene: Scene) => void; user: User }) => {
         setSelectedScene={setActScene}
         setScene={props.setScene}
         loggedInUser={props.user}
+        ownMembership={sceneMembership}
       ></SceneDetails>
     ) : (
       <Stack className="sceneList">

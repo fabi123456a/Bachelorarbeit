@@ -7,7 +7,7 @@ import Login from "./login/login";
 import SceneList from "./scenes/sceneList";
 import Main from "./threejs/Main";
 import Stack from "@mui/material/Stack";
-import { User, Scene } from "@prisma/client";
+import { User, Scene, SceneMemberShip } from "@prisma/client";
 import CubeRotater from "./login/cubeRotater";
 import Logout from "./login/logout";
 import DatabaseTable from "./admin/databaseTable/databaseTable";
@@ -24,14 +24,20 @@ const Index = () => {
   const [register, setRegister] = useState<boolean>(false); // wenn true wird register page angezeigt
   const [actUser, setActUser] = useState<User>(null);
   const [scene, setScene] = useState<Scene>(null);
-
+  const [sceneMembership, setSceneMembership] = useState<SceneMemberShip>();
   return (
     <Stack className="index">
       {loggedIn ? (
         scene ? (
-          <Main scene={scene} setScene={setScene} user={actUser}></Main>
+          <Main
+            scene={scene}
+            setScene={setScene}
+            user={actUser}
+            membership={sceneMembership}
+          ></Main>
         ) : (
           <Home
+            setActSceneMembership={setSceneMembership}
             setScene={setScene}
             user={actUser}
             setActUser={setActUser}

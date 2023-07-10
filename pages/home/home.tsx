@@ -1,6 +1,6 @@
 import { Stack, Typography } from "@mui/material";
 import SceneList from "../scenes/sceneList";
-import { Scene, User } from "@prisma/client";
+import { Scene, SceneMemberShip, User } from "@prisma/client";
 import NavigateBar from "./navigateBar";
 import { useState } from "react";
 import AdminArea from "../admin/adminArea";
@@ -13,6 +13,7 @@ const Home = (props: {
   user: User;
   setActUser: (user: User) => void;
   setLoggedIn: (flag: boolean) => void;
+  setActSceneMembership: (membership: SceneMemberShip) => void;
 }) => {
   const [adminArea, setAdminArea] = useState<boolean>(false);
   const [settings, setSettings] = useState<boolean>(false);
@@ -34,7 +35,11 @@ const Home = (props: {
         setTextures={setTextures}
       ></NavigateBar>
       {scenes ? (
-        <SceneList user={props.user} setScene={props.setScene}></SceneList>
+        <SceneList
+          user={props.user}
+          setScene={props.setScene}
+          setActSceneMembership={props.setActSceneMembership}
+        ></SceneList>
       ) : adminArea ? (
         <AdminArea
           setAdminArea={setAdminArea}

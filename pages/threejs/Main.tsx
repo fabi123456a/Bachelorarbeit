@@ -18,7 +18,7 @@ import * as THREE from "three";
 import { arrayBufferToBase64, base64ToBlob } from "../../utils/converting";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import exportToGLTF from "../../utils/exporting";
-import { Model, Scene, User } from "@prisma/client";
+import { Model, Scene, SceneMemberShip, User } from "@prisma/client";
 import WallList from "./UI-Elements/WallList/WallList";
 import { debug } from "console";
 import SceneModelList from "./UI-Elements/SceneModelTreeView/SceneModelList";
@@ -39,6 +39,7 @@ export default function Main(props: {
   user: User;
   scene: Scene;
   setScene: (scene: Scene) => void;
+  membership: SceneMemberShip;
 }) {
   // ---- STATES ----
   const [treeViewSelectedId, setTreeViewSelectedId] = useState<string>(null);
@@ -478,7 +479,6 @@ export default function Main(props: {
   // ---- COMPONENT ----
   return (
     <Stack className="main">
-
       {/* menubar */}
       <MenuBar
         setScene={props.setScene}
@@ -534,7 +534,7 @@ export default function Main(props: {
 
         {/* ui elements ausblenden bei readonly */}
         {props.user ? (
-          props.user.readOnly ? null : (
+          props.user.readOnly || props.membership.readOnly ? null : (
             <>
               {/* ModelList */}
               <ModelList
