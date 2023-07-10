@@ -102,7 +102,6 @@ const SceneDetails = (props: {
         scene={props.scene}
         setReload={setReload}
         loggedInUser={props.loggedInUser}
-        userCreator={creator}
       ></MembersList>
 
       <Button

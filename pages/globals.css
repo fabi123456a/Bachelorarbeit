@@ -320,8 +320,8 @@ body {
 
 .databaseTableContainer {
   background: white;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  /* overflow-y: scroll;
+  overflow-x: hidden; */
 }
 
 .databaseTableCell:hover {
@@ -352,6 +352,11 @@ body {
 /* adminArea */
 .adminArea {
   width: 100%;
+  overflow: auto;
+}
+
+.adminMembersList {
+  background: white;
 }
 
 /* feedback */

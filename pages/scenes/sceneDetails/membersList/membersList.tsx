@@ -12,7 +12,6 @@ const MembersList = (props: {
   scene: Scene;
   setReload: (n: number) => void;
   loggedInUser: User;
-  userCreator: User;
 }) => {
   return props.members ? (
     <Stack className="roundedShadow membersList">
@@ -27,13 +26,12 @@ const MembersList = (props: {
             <MembersListEntry
               membership={membership}
               setReload={props.setReload}
-              creator={props.userCreator}
-              loggedInUser={props.loggedInUser}
+              scene={props.scene}
             ></MembersListEntry>
           );
         }
       )}
-      {props.loggedInUser.id == props.userCreator.id ? (
+      {props.loggedInUser.id == props.scene.idUserCreater ? (
         <AddMember
           scene={props.scene}
           members={props.members}

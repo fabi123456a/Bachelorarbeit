@@ -53,7 +53,7 @@ const SceneList = (props: { setScene: (scene: Scene) => void; user: User }) => {
     // });
 
     getAllSceneMemberships();
-  }, []);
+  }, [reload]);
 
   useEffect(() => {
     // getAllScenes().then((scenes) => {

@@ -9,8 +9,7 @@ const MembersListEntry = (props: {
     user: User;
   };
   setReload: (n: number) => void;
-  creator: User;
-  loggedInUser: User;
+  scene: Scene;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -47,16 +46,24 @@ const MembersListEntry = (props: {
       <Stack direction={"row"}>
         <Typography>{props.membership.user.loginID}</Typography>
         {isHovered ? (
-          props.loggedInUser.id == props.creator.id ? (
+          props.membership.user.id == props.scene.idUserCreater ? null : (
             <IconButton
               onClick={async () => {
+                const confirmed = window.confirm(
+                  "Willst du " + props.membership.user.loginID + " entfernen?"
+                );
+                if (!confirmed) return;
+
                 await deleteMemberShipByIdInDB(props.membership.id);
                 props.setReload(Math.random());
               }}
             >
               <DeleteForever></DeleteForever>
             </IconButton>
-          ) : null
+          )
+        ) : null}
+        {props.membership.user.id == props.scene.idUserCreater ? (
+          <Typography color={"grey"}>(Ersteller)</Typography>
         ) : null}
       </Stack>
     </Stack>

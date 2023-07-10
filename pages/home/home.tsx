@@ -33,7 +33,11 @@ const Home = (props: {
       {scenes ? (
         <SceneList user={props.user} setScene={props.setScene}></SceneList>
       ) : adminArea ? (
-        <AdminArea setAdminArea={setAdminArea} user={props.user}></AdminArea>
+        <AdminArea
+          setAdminArea={setAdminArea}
+          user={props.user}
+          setScene={props.setScene}
+        ></AdminArea>
       ) : settings ? (
         <Settings></Settings>
       ) : fbxModels ? (

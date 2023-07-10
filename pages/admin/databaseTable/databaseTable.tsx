@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import Insert from "./insert";
 import EditData from "./editData";
 
-const DatabaseTable = (props: { tableName: string }) => {
+const DatabaseTable = (props: { tableName: string; showInsert: boolean }) => {
   const [data, setData] = useState<any[]>();
   const [properties, setProperties] = useState<string[]>();
   const [types, setTypes] = useState<string[]>();
@@ -124,14 +124,17 @@ const DatabaseTable = (props: { tableName: string }) => {
         </Table>
       </Stack>
 
-      <Stack className="roundedShadow">
-        <Insert
-          tableName={props.tableName}
-          porperties={properties}
-          setReload={setReload}
-          types={types}
-        ></Insert>
-      </Stack>
+      {props.showInsert ? (
+        <Stack className="roundedShadow">
+          <Insert
+            tableName={props.tableName}
+            porperties={properties}
+            setReload={setReload}
+            types={types}
+          ></Insert>
+        </Stack>
+      ) : null}
+
       {showEditData ? (
         <EditData
           setShowEdit={setShowEditData}
