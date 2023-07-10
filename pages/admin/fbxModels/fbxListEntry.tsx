@@ -21,6 +21,8 @@ const FbxListEntry = (props: {
     <Stack className="roundedShadow fbxListEntry">
       <ModelPreview fbxName={props.file}></ModelPreview>
       <Typography>{props.file}</Typography>
+
+      {/* nur admin darf löschen TODO: */}
       <IconButton
         onClick={async () => {
           const confirmed = window.confirm(

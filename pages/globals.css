@@ -359,6 +359,16 @@ body {
   background: white;
 }
 
+/* texturesContainer */
+.texturesContainer {
+  overflow: auto;
+  width: 100%;
+}
+
+.textureContainer {
+  background: white;
+}
+
 /* feedback */
 .feedbackIcon {
   position: absolute;

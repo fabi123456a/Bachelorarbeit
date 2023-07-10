@@ -72,7 +72,7 @@ const SceneDetails = (props: {
     getAllSceneMembers(props.scene.id);
   }, [reload]);
   return (
-    <Stack>
+    <Stack sx={{ padding: "12px" }}>
       <IconButton
         className="iconButton"
         onClick={() => {
@@ -108,6 +108,7 @@ const SceneDetails = (props: {
         onClick={() => {
           props.setScene(props.scene);
         }}
+        variant="contained"
       >
         Konfigurieren
       </Button>

@@ -17,8 +17,11 @@ const MemberList = (props: {
       </Typography>
       {props.scenes.map((scene: Scene) => {
         return (
-          <Stack>
-            <MemberListEntry scene={scene} setScene={props.setScene}></MemberListEntry>
+          <Stack className="roundedShadow">
+            <MemberListEntry
+              scene={scene}
+              setScene={props.setScene}
+            ></MemberListEntry>
           </Stack>
         );
       })}

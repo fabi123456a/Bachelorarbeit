@@ -6,7 +6,7 @@ import { useState } from "react";
 import AdminArea from "../admin/adminArea";
 import Settings from "../settings/settings";
 import FbxList from "../admin/fbxModels/fbxList";
-import Textures from "../textures/textures";
+import Textures from "../admin/textures/textures";
 
 const Home = (props: {
   setScene: (scene: Scene) => void;

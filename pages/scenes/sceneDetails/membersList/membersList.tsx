@@ -27,6 +27,7 @@ const MembersList = (props: {
               membership={membership}
               setReload={props.setReload}
               scene={props.scene}
+              loggedInUser={props.loggedInUser}
             ></MembersListEntry>
           );
         }

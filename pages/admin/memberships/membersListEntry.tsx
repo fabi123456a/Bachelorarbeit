@@ -3,6 +3,8 @@ import { Button, IconButton, Stack, Typography } from "@mui/material";
 import { Scene, SceneMemberShip, User } from "@prisma/client";
 import { useEffect, useState } from "react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import Checkbox from "@mui/material/Checkbox";
+import MembershipEntry from "./membershipEntry";
 
 const MemberListEntry = (props: {
   scene: Scene;
@@ -58,6 +60,19 @@ const MemberListEntry = (props: {
     else return false;
   };
 
+  const updateMembershipInDB = async (id: string, readonly: boolean) => {
+    const deleteRequest = await fetch(
+      "/api/database/Membership/DB_changeReadonlyByID",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          id: id,
+          readonly: readonly,
+        }),
+      }
+    );
+  };
+
   useEffect(() => {
     getAllSceneMembershipsFromScene(props.scene.id).then(
       (
@@ -91,35 +106,12 @@ const MemberListEntry = (props: {
               user: User;
             }
           ) => (
-            <Stack
-              className=""
-              direction={"row"}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              {props.scene.idUserCreater == member.user.id ? null : (
-                <IconButton
-                  onClick={async () => {
-                    //alert(member.user.loginID);
-                    const confirmed = window.confirm(
-                      "Willst du " + member.user.loginID + " wirklich löschen?"
-                    );
-
-                    if (!confirmed) return;
-
-                    await deleteMemberShipByIdInDB(member.id);
-                    setReload(Math.random());
-                  }}
-                >
-                  <DeleteForever></DeleteForever>
-                </IconButton>
-              )}
-              <Typography>
-                {props.scene.idUserCreater == member.user.id
-                  ? member.user.loginID + " (Ersteller)"
-                  : member.user.loginID}
-              </Typography>
-            </Stack>
+            <MembershipEntry
+              membership={member}
+              scene={props.scene}
+              setReload={setReload}
+              
+            ></MembershipEntry>
           )
         )
       ) : (
