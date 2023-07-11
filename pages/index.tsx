@@ -7,7 +7,7 @@ import Login from "./login/login";
 import SceneList from "./scenes/sceneList";
 import Main from "./threejs/Main";
 import Stack from "@mui/material/Stack";
-import { User, Scene, SceneMemberShip } from "@prisma/client";
+import { User, Scene, SceneMemberShip, Session } from "@prisma/client";
 import CubeRotater from "./login/cubeRotater";
 import Logout from "./login/logout";
 import DatabaseTable from "./admin/databaseTable/databaseTable";
@@ -26,8 +26,36 @@ const Index = () => {
   const [actUser, setActUser] = useState<User>(null);
   const [scene, setScene] = useState<Scene>(null);
   const [sceneMembership, setSceneMembership] = useState<SceneMemberShip>();
+  const [session, setSession] = useState<Session>(null);
+
+  const getSession = async (idUser: string) => {
+    const requestedSession = await fetch(
+      "api/database/Session/DB_getSessionByUserID",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          idUser: idUser,
+        }),
+      }
+    );
+
+    const session: Session = await requestedSession.json();
+    return session;
+  };
+
+  useEffect(() => {
+    if (!actUser) return;
+
+    getSession(actUser.id).then((session: Session) => {
+      // alert("load session:" + actUser.id);
+      setSession(session);
+      // alert("load session:" + session.id);
+    });
+  }, [actUser]);
+
   return (
     <Stack className="index">
+      <Typography>{session ? session.id : null}</Typography>
       {loggedIn ? (
         scene ? (
           <Main

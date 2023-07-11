@@ -9,14 +9,10 @@ export default async function DB_getAllSessions(
 ) {
   const sessionID = req.cookies.sessionID;
 
-  const session = await checkSessionID(sessionID);
+  const session = null; //await checkSessionID(sessionID);
 
   if (session) {
-    const sessions: Session[] = await prismaClient.session.findMany({
-      include: {
-        user: true, // Hier wird die Beziehung zum User eingeschlossen
-      },
-    });
+    const sessions: Session[] = await prismaClient.session.findMany({});
 
     if (sessions == null)
       res.status(200).json({ result: "fehler beim laden der Sessions" });

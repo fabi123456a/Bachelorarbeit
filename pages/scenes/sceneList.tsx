@@ -30,28 +30,6 @@ const SceneList = (props: {
       }[]
   >(null);
 
-  // const getAllScenes = async () => {
-  //   if (cmboBox == "-1") {
-  //     const response = await fetch("/api/database/Scene/DB_getAllSceneNames", {
-  //       method: "POST",
-  //       body: JSON.stringify({
-  //         id: null,
-  //       }),
-  //     });
-  //     const result: Scene[] = await response.json();
-  //     return result;
-  //   } else {
-  //     const response = await fetch("/api/database/Scene/DB_getAllSceneNames", {
-  //       method: "POST",
-  //       body: JSON.stringify({
-  //         id: cmboBox,
-  //       }),
-  //     });
-  //     const result: Scene[] = await response.json();
-  //     return result;
-  //   }
-  // };
-
   const getMembershipFromSceneID = async (idUser: string, idScene: string) => {
     const requestedMembership = await fetch(
       "/api/database/Membership/DB_getMembershipBySceneID",
@@ -68,26 +46,6 @@ const SceneList = (props: {
 
     return mebership;
   };
-
-  useEffect(() => {
-    getAllSceneMemberships();
-  }, [reload]);
-
-  useEffect(() => {
-    if (!actScene) return;
-    getMembershipFromSceneID(props.user.id, actScene.id).then(
-      (membership: SceneMemberShip) => {
-        setSceneMembership(membership);
-        props.setActSceneMembership(membership);
-      }
-    );
-  }, [actScene]);
-
-  useEffect(() => {
-    // getAllScenes().then((scenes) => {
-    //   setScenes(scenes);
-    // });
-  }, [reload, cmboBox]);
 
   const getAllSceneMemberships = async () => {
     const requestMemberships = await fetch(
@@ -108,6 +66,20 @@ const SceneList = (props: {
     const extractedScenes = memberships.map((membership) => membership.scene);
     setScenes(extractedScenes);
   };
+
+  useEffect(() => {
+    getAllSceneMemberships();
+  }, [reload]);
+
+  useEffect(() => {
+    if (!actScene) return;
+    getMembershipFromSceneID(props.user.id, actScene.id).then(
+      (membership: SceneMemberShip) => {
+        setSceneMembership(membership);
+        props.setActSceneMembership(membership);
+      }
+    );
+  }, [actScene]);
 
   return props.setScene && props.user ? (
     actScene ? (

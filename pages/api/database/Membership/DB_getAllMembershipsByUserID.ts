@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { prismaClient } from "../../prismaclient/_prismaClient";
 import { SceneMemberShip } from "@prisma/client";
 import Scene from "../../../threejs/Scene/Scene";
+import { checkSessionID } from "../Session/_checkSessionID";
 
 // fügt einen neuen user in die database ein
 // wenn es funktioniert hat, wird das user object zurückgeliefert ansonsten NULL
@@ -13,6 +14,12 @@ export default async function handler(
   const b = req.body;
   const requestData = JSON.parse(b);
   const idUser = requestData["idUser"];
+
+  console.log("idUser-" + idUser);
+
+  const flag = await checkSessionID(req, res);
+
+  if (!flag) return;
 
   try {
     const memberships: SceneMemberShip[] =
@@ -26,8 +33,7 @@ export default async function handler(
       });
 
     if (memberships) {
-      console.log("DB: scene members ships von idUSer " + idUser + " geladen");
-      console.log(memberships);
+      console.log("DB: scene member ships von idUSer " + idUser + " geladen");
       res.status(200).json(memberships);
     }
   } catch (err) {

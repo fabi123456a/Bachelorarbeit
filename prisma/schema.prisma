@@ -19,7 +19,6 @@ model User {
   readOnly  Boolean  
   isAdmin   Boolean
   chatEntry ChatEntry[]
-  session Session[]
   memberships SceneMemberShip[]
 }
 
@@ -46,7 +45,6 @@ model Session {
   id        String     @id 
   idUser    String
   startDate DateTime
-  user      User       @relation(fields: [idUser], references: [id])
 }
 
 model ChatEntry {
