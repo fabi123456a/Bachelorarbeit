@@ -6,6 +6,7 @@ import {
   Stack,
   TextField,
   Typography,
+  IconButton,
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { Scene } from "@prisma/client";
@@ -25,21 +26,22 @@ const MenuBar = (props: {
   return (
     <Stack className="menuBar" direction={"row"}>
       <Button
-        sx={{ mr: "8px", color: "black" }}
+        sx={{ mr: "16px", ml: "7px", color: "black" }}
         onClick={() => {
           props.setScene(null);
         }}
+        className="iconButton"
       >
         <ArrowBackIosIcon></ArrowBackIosIcon>
         Back
       </Button>
       {props.scene ? (
         <Typography>
-          Scene: {props.scene.name}, testMode:{" "}
-          {props.isTestMode ? "ja" : "nein"}
+          <b>{props.scene.name}</b>
         </Typography>
       ) : null}
       <Select
+        size="small"
         sx={{ ml: "14px" }}
         onChange={(e) => {
           props.setSceneVersion(e.target.value as number);
