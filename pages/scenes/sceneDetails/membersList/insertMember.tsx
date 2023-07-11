@@ -72,10 +72,10 @@ const AddMember = (props: {
   };
 
   return (
-    <Stack className="">
+    <Stack className="" sx={{ mt: "2vh" }}>
       <Stack direction={"row"}>
         <TextField
-          label="User"
+          label="User hinzufügen..."
           size="small"
           value={name}
           onChange={async (e) => {
@@ -107,7 +107,9 @@ const AddMember = (props: {
 
       {user ? (
         <Stack direction={"row"} sx={{ m: "8px" }}>
-          <Typography>{user.loginID}</Typography>
+          <Typography fontSize={"13px"}>
+            User <b>{user.loginID}</b> gefunden
+          </Typography>
           <CheckCircleOutlineIcon color="success"></CheckCircleOutlineIcon>
         </Stack>
       ) : (

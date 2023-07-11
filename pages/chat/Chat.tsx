@@ -109,7 +109,7 @@ export default function Chat(props: { scene: Scene; user: User }) {
     // model für chat eintrag erstellen
     const chatEntry: ChatEntry = {
       id: uuidv4(),
-      idScene: props.scene.id,
+      idScene: props.scene ? props.scene.id : "",
       idUser: props.user.id,
       message: text,
       datum: new Date(),

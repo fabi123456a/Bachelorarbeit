@@ -567,7 +567,7 @@ export default function Main(props: {
               <WallList addWall={handleWallAdd}></WallList>
 
               {/* Chat */}
-              <Chat user={props.user} scene={props.scene}></Chat>
+              {/* <Chat user={props.user} scene={props.scene}></Chat> */}
 
               {/* PropertieContainer */}
               <PropertieContainer

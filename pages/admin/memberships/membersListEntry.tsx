@@ -5,27 +5,18 @@ import { useEffect, useState } from "react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import Checkbox from "@mui/material/Checkbox";
 import MembershipEntry from "./membershipEntry";
+import AddMember from "../../scenes/sceneDetails/membersList/insertMember";
 
 const MemberListEntry = (props: {
   scene: Scene;
   setScene: (scene: Scene) => void;
 }) => {
   const [members, setMembers] = useState<
-    SceneMemberShip &
-      {
-        user: User;
-      }[]
+    (SceneMemberShip & {
+      user: User;
+    })[]
   >(null);
-  const [isHovered, setIsHovered] = useState(false);
   const [reload, setReload] = useState(0);
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
 
   const getAllSceneMembershipsFromScene = async (idScene: string) => {
     const requestMemberships = await fetch(
@@ -37,20 +28,18 @@ const MemberListEntry = (props: {
         }),
       }
     );
-    const memberships: SceneMemberShip &
-      {
-        user: User;
-      }[] = await requestMemberships.json();
+    const memberships: (SceneMemberShip & {
+      user: User;
+    })[] = await requestMemberships.json();
     return memberships;
   };
 
   useEffect(() => {
     getAllSceneMembershipsFromScene(props.scene.id).then(
       (
-        members: SceneMemberShip &
-          {
-            user: User;
-          }[]
+        members: (SceneMemberShip & {
+          user: User;
+        })[]
       ) => setMembers(members)
     );
   }, [reload]);
@@ -87,6 +76,11 @@ const MemberListEntry = (props: {
       ) : (
         <Typography>lädt..</Typography>
       )}
+      <AddMember
+        members={members}
+        scene={props.scene}
+        setReload={setReload}
+      ></AddMember>
     </Stack>
   ) : (
     <Typography>lädt...</Typography>

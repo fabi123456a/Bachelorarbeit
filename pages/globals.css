@@ -204,7 +204,7 @@ body {
 .showModelListBtn {
   position: absolute;
   z-index: 100;
-  left: 58vh;
+  left: 23vh;
   bottom: 1vh;
   background: white;
 }
@@ -221,9 +221,9 @@ body {
 .showChatBtn {
   position: absolute;
   z-index: 100;
-  left: 72vh;
+  right: 2vh;
   bottom: 1vh;
-  background: white;
+  background: tan;
 }
 
 /* toolbar */
