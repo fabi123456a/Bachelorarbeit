@@ -44,35 +44,6 @@ const MemberListEntry = (props: {
     return memberships;
   };
 
-  const deleteMemberShipByIdInDB = async (id: string) => {
-    const deleteRequest = await fetch(
-      "/api/database/Membership/DB_deleteMemberShipByID",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          id: id,
-        }),
-      }
-    );
-
-    const erg = await deleteRequest.json();
-    if (erg) return true;
-    else return false;
-  };
-
-  const updateMembershipInDB = async (id: string, readonly: boolean) => {
-    const deleteRequest = await fetch(
-      "/api/database/Membership/DB_changeReadonlyByID",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          id: id,
-          readonly: readonly,
-        }),
-      }
-    );
-  };
-
   useEffect(() => {
     getAllSceneMembershipsFromScene(props.scene.id).then(
       (
@@ -86,7 +57,7 @@ const MemberListEntry = (props: {
 
   return props.scene ? (
     <Stack className="">
-      <Stack direction={"row"}>
+      <Stack direction={"row"} sx={{ alignItems: "center" }}>
         <Typography fontWeight={"bold"}>{props.scene.name}</Typography>
         <Button
           onClick={() => {
@@ -96,7 +67,7 @@ const MemberListEntry = (props: {
           ansehen
         </Button>
       </Stack>
-      <Typography fontSize={"small"}>
+      <Typography fontSize={"small"} sx={{ mt: "-1vh", mb: "2vh" }}>
         {"Version: " + props.scene.newestVersion + ".0"}
       </Typography>
       {members ? (
@@ -110,7 +81,6 @@ const MemberListEntry = (props: {
               membership={member}
               scene={props.scene}
               setReload={setReload}
-              
             ></MembershipEntry>
           )
         )

@@ -32,9 +32,14 @@ const Insert = (props: {
   const createObjectFromArray = (keys: string[]): { [key: string]: any } => {
     const obj: { [key: string]: any } = {};
 
-    keys.forEach((key) => {
+    keys.forEach((key, index) => {
       if (key == "id") obj[key] = uuidv4();
-      else obj[key] = values[props.porperties.indexOf(key)];
+      else
+        obj[key] =
+          values[props.porperties.indexOf(key)] == undefined &&
+          props.types[index] == "boolean"
+            ? false
+            : values[props.porperties.indexOf(key)];
     });
 
     return obj;

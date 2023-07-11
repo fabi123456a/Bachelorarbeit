@@ -15,7 +15,9 @@ const MembersList = (props: {
 }) => {
   return props.members ? (
     <Stack className="roundedShadow membersList">
-      <Typography fontWeight={"bold"}>Member</Typography>
+      <Typography fontWeight={"bold"} sx={{ mb: "2vh" }}>
+        Member
+      </Typography>
       {props.members.map(
         (
           membership: SceneMemberShip & {

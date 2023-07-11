@@ -140,7 +140,7 @@ body {
 }
 
 .sceneListEntry:hover {
-  background-color: rgb(234, 224, 24);
+  background-color: tan;
   /* height: 19vh;
   width: 19vh; */
   box-shadow: 7px 7px 14px 10px rgba(0, 0, 0, 0.5);
@@ -311,6 +311,12 @@ body {
   z-index: 100;
 }
 
+/* membershipEntry */
+
+.membershipEntry {
+  align-items: center;
+}
+
 /* canvas */
 .canvas {
   background: white;
@@ -340,11 +346,9 @@ body {
 /* edit data in Datatable */
 .editData {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  background: lightgrey;
-  padding: 6px;
-  border-radius: 4px;
+  top: 30%;
+  left: 40%;
+  background: white;
 
   box-shadow: rgba(0, 0, 0, 0.35) 0px 7px 8px;
 }
@@ -389,7 +393,6 @@ body {
 /* IconButton */
 
 .iconButton {
-  color: black;
   transform: scale(1.1);
 }
 

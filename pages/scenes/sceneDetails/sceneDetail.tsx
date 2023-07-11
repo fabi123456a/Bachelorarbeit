@@ -74,29 +74,48 @@ const SceneDetails = (props: {
   }, [reload]);
   return (
     <Stack sx={{ padding: "12px" }}>
-      <IconButton
-        className="iconButton"
-        onClick={() => {
-          props.setSelectedScene(null);
-        }}
-      >
-        <ArrowBackIosIcon></ArrowBackIosIcon>
-      </IconButton>
-      {props.ownMembership?.readOnly ? "readonly" : "lesen/schreiben"}
-      <Typography variant="h5">
-        Konfiguration: <b>{props.scene.name}</b>
-      </Typography>
-      <Stack className="roundedShadow">
-        <Typography fontWeight={"bold"}>Infos: </Typography>
-        <Typography>
-          ertsellt am:
-          {new Date(props.scene.createDate).toLocaleDateString()}
+      <Stack direction={"row"} sx={{ alignItems: "center" }}>
+        <IconButton
+          className="iconButton"
+          onClick={() => {
+            props.setSelectedScene(null);
+          }}
+        >
+          <ArrowBackIosIcon></ArrowBackIosIcon>
+        </IconButton>
+        {/* {props.ownMembership?.readOnly ? "readonly" : "lesen/schreiben"} */}
+        <Typography variant="h5">
+          <b>{props.scene.name}</b>
         </Typography>
-        <Typography>Creator: {creator?.loginID}</Typography>
-        <Typography>Version: {props.scene.newestVersion}</Typography>
-        <Typography>
-          Anzahl Objekte: {modelsCount ? modelsCount : "lädt.."}
+      </Stack>
+
+      <Stack className="roundedShadow" direction={"column"}>
+        <Stack direction={"row"}></Stack>
+        <Typography fontWeight={"bold"} sx={{ mb: "2vh" }}>
+          Infos:{" "}
         </Typography>
+
+        <Stack direction={"row"}>
+          <Typography sx={{ minWidth: "15vh" }}>ertsellt am:</Typography>
+          <Typography>
+            {new Date(props.scene.createDate).toLocaleDateString()}
+          </Typography>
+        </Stack>
+
+        <Stack direction={"row"}>
+          <Typography sx={{ minWidth: "15vh" }}>Creator:</Typography>
+          <Typography>{creator?.loginID}</Typography>
+        </Stack>
+
+        <Stack direction={"row"}>
+          <Typography sx={{ minWidth: "15vh" }}>Version:</Typography>
+          <Typography>{props.scene.newestVersion}</Typography>
+        </Stack>
+
+        <Stack direction={"row"}>
+          <Typography sx={{ minWidth: "15vh" }}>Objekte:</Typography>
+          <Typography>{modelsCount ? modelsCount : "lädt.."}</Typography>
+        </Stack>
       </Stack>
 
       <MembersList

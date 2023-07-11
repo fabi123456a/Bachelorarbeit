@@ -59,7 +59,9 @@ const MembersListEntry = (props: {
       onMouseLeave={handleMouseLeave}
     >
       <Stack direction={"row"} sx={{ alignItems: "center" }}>
-        <Typography>{props.membership.user.loginID}</Typography>
+        <Typography sx={{ minWidth: "15vh" }}>
+          {props.membership.user.loginID}
+        </Typography>
 
         {props.membership.user.id == props.scene.idUserCreater ? (
           <Typography color={"grey"} sx={{ ml: "8px" }}>

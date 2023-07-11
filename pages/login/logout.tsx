@@ -16,7 +16,7 @@ const Logout = (props: {
   setScene: (scene: Scene) => void;
 }) => {
   return (
-    <IconButton className="iconButton">
+    <IconButton className="iconButton" sx={{ color: "black" }}>
       <LogoutIcon
         onClick={() => {
           const confirmed = window.confirm(

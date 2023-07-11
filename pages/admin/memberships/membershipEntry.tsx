@@ -53,7 +53,7 @@ const MembershipEntry = (props: {
 
   return (
     <Stack
-      className=""
+      className="membershipEntry"
       direction={"row"}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -77,13 +77,13 @@ const MembershipEntry = (props: {
           <DeleteForever></DeleteForever>
         </IconButton>
       )}
-      <Typography>
+      <Typography sx={{ minWidth: "20vh" }}>
         {props.scene.idUserCreater == props.membership.user.id
           ? props.membership.user.loginID + " (Ersteller)"
           : props.membership.user.loginID}
       </Typography>
       {props.scene.idUserCreater == props.membership.user.id ? null : (
-        <Stack direction={"row"}>
+        <>
           <Checkbox
             checked={checkbox}
             onChange={async (e) => {
@@ -92,8 +92,8 @@ const MembershipEntry = (props: {
               await updateMembershipInDB(props.membership.id, e.target.checked);
             }}
           ></Checkbox>
-          <Typography>readonly</Typography>
-        </Stack>
+          <Typography sx={{ ml: "-8px" }}>readonly</Typography>
+        </>
       )}
     </Stack>
   );

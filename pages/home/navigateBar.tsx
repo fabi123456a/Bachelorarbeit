@@ -42,8 +42,8 @@ const NavigateBar = (props: {
 
       {/* sceneList */}
       <IconButton
+        sx={activeButton == "scenes" ? { color: "tan" } : { color: "black" }}
         className="iconButton"
-        color={activeButton == "scenes" ? "primary" : "default"}
         onClick={() => {
           props.setAdminArea(false);
           props.setSettings(false);
@@ -59,8 +59,8 @@ const NavigateBar = (props: {
 
       {/* adminarea */}
       <IconButton
+        sx={activeButton == "adminArea" ? { color: "tan" } : { color: "black" }}
         className="iconButton"
-        color={activeButton == "adminArea" ? "primary" : "default"}
         onClick={() => {
           props.setSecens(false);
           props.setSettings(false);
@@ -78,8 +78,8 @@ const NavigateBar = (props: {
 
       {/* fbxModels */}
       <IconButton
+        sx={activeButton == "fbxModels" ? { color: "tan" } : { color: "black" }}
         className="iconButton"
-        color={activeButton == "fbxModels" ? "primary" : "default"}
         onClick={() => {
           props.setSecens(false);
           props.setSettings(false);
@@ -97,8 +97,8 @@ const NavigateBar = (props: {
 
       {/* Tetxtures */}
       <IconButton
+        sx={activeButton == "textures" ? { color: "tan" } : { color: "black" }}
         className="iconButton"
-        color={activeButton == "fbxModels" ? "primary" : "default"}
         onClick={() => {
           props.setSecens(false);
           props.setSettings(false);
@@ -116,8 +116,8 @@ const NavigateBar = (props: {
 
       {/* settings */}
       <IconButton
+        sx={activeButton == "settings" ? { color: "tan" } : { color: "black" }}
         className="iconButton"
-        color={activeButton == "settings" ? "primary" : "default"}
         onClick={() => {
           props.setAdminArea(false);
           props.setSecens(false);

@@ -108,6 +108,13 @@ const DatabaseTable = (props: { tableName: string; showInsert: boolean }) => {
                           setShowEditData(true);
                           setActDataType(typeof dataRow[prop]);
                         }}
+                        sx={
+                          actProp == prop &&
+                          actData == dataRow[prop] &&
+                          actDataRowID == dataRow["id"]
+                            ? { background: "#ff9800" }
+                            : {}
+                        }
                       >
                         {/* {dataRow[prop]} */}
                         {typeof dataRow[prop] === "boolean"
@@ -144,6 +151,9 @@ const DatabaseTable = (props: { tableName: string; showInsert: boolean }) => {
           currentData={actData}
           setReload={setReload}
           dataType={actDataType}
+          setActData={setActData}
+          setActDataRowID={setActDataRowID}
+          setActProp={setActProp}
         ></EditData>
       ) : null}
     </Stack>
