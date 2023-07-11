@@ -22,7 +22,7 @@ const FbxListEntry = (props: {
   return (
     <Stack className="roundedShadow fbxListEntry">
       <ModelPreview fbxName={props.file}></ModelPreview>
-      <Typography>{props.file}</Typography>
+      <Typography>{props.file.toLowerCase().replace(".fbx", "")}</Typography>
 
       {/* nur admin darf löschen TODO: */}
       {props.loggedInUser.isAdmin ? (

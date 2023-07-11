@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import { Typography } from "@mui/material";
 
 const UploadFbx = (props: { setRefreshData: () => void }) => {
   // states
@@ -63,6 +64,9 @@ const UploadFbx = (props: { setRefreshData: () => void }) => {
       >
         {uploading ? "Uploading.." : "Hinzufügen"}
       </Button>
+      <Typography color={"#0288d1"} fontSize={"12px"} sx={{ mt: "1vh" }}>
+        Es werden nur FBX-Modelle akzeptiert!
+      </Typography>
     </Stack>
   );
 };

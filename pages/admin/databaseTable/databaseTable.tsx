@@ -112,7 +112,7 @@ const DatabaseTable = (props: { tableName: string; showInsert: boolean }) => {
                           actProp == prop &&
                           actData == dataRow[prop] &&
                           actDataRowID == dataRow["id"]
-                            ? { background: "#ff9800" }
+                            ? { background: "#ed6c02" }
                             : {}
                         }
                       >

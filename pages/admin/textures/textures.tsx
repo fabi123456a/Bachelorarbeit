@@ -1,4 +1,10 @@
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -7,10 +13,13 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { User } from "@prisma/client";
+import { DeleteForeverOutlined } from "@mui/icons-material";
 
 const Textures = (props: { loggedInUser: User }) => {
   const [textures, setTextures] = useState<string[]>(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [textureName, setTextureName] = useState("");
+  const [reload, setReload] = useState(0);
 
   const getAllTexturesFromFS = async () => {
     const requestTextures = await fetch("api/filesystem/FS_getTextures");
@@ -25,17 +34,33 @@ const Textures = (props: { loggedInUser: User }) => {
   const addTextureFilesToFS = async (textureName: string) => {
     const formData = new FormData();
 
-    formData.append("file", selectedFiles[0]);
+    for (let i = 0; i < selectedFiles.length; i++) {
+      formData.append("files", selectedFiles[i]);
+    }
 
-    const xxx = await fetch("api/filesystem/FS_uploadTexture", {
+    formData.append("textureName", textureName);
+
+    const xxx = await fetch(
+      `api/filesystem/FS_uploadTexture?textureName=${textureName}`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+  };
+
+  const handleTextureDelete = async (textureName: string) => {
+    await fetch("api/filesystem/FS_deleteTexture", {
       method: "POST",
-      body: formData,
+      body: JSON.stringify({
+        textureName: textureName,
+      }),
     });
   };
 
   useEffect(() => {
     getAllTexturesFromFS().then((textures: string[]) => setTextures(textures));
-  }, []);
+  }, [reload]);
 
   function handleFileSelect(event) {
     const selectedFiles = Array.from(event.target.files);
@@ -77,13 +102,28 @@ const Textures = (props: { loggedInUser: User }) => {
     <Stack className="texturesContainer">
       {textures
         ? textures.map((tex: string) => (
-            <Stack className="roundedShadow textureContainer">
+            <Stack direction={"row"} className="roundedShadow textureContainer">
               <img
                 src={`./textures/${tex}/Substance_Graph_BaseColor.jpg`}
                 height={"50px"}
                 style={{ marginRight: "8px", height: "20vh", width: "20vh" }}
               ></img>
               <Typography>{tex}</Typography>
+              <IconButton
+                className="iconButton"
+                onClick={async () => {
+                  const confirmed = window.confirm(
+                    "Willst du die Texture '" + tex + "' wirklich löschen?"
+                  );
+
+                  if (!confirmed) return;
+
+                  await handleTextureDelete(tex);
+                  setReload(Math.random());
+                }}
+              >
+                <DeleteForeverOutlined></DeleteForeverOutlined>
+              </IconButton>
             </Stack>
           ))
         : null}
@@ -98,18 +138,20 @@ const Textures = (props: { loggedInUser: User }) => {
               onChange={handleFileSelect}
             />
             {validateSelectedFiles(selectedFiles) ? (
-              <Stack>
-                <Typography>filenames are right</Typography>
+              <Stack direction={"row"} sx={{ alignItems: "center" }}>
                 <CheckCircleOutlineIcon color="success"></CheckCircleOutlineIcon>
-              </Stack>
-            ) : (
-              <Stack>
-                <Typography>
-                  wrong filenames or to many or to less files
+                <Typography fontSize={"12px"} color={"#2e7d32"}>
+                  filenames are right
                 </Typography>
-                <ErrorOutlineIcon color="error"></ErrorOutlineIcon>
               </Stack>
-            )}
+            ) : selectedFiles.length >= 1 ? (
+              <Stack direction={"row"} sx={{ alignItems: "center" }}>
+                <ErrorOutlineIcon color="warning"></ErrorOutlineIcon>
+                <Typography fontSize={"12px"} color={"#ed6c02"}>
+                  wrong files or to many or to less files
+                </Typography>
+              </Stack>
+            ) : null}
           </Stack>
 
           <div>
@@ -120,66 +162,93 @@ const Textures = (props: { loggedInUser: User }) => {
               ))}
             </ul>
           </div>
-          <Stack direction={"row"} sx={{ m: "8px" }}>
-            <TextField size="small" label="Texture Name"></TextField>
-            <Button
-              onClick={() => {
-                addTextureFilesToFS("");
-              }}
-            >
-              Hinzufügen
-            </Button>
-          </Stack>
+          {validateSelectedFiles(selectedFiles) ? (
+            <Stack direction={"row"} sx={{ m: "8px" }}>
+              <TextField
+                value={textureName}
+                size="small"
+                label="Texture Name"
+                onChange={(e) => {
+                  setTextureName(e.target.value);
+                }}
+              ></TextField>
+              <Button
+                onClick={async () => {
+                  if (!textureName) {
+                    alert("Geben sie einen Texture namen an.");
+                    return;
+                  }
+                  await addTextureFilesToFS(textureName);
+                  setReload(Math.random());
+                }}
+              >
+                Hinzufügen
+              </Button>
+            </Stack>
+          ) : null}
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography color={"#ff9800"}>
+              <Typography color={"#0288d1"} fontSize={"12px"}>
                 Es werden 5 .jpg formate benötigt die genau so heißen müssen
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Stack direction={"row"}>
+              <Stack direction={"row"} sx={{ alignItems: "center" }}>
                 <img
                   src={`./textures/gravel/Substance_Graph_AmbientOcclusion.jpg`}
                   height={"50px"}
-                  style={{ margin: "8px", height: "20vh", width: "20vh" }}
+                  style={{ margin: "8px", height: "12vh", width: "12vh" }}
                 ></img>
                 <Typography>Substance_Graph_AmbientOcclusion.jpg</Typography>
               </Stack>
 
-              <Stack direction={"row"}>
+              <Stack direction={"row"} sx={{ alignItems: "center" }}>
                 <img
                   src={`./textures/gravel/Substance_Graph_BaseColor.jpg`}
                   height={"50px"}
-                  style={{ margin: "8px", height: "20vh", width: "20vh" }}
+                  style={{ margin: "8px", height: "12vh", width: "12vh" }}
                 ></img>
                 <Typography>Substance_Graph_BaseColor.jpg</Typography>
               </Stack>
-              <Stack direction={"row"}>
+              <Stack direction={"row"} sx={{ alignItems: "center" }}>
                 <img
                   src={`./textures/gravel/Substance_Graph_Height.jpg`}
                   height={"50px"}
-                  style={{ margin: "8px", height: "20vh", width: "20vh" }}
+                  style={{ margin: "8px", height: "12vh", width: "12vh" }}
                 ></img>
                 <Typography>Substance_Graph_Height.jpg</Typography>
               </Stack>
 
-              <Stack direction={"row"}>
+              <Stack direction={"row"} sx={{ alignItems: "center" }}>
                 <img
                   src={`./textures/gravel/Substance_Graph_Normal.jpg`}
                   height={"50px"}
-                  style={{ margin: "8px", height: "20vh", width: "20vh" }}
+                  style={{ margin: "8px", height: "12vh", width: "12vh" }}
                 ></img>
                 <Typography>Substance_Graph_Normal.jpg</Typography>
               </Stack>
 
-              <Stack direction={"row"}>
+              <Stack direction={"row"} sx={{ alignItems: "center" }}>
                 <img
                   src={`./textures/gravel/Substance_Graph_Roughness.jpg`}
                   height={"50px"}
-                  style={{ margin: "8px", height: "20vh", width: "20vh" }}
+                  style={{ margin: "8px", height: "12vh", width: "12vh" }}
                 ></img>
                 <Typography>Substance_Graph_Roughness.jpg</Typography>
               </Stack>
+
+              <Typography
+                sx={{
+                  margin: "8px",
+                  border: "1px solid black",
+                  padding: "8px",
+                }}
+              >
+                hier findet man ganz viele &nbsp;
+                <a href="https://3dtextures.me" target="_blank">
+                  Texturen
+                </a>
+              </Typography>
             </AccordionDetails>
           </Accordion>
         </Stack>
