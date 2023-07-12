@@ -63,7 +63,7 @@ function Cylinderqq(props: {
       info: props.objProps.info,
       visibleInOtherPerspective: props.objProps.visibleInOtherPerspective,
       name: props.objProps.name,
-      color: props.objProps.color ? props.objProps.color : "red",
+      color: props.objProps.color ? props.objProps.color : "",
       texture: props.objProps ? props.objProps.texture : null,
     });
   };

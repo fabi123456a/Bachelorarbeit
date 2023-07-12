@@ -71,7 +71,7 @@ function SceneModel(
       modelPath: props.modelPath,
       visibleInOtherPerspective: true,
       name: props.name,
-      color: props.color ? props.color : "red",
+      color: props.color ? props.color : "",
       info: props.info ? props.info : "",
       texture: "",
     });
