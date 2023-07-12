@@ -7,8 +7,8 @@ export default async function DB_sessionKeepAlive(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const sessionID = req.cookies.sessionID;
-  console.log("cookie: " + sessionID);
+  const flag = await checkSessionID(req, res);
+  if (!flag) return;
 
   // await prismaClient.session.update({
   //   where: {

@@ -21,6 +21,7 @@ const EditData = (props: {
   setActProp: (props: string) => void;
   setActData: (data: string) => void;
   setActDataRowID: (id: string) => void;
+  sessionID: string;
 }) => {
   const [stringValue, setStringValue] = useState<string>(props.currentData);
   const [boolValue, setBoolValue] = useState<boolean>(
@@ -39,6 +40,7 @@ const EditData = (props: {
         id: props.id,
         prop: props.porpertie,
         newData: props.dataType === "string" ? stringValue : boolValue,
+        sessionID: props.sessionID,
       }),
     });
   };

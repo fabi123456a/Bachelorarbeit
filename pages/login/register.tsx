@@ -2,7 +2,10 @@ import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { User } from "@prisma/client";
 
-const Register = (props: { setRegister: (flag: boolean) => void }) => {
+const Register = (props: {
+  setRegister: (flag: boolean) => void;
+  sessionID: string;
+}) => {
   const [txtLoginID, setTxtLoginID] = useState<string>("");
   const [txtPw, setTxtPw] = useState<string>("");
 
@@ -12,6 +15,7 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
       body: JSON.stringify({
         loginID: loginID,
         pw: pw,
+        sessionID: props.sessionID,
       }),
     });
 

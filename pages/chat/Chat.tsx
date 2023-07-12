@@ -13,7 +13,11 @@ import { v4 as uuidv4 } from "uuid";
 
 let socket;
 
-export default function Chat(props: { scene: Scene; user: User }) {
+export default function Chat(props: {
+  scene: Scene;
+  user: User;
+  sessionID: string;
+}) {
   const [text, setText] = useState<string>("");
   const [msgs, setMsgs] = useState<
     (ChatEntry & {
@@ -50,7 +54,13 @@ export default function Chat(props: { scene: Scene; user: User }) {
   useEffect(() => {
     const getAllChatEntry = async () => {
       const response = await fetch(
-        "/api/database/ChatEntry/DB_getAllChatEntrys"
+        "/api/database/ChatEntry/DB_getAllChatEntrys",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            sessionID: props.sessionID,
+          }),
+        }
       );
       const result = await response.json();
       return result;
@@ -68,6 +78,7 @@ export default function Chat(props: { scene: Scene; user: User }) {
         method: "POST",
         body: JSON.stringify({
           tableName: "user",
+          sessionID: props.sessionID,
         }),
       });
       const result: User[] = await response.json();
@@ -82,7 +93,12 @@ export default function Chat(props: { scene: Scene; user: User }) {
   // laden wer alles online ist
   useEffect(() => {
     const getAllSessions = async () => {
-      const response = await fetch("/api/database/Session/DB_getAllSessions");
+      const response = await fetch("/api/database/Session/DB_getAllSessions", {
+        method: "POST",
+        body: JSON.stringify({
+          sessionID: props.sessionID,
+        }),
+      });
       const result: Session[] = await response.json();
       return result;
     };
@@ -119,7 +135,12 @@ export default function Chat(props: { scene: Scene; user: User }) {
     socket.emit("addChatEntry", chatEntry);
 
     // test sessio keep alive
-    await fetch("api/database/Session/DB_sessionKeepAlive");
+    await fetch("api/database/Session/DB_sessionKeepAlive", {
+      method: "POST",
+      body: JSON.stringify({
+        sessionID: props.sessionID,
+      }),
+    });
   };
 
   let counter = 0;

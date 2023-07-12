@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { User } from "@prisma/client";
 import CloseIcon from "@mui/icons-material/Close";
 
-const Feedback = () => {
+const Feedback = (props: { sessionID: string }) => {
   const [txt, setTxt] = useState<string>("");
   const [flag, setFlag] = useState<boolean>(false);
 
@@ -13,6 +13,7 @@ const Feedback = () => {
       method: "POST",
       body: JSON.stringify({
         text: txt,
+        sessionID: props.sessionID,
       }),
     });
 

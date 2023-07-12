@@ -5,9 +5,13 @@ import Stack from "@mui/material/Stack";
 
 const GetFbx = (props: {}) => {
   const getFbx = async (name: string) => {
-    const response = await fetch(`/api/database/FbxModels/getFbx?fbxName=${name}`, {
-      method: "GET",
-    });
+    // TODO: sessionID
+    const response = await fetch(
+      `/api/database/FbxModels/getFbx?fbxName=${name}`,
+      {
+        method: "GET",
+      }
+    );
 
     const result = await response.json();
     alert(result["txt"]);

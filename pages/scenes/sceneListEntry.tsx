@@ -10,6 +10,7 @@ const SceneListEntry = (props: {
   setReload: (i: number) => void;
   user: User;
   setSelectedScene: (scene: Scene) => void;
+  sessionID: string;
 }) => {
   // user der die scene ertsellt hat
   const [userCreator, setUserCreator] = useState<User>();
@@ -21,6 +22,7 @@ const SceneListEntry = (props: {
       method: "POST",
       body: JSON.stringify({
         idScene: props.scene.id,
+        sessionID: props.sessionID,
       }),
     });
 
@@ -32,6 +34,7 @@ const SceneListEntry = (props: {
       method: "POST",
       body: JSON.stringify({
         idUser: props.scene.idUserCreater,
+        sessionID: props.sessionID,
       }),
     });
 
@@ -49,6 +52,7 @@ const SceneListEntry = (props: {
         body: JSON.stringify({
           idScene: props.scene.id,
           version: props.scene.newestVersion,
+          sessionID: props.sessionID,
         }),
       }
     );
@@ -81,36 +85,35 @@ const SceneListEntry = (props: {
         <Typography sx={{ fontWeight: "bold", fontSize: "16px", mb: "6px" }}>
           {props.scene.name}
         </Typography>
-        <Typography>
-          {userCreator ? (
-            mouseOver ? (
-              <Stack>
-                <Typography sx={{ fontSize: "12px" }}>
-                  <b>Creator:</b> {" " + userCreator?.loginID}
-                </Typography>
-                <Typography sx={{ fontSize: "12px" }}>
-                  <b>ertsellt am:</b>{" "}
-                  {" " + new Date(props.scene.createDate).toLocaleDateString()}
-                </Typography>
-                <Typography sx={{ fontSize: "12px" }}>
-                  <b>Version:</b> {props.scene.newestVersion}
-                </Typography>
-                <Typography sx={{ fontSize: "12px" }}>
-                  <b>Objekte:</b> {modelsCount}
-                </Typography>
-              </Stack>
-            ) : (
-              <Stack>
-                <Typography sx={{ fontSize: "12px" }}>
-                  {userCreator?.loginID}
-                </Typography>
-                <Typography sx={{ fontSize: "12px" }}>
-                  {new Date(props.scene.createDate).toLocaleDateString()}
-                </Typography>
-              </Stack>
-            )
-          ) : null}
-        </Typography>
+
+        {userCreator ? (
+          mouseOver ? (
+            <Stack>
+              <Typography sx={{ fontSize: "12px" }}>
+                <b>Creator:</b> {" " + userCreator?.loginID}
+              </Typography>
+              <Typography sx={{ fontSize: "12px" }}>
+                <b>ertsellt am:</b>{" "}
+                {" " + new Date(props.scene.createDate).toLocaleDateString()}
+              </Typography>
+              <Typography sx={{ fontSize: "12px" }}>
+                <b>Version:</b> {props.scene.newestVersion}
+              </Typography>
+              <Typography sx={{ fontSize: "12px" }}>
+                <b>Objekte:</b> {modelsCount}
+              </Typography>
+            </Stack>
+          ) : (
+            <Stack>
+              <Typography sx={{ fontSize: "12px" }}>
+                {userCreator?.loginID}
+              </Typography>
+              <Typography sx={{ fontSize: "12px" }}>
+                {new Date(props.scene.createDate).toLocaleDateString()}
+              </Typography>
+            </Stack>
+          )
+        ) : null}
       </Stack>
 
       {mouseOver ? (

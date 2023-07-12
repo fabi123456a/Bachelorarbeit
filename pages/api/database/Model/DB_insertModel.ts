@@ -1,7 +1,11 @@
 import { Model, PrismaClient } from "@prisma/client";
 import { prismaClient } from "../../prismaclient/_prismaClient";
+import { checkSessionID } from "../Session/_checkSessionID";
 
 export default async function handler(req, res) {
+  const flag = await checkSessionID(req, res);
+  if (!flag) return;
+
   try {
     const model = req.body as Model;
 

@@ -1,10 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prismaClient } from "../prismaclient/_prismaClient";
+import { checkSessionID } from "./Session/_checkSessionID";
 
 export default async function DB_insertInTable(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const flag = await checkSessionID(req, res);
+  if (!flag) return;
+  
   const requestBody = JSON.parse(req.body);
   const tableName = requestBody["tableName"];
   const data1 = requestBody["data"]; // soll ein oibject sein {id: "sjfios", loginID. "sdaf", ...}

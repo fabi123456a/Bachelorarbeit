@@ -15,14 +15,19 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { User } from "@prisma/client";
 import { DeleteForeverOutlined } from "@mui/icons-material";
 
-const Textures = (props: { loggedInUser: User }) => {
+const Textures = (props: { loggedInUser: User; sessionID: string }) => {
   const [textures, setTextures] = useState<string[]>(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [textureName, setTextureName] = useState("");
   const [reload, setReload] = useState(0);
 
   const getAllTexturesFromFS = async () => {
-    const requestTextures = await fetch("api/filesystem/FS_getTextures");
+    const requestTextures = await fetch("api/filesystem/FS_getTextures", {
+      method: "POST",
+      body: JSON.stringify({
+        sessionID: props.sessionID,
+      }),
+    });
 
     const textures = requestTextures.json();
 
@@ -44,7 +49,7 @@ const Textures = (props: { loggedInUser: User }) => {
       `api/filesystem/FS_uploadTexture?textureName=${textureName}`,
       {
         method: "POST",
-        body: formData,
+        body: formData, // TODO: sessionID
       }
     );
   };
@@ -54,6 +59,7 @@ const Textures = (props: { loggedInUser: User }) => {
       method: "POST",
       body: JSON.stringify({
         textureName: textureName,
+        sessionID: props.sessionID,
       }),
     });
   };

@@ -1,11 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prismaClient } from "../../prismaclient/_prismaClient";
 import { Scene } from "@prisma/client";
+import { checkSessionID } from "../Session/_checkSessionID";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const flag = await checkSessionID(req, res);
+  if (!flag) return;
+
   try {
     const allScenes: Scene[] = await prismaClient.scene.findMany();
 

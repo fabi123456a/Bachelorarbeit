@@ -8,6 +8,7 @@ const AddScene = (props: {
   user: User;
   setScene: (scene: Scene) => void;
   setReload: (i: number) => void;
+  sessionID: string;
 }) => {
   const [name, setName] = useState<string>();
   const refSceneID = useRef<string>(uuidv4());
@@ -21,6 +22,7 @@ const AddScene = (props: {
         idUserCreator: props.user.id,
         name: name,
         version: 0,
+        sessionID: props.sessionID,
       }),
     });
 
@@ -43,6 +45,7 @@ const AddScene = (props: {
           idScene: idScene,
           idUser: idUser,
           readonly: readonly,
+          sessionID: props.sessionID,
         }),
       }
     );
@@ -55,7 +58,7 @@ const AddScene = (props: {
   const addModelsToDB = async (model: Model) => {
     const response = await fetch("/api/database/Model/DB_insertModel", {
       method: "POST",
-      body: JSON.stringify(model),
+      body: JSON.stringify(model), // TODO: sessionID
       headers: {
         "Content-Type": "application/json",
       },

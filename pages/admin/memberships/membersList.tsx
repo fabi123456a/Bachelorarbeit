@@ -5,6 +5,7 @@ import MemberListEntry from "./membersListEntry";
 const MemberList = (props: {
   scenes: Scene[];
   setScene: (scene: Scene) => void;
+  sessionID: string;
 }) => {
   return props.scenes ? (
     <Stack className="roundedShadow adminMembersList">
@@ -19,6 +20,7 @@ const MemberList = (props: {
         return (
           <Stack className="roundedShadow">
             <MemberListEntry
+              sessionID={props.sessionID}
               scene={scene}
               setScene={props.setScene}
             ></MemberListEntry>

@@ -7,6 +7,9 @@ export default async function DB_getAllChatEntrysBySceneID(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const flag = await checkSessionID(req, res);
+  if (!flag) return;
+
   const chatEntrys: ChatEntry[] = await prismaClient.chatEntry.findMany({
     orderBy: {
       datum: "desc", // oder 'desc' für absteigende Sortierung

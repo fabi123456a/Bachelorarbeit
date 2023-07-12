@@ -11,8 +11,13 @@ import {
 import { useEffect, useState } from "react";
 import Insert from "./insert";
 import EditData from "./editData";
+import { User } from "@prisma/client";
 
-const DatabaseTable = (props: { tableName: string; showInsert: boolean }) => {
+const DatabaseTable = (props: {
+  tableName: string;
+  showInsert: boolean;
+  sessionID: string;
+}) => {
   const [data, setData] = useState<any[]>();
   const [properties, setProperties] = useState<string[]>();
   const [types, setTypes] = useState<string[]>();
@@ -36,6 +41,7 @@ const DatabaseTable = (props: { tableName: string; showInsert: boolean }) => {
           body: JSON.stringify({
             tableName: props.tableName,
             orderBy: sortBy,
+            sessionID: props.sessionID,
           }),
         });
 
@@ -134,6 +140,7 @@ const DatabaseTable = (props: { tableName: string; showInsert: boolean }) => {
       {props.showInsert ? (
         <Stack className="roundedShadow">
           <Insert
+            sessionID={props.sessionID}
             tableName={props.tableName}
             porperties={properties}
             setReload={setReload}
@@ -144,6 +151,7 @@ const DatabaseTable = (props: { tableName: string; showInsert: boolean }) => {
 
       {showEditData ? (
         <EditData
+          sessionID={props.sessionID}
           setShowEdit={setShowEditData}
           tableName={props.tableName}
           porpertie={actProp}

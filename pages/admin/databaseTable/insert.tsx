@@ -8,6 +8,7 @@ const Insert = (props: {
   porperties: string[];
   setReload: (zahl: number) => void;
   types: string[];
+  sessionID: string,
 }) => {
   const [values, setValues] = useState<any[]>([]);
 
@@ -25,6 +26,7 @@ const Insert = (props: {
       body: JSON.stringify({
         tableName: props.tableName,
         data: insertData,
+        sessionID: props.sessionID,
       }),
     });
   };

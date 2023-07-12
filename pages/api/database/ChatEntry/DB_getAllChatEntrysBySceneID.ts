@@ -7,9 +7,11 @@ export default async function DB_getAllChatEntrysBySceneID(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const flag = await checkSessionID(req, res);
+  if (!flag) return;
+
   const b = req.body;
   const requestData = JSON.parse(b);
-
   const idScene = requestData["idScene"];
 
   const chatEntrys: ChatEntry[] = await prismaClient.chatEntry.findMany({

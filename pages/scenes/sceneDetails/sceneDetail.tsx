@@ -10,6 +10,7 @@ const SceneDetails = (props: {
   setScene: (scene: Scene) => void;
   loggedInUser: User;
   ownMembership: SceneMemberShip;
+  sessionID: string;
 }) => {
   //const [scenes, setScenes] = useState<Scene[]>();
   const [creator, setCreator] = useState<User>();
@@ -26,6 +27,7 @@ const SceneDetails = (props: {
       method: "POST",
       body: JSON.stringify({
         idUser: props.scene.idUserCreater,
+        sessionID: props.sessionID,
       }),
     });
     const user: User = await response.json();
@@ -40,6 +42,7 @@ const SceneDetails = (props: {
         body: JSON.stringify({
           idScene: props.scene.id,
           version: props.scene.newestVersion,
+          sessionID: props.sessionID,
         }),
       }
     );
@@ -55,6 +58,7 @@ const SceneDetails = (props: {
         method: "POST",
         body: JSON.stringify({
           idScene: props.scene.id,
+          sessionID: props.sessionID,
         }),
       }
     );
@@ -119,6 +123,7 @@ const SceneDetails = (props: {
       </Stack>
 
       <MembersList
+       sessionID={props.sessionID}
         members={members}
         scene={props.scene}
         setReload={setReload}

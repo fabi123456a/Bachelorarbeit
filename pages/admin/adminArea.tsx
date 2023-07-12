@@ -10,12 +10,16 @@ const AdminArea = (props: {
   setAdminArea: (flag: boolean) => void;
   user: User;
   setScene: (scene: Scene) => void;
+  sessionID: string;
 }) => {
   const [loadedScenes, setLoadedScenes] = useState<Scene[]>([]);
 
   const loadAllScenesFromDB = async () => {
     const requestetScenes = await fetch("/api/database/Scene/DB_getAllScenes", {
       method: "POST",
+      body: JSON.stringify({
+        sessionID: props.sessionID,
+      }),
     });
 
     const scenes: Scene[] = await requestetScenes.json();
@@ -32,10 +36,15 @@ const AdminArea = (props: {
   return props.user ? (
     props.user.isAdmin ? (
       <Stack className="adminArea">
-        <DatabaseTable tableName="user" showInsert={true}></DatabaseTable>
+        <DatabaseTable
+          tableName="user"
+          showInsert={true}
+          sessionID={props.sessionID}
+        ></DatabaseTable>
         <Divider orientation="horizontal"></Divider>
         {loadedScenes ? (
           <MemberList
+            sessionID={props.sessionID}
             scenes={loadedScenes}
             setScene={props.setScene}
           ></MemberList>

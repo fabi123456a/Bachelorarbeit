@@ -16,20 +16,20 @@ const Logout = (props: {
   setScene: (scene: Scene) => void;
 }) => {
   return (
-    <IconButton className="iconButton" sx={{ color: "black" }}>
-      <LogoutIcon
-        onClick={() => {
-          const confirmed = window.confirm(
-            "Wollen Sie sich wirklich ausloggen?"
-          );
+    <IconButton
+      className="iconButton"
+      sx={{ color: "black" }}
+      onClick={() => {
+        const confirmed = window.confirm("Wollen Sie sich wirklich ausloggen?");
 
-          if (confirmed) {
-            props.setActUser(null);
-            props.setLoggedIn(null);
-            props.setScene(null);
-          }
-        }}
-      ></LogoutIcon>
+        if (confirmed) {
+          props.setActUser(null);
+          props.setLoggedIn(null);
+          props.setScene(null);
+        }
+      }}
+    >
+      <LogoutIcon></LogoutIcon>
     </IconButton>
   );
 };

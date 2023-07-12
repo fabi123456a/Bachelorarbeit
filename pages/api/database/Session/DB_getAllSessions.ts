@@ -7,20 +7,14 @@ export default async function DB_getAllSessions(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const sessionID = req.cookies.sessionID;
+  const flag = await checkSessionID(req, res);
+  if (!flag) return;
 
-  const session = null; //await checkSessionID(sessionID);
+  const sessions: Session[] = await prismaClient.session.findMany({});
 
-  if (session) {
-    const sessions: Session[] = await prismaClient.session.findMany({});
-
-    if (sessions == null)
-      res.status(200).json({ result: "fehler beim laden der Sessions" });
-    else {
-      res.status(200).json(sessions);
-    }
-  } else {
-    console.log("ungültige Session ID: " + sessionID);
-    res.status(200).json(null);
+  if (sessions == null)
+    res.status(200).json({ result: "fehler beim laden der Sessions" });
+  else {
+    res.status(200).json(sessions);
   }
 }

@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
 import { NextApiRequest, NextApiResponse } from "next";
 import { prismaClient } from "../../prismaclient/_prismaClient";
+import { checkSessionID } from "../Session/_checkSessionID";
 
 // fügt einen neuen user in die database ein
 // wenn es funktioniert hat, wird das user object zurückgeliefert ansonsten NULL
@@ -8,6 +9,9 @@ export default async function DB_insertMemberShip(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const flag = await checkSessionID(req, res);
+  if (!flag) return;
+
   const b = req.body;
   const requestData = JSON.parse(b);
   const idScene = requestData["idScene"];

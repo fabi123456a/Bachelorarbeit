@@ -14,6 +14,7 @@ const Home = (props: {
   setActUser: (user: User) => void;
   setLoggedIn: (flag: boolean) => void;
   setActSceneMembership: (membership: SceneMemberShip) => void;
+  sessionID: string;
 }) => {
   const [adminArea, setAdminArea] = useState<boolean>(false);
   const [settings, setSettings] = useState<boolean>(false);
@@ -36,12 +37,14 @@ const Home = (props: {
       ></NavigateBar>
       {scenes ? (
         <SceneList
+          sessionID={props.sessionID}
           user={props.user}
           setScene={props.setScene}
           setActSceneMembership={props.setActSceneMembership}
         ></SceneList>
       ) : adminArea ? (
         <AdminArea
+          sessionID={props.sessionID}
           setAdminArea={setAdminArea}
           user={props.user}
           setScene={props.setScene}
@@ -49,9 +52,15 @@ const Home = (props: {
       ) : settings ? (
         <Settings></Settings>
       ) : fbxModels ? (
-        <FbxList loggedInUser={props.user}></FbxList>
+        <FbxList
+          loggedInUser={props.user}
+          sessionID={props.sessionID}
+        ></FbxList>
       ) : textures ? (
-        <Textures loggedInUser={props.user}></Textures>
+        <Textures
+          loggedInUser={props.user}
+          sessionID={props.sessionID}
+        ></Textures>
       ) : null}
     </Stack>
   );

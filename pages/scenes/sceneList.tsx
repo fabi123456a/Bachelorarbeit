@@ -17,6 +17,7 @@ const SceneList = (props: {
   setScene: (scene: Scene) => void;
   user: User;
   setActSceneMembership: (mebership: SceneMemberShip) => void;
+  sessionID: string;
 }) => {
   const [scenes, setScenes] = useState<Scene[]>();
   const [reload, setReload] = useState<number>();
@@ -38,6 +39,7 @@ const SceneList = (props: {
         body: JSON.stringify({
           idUser: idUser,
           idScene: idScene,
+          sessionID: props.sessionID,
         }),
       }
     );
@@ -54,6 +56,7 @@ const SceneList = (props: {
         method: "POST",
         body: JSON.stringify({
           idUser: props.user.id,
+          sessionID: props.sessionID,
         }),
       }
     );
@@ -84,6 +87,7 @@ const SceneList = (props: {
   return props.setScene && props.user ? (
     actScene ? (
       <SceneDetails
+        sessionID={props.sessionID}
         scene={actScene}
         setSelectedScene={setActScene}
         setScene={props.setScene}
@@ -109,6 +113,7 @@ const SceneList = (props: {
             ? scenes.map((scene: Scene) => {
                 return (
                   <SceneListEntry
+                    sessionID={props.sessionID}
                     user={props.user}
                     key={scene.id}
                     scene={scene}
@@ -122,6 +127,7 @@ const SceneList = (props: {
           {/* bei readonly user ausblenden */}
           {props.user.readOnly ? null : (
             <AddScene
+              sessionID={props.sessionID}
               user={props.user}
               setScene={props.setScene}
               setReload={setReload}

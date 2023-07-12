@@ -11,6 +11,7 @@ const MembersListEntry = (props: {
   setReload: (n: number) => void;
   scene: Scene;
   loggedInUser: User;
+  sessionID: string;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [checkbox, setCheckbox] = useState<boolean>(props.membership.readOnly);
@@ -30,6 +31,7 @@ const MembersListEntry = (props: {
         method: "POST",
         body: JSON.stringify({
           id: id,
+          sessionID: props.sessionID,
         }),
       }
     );
@@ -47,6 +49,7 @@ const MembersListEntry = (props: {
         body: JSON.stringify({
           id: id,
           readonly: readonly,
+          sessionID: props.sessionID,
         }),
       }
     );

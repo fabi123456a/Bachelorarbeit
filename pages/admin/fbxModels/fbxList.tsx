@@ -17,7 +17,7 @@ interface FileListResponse {
   files: string[];
 }
 
-const FbxList = (props: { loggedInUser: User }) => {
+const FbxList = (props: { loggedInUser: User; sessionID: string }) => {
   const [files, setFiles] = useState<string[]>([]);
   const [reload, setReload] = useState<number>(0);
   const [isLoading, setIsloading] = useState<boolean>(true);
@@ -25,7 +25,12 @@ const FbxList = (props: { loggedInUser: User }) => {
   useEffect(() => {
     const fetchFiles = async () => {
       try {
-        const response = await fetch("api/filesystem/FS_getFbxModels");
+        const response = await fetch("api/filesystem/FS_getFbxModels", {
+          method: "POST",
+          body: JSON.stringify({
+            sessionID: props.sessionID,
+          }),
+        });
         const data: FileListResponse = await response.json();
         setFiles(data.files);
         setIsloading(false);
@@ -46,6 +51,7 @@ const FbxList = (props: { loggedInUser: User }) => {
       <Stack className="fbxList">
         {files.map((file, index) => (
           <FbxListEntry
+            sessionID={props.sessionID}
             file={file}
             setReload={setReload}
             loggedInUser={props.loggedInUser}

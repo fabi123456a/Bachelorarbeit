@@ -13,6 +13,7 @@ export default function TextureSelector(props: {
   currentObjProps: TypeObjectProps;
   setCurrentObjProps: (obj: TypeObjectProps) => void;
   texture: string;
+  sessionID: string;
 }) {
   const [texture, setTexture] = useState(props.texture ? props.texture : "");
   const [textures, setTextures] = useState<string[]>(null);
@@ -29,7 +30,12 @@ export default function TextureSelector(props: {
   };
 
   const getAllTexturesFromFS = async () => {
-    const requestTextures = await fetch("api/filesystem/FS_getTextures");
+    const requestTextures = await fetch("api/filesystem/FS_getTextures", {
+      method: "POST",
+      body: JSON.stringify({
+        sessionID: props.sessionID,
+      }),
+    });
 
     const textures = requestTextures.json();
 

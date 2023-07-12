@@ -1,15 +1,17 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Scene, User } from "@prisma/client";
 import { prismaClient } from "../../prismaclient/_prismaClient";
+import { checkSessionID } from "../Session/_checkSessionID";
 
 export default async function DB_insertScene(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const flag = await checkSessionID(req, res);
+  if (!flag) return;
+
   const b = req.body;
   const requestData = JSON.parse(b);
-
-  // values from DB_insertRequest
   const idUserCreator = requestData["idUserCreator"];
   const sceneName = requestData["name"];
   const id = requestData["id"];

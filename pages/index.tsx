@@ -55,35 +55,44 @@ const Index = () => {
 
   return (
     <Stack className="index">
-      <Typography>{session ? session.id : null}</Typography>
+      {/* <Typography>{session ? session.id : null}</Typography> */}
       {loggedIn ? (
         scene ? (
-          <Main
-            scene={scene}
-            setScene={setScene}
-            user={actUser}
-            membership={sceneMembership}
-          ></Main>
-        ) : (
+          session ? (
+            <Main
+              scene={scene}
+              setScene={setScene}
+              user={actUser}
+              membership={sceneMembership}
+              sessionID={session.id}
+            ></Main>
+          ) : null
+        ) : session ? (
           <Home
+            sessionID={session.id}
             setActSceneMembership={setSceneMembership}
             setScene={setScene}
             user={actUser}
             setActUser={setActUser}
             setLoggedIn={setLoggedIn}
           ></Home>
-        )
+        ) : null
       ) : register ? null : (
         <Login
+          // sessionID={session.id}
           setLoggedIn={setLoggedIn}
           setActUser={setActUser}
           setRegister={setRegister}
         ></Login>
       )}
 
-      {register ? <Register setRegister={setRegister}></Register> : null}
+      {register ? (
+        <Register setRegister={setRegister} sessionID={session.id}></Register>
+      ) : null}
 
-      {loggedIn ? <Chat user={actUser} scene={scene}></Chat> : null}
+      {loggedIn && session ? (
+        <Chat user={actUser} scene={scene} sessionID={session.id}></Chat>
+      ) : null}
     </Stack>
   );
 };

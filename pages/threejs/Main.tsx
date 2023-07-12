@@ -40,6 +40,7 @@ export default function Main(props: {
   scene: Scene;
   setScene: (scene: Scene) => void;
   membership: SceneMemberShip;
+  sessionID: string;
 }) {
   // ---- STATES ----
   const [treeViewSelectedId, setTreeViewSelectedId] = useState<string>(null);
@@ -163,6 +164,7 @@ export default function Main(props: {
           body: JSON.stringify({
             idScene: props.scene.id,
             version: scenVersion,
+            sessionID: props.sessionID,
           }),
         }
       );
@@ -436,7 +438,11 @@ export default function Main(props: {
   async function changeSceneVersion(idScene: String, version: number) {
     const response = await fetch("/api/database/Scene/DB_changeNewestVersion", {
       method: "POST",
-      body: JSON.stringify({ idScene: idScene, version: version }),
+      body: JSON.stringify({
+        idScene: idScene,
+        version: version,
+        sessionID: props.sessionID,
+      }),
     });
     const responseModel = await response.json();
 
@@ -448,7 +454,7 @@ export default function Main(props: {
   async function deleteAllModelsFromSceneInDB(idScene: String) {
     const response = await fetch("/api/database/Model/DB_deleteAllModelsByID", {
       method: "POST",
-      body: JSON.stringify({ idScene: idScene }),
+      body: JSON.stringify({ idScene: idScene, sessionID: props.sessionID }),
     });
     const responseModel = await response.json();
 
@@ -459,7 +465,7 @@ export default function Main(props: {
   async function insertModelToDB(model: Model) {
     const response = await fetch("/api/database/Model/DB_insertModel", {
       method: "POST",
-      body: JSON.stringify(model),
+      body: JSON.stringify(model), // TODO: sessionID: props.sessionID,
       headers: {
         "Content-Type": "application/json",
       },
@@ -571,6 +577,7 @@ export default function Main(props: {
 
               {/* PropertieContainer */}
               <PropertieContainer
+                sessionID={props.sessionID}
                 objProps={currentObjectProps}
                 setObjProps={setCurrentObjectProps}
               ></PropertieContainer>

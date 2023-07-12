@@ -9,12 +9,14 @@ const FbxListEntry = (props: {
   file: string;
   setReload: (n: number) => void;
   loggedInUser: User;
+  sessionID: string;
 }) => {
   const handleFbxDelete = async (fbxModel: string) => {
     await fetch("api/filesystem/FS_deleteFbxModel", {
       method: "POST",
       body: JSON.stringify({
         fbxModel: fbxModel,
+        sessionID: props.sessionID,
       }),
     });
   };

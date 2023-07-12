@@ -7,25 +7,11 @@ export default async function DB_getAllSceneNames(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const flag = await checkSessionID(req, res);
+  if (!flag) return;
+
   const requestBody = JSON.parse(req.body);
   const idUser = requestBody["id"];
-
-  // const sessionID = req.cookies.sessionID;
-
-  // const session = await checkSessionID(sessionID);
-
-  // if (session) {
-  //   const scenes: Scenes[] = await prismaClient.scenes.findMany();
-
-  //   if (scenes == null)
-  //     res.status(200).json({ result: "fehler beim laden der Scenes" });
-  //   else {
-  //     res.status(200).json(scenes);
-  //   }
-  // } else {
-  //   console.log("ungültige Session ID: " + sessionID);
-  //   res.status(200).json(null);
-  // }
 
   let scenes: Scene[];
 

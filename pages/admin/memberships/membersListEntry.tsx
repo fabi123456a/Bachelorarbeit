@@ -10,6 +10,7 @@ import AddMember from "../../scenes/sceneDetails/membersList/insertMember";
 const MemberListEntry = (props: {
   scene: Scene;
   setScene: (scene: Scene) => void;
+  sessionID: string;
 }) => {
   const [members, setMembers] = useState<
     (SceneMemberShip & {
@@ -25,6 +26,7 @@ const MemberListEntry = (props: {
         method: "POST",
         body: JSON.stringify({
           idScene: idScene,
+          sessionID: props.sessionID,
         }),
       }
     );
@@ -67,6 +69,7 @@ const MemberListEntry = (props: {
             }
           ) => (
             <MembershipEntry
+              sessionID={props.sessionID}
               membership={member}
               scene={props.scene}
               setReload={setReload}
@@ -77,6 +80,7 @@ const MemberListEntry = (props: {
         <Typography>lädt..</Typography>
       )}
       <AddMember
+        sessionID={props.sessionID}
         members={members}
         scene={props.scene}
         setReload={setReload}

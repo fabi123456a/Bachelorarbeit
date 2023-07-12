@@ -6,6 +6,7 @@ const Home = (props: {
   setLoggedIn: (flag: boolean) => void;
   setActUser: (user: User) => void;
   setRegister: (flag: boolean) => void;
+  // sessionID: string;
 }) => {
   const [txtLoginID, setTxtLoginID] = useState<string>("admin");
   const [txtPassword, setTxtPassword] = useState<string>("123");
@@ -26,6 +27,7 @@ const Home = (props: {
       body: JSON.stringify({
         loginID: txtLoginID,
         pw: txtPassword,
+        // sessionID: props.sessionID,
       }),
     });
     const result = await response.json();
@@ -36,7 +38,12 @@ const Home = (props: {
   // beim start alte sessions löschen
   useEffect(() => {
     const deletOldSessions = async () => {
-      await fetch("/api/database/Session/DB_deleteOldSessions");
+      await fetch("/api/database/Session/DB_deleteOldSessions", {
+        method: "POST",
+        body: JSON.stringify({
+          // sessionID: props.sessionID,
+        }),
+      });
     };
     deletOldSessions();
   }, []);

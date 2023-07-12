@@ -11,15 +11,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const flag = await checkSessionID(req, res);
+  if (!flag) return;
+
   const b = req.body;
   const requestData = JSON.parse(b);
   const idUser = requestData["idUser"];
-
-  console.log("idUser-" + idUser);
-
-  const flag = await checkSessionID(req, res);
-
-  if (!flag) return;
 
   try {
     const memberships: SceneMemberShip[] =
