@@ -18,8 +18,9 @@ const MemberList = (props: {
       </Typography>
       {props.scenes.map((scene: Scene) => {
         return (
-          <Stack className="roundedShadow">
+          <Stack className="roundedShadow" key={scene.id + props.sessionID}>
             <MemberListEntry
+              key={scene.id}
               sessionID={props.sessionID}
               scene={scene}
               setScene={props.setScene}

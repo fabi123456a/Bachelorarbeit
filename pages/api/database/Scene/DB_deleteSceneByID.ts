@@ -12,6 +12,17 @@ export default async function DB_deleteOldSessions(
   const requestData = JSON.parse(req.body);
   const idScene = requestData["idScene"];
 
+  // erst alle models der scene löschen in SCeneModel
+  const deleteModels = await prismaClient.model.deleteMany({
+    where: { idScene: idScene },
+  });
+
+  // dann Memberships löschen
+  const deleteMemberships = await prismaClient.sceneMemberShip.deleteMany({
+    where: { idScene: idScene },
+  });
+
+  // dann die scene löschen
   const ergDelete = await prismaClient.scene.deleteMany({
     where: {
       id: idScene,

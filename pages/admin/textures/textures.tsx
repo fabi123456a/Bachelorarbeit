@@ -49,7 +49,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
       `api/filesystem/FS_uploadTexture?textureName=${textureName}`,
       {
         method: "POST",
-        body: formData, // TODO: sessionID
+        body: formData, // TODO: tetxure sessionID
       }
     );
   };
@@ -108,7 +108,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
     <Stack className="texturesContainer">
       {textures
         ? textures.map((tex: string) => (
-            <Stack direction={"row"} className="roundedShadow textureContainer">
+            <Stack direction={"row"} className="roundedShadow textureContainer" key={tex}>
               <img
                 src={`./textures/${tex}/Substance_Graph_BaseColor.jpg`}
                 height={"50px"}

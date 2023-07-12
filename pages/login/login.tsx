@@ -18,10 +18,6 @@ const Home = (props: {
 
   // checkt login & pw wenns stim kommt der user zurück
   const checkData = async () => {
-    // const response1 = await fetch(
-    //   `/api/database/User/DB_checkPassword?user=${txtAnmeldeID}&pw=${txtPassword}` // TODO: in body packen
-    // );
-
     const response = await fetch("/api/database/User/DB_checkPassword", {
       method: "POST",
       body: JSON.stringify({

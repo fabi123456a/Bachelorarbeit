@@ -64,7 +64,7 @@ export default function TextureSelector(props: {
         <MenuItem value={""}>keine Texture</MenuItem>
         {textures
           ? textures.map((tex: string) => (
-              <MenuItem value={tex}>
+              <MenuItem value={tex} key={tex}>
                 <img
                   src={`./textures/${tex}/Substance_Graph_BaseColor.jpg`}
                   height={"50px"}

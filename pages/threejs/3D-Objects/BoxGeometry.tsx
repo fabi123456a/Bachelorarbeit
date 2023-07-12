@@ -68,7 +68,7 @@ function BoxGeometry(props: {
       {colorMap && displacementMap && normalMap && roughnessMap && aoMap ? (
         <meshStandardMaterial
           map={colorMap}
-          displacementMap={displacementMap} // ausblenden
+          // displacementMap={displacementMap} // ausblenden
           normalMap={normalMap}
           roughnessMap={roughnessMap}
           aoMap={aoMap}

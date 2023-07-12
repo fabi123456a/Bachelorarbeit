@@ -51,6 +51,7 @@ const FbxList = (props: { loggedInUser: User; sessionID: string }) => {
       <Stack className="fbxList">
         {files.map((file, index) => (
           <FbxListEntry
+            key={file + index}
             sessionID={props.sessionID}
             file={file}
             setReload={setReload}

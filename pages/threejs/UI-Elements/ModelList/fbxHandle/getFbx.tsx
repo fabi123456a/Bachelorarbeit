@@ -4,31 +4,32 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
 const GetFbx = (props: {}) => {
-  const getFbx = async (name: string) => {
-    // TODO: sessionID
-    const response = await fetch(
-      `/api/database/FbxModels/getFbx?fbxName=${name}`,
-      {
-        method: "GET",
-      }
-    );
+  // const getFbx = async (name: string) => {
+  //   // TODO: sessionID
+  //   const response = await fetch(
+  //     `/api/database/FbxModels/getFbx?fbxName=${name}`,
+  //     {
+  //       method: "GET",
+  //     }
+  //   );
 
-    const result = await response.json();
-    alert(result["txt"]);
-  };
+  //   const result = await response.json();
+  //   alert(result["txt"]);
+  // };
 
-  // RETURN
-  return (
-    <Stack direction={"row"}>
-      <Button
-        onClick={() => {
-          getFbx("mercedes.fbx");
-        }}
-      >
-        GetFBX
-      </Button>
-    </Stack>
-  );
+  // // RETURN
+  // return (
+  //   <Stack direction={"row"}>
+  //     <Button
+  //       onClick={() => {
+  //         getFbx("mercedes.fbx");
+  //       }}
+  //     >
+  //       GetFBX
+  //     </Button>
+  //   </Stack>
+  // );
+  return null;
 };
 
 export default GetFbx;

@@ -69,6 +69,7 @@ const MemberListEntry = (props: {
             }
           ) => (
             <MembershipEntry
+              key={props.scene.id + member.id}
               sessionID={props.sessionID}
               membership={member}
               scene={props.scene}

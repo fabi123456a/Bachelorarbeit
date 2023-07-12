@@ -5,7 +5,9 @@ function ColorPicker(props: {
   setCurrentObjectProps: (props: TypeObjectProps) => void;
   currentObjectProps: TypeObjectProps;
 }) {
-  const [color, setColor] = useState(props.currentObjectProps?.color); // Farbwert im Status speichern
+  const [color, setColor] = useState(
+    props.currentObjectProps ? props.currentObjectProps.color : "#eeeeee"
+  ); // Farbwert im Status speichern
 
   const handleColorChange = (event) => {
     const newObjectProps = { ...props.currentObjectProps }; // Kopie von currentObjectProps erstellen

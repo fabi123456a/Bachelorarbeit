@@ -10,7 +10,7 @@ const AddScene = (props: {
   setReload: (i: number) => void;
   sessionID: string;
 }) => {
-  const [name, setName] = useState<string>();
+  const [name, setName] = useState<string>("");
   const refSceneID = useRef<string>(uuidv4());
 
   const addSceneToDB = async () => {
@@ -58,10 +58,10 @@ const AddScene = (props: {
   const addModelsToDB = async (model: Model) => {
     const response = await fetch("/api/database/Model/DB_insertModel", {
       method: "POST",
-      body: JSON.stringify(model), // TODO: sessionID
-      headers: {
-        "Content-Type": "application/json",
-      },
+      body: JSON.stringify({ model: model, sessionID: props.sessionID }), // TODO: sessionID
+      // headers: {
+      //   "Content-Type": "application/json",
+      // },
     });
 
     const result = await response.json();
@@ -138,7 +138,7 @@ function getEmptyRoom(idScene: string): Model[] {
     modelPath: null,
     texture: null,
     info: "",
-    color: "#eee",
+    color: "#eeeeee",
     name: "Boden",
     version: 0,
   };
@@ -163,7 +163,7 @@ function getEmptyRoom(idScene: string): Model[] {
     modelPath: null,
     texture: null,
     info: "",
-    color: "#eee",
+    color: "#eeeeee",
     name: "rechte Wand",
     version: 0,
   };
@@ -188,7 +188,7 @@ function getEmptyRoom(idScene: string): Model[] {
     modelPath: null,
     texture: null,
     info: "",
-    color: "#eee",
+    color: "#eeeeee",
     name: "linke Wand",
     version: 0,
   };
@@ -213,7 +213,7 @@ function getEmptyRoom(idScene: string): Model[] {
     modelPath: null,
     texture: null,
     info: "",
-    color: "#eee",
+    color: "#eeeeee",
     name: "hinten Wand",
     version: 0,
   };

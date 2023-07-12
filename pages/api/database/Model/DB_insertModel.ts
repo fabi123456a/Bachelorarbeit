@@ -7,7 +7,10 @@ export default async function handler(req, res) {
   if (!flag) return;
 
   try {
-    const model = req.body as Model;
+    const b = req.body;
+    const requestData = JSON.parse(b);
+    const model = requestData["model"];
+    // const model = req.body as Model;
 
     const createdModel = await prismaClient.model.create({
       data: {

@@ -1,5 +1,8 @@
 TODO:
 
+-  // TODO: tetxure sessionID
+   // TODO: sessionID fbx
+    - uploaf fbx - upload tetxure
 - chat 
 - bei mouseUp wird ein anderes objekt selektiert
 - DB_INSERT user -> loginID: eeeeecewas, password: eee32dwewcx

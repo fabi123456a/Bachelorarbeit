@@ -34,7 +34,7 @@ const UploadFbx = (props: { setRefreshData: () => void }) => {
 
       // fetch
       //const { data } = await axios.post("/api/uploadFbx", formData);
-      await axios.post("/api/filesystem/FS_uploadFbx", formData); // TODO: sessionID
+      await axios.post("/api/filesystem/FS_uploadFbx", formData); // TODO: sessionID fbx
     } catch (error: any) {
       console.log(error.response?.data);
     }

@@ -465,10 +465,10 @@ export default function Main(props: {
   async function insertModelToDB(model: Model) {
     const response = await fetch("/api/database/Model/DB_insertModel", {
       method: "POST",
-      body: JSON.stringify(model), // TODO: sessionID: props.sessionID,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      body: JSON.stringify({ model: model, sessionID: props.sessionID }),
+      // headers: {
+      //   "Content-Type": "application/json",
+      // },
     });
     const responseModel = await response.json();
 
