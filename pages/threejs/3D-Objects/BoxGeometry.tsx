@@ -68,24 +68,15 @@ function BoxGeometry(props: {
       {colorMap && displacementMap && normalMap && roughnessMap && aoMap ? (
         <meshStandardMaterial
           map={colorMap}
-          //displacementMap={displacementMap}
+          displacementMap={displacementMap} // ausblenden
           normalMap={normalMap}
           roughnessMap={roughnessMap}
           aoMap={aoMap}
-          color={props.objProps ? props.color : "red"}
+          color={props.objProps ? props.color : ""} // TODO:
         />
       ) : (
-        <meshStandardMaterial color={props.color ? props.color : "red"} />
+        <meshStandardMaterial color={props.color ? props.color : ""} />
       )}
-      {/* <meshStandardMaterial
-        map={colorMap}
-        displacementMap={displacementMap}
-        normalMap={normalMap}
-        roughnessMap={roughnessMap}
-        aoMap={aoMap}
-        color={props.objProps ? props.color : "red"}
-      /> */}
-      {/* <meshStandardMaterial color={props.color ? props.color : "red"} /> */}
 
       {props.htmlSettings ? (
         <HtmlSettings
@@ -100,42 +91,4 @@ function BoxGeometry(props: {
 
 export default BoxGeometry;
 
-//args={props.geometrie.scaleXYZ}
-
-/*
-[
-        "./textures/" +
-          props.currentObjProps.texture +
-          "/Substance_Graph_BaseColor.jpg",
-        "./textures/" +
-          props.currentObjProps.texture +
-          "/Substance_Graph_Height.png",
-        "./textures/" +
-          props.currentObjProps.texture +
-          "/Substance_Graph_Normal.jpg",
-        "./textures/" +
-          props.currentObjProps.texture +
-          "/Substance_Graph_Roughness.jpg",
-        "./textures/" +
-          props.currentObjProps.texture +
-          "/Substance_Graph_AmbientOcclusion.jpg",
-      ]
-*/
-
-{
-  /* <meshStandardMaterial
-          map={colorMap}
-          //displacementMap={displacementMap}
-          normalMap={normalMap}
-          roughnessMap={roughnessMap}
-          aoMap={aoMap}
-        /> 
-        
-        <meshStandardMaterial
-          map={colorMap}
-          displacementMap={displacementMap}
-          normalMap={normalMap}
-          roughnessMap={roughnessMap}
-          aoMap={aoMap}
-        />*/
-}
+// normal deviced coordinates
