@@ -17,6 +17,7 @@ const DatabaseTable = (props: {
   tableName: string;
   showInsert: boolean;
   sessionID: string;
+  user: User;
 }) => {
   const [data, setData] = useState<any[]>();
   const [properties, setProperties] = useState<string[]>();
@@ -140,6 +141,7 @@ const DatabaseTable = (props: {
       {props.showInsert ? (
         <Stack className="roundedShadow">
           <Insert
+            idUser={props.user.id}
             sessionID={props.sessionID}
             tableName={props.tableName}
             porperties={properties}
@@ -151,6 +153,7 @@ const DatabaseTable = (props: {
 
       {showEditData ? (
         <EditData
+          idUser={props.user.id}
           sessionID={props.sessionID}
           setShowEdit={setShowEditData}
           tableName={props.tableName}

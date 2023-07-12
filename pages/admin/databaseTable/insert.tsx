@@ -8,7 +8,8 @@ const Insert = (props: {
   porperties: string[];
   setReload: (zahl: number) => void;
   types: string[];
-  sessionID: string,
+  sessionID: string;
+  idUser: string;
 }) => {
   const [values, setValues] = useState<any[]>([]);
 
@@ -27,8 +28,13 @@ const Insert = (props: {
         tableName: props.tableName,
         data: insertData,
         sessionID: props.sessionID,
+        idUser: props.idUser,
       }),
     });
+
+    const erg = await response.json();
+
+    return erg;
   };
 
   const createObjectFromArray = (keys: string[]): { [key: string]: any } => {
@@ -100,7 +106,7 @@ const Insert = (props: {
           })
         : null}
       <Button
-        onClick={() => {
+        onClick={async () => {
           let insertData = createObjectFromArray(props.porperties);
           if (hasUndefinedProperty(insertData)) {
             alert(
@@ -108,7 +114,14 @@ const Insert = (props: {
             );
             return;
           }
-          handleInsert();
+          const flag = await handleInsert();
+
+          if (!flag || flag.error) {
+            alert(flag.error);
+            return;
+          }
+
+          alert("DB_insertInTable erfolgreich");
           props.setReload(Math.random());
         }}
       >

@@ -37,6 +37,7 @@ const AdminArea = (props: {
     props.user.isAdmin ? (
       <Stack className="adminArea">
         <DatabaseTable
+          user={props.user}
           tableName="user"
           showInsert={true}
           sessionID={props.sessionID}

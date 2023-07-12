@@ -11,14 +11,19 @@ const FbxListEntry = (props: {
   loggedInUser: User;
   sessionID: string;
 }) => {
-  const handleFbxDelete = async (fbxModel: string) => {
-    await fetch("api/filesystem/FS_deleteFbxModel", {
+  const handleFbxDelete = async (fbxModel: string): Promise<boolean> => {
+    const request = await fetch("api/filesystem/FS_deleteFbxModel", {
       method: "POST",
       body: JSON.stringify({
         fbxModel: fbxModel,
         sessionID: props.sessionID,
+        idUser: props.loggedInUser.id,
       }),
     });
+
+    const erg = await request.json();
+
+    return erg;
   };
 
   return (
@@ -35,9 +40,11 @@ const FbxListEntry = (props: {
             );
 
             if (confirmed) {
-              await handleFbxDelete(props.file);
+              const flag = await handleFbxDelete(props.file);
               props.setReload(Math.random());
-              alert(props.file + " wurde erfolgreich gelöscht");
+              if (flag && !(typeof flag === "object"))
+                alert(props.file + " wurde erfolgreich gelöscht");
+              else alert("löschen fehlgeschlagen");
             }
           }}
         >

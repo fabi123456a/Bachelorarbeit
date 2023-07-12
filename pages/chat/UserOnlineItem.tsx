@@ -13,7 +13,7 @@ export default function UserOnlineItem(props: {
       <Stack direction={"row"}>
         <FiberManualRecordIcon sx={{ color: "#39e600" }} />
         <Typography sx={{ fontSize: props.fontSize }}>
-          {props.session ? props.session.user.loginID : null}
+          {props.session ? props.session.id : null}
         </Typography>
       </Stack>
     </>

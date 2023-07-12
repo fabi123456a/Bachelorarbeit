@@ -123,7 +123,7 @@ const SceneList = (props: {
                   ></SceneListEntry>
                 );
               })
-            : "noch keine Leitstellen-Konfiguration vorhanden. Erstellen Sie die erste Konfiguration..."}
+            : "keine Leitstellen-Konfiguration vorhanden"}
           {/* bei readonly user ausblenden */}
           {props.user.readOnly ? null : (
             <AddScene

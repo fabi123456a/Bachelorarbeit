@@ -18,11 +18,12 @@ const AddScene = (props: {
     const response = await fetch("/api/database/Scene/DB_insertScene", {
       method: "POST",
       body: JSON.stringify({
-        id: refSceneID.current,
+        idScene: refSceneID.current,
         idUserCreator: props.user.id,
         name: name,
         version: 0,
         sessionID: props.sessionID,
+        idUser: props.user.id,
       }),
     });
 
@@ -89,6 +90,10 @@ const AddScene = (props: {
 
             // insert scene into DB
             const scene: Scene = await addSceneToDB();
+            if (!scene.id) {
+              alert("scene ertsellen fehlgeschlagen");
+              return;
+            }
 
             // membership
             await addMemberShipToDB(refSceneID.current, props.user.id, false);

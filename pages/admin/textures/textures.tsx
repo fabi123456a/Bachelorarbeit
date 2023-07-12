@@ -54,14 +54,19 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
     );
   };
 
-  const handleTextureDelete = async (textureName: string) => {
-    await fetch("api/filesystem/FS_deleteTexture", {
+  const handleTextureDelete = async (textureName: string): Promise<boolean> => {
+    const request = await fetch("api/filesystem/FS_deleteTexture", {
       method: "POST",
       body: JSON.stringify({
         textureName: textureName,
         sessionID: props.sessionID,
+        idUser: props.loggedInUser.id,
       }),
     });
+
+    const erg = await request.json();
+
+    return erg;
   };
 
   useEffect(() => {
@@ -108,28 +113,40 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
     <Stack className="texturesContainer">
       {textures
         ? textures.map((tex: string) => (
-            <Stack direction={"row"} className="roundedShadow textureContainer" key={tex}>
+            <Stack
+              direction={"row"}
+              className="roundedShadow textureContainer"
+              key={tex}
+            >
               <img
                 src={`./textures/${tex}/Substance_Graph_BaseColor.jpg`}
                 height={"50px"}
                 style={{ marginRight: "8px", height: "20vh", width: "20vh" }}
               ></img>
               <Typography>{tex}</Typography>
-              <IconButton
-                className="iconButton"
-                onClick={async () => {
-                  const confirmed = window.confirm(
-                    "Willst du die Texture '" + tex + "' wirklich löschen?"
-                  );
+              {props.loggedInUser.isAdmin ? (
+                <IconButton
+                  className="iconButton"
+                  onClick={async () => {
+                    const confirmed = window.confirm(
+                      "Willst du die Texture '" + tex + "' wirklich löschen?"
+                    );
 
-                  if (!confirmed) return;
+                    if (!confirmed) return;
 
-                  await handleTextureDelete(tex);
-                  setReload(Math.random());
-                }}
-              >
-                <DeleteForeverOutlined></DeleteForeverOutlined>
-              </IconButton>
+                    const flag = await handleTextureDelete(tex);
+                    if (flag && !(typeof flag === "object")) {
+                      // notwendig weil wenn keine session id dann wird {error: ".."} zurückgeliefert
+                      alert("texture wurde gelöscht");
+                      setReload(Math.random());
+                    } else {
+                      alert("löschen fehlgeschlagen");
+                    }
+                  }}
+                >
+                  <DeleteForeverOutlined></DeleteForeverOutlined>
+                </IconButton>
+              ) : null}
             </Stack>
           ))
         : null}

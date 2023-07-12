@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prismaClient } from "../prismaclient/_prismaClient";
 import { checkSessionID } from "./Session/_checkSessionID";
+import checkUserRights from "./User/_checkUserRights";
 
 export default async function DB_insertInTable(
   req: NextApiRequest,
@@ -8,6 +9,9 @@ export default async function DB_insertInTable(
 ) {
   const flag = await checkSessionID(req, res);
   if (!flag) return;
+
+  const rights = await checkUserRights(req, res, true, false);
+  if (!rights) return;
   
   const requestBody = JSON.parse(req.body);
   const id = requestBody["id"];
@@ -21,7 +25,7 @@ export default async function DB_insertInTable(
       data: { [prop]: newData },
     });
 
-    //res.status(200).json(data);
+    res.status(200).json(data);
   } catch (error) {
     console.error(error);
     res.status(200).json(null);

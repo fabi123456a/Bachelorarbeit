@@ -22,6 +22,7 @@ const EditData = (props: {
   setActData: (data: string) => void;
   setActDataRowID: (id: string) => void;
   sessionID: string;
+  idUser: string;
 }) => {
   const [stringValue, setStringValue] = useState<string>(props.currentData);
   const [boolValue, setBoolValue] = useState<boolean>(
@@ -41,8 +42,13 @@ const EditData = (props: {
         prop: props.porpertie,
         newData: props.dataType === "string" ? stringValue : boolValue,
         sessionID: props.sessionID,
+        idUser: props.idUser,
       }),
     });
+
+    const erg = await response.json();
+
+    return erg;
   };
 
   return (
@@ -93,8 +99,14 @@ const EditData = (props: {
         </Stack>
       ) : null}
       <Button
-        onClick={() => {
-          editDataInDatabase(); // TODO: prüfen ob das löschen überhaupt funktioniert hat
+        onClick={async () => {
+          const flag = await editDataInDatabase(); // TODO: prüfen ob das löschen überhaupt funktioniert hat
+
+          if (!flag || flag.error) {
+            alert(flag.error);
+            return;
+          }
+
           props.setReload(Math.random());
           props.setShowEdit(false);
         }}
