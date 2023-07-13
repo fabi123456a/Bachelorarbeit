@@ -19,16 +19,26 @@ const SceneListEntry = (props: {
   const [modelsCount, setModelsCount] = useState<number>(null);
 
   const deleteSceneFromDB = async () => {
-    const response = await fetch("/api/database/Scene/DB_deleteSceneByID", {
-      method: "POST",
-      body: JSON.stringify({
-        idScene: props.scene.id,
-        sessionID: props.sessionID,
-        idUser: props.user.id,
-      }),
-    });
+    // const response = await fetch("/api/database/Scene/DB_deleteSceneByID", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     idScene: props.scene.id,
+    //     sessionID: props.sessionID,
+    //     idUser: props.user.id,
+    //   }),
+    // });
 
-    return response;
+    // return response;
+
+    const requestDelete = await fetchData(
+      "scene",
+      "delete",
+      { id: props.scene.id },
+      null,
+      null
+    );
+
+    if (requestDelete.error) return null;
   };
 
   // neu fecthData

@@ -16,21 +16,39 @@ const AddScene = (props: {
 
   const addSceneToDB = async () => {
     refSceneID.current = uuidv4();
-    const response = await fetch("/api/database/Scene/DB_insertScene", {
-      method: "POST",
-      body: JSON.stringify({
-        idScene: refSceneID.current,
-        idUserCreator: props.user.id,
-        name: name,
-        version: 0,
-        sessionID: props.sessionID,
-        idUser: props.user.id,
-      }),
-    });
+    // const response = await fetch("/api/database/Scene/DB_insertScene", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     idScene: refSceneID.current,
+    //     idUserCreator: props.user.id,
+    //     name: name,
+    //     version: 0,
+    //     sessionID: props.sessionID,
+    //     idUser: props.user.id,
+    //   }),
+    // });
 
-    const result = await response.json();
+    // const result = await response.json();
 
-    return result;
+    const sceneData: Scene = {
+      id: refSceneID.current,
+      createDate: new Date(),
+      idUserCreater: props.user.id,
+      name: name,
+      newestVersion: 1,
+    };
+
+    const requestInsertScene = await fetchData(
+      "scene",
+      "create",
+      {},
+      sceneData,
+      null
+    );
+
+    if (requestInsertScene.error) return null;
+
+    return requestInsertScene;
   };
 
   // der creator ist auch in membership drin

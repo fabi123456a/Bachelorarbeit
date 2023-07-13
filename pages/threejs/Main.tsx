@@ -453,36 +453,27 @@ export default function Main(props: {
   }
 
   async function changeSceneVersion(idScene: String, version: number) {
-    const response = await fetch("/api/database/Scene/DB_changeNewestVersion", {
-      method: "POST",
-      body: JSON.stringify({
-        idScene: idScene,
-        version: version,
-        sessionID: props.sessionID,
-        idUser: props.user.id,
-      }),
-    });
-    const responseModel = await response.json();
+    // const response = await fetch("/api/database/Scene/DB_changeNewestVersion", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     idScene: idScene,
+    //     version: version,
+    //     sessionID: props.sessionID,
+    //     idUser: props.user.id,
+    //   }),
+    // });
+    // const responseModel = await response.json();
 
-    // weitere prüfungen
-    // ...
+    const requestChangeVersion = await fetchData(
+      "scene",
+      "update",
+      { id: idScene },
+      { newestVersion: version },
+      null
+    );
+
+    if (requestChangeVersion.error) return null;
   }
-
-  // klappt aber wird nicht mehr benötigt wegen datum im model feld
-  // async function deleteAllModelsFromSceneInDB(idScene: String) {
-  //   const response = await fetch("/api/database/Model/DB_deleteAllModelsByID", {
-  //     method: "POST",
-  //     body: JSON.stringify({
-  //       idScene: idScene,
-  //       sessionID: props.sessionID,
-  //       idUser: props.user.id,
-  //     }),
-  //   });
-  //   const responseModel = await response.json();
-
-  //   // weitere prüfungen
-  //   // ...
-  // }
 
   async function insertModelToDB(model: Model) {
     const response = await fetch("/api/database/Model/DB_insertModel", {

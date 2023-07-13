@@ -15,7 +15,6 @@ import UploadFbx from "./threejs/UI-Elements/ModelList/fbxHandle/uploadFbx";
 import Register from "./login/register";
 import FbxList from "./admin/fbxModels/fbxList";
 import AdminArea from "./admin/adminArea";
-import Feedback from "./feedback/feedback";
 import Home from "./home/home";
 import SceneDetails from "./scenes/sceneDetails/sceneDetail";
 import Chat from "./chat/Chat";

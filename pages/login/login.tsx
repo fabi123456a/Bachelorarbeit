@@ -29,6 +29,16 @@ const Home = (props: {
     const result = await response.json();
 
     return result;
+
+    // const requestCheckLogin = await fetchData(
+    //   "scene",
+    //   "create",
+    //   {},
+    //   sceneData,
+    //   null
+    // );
+
+    // if (requestInsertScene.error) return null;
   };
 
   // beim start alte sessions löschen
