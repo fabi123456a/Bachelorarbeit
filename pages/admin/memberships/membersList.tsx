@@ -6,6 +6,7 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import Checkbox from "@mui/material/Checkbox";
 import MembershipEntry from "./membershipEntry";
 import AddMember from "../../scenes/sceneDetails/membersList/insertMember";
+import fetchData from "../../fetchData";
 
 const MemberListEntry = (props: {
   scene: Scene;
@@ -21,21 +22,32 @@ const MemberListEntry = (props: {
   const [reload, setReload] = useState(0);
 
   const getAllSceneMembershipsFromScene = async (idScene: string) => {
-    const requestMemberships = await fetch(
-      "/api/database/Membership/DB_getAllMembersBySceneID",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          idScene: idScene,
-          sessionID: props.sessionID,
-          idUser: props.idUser,
-        }),
-      }
+    // const requestMemberships = await fetch(
+    //   "/api/database/Membership/DB_getAllMembersBySceneID",
+    //   {
+    //     method: "POST",
+    //     body: JSON.stringify({
+    //       idScene: idScene,
+    //       sessionID: props.sessionID,
+    //       idUser: props.idUser,
+    //     }),
+    //   }
+    // );
+    // const memberships: (SceneMemberShip & {
+    //   user: User;
+    // })[] = await requestMemberships.json();
+
+    const requestedMemberships = await fetchData(
+      "sceneMemberShip",
+      "select",
+      { idScene: idScene },
+      null,
+      { user: true }
     );
-    const memberships: (SceneMemberShip & {
-      user: User;
-    })[] = await requestMemberships.json();
-    return memberships;
+
+    if (requestedMemberships.err) return;
+
+    return requestedMemberships;
   };
 
   useEffect(() => {
@@ -84,6 +96,7 @@ const MemberListEntry = (props: {
         <Typography>lädt..</Typography>
       )}
       <AddMember
+        idUser={props.idUser}
         sessionID={props.sessionID}
         members={members}
         scene={props.scene}

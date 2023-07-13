@@ -1,7 +1,8 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useRef, useState } from "react";
-import { Model, Scene, User } from "@prisma/client";
+import { Model, Scene, SceneMemberShip, User } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
+import fetchData from "../fetchData";
 
 // einmal in DB und json file to FS
 const AddScene = (props: {
@@ -38,22 +39,40 @@ const AddScene = (props: {
     idUser: string,
     readonly: boolean
   ) => {
-    const response = await fetch(
-      "/api/database/Membership/DB_insertMemberShip",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          idScene: idScene,
-          idUser: idUser,
-          readonly: readonly,
-          sessionID: props.sessionID,
-        }),
-      }
+    // const response = await fetch(
+    //   "/api/database/Membership/DB_insertMemberShip",
+    //   {
+    //     method: "POST",
+    //     body: JSON.stringify({
+    //       idScene: idScene,
+    //       idUser: idUser,
+    //       readonly: readonly,
+    //       sessionID: props.sessionID,
+    //     }),
+    //   }
+    // );
+
+    // const result = await response.json();
+
+    const membership: SceneMemberShip = {
+      id: uuidv4(),
+      idScene: idScene,
+      idUser: idUser,
+      entryDate: new Date(),
+      readOnly: readonly,
+    };
+    
+    const request = await fetchData(
+      "sceneMemberShip",
+      "create",
+      null,
+      membership,
+      null
     );
 
-    const result = await response.json();
+    if (request.err) return;
 
-    return result;
+    return request;
   };
 
   const addModelsToDB = async (model: Model) => {

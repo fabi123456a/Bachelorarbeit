@@ -3,6 +3,7 @@ import { Model, Scene, SceneMemberShip, User } from "@prisma/client";
 import { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { DeleteForever } from "@mui/icons-material";
+import fetchData from "../../../fetchData";
 
 const MembersListEntry = (props: {
   membership: SceneMemberShip & {
@@ -25,36 +26,56 @@ const MembersListEntry = (props: {
   };
 
   const deleteMemberShipByIdInDB = async (id: string) => {
-    const deleteRequest = await fetch(
-      "/api/database/Membership/DB_deleteMemberShipByID",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          id: id,
-          sessionID: props.sessionID,
-          idUser: props.loggedInUser.id,
-        }),
-      }
+    // const deleteRequest = await fetch(
+    //   "/api/database/Membership/DB_deleteMemberShipByID",
+    //   {
+    //     method: "POST",
+    //     body: JSON.stringify({
+    //       id: id,
+    //       sessionID: props.sessionID,
+    //       idUser: props.loggedInUser.id,
+    //     }),
+    //   }
+    // );
+
+    // const erg = await deleteRequest.json();
+
+    const requestDelete = await fetchData(
+      "sceneMemberShip",
+      "delete",
+      { id: id },
+      null,
+      null
     );
 
-    const erg = await deleteRequest.json();
-    if (erg) return true;
+    if (requestDelete.err) return;
+
+    if (requestDelete) return true;
     else return false;
   };
 
   const updateMembershipInDB = async (id: string, readonly: boolean) => {
-    const deleteRequest = await fetch(
-      "/api/database/Membership/DB_changeReadonlyByID",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          id: id,
-          readonly: readonly,
-          sessionID: props.sessionID,
-          idUser: props.loggedInUser.id,
-        }),
-      }
+    // const deleteRequest = await fetch(
+    //   "/api/database/Membership/DB_changeReadonlyByID",
+    //   {
+    //     method: "POST",
+    //     body: JSON.stringify({
+    //       id: id,
+    //       readonly: readonly,
+    //       sessionID: props.sessionID,
+    //       idUser: props.loggedInUser.id,
+    //     }),
+    //   }
+    // );
+    const requestedChatEntries = await fetchData(
+      "sceneMemberShip",
+      "update",
+      { id: id },
+      { readOnly: readonly },
+      null
     );
+
+    if (requestedChatEntries.err) return;
   };
 
   return props.membership ? (

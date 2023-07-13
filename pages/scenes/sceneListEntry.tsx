@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Model, Scene, User } from "@prisma/client";
 import AddScene from "./addScne";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import fetchData from "../fetchData";
 
 const SceneListEntry = (props: {
   scene: Scene;
@@ -30,6 +31,7 @@ const SceneListEntry = (props: {
     return response;
   };
 
+  // neu fecthData // TODO:
   const getUserFromScene = async () => {
     const response = await fetch("/api/database/User/DB_getUserByID", {
       method: "POST",
@@ -41,26 +43,51 @@ const SceneListEntry = (props: {
 
     const user = (await response.json()) as User;
 
+    // const requestedCreator = await fetchData(
+    //   "user",
+    //   "select",
+    //   { id: props.scene.idUserCreater },
+    //   null,
+    //   null
+    // );
+
+    // if (requestedCreator.err) return;
+
+    // alert(JSON.stringify(requestedCreator));
+
     setUserCreator(user);
-    //console.log("-------:: " + ((await response.json()) as ModelUser).loginID);
   };
 
   const getSceneModelsCount = async (idScene: string) => {
-    const modelsRequest = await fetch(
-      "/api/database/Model/DB_getAllModelsByID",
+    // const modelsRequest = await fetch(
+    //   "/api/database/Model/DB_getAllModelsByID",
+    //   {
+    //     method: "POST",
+    //     body: JSON.stringify({
+    //       idScene: props.scene.id,
+    //       version: props.scene.newestVersion,
+    //       sessionID: props.sessionID,
+    //       idUser: props.user.id,
+    //     }),
+    //   }
+    // );
+
+    // const models: Model[] = await modelsRequest.json();
+
+    const requestedModels = await fetchData(
+      "model",
+      "select",
       {
-        method: "POST",
-        body: JSON.stringify({
-          idScene: props.scene.id,
-          version: props.scene.newestVersion,
-          sessionID: props.sessionID,
-          idUser: props.user.id,
-        }),
-      }
+        idScene: props.scene.id,
+        version: props.scene.newestVersion,
+      },
+      null,
+      null
     );
 
-    const models: Model[] = await modelsRequest.json();
-    setModelsCount(models.length);
+    if (requestedModels.err) return;
+
+    setModelsCount(requestedModels.length);
   };
 
   useEffect(() => {

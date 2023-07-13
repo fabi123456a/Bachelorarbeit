@@ -12,6 +12,7 @@ import { User, Scene, SceneMemberShip } from "@prisma/client";
 import AddScene from "./addScne";
 import SceneListEntry from "./sceneListEntry";
 import SceneDetails from "./sceneDetails/sceneDetail";
+import fetchData from "../fetchData";
 
 const SceneList = (props: {
   setScene: (scene: Scene) => void;
@@ -32,41 +33,65 @@ const SceneList = (props: {
   >(null);
 
   const getMembershipFromSceneID = async (idUser: string, idScene: string) => {
-    const requestedMembership = await fetch(
-      "/api/database/Membership/DB_getMembershipBySceneID",
+    // const requestedMembership = await fetch(
+    //   "/api/database/Membership/DB_getMembershipBySceneID",
+    //   {
+    //     method: "POST",
+    //     body: JSON.stringify({
+    //       idUser: idUser,
+    //       idScene: idScene,
+    //       sessionID: props.sessionID,
+    //     }),
+    //   }
+    // );
+
+    // const mebership = await requestedMembership.json();
+
+    const requestedMembership = await fetchData(
+      "SceneMemberShip",
+      "select",
       {
-        method: "POST",
-        body: JSON.stringify({
-          idUser: idUser,
-          idScene: idScene,
-          sessionID: props.sessionID,
-        }),
-      }
+        idScene: idScene,
+        idUser: idUser,
+      },
+      null,
+      null
     );
 
-    const mebership = await requestedMembership.json();
+    if (requestedMembership.error) return null;
 
-    return mebership;
+    return requestedMembership;
   };
 
   const getAllSceneMemberships = async () => {
-    const requestMemberships = await fetch(
-      "/api/database/Membership/DB_getAllMembershipsByUserID",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          idUser: props.user.id,
-          sessionID: props.sessionID,
-        }),
-      }
-    );
-    const memberships: SceneMemberShip &
-      {
-        scene: Scene;
-      }[] = await requestMemberships.json();
-    //setMemberships(memberships);
+    // const requestMemberships = await fetch(
+    //   "/api/database/Membership/DB_getAllMembershipsByUserID",
+    //   {
+    //     method: "POST",
+    //     body: JSON.stringify({
+    //       idUser: props.user.id,
+    //       sessionID: props.sessionID,
+    //     }),
+    //   }
+    // );
+    // const memberships: SceneMemberShip &
+    //   {
+    //     scene: Scene;
+    //   }[] = await requestMemberships.json();
 
-    const extractedScenes = memberships.map((membership) => membership.scene);
+    const requestMemberships = await fetchData(
+      "SceneMemberShip",
+      "select",
+      { idUser: props.user.id },
+      null,
+      { scene: true }
+    );
+
+    if (requestMemberships.err) return;
+
+    const extractedScenes = requestMemberships.map(
+      (membership) => membership.scene
+    );
     setScenes(extractedScenes);
   };
 

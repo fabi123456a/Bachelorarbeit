@@ -10,6 +10,8 @@ import { useEffect, useRef, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import fetchData from "../../../fetchData";
+import { v4 as uuidv4 } from "uuid";
 
 const AddMember = (props: {
   scene: Scene;
@@ -48,22 +50,40 @@ const AddMember = (props: {
     idUser: string,
     readonly: boolean
   ) => {
-    const response = await fetch(
-      "/api/database/Membership/DB_insertMemberShip",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          idScene: idScene,
-          idUser: idUser,
-          readonly: readonly,
-          sessionID: props.sessionID,
-        }),
-      }
+    // const response = await fetch(
+    //   "/api/database/Membership/DB_insertMemberShip",
+    //   {
+    //     method: "POST",
+    //     body: JSON.stringify({
+    //       idScene: idScene,
+    //       idUser: idUser,
+    //       readonly: readonly,
+    //       sessionID: props.sessionID,
+    //     }),
+    //   }
+    // );
+
+    // const result = await response.json();
+
+    const membership: SceneMemberShip = {
+      id: uuidv4(),
+      idScene: idScene,
+      idUser: idUser,
+      entryDate: new Date(),
+      readOnly: readonly,
+    };
+
+    const request = await fetchData(
+      "sceneMemberShip",
+      "create",
+      null,
+      membership,
+      null
     );
 
-    const result = await response.json();
+    if (request.err) return;
 
-    return result;
+    return request;
   };
 
   const checkIfIsAlreadyMember = (loginID: string): boolean => {

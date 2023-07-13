@@ -10,6 +10,7 @@ import Draggable from "react-draggable";
 import CloseIcon from "@mui/icons-material/Close";
 import ChatIcon from "@mui/icons-material/Chat";
 import { v4 as uuidv4 } from "uuid";
+import fetchData from "../fetchData";
 
 let socket;
 
@@ -53,18 +54,32 @@ export default function Chat(props: {
   // alle chat einträge laden
   useEffect(() => {
     const getAllChatEntry = async () => {
-      const response = await fetch(
-        "/api/database/ChatEntry/DB_getAllChatEntrys",
+      // const response = await fetch(
+      //   "/api/database/ChatEntry/DB_getAllChatEntrys",
+      //   {
+      //     method: "POST",
+      //     body: JSON.stringify({
+      //       sessionID: props.sessionID,
+      //       idUser: props.user.id,
+      //     }),
+      //   }
+      // );
+      // const result = await response.json();
+
+      // TODO: orderBy: { datum: "desc", }
+      const requestedChatEntries = await fetchData(
+        "ChatEntry",
+        "select",
+        {},
+        null,
         {
-          method: "POST",
-          body: JSON.stringify({
-            sessionID: props.sessionID,
-            idUser: props.user.id,
-          }),
+          user: true,
         }
       );
-      const result = await response.json();
-      return result;
+
+      if (requestedChatEntries.err) return;
+
+      return requestedChatEntries;
     };
 
     getAllChatEntry().then((chatEntrys) => {

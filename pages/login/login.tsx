@@ -9,7 +9,7 @@ const Home = (props: {
   // sessionID: string;
 }) => {
   const [txtLoginID, setTxtLoginID] = useState<string>("admin");
-  const [txtPassword, setTxtPassword] = useState<string>("123");
+  const [txtPassword, setTxtPassword] = useState<string>("ADMIN");
   const loggedIn = useRef<boolean>(false);
 
   const handleBtnRegisterClick = () => {

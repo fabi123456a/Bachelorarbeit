@@ -19,6 +19,8 @@ import Feedback from "./feedback/feedback";
 import Home from "./home/home";
 import SceneDetails from "./scenes/sceneDetails/sceneDetail";
 import Chat from "./chat/Chat";
+import Test from "./text";
+import fetchData from "./fetchData";
 
 const Index = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -28,32 +30,42 @@ const Index = () => {
   const [sceneMembership, setSceneMembership] = useState<SceneMemberShip>();
   const [session, setSession] = useState<Session>(null);
 
-  const getSession = async (idUser: string) => {
-    const requestedSession = await fetch(
-      "api/database/Session/DB_getSessionByUserID",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          idUser: idUser,
-        }),
-      }
+  // neu fetchData
+  const getSession = async (): Promise<Session> => {
+    // const requestedSession = await fetch(
+    //   "api/database/Session/DB_getSessionByUserID",
+    //   {
+    //     method: "POST",
+    //     body: JSON.stringify({
+    //       idUser: idUser,
+    //     }),
+    //   }
+    // );
+
+    const requestedSession = await fetchData(
+      "session",
+      "select",
+      { idUser: actUser.id },
+      null,
+      null
     );
 
-    const session: Session = await requestedSession.json();
-    return session;
+    if (requestedSession.error) return null;
+
+    return requestedSession;
   };
 
   useEffect(() => {
     if (!actUser) return;
 
-    getSession(actUser.id).then((session: Session) => {
-      // alert("load session:" + actUser.id);
+    getSession().then((session: Session) => {
       setSession(session);
-      // alert("load session:" + session.id);
     });
   }, [actUser]);
 
-  return (
+  return false ? (
+    <Test></Test>
+  ) : (
     <Stack className="index">
       {/* <Typography>{session ? session.id : null}</Typography> */}
       {loggedIn ? (
