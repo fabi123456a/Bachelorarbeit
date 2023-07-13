@@ -18,6 +18,7 @@ const AddMember = (props: {
   })[];
   setReload: (n: number) => void;
   sessionID: string;
+  idUser: string;
 }) => {
   const [name, setName] = useState<string>("");
   const [user, setUser] = useState<User>(null);
@@ -29,6 +30,7 @@ const AddMember = (props: {
       body: JSON.stringify({
         loginID: loginID,
         sessionID: props.sessionID,
+        idUser: props.idUser,
       }),
     });
 

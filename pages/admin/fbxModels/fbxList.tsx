@@ -29,6 +29,7 @@ const FbxList = (props: { loggedInUser: User; sessionID: string }) => {
           method: "POST",
           body: JSON.stringify({
             sessionID: props.sessionID,
+            idUser: props.loggedInUser.id,
           }),
         });
         const data: FileListResponse = await response.json();

@@ -1,10 +1,14 @@
 import { Model, PrismaClient } from "@prisma/client";
 import { prismaClient } from "../../prismaclient/_prismaClient";
 import { checkSessionID } from "../Session/_checkSessionID";
+import checkUserRights from "../User/_checkUserRights";
 
 export default async function handler(req, res) {
   const flag = await checkSessionID(req, res);
   if (!flag) return;
+
+  const rights = await checkUserRights(req, res, false, true);
+  if (!rights) return;
 
   try {
     const b = req.body;

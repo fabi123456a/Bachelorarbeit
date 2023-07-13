@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { checkSessionID } from "../Session/_checkSessionID";
 import { Scene } from "@prisma/client";
 import { prismaClient } from "../../prismaclient/_prismaClient";
+import checkUserRights from "../User/_checkUserRights";
 
 export default async function DB_getAllSceneNames(
   req: NextApiRequest,
@@ -9,6 +10,9 @@ export default async function DB_getAllSceneNames(
 ) {
   const flag = await checkSessionID(req, res);
   if (!flag) return;
+
+  const rights = await checkUserRights(req, res, false, false);
+  if (!rights) return;
 
   const requestBody = JSON.parse(req.body);
   const idUser = requestBody["id"];

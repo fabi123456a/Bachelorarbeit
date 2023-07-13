@@ -59,7 +59,11 @@ const AddScene = (props: {
   const addModelsToDB = async (model: Model) => {
     const response = await fetch("/api/database/Model/DB_insertModel", {
       method: "POST",
-      body: JSON.stringify({ model: model, sessionID: props.sessionID }), // TODO: sessionID
+      body: JSON.stringify({
+        model: model,
+        sessionID: props.sessionID,
+        idUser: props.user.id,
+      }), // TODO: sessionID
       // headers: {
       //   "Content-Type": "application/json",
       // },

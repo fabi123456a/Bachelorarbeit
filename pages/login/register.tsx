@@ -15,7 +15,7 @@ const Register = (props: {
       body: JSON.stringify({
         loginID: loginID,
         pw: pw,
-        sessionID: props.sessionID,
+        sessionID: props.sessionID, // TODO:
       }),
     });
 

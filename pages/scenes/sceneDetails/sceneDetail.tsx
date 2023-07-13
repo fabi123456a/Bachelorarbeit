@@ -43,6 +43,7 @@ const SceneDetails = (props: {
           idScene: props.scene.id,
           version: props.scene.newestVersion,
           sessionID: props.sessionID,
+          idUser: props.loggedInUser.id,
         }),
       }
     );

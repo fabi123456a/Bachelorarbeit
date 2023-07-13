@@ -26,6 +26,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
       method: "POST",
       body: JSON.stringify({
         sessionID: props.sessionID,
+        idUser: props.loggedInUser.id,
       }),
     });
 

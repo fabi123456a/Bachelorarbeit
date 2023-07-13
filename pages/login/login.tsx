@@ -37,7 +37,7 @@ const Home = (props: {
       await fetch("/api/database/Session/DB_deleteOldSessions", {
         method: "POST",
         body: JSON.stringify({
-          // sessionID: props.sessionID,
+          // sessionID: props.sessionID, // TODO:
         }),
       });
     };

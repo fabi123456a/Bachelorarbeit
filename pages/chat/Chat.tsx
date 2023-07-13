@@ -59,6 +59,7 @@ export default function Chat(props: {
           method: "POST",
           body: JSON.stringify({
             sessionID: props.sessionID,
+            idUser: props.user.id,
           }),
         }
       );
@@ -79,6 +80,7 @@ export default function Chat(props: {
         body: JSON.stringify({
           tableName: "user",
           sessionID: props.sessionID,
+          idUser: props.user.id,
         }),
       });
       const result: User[] = await response.json();
@@ -97,6 +99,7 @@ export default function Chat(props: {
         method: "POST",
         body: JSON.stringify({
           sessionID: props.sessionID,
+          idUser: props.user.id,
         }),
       });
       const result: Session[] = await response.json();
@@ -139,6 +142,7 @@ export default function Chat(props: {
       method: "POST",
       body: JSON.stringify({
         sessionID: props.sessionID,
+        idUser: props.user.id,
       }),
     });
   };

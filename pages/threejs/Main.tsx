@@ -81,7 +81,12 @@ export default function Main(props: {
   useEffect(() => {
     // alle fbx modelle vom server laden
     const fetchData = async () => {
-      let response = await fetch("api/filesystem/FS_getFbxModels");
+      let response = await fetch("api/filesystem/FS_getFbxModels", {
+        method: "POST",
+        body: JSON.stringify({
+          idUser: props.user.id,
+        }),
+      });
       let result = await response.json();
       let fileNames: Array<string> = result["files"];
 
@@ -165,6 +170,7 @@ export default function Main(props: {
             idScene: props.scene.id,
             version: scenVersion,
             sessionID: props.sessionID,
+            idUser: props.user.id,
           }),
         }
       );
@@ -442,6 +448,7 @@ export default function Main(props: {
         idScene: idScene,
         version: version,
         sessionID: props.sessionID,
+        idUser: props.user.id,
       }),
     });
     const responseModel = await response.json();
@@ -454,7 +461,11 @@ export default function Main(props: {
   async function deleteAllModelsFromSceneInDB(idScene: String) {
     const response = await fetch("/api/database/Model/DB_deleteAllModelsByID", {
       method: "POST",
-      body: JSON.stringify({ idScene: idScene, sessionID: props.sessionID }),
+      body: JSON.stringify({
+        idScene: idScene,
+        sessionID: props.sessionID,
+        idUser: props.user.id,
+      }),
     });
     const responseModel = await response.json();
 
@@ -465,7 +476,11 @@ export default function Main(props: {
   async function insertModelToDB(model: Model) {
     const response = await fetch("/api/database/Model/DB_insertModel", {
       method: "POST",
-      body: JSON.stringify({ model: model, sessionID: props.sessionID }),
+      body: JSON.stringify({
+        model: model,
+        sessionID: props.sessionID,
+        idUser: props.user.id,
+      }),
       // headers: {
       //   "Content-Type": "application/json",
       // },

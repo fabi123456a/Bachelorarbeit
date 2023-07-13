@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { prismaClient } from "../../prismaclient/_prismaClient";
 import { User } from "@prisma/client";
 import { checkSessionID } from "../Session/_checkSessionID";
+import checkUserRights from "./_checkUserRights";
 
 export default async function DB_getUserByLoginID(
   req: NextApiRequest,
@@ -9,6 +10,9 @@ export default async function DB_getUserByLoginID(
 ) {
   const flag = await checkSessionID(req, res);
   if (!flag) return;
+
+  const rights = await checkUserRights(req, res, true, false);
+  if (!rights) return;
   
   const b = req.body;
   const requestData = JSON.parse(b);

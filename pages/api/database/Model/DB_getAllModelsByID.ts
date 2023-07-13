@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { prismaClient } from "../../prismaclient/_prismaClient";
 import { Model, User } from "@prisma/client";
 import { checkSessionID } from "../Session/_checkSessionID";
+import checkUserRights from "../User/_checkUserRights";
 
 export default async function DB_getAllModelsByID(
   req: NextApiRequest,
@@ -9,6 +10,9 @@ export default async function DB_getAllModelsByID(
 ) {
   const flag = await checkSessionID(req, res);
   if (!flag) return;
+
+  const rights = await checkUserRights(req, res, false, false);
+  if (!rights) return;
 
   const b = req.body;
   const requestData = JSON.parse(b);

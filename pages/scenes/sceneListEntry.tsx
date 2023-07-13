@@ -23,6 +23,7 @@ const SceneListEntry = (props: {
       body: JSON.stringify({
         idScene: props.scene.id,
         sessionID: props.sessionID,
+        idUser: props.user.id,
       }),
     });
 
@@ -53,6 +54,7 @@ const SceneListEntry = (props: {
           idScene: props.scene.id,
           version: props.scene.newestVersion,
           sessionID: props.sessionID,
+          idUser: props.user.id,
         }),
       }
     );
