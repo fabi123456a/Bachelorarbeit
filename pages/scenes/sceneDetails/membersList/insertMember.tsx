@@ -34,9 +34,13 @@ const AddMember = (props: {
       }),
     });
 
-    const user: User = await userRequest.json();
-    if (user) setUser(user);
-    else setUser(null);
+    const user = await userRequest.json();
+
+    if (!user || user["error"]) {
+      setUser(null);
+    } else {
+      setUser(user);
+    }
   };
 
   const addMemberShipToDB = async (

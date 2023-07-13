@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import SceneList from "../scenes/sceneList";
-import { Scene, User } from "@prisma/client";
+import { Scene, SceneMemberShip, User } from "@prisma/client";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import BuildIcon from "@mui/icons-material/Build";
@@ -26,6 +26,7 @@ const NavigateBar = (props: {
   setFbxModels: (flag: boolean) => void;
   setScene: (scene: Scene) => void;
   setTextures: (flag: boolean) => void;
+  setActSceneMembership: (membership: SceneMemberShip) => void;
   user: User;
 }) => {
   const [activeButton, setActiveButton] = useState("scenes");
@@ -135,6 +136,7 @@ const NavigateBar = (props: {
 
       {/* logout */}
       <Logout
+        setActSceneMembership={props.setActSceneMembership}
         setActUser={props.setActUser}
         setLoggedIn={props.setLoggedIn}
         setScene={props.setScene}

@@ -39,6 +39,7 @@ const MembersList = (props: {
       )}
       {props.loggedInUser.id == props.scene.idUserCreater ? (
         <AddMember
+          idUser={props.loggedInUser.id}
           sessionID={props.sessionID}
           scene={props.scene}
           members={props.members}

@@ -5,6 +5,7 @@ import DatabaseTable from "./databaseTable/databaseTable";
 import FbxList from "./fbxModels/fbxList";
 import { Scene, User } from "@prisma/client";
 import MemberList from "./memberships/sceneMembershipsList";
+import ErrorIcon from "@mui/icons-material/Error";
 
 const AdminArea = (props: {
   setAdminArea: (flag: boolean) => void;
@@ -25,8 +26,8 @@ const AdminArea = (props: {
 
     const scenes: Scene[] = await requestetScenes.json();
 
-    if (scenes["error"]) {
-      alert("alle scenen laden fehlgeschlagen");
+    if (!scenes || scenes["error"]) {
+      //alert("alle scenen laden fehlgeschlagen");
       return [];
     }
 
@@ -61,9 +62,12 @@ const AdminArea = (props: {
         )}
       </Stack>
     ) : (
-      <Typography>
-        Sie haben keine Berechtigung um den Berreich zu öffnen
-      </Typography>
+      <Stack direction={"row"} sx={{ m: "10px" }}>
+        <ErrorIcon color="error" sx={{ mr: "8px" }}></ErrorIcon>
+        <Typography color={"#d32f2f"}>
+          Sie haben keine Berechtigung um den Berreich zu öffnen
+        </Typography>
+      </Stack>
     )
   ) : null;
 };

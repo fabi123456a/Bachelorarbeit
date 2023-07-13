@@ -48,6 +48,12 @@ const handler: NextApiHandler = async (req, res) => {
 
   fbxFolderPath += textureName;
 
+  let form1 = formidable();
+  form1.parse(req, (err, fields, files) => {
+    const textureName = fields.textureName123;
+    console.log("Texture Name:", textureName);
+  });
+
   try {
     await fs.readdir(
       path.join(process.cwd() + "/public", "/textures", `/${textureName}`)

@@ -11,9 +11,9 @@ export default async function DB_getUserByLoginID(
   const flag = await checkSessionID(req, res);
   if (!flag) return;
 
-  const rights = await checkUserRights(req, res, true, false);
+  const rights = await checkUserRights(req, res, false, true);
   if (!rights) return;
-  
+
   const b = req.body;
   const requestData = JSON.parse(b);
   const loginID = requestData["loginID"];

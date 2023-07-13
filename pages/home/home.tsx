@@ -25,6 +25,7 @@ const Home = (props: {
   return (
     <Stack className="home">
       <NavigateBar
+        setActSceneMembership={props.setActSceneMembership}
         setAdminArea={setAdminArea}
         setSecens={setScenes}
         setSettings={setSettings}

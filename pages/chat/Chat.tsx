@@ -74,22 +74,21 @@ export default function Chat(props: {
 
   // alle user laden um von id zu user zu mappen
   useEffect(() => {
-    const getAllUser = async () => {
-      const response = await fetch("/api/database/DB_getAll", {
-        method: "POST",
-        body: JSON.stringify({
-          tableName: "user",
-          sessionID: props.sessionID,
-          idUser: props.user.id,
-        }),
-      });
-      const result: User[] = await response.json();
-      return result;
-    };
-
-    getAllUser().then((users: User[]) => {
-      setUsers(users);
-    });
+    // const getAllUser = async () => { // TODO: war einkommentiert, aber am anfang mit getAll alle chantentrys laden war der forbidden fehler
+    //   const response = await fetch("/api/database/DB_getAll", {
+    //     method: "POST",
+    //     body: JSON.stringify({
+    //       tableName: "user",
+    //       sessionID: props.sessionID,
+    //       idUser: props.user.id,
+    //     }),
+    //   });
+    //   const result: User[] = await response.json();
+    //   return result;
+    // };
+    // getAllUser().then((users: User[]) => {
+    //   setUsers(users);
+    // });
   }, []);
 
   // laden wer alles online ist
@@ -208,7 +207,7 @@ export default function Chat(props: {
             }
           )}
         </Stack>
-        <Stack sx={{ overflowY: "scroll" }}>
+        {/* <Stack sx={{ overflowY: "scroll" }}>
           <Typography fontSize={{ fontSize: fontSize1 }}>Online: </Typography>
           {sessions.map((session) => {
             return (
@@ -219,7 +218,7 @@ export default function Chat(props: {
               ></UserOnlineItem>
             );
           })}
-        </Stack>
+        </Stack> */}
       </Stack>
     </Draggable>
   ) : (

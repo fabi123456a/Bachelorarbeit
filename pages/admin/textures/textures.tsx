@@ -44,7 +44,8 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
       formData.append("files", selectedFiles[i]);
     }
 
-    formData.append("textureName", textureName);
+    formData.append("sessionID", props.sessionID);
+    formData.append("idUser", props.loggedInUser.id);
 
     const xxx = await fetch(
       `api/filesystem/FS_uploadTexture?textureName=${textureName}`,
@@ -95,6 +96,8 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
       "Substance_Graph_Normal.jpg",
       "Substance_Graph_Roughness.jpg",
     ];
+
+    if (!files) return;
 
     // Überprüfe, ob genau fünf Dateien ausgewählt wurden
     if (files.length !== 5) {
@@ -151,7 +154,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
             </Stack>
           ))
         : null}
-      {props.loggedInUser.isAdmin ? (
+      {!props.loggedInUser.readOnly ? (
         <Stack className="roundedShadow textureContainer">
           <Typography>Texture hinzufügen</Typography>
           <Stack direction={"row"}>
@@ -168,7 +171,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
                   filenames are right
                 </Typography>
               </Stack>
-            ) : selectedFiles.length >= 1 ? (
+            ) : selectedFiles?.length >= 1 ? (
               <Stack direction={"row"} sx={{ alignItems: "center" }}>
                 <ErrorOutlineIcon color="warning"></ErrorOutlineIcon>
                 <Typography fontSize={"12px"} color={"#ed6c02"}>
@@ -180,11 +183,15 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
 
           <div>
             <h3>Ausgewählte Dateien:</h3>
-            <ul>
-              {selectedFiles.map((file) => (
-                <li key={file.name}>{file.name}</li>
-              ))}
-            </ul>
+            {selectedFiles ? (
+              <ul>
+                {selectedFiles.map((file) => (
+                  <li key={file.name}>{file.name}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>keine Datei ausgewählt</p>
+            )}
           </div>
           {validateSelectedFiles(selectedFiles) ? (
             <Stack direction={"row"} sx={{ m: "8px" }}>
@@ -204,6 +211,8 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
                   }
                   await addTextureFilesToFS(textureName);
                   setReload(Math.random());
+                  setSelectedFiles(null);
+                  setTextureName("");
                 }}
               >
                 Hinzufügen

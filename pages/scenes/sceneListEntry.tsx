@@ -119,7 +119,8 @@ const SceneListEntry = (props: {
       </Stack>
 
       {mouseOver ? (
-        props.user.readOnly ? null : (
+        props.user.readOnly ? null : props.user.id ==
+          props.scene.idUserCreater ? (
           <DeleteForeverIcon
             color="error"
             sx={{ alignSelf: "center", marginLeft: "auto" }}
@@ -139,7 +140,7 @@ const SceneListEntry = (props: {
               }
             }}
           ></DeleteForeverIcon>
-        )
+        ) : null
       ) : null}
     </Stack>
   ) : null;
