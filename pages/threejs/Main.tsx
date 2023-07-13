@@ -476,28 +476,26 @@ export default function Main(props: {
   }
 
   async function insertModelToDB(model: Model) {
-    const response = await fetch("/api/database/Model/DB_insertModel", {
-      method: "POST",
-      body: JSON.stringify({
-        model: model,
-        sessionID: props.sessionID,
-        idUser: props.user.id,
-      }),
-    });
-    const responseModel = await response.json();
+    // const response = await fetch("/api/database/Model/DB_insertModel", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     model: model,
+    //     sessionID: props.sessionID,
+    //     idUser: props.user.id,
+    //   }),
+    // });
+    // const responseModel = await response.json();
 
     // TODO:
-    // const rquestInsertModel = await fetchData(
-    //   "model",
-    //   "create",
-    //   model,
-    //   null,
-    //   { user: true }
-    // );
+    const rquestInsertModel = await fetchData(
+      "model",
+      "create",
+      {},
+      model,
+      null
+    );
 
-    // if (rquestInsertModel.err) return;
-
-    // return rquestInsertModel;
+    if (rquestInsertModel.err) return;
   }
 
   const [selectedOption, setSelectedOption] = useState("");

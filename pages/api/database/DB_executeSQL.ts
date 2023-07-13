@@ -40,7 +40,6 @@ export default async function DB_executeSQL(
         result = await prismaClient[tableName].delete({ where: where });
         break;
       default:
-        console.log("DB_excuteSQL => " + JSON.stringify(result));
         return res.status(400).json({ error: "Invalid action." });
     }
 

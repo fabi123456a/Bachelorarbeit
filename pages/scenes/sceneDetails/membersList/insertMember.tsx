@@ -54,8 +54,8 @@ const AddMember = (props: {
   };
 
   const addMemberShipToDB = async (
-    idScene: string,
-    idUser: string,
+    idScene1: string,
+    idUser1: string,
     readonly: boolean
   ) => {
     // const response = await fetch(
@@ -75,8 +75,8 @@ const AddMember = (props: {
 
     const membership: SceneMemberShip = {
       id: uuidv4(),
-      idScene: idScene,
-      idUser: idUser,
+      idScene: idScene1,
+      idUser: idUser1,
       entryDate: new Date(),
       readOnly: readonly,
     };
@@ -110,6 +110,8 @@ const AddMember = (props: {
 
   return (
     <Stack className="" sx={{ mt: "2vh" }}>
+      <p>{user ? JSON.stringify(user) : "xx"}</p>
+      <p>{user ? JSON.stringify(user["id"]) + "_" : "xx"}</p>
       <Stack direction={"row"}>
         <TextField
           label="User hinzufügen..."
@@ -129,7 +131,7 @@ const AddMember = (props: {
                 alert(refName.current + " ist bereits member.");
                 return;
               }
-              await addMemberShipToDB(props.scene.id, user.id, false);
+              await addMemberShipToDB(props.scene.id, user[0].id, false);
               props.setReload(Math.random());
               setName("");
               setUser(null);

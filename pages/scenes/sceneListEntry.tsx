@@ -1,6 +1,6 @@
 import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import { Model, Scene, User } from "@prisma/client";
+import { Model, Scene, SceneMemberShip, User } from "@prisma/client";
 import AddScene from "./addScne";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import fetchData from "../fetchData";
@@ -30,6 +30,44 @@ const SceneListEntry = (props: {
 
     // return response;
 
+    // sceneMembership laden um an die id zu kommen zum deleten
+    const requestDelete13 = await fetchData(
+      "SceneMemberShip",
+      "select",
+      { idScene: props.scene.id, idUser: props.user.id },
+      null,
+      null
+    );
+
+    // memberhips der scene löschen
+    const requestDelete12 = await fetchData(
+      "SceneMemberShip",
+      "delete",
+      { id: requestDelete13[0].id },
+      null,
+      null
+    );
+
+    // alle models der scene laden für die id des models zum deleten
+    const requestedModelsFromScene: Model[] = await fetchData(
+      "model",
+      "select",
+      { idScene: props.scene.id },
+      null,
+      null
+    );
+
+    requestedModelsFromScene.map(async (model: Model) => {
+      // models der scene löschen
+      const requestDelete1 = await fetchData(
+        "model",
+        "delete",
+        { id: model.id },
+        null,
+        null
+      );
+    });
+
     const requestDelete = await fetchData(
       "scene",
       "delete",
@@ -43,30 +81,30 @@ const SceneListEntry = (props: {
 
   // neu fecthData
   const getUserFromScene = async () => {
-    const response = await fetch("/api/database/User/DB_getUserByID", {
-      method: "POST",
-      body: JSON.stringify({
-        idUser: props.scene.idUserCreater,
-        sessionID: props.sessionID,
-      }),
-    });
+    // const response = await fetch("/api/database/User/DB_getUserByID", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     idUser: props.scene.idUserCreater,
+    //     sessionID: props.sessionID,
+    //   }),
+    // });
 
-    const user = (await response.json()) as User;
+    // const user = (await response.json()) as User;
 
     // TODO:
-    // const requestedCreator = await fetchData(
-    //   "user",
-    //   "select",
-    //   { id: props.scene.idUserCreater },
-    //   null,
-    //   null
-    // );
+    const requestedCreator = await fetchData(
+      "user",
+      "select",
+      { id: props.scene.idUserCreater },
+      null,
+      null
+    );
 
-    // if (requestedCreator.err) return;
+    if (requestedCreator.err) return;
 
     // alert(JSON.stringify(requestedCreator));
 
-    setUserCreator(user);
+    setUserCreator(requestedCreator);
   };
 
   const getSceneModelsCount = async (idScene: string) => {

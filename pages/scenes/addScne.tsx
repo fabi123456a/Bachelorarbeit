@@ -53,8 +53,8 @@ const AddScene = (props: {
 
   // der creator ist auch in membership drin
   const addMemberShipToDB = async (
-    idScene: string,
-    idUser: string,
+    idScene1: string,
+    idUser1: string,
     readonly: boolean
   ) => {
     // const response = await fetch(
@@ -74,8 +74,8 @@ const AddScene = (props: {
 
     const membership: SceneMemberShip = {
       id: uuidv4(),
-      idScene: idScene,
-      idUser: idUser,
+      idScene: idScene1,
+      idUser: idUser1,
       entryDate: new Date(),
       readOnly: readonly,
     };
@@ -83,7 +83,7 @@ const AddScene = (props: {
     const request = await fetchData(
       "sceneMemberShip",
       "create",
-      null,
+      {},
       membership,
       null
     );
@@ -94,31 +94,31 @@ const AddScene = (props: {
   };
 
   const addModelsToDB = async (model: Model) => {
-    const response = await fetch("/api/database/Model/DB_insertModel", {
-      method: "POST",
-      body: JSON.stringify({
-        model: model,
-        sessionID: props.sessionID,
-        idUser: props.user.id,
-      }),
-    });
+    // const response = await fetch("/api/database/Model/DB_insertModel", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     model: model,
+    //     sessionID: props.sessionID,
+    //     idUser: props.user.id,
+    //   }),
+    // });
 
-    const result = await response.json();
+    // const result = await response.json();
 
-    return result;
+    // return result;
 
     // TODO:
-    // const rquestInsertModel = await fetchData(
-    //   "model",
-    //   "create",
-    //   model,
-    //   null,
-    //   { user: true }
-    // );
+    const rquestInsertModel = await fetchData(
+      "model",
+      "create",
+      {},
+      model,
+      null
+    );
 
-    // if (rquestInsertModel.err) return;
+    if (rquestInsertModel.err) return;
 
-    // return rquestInsertModel;
+    return rquestInsertModel;
   };
 
   return (
@@ -196,7 +196,7 @@ function getEmptyRoom(idScene: string): Model[] {
     info: "",
     color: "#eeeeee",
     name: "Boden",
-    version: 0,
+    version: 1,
   };
   emptyRoom.push(boden);
 
@@ -221,7 +221,7 @@ function getEmptyRoom(idScene: string): Model[] {
     info: "",
     color: "#eeeeee",
     name: "rechte Wand",
-    version: 0,
+    version: 1,
   };
   emptyRoom.push(rightWall);
 
@@ -246,7 +246,7 @@ function getEmptyRoom(idScene: string): Model[] {
     info: "",
     color: "#eeeeee",
     name: "linke Wand",
-    version: 0,
+    version: 1,
   };
   emptyRoom.push(leftWall);
 
@@ -271,7 +271,7 @@ function getEmptyRoom(idScene: string): Model[] {
     info: "",
     color: "#eeeeee",
     name: "hinten Wand",
-    version: 0,
+    version: 1,
   };
   emptyRoom.push(backWall);
 
