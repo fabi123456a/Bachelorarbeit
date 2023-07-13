@@ -109,15 +109,18 @@ export default function Chat(props: {
   // laden wer alles online ist
   useEffect(() => {
     const getAllSessions = async () => {
-      const response = await fetch("/api/database/Session/DB_getAllSessions", {
-        method: "POST",
-        body: JSON.stringify({
-          sessionID: props.sessionID,
-          idUser: props.user.id,
-        }),
-      });
-      const result: Session[] = await response.json();
-      return result;
+      // const response = await fetch("/api/database/Session/DB_getAllSessions", {
+      //   method: "POST",
+      //   body: JSON.stringify({
+      //     sessionID: props.sessionID,
+      //     idUser: props.user.id,
+      //   }),
+      // });
+      // const result: Session[] = await response.json();
+      const request = await fetchData("session", "select", {}, null, null);
+
+      if (request.err) return;
+      return request;
     };
     getAllSessions().then(
       (

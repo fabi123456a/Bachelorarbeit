@@ -2,6 +2,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import fetchData from "../../fetchData";
 
 const Insert = (props: {
   tableName: string;
@@ -22,19 +23,29 @@ const Insert = (props: {
   const handleInsert = async () => {
     let insertData = createObjectFromArray(props.porperties);
 
-    const response = await fetch("/api/database/DB_insertInTable", {
-      method: "POST",
-      body: JSON.stringify({
-        tableName: props.tableName,
-        data: insertData,
-        sessionID: props.sessionID,
-        idUser: props.idUser,
-      }),
-    });
+    // const response = await fetch("/api/database/DB_insertInTable", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     tableName: props.tableName,
+    //     data: insertData,
+    //     sessionID: props.sessionID,
+    //     idUser: props.idUser,
+    //   }),
+    // });
 
-    const erg = await response.json();
+    // const erg = await response.json();
 
-    return erg;
+    const requestInsert = await fetchData(
+      props.tableName,
+      "create",
+      null,
+      insertData,
+      null
+    );
+
+    if (requestInsert.err) return;
+
+    return requestInsert;
   };
 
   const createObjectFromArray = (keys: string[]): { [key: string]: any } => {

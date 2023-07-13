@@ -1,27 +1,40 @@
 import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { User } from "@prisma/client";
+import fetchData from "../fetchData";
+import { v4 as uuidv4 } from "uuid";
 
 const Register = (props: {
   setRegister: (flag: boolean) => void;
-  sessionID: string;
 }) => {
   const [txtLoginID, setTxtLoginID] = useState<string>("");
   const [txtPw, setTxtPw] = useState<string>("");
 
   const handleBtnRegisterClick = async (loginID: string, pw: string) => {
-    const response = await fetch("/api/database/User/DB_insertUser", {
-      method: "POST",
-      body: JSON.stringify({
-        loginID: loginID,
-        pw: pw,
-        sessionID: props.sessionID, // TODO:
-      }),
-    });
+    // const response = await fetch("/api/database/User/DB_insertUser", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     loginID: loginID,
+    //     pw: pw,
+    //     sessionID: props.sessionID, // TODO:
+    //   }),
+    // });
 
-    const result = await response.json();
+    // const result = await response.json();
 
-    return result;
+    const dataUser: User = {
+      id: uuidv4(),
+      loginID: loginID,
+      password: pw,
+      readOnly: false,
+      isAdmin: false,
+    };
+
+    const requestInsert = await fetchData("user", "create", {}, dataUser, null);
+
+    if (requestInsert.err) return;
+
+    return requestInsert;
   };
 
   return (

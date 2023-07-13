@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import Insert from "./insert";
 import EditData from "./editData";
 import { User } from "@prisma/client";
+import fetchData from "../../fetchData";
 
 const DatabaseTable = (props: {
   tableName: string;
@@ -37,26 +38,38 @@ const DatabaseTable = (props: {
     // lädt alle Daten aus props.tablename
     async function loadData() {
       try {
-        const response = await fetch("api/database/DB_getAll", {
-          method: "POST",
-          body: JSON.stringify({
-            tableName: props.tableName,
-            orderBy: sortBy,
-            sessionID: props.sessionID,
-            idUser: props.user.id,
-          }),
-        });
+        // const response = await fetch("api/database/DB_getAll", {
+        //   method: "POST",
+        //   body: JSON.stringify({
+        //     tableName: props.tableName,
+        //     orderBy: sortBy,
+        //     sessionID: props.sessionID,
+        //     idUser: props.user.id,
+        //   }),
+        // });
 
-        const result = await response.json();
-        if (!result || result["error"]) return;
+        // const result = await response.json();
+        // if (!result || result["error"]) return;
 
-        setData(result);
-        setProperties(Object.keys(result[0]));
+        // TODO: sortBy
+        const request = await fetchData(
+          props.tableName,
+          "select",
+          {},
+          null,
+          null
+        );
+
+        if (request.err) return;
+
+        setData(request);
+        setProperties(Object.keys(request[0]));
 
         // const dataTypes = Object.values(result[0]).map((value) => typeof value);
         // setX(dataTypes);
-        const dataTypes = Object.values(result[0]).map((value) => typeof value);
-
+        const dataTypes = Object.values(request[0]).map(
+          (value) => typeof value
+        );
         setTypes(dataTypes);
 
         //console.log(result[0]);

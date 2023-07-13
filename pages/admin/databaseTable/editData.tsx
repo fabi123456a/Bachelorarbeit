@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import CloseIcon from "@mui/icons-material/Close";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import fetchData from "../../fetchData";
 
 const EditData = (props: {
   setShowEdit: (flag: boolean) => void;
@@ -34,21 +35,34 @@ const EditData = (props: {
   );
 
   const editDataInDatabase = async () => {
-    const response = await fetch("/api/database/DB_updateTable", {
-      method: "POST",
-      body: JSON.stringify({
-        tableName: props.tableName,
-        id: props.id,
-        prop: props.porpertie,
-        newData: props.dataType === "string" ? stringValue : boolValue,
-        sessionID: props.sessionID,
-        idUser: props.idUser,
-      }),
-    });
+    // const response = await fetch("/api/database/DB_updateTable", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     tableName: props.tableName,
+    //     id: props.id,
+    //     prop: props.porpertie,
+    //     newData: props.dataType === "string" ? stringValue : boolValue,
+    //     sessionID: props.sessionID,
+    //     idUser: props.idUser,
+    //   }),
+    // });
 
-    const erg = await response.json();
+    // const erg = await response.json();
 
-    return erg;
+    const requestUpdate = await fetchData(
+      props.tableName,
+      "update",
+      { id: props.id },
+      {
+        [props.porpertie]:
+          props.dataType === "string" ? stringValue : boolValue,
+      },
+      null
+    );
+
+    if (requestUpdate.err) return;
+
+    return requestUpdate;
   };
 
   return (

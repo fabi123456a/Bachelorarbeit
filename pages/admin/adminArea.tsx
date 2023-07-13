@@ -6,6 +6,7 @@ import FbxList from "./fbxModels/fbxList";
 import { Scene, User } from "@prisma/client";
 import MemberList from "./memberships/sceneMembershipsList";
 import ErrorIcon from "@mui/icons-material/Error";
+import fetchData from "../fetchData";
 
 const AdminArea = (props: {
   setAdminArea: (flag: boolean) => void;
@@ -16,22 +17,26 @@ const AdminArea = (props: {
   const [loadedScenes, setLoadedScenes] = useState<Scene[]>([]);
 
   const loadAllScenesFromDB = async () => {
-    const requestetScenes = await fetch("/api/database/Scene/DB_getAllScenes", {
-      method: "POST",
-      body: JSON.stringify({
-        sessionID: props.sessionID,
-        idUser: props.user.id,
-      }),
-    });
+    // const requestetScenes = await fetch("/api/database/Scene/DB_getAllScenes", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     sessionID: props.sessionID,
+    //     idUser: props.user.id,
+    //   }),
+    // });
 
-    const scenes: Scene[] = await requestetScenes.json();
+    // const scenes: Scene[] = await requestetScenes.json();
 
-    if (!scenes || scenes["error"]) {
-      //alert("alle scenen laden fehlgeschlagen");
-      return [];
-    }
+    // if (!scenes || scenes["error"]) {
+    //   //alert("alle scenen laden fehlgeschlagen");
+    //   return [];
+    // }
 
-    return scenes;
+    const requestedScenes = await fetchData("scene", "select", {}, null, null);
+
+    if (requestedScenes.err) return;
+
+    return requestedScenes;
   };
 
   useEffect(() => {

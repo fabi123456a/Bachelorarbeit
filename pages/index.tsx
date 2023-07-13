@@ -98,9 +98,7 @@ const Index = () => {
         ></Login>
       )}
 
-      {register ? (
-        <Register setRegister={setRegister} sessionID={session.id}></Register>
-      ) : null}
+      {register ? <Register setRegister={setRegister}></Register> : null}
 
       {loggedIn && session ? (
         <Chat user={actUser} scene={scene} sessionID={session.id}></Chat>

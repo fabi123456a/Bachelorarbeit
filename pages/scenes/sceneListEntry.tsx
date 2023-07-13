@@ -31,7 +31,7 @@ const SceneListEntry = (props: {
     return response;
   };
 
-  // neu fecthData // TODO:
+  // neu fecthData
   const getUserFromScene = async () => {
     const response = await fetch("/api/database/User/DB_getUserByID", {
       method: "POST",
@@ -43,6 +43,7 @@ const SceneListEntry = (props: {
 
     const user = (await response.json()) as User;
 
+    // TODO:
     // const requestedCreator = await fetchData(
     //   "user",
     //   "select",

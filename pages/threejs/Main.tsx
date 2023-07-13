@@ -32,6 +32,7 @@ import { v4 as uuidv4 } from "uuid";
 
 //@ts-ignore
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
+import fetchData from "../fetchData";
 
 let socket;
 
@@ -162,25 +163,35 @@ export default function Main(props: {
   // anfangs scene laden, nach dem eine scene in der sceneList ausgewählt wurde und models mit setModels setzen
   useEffect(() => {
     const getSceneModels = async (idScene: string) => {
-      const modelsRequest = await fetch(
-        "/api/database/Model/DB_getAllModelsByID",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            idScene: props.scene.id,
-            version: scenVersion,
-            sessionID: props.sessionID,
-            idUser: props.user.id,
-          }),
-        }
+      // const modelsRequest = await fetch(
+      //   "/api/database/Model/DB_getAllModelsByID",
+      //   {
+      //     method: "POST",
+      //     body: JSON.stringify({
+      //       idScene: props.scene.id,
+      //       version: scenVersion,
+      //       sessionID: props.sessionID,
+      //       idUser: props.user.id,
+      //     }),
+      //   }
+      // );
+
+      // const models: Model[] = await modelsRequest.json();
+
+      const requestedModels = await fetchData(
+        "model",
+        "select",
+        { idScene: props.scene.id, version: scenVersion },
+        null,
+        null
       );
 
-      const models: Model[] = await modelsRequest.json();
+      if (requestedModels.err) return;
 
       const typeObjectProps: TypeObjectProps[] = [];
 
       // models vom Typ Model (prismaClient) zu TypeObjectProps ändern
-      models.forEach((model: Model) => {
+      requestedModels.forEach((model: Model) => {
         const obj: TypeObjectProps = convertModelToTypeObjectProps(model);
         typeObjectProps.push(obj);
       });
@@ -458,20 +469,20 @@ export default function Main(props: {
   }
 
   // klappt aber wird nicht mehr benötigt wegen datum im model feld
-  async function deleteAllModelsFromSceneInDB(idScene: String) {
-    const response = await fetch("/api/database/Model/DB_deleteAllModelsByID", {
-      method: "POST",
-      body: JSON.stringify({
-        idScene: idScene,
-        sessionID: props.sessionID,
-        idUser: props.user.id,
-      }),
-    });
-    const responseModel = await response.json();
+  // async function deleteAllModelsFromSceneInDB(idScene: String) {
+  //   const response = await fetch("/api/database/Model/DB_deleteAllModelsByID", {
+  //     method: "POST",
+  //     body: JSON.stringify({
+  //       idScene: idScene,
+  //       sessionID: props.sessionID,
+  //       idUser: props.user.id,
+  //     }),
+  //   });
+  //   const responseModel = await response.json();
 
-    // weitere prüfungen
-    // ...
-  }
+  //   // weitere prüfungen
+  //   // ...
+  // }
 
   async function insertModelToDB(model: Model) {
     const response = await fetch("/api/database/Model/DB_insertModel", {
@@ -481,14 +492,21 @@ export default function Main(props: {
         sessionID: props.sessionID,
         idUser: props.user.id,
       }),
-      // headers: {
-      //   "Content-Type": "application/json",
-      // },
     });
     const responseModel = await response.json();
 
-    // weitere prüfungen des eingefügten models
-    // ...
+    // TODO:
+    // const rquestInsertModel = await fetchData(
+    //   "model",
+    //   "create",
+    //   model,
+    //   null,
+    //   { user: true }
+    // );
+
+    // if (rquestInsertModel.err) return;
+
+    // return rquestInsertModel;
   }
 
   const [selectedOption, setSelectedOption] = useState("");

@@ -26,23 +26,31 @@ const AddMember = (props: {
   const [user, setUser] = useState<User>(null);
   const refName = useRef<string>("");
 
-  const checkLoginID = async (loginID: string) => {
-    const userRequest = await fetch("/api/database/User/DB_getUserByLoginID", {
-      method: "POST",
-      body: JSON.stringify({
-        loginID: loginID,
-        sessionID: props.sessionID,
-        idUser: props.idUser,
-      }),
-    });
+  const checkLoginID = async (loginID1: string) => {
+    // const userRequest = await fetch("/api/database/User/DB_getUserByLoginID", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     loginID: loginID,
+    //     sessionID: props.sessionID,
+    //     idUser: props.idUser,
+    //   }),
+    // });
 
-    const user = await userRequest.json();
+    // const user = await userRequest.json();
 
-    if (!user || user["error"]) {
+    const requestedUser = await fetchData(
+      "user",
+      "select",
+      { loginID: loginID1 },
+      null,
+      null
+    );
+
+    if (requestedUser.length == 0 || requestedUser.err) {
       setUser(null);
-    } else {
-      setUser(user);
+      return;
     }
+    setUser(requestedUser);
   };
 
   const addMemberShipToDB = async (
@@ -134,6 +142,7 @@ const AddMember = (props: {
         </Button>
       </Stack>
 
+      {JSON.stringify(user)}
       {user ? (
         <Stack direction={"row"} sx={{ m: "8px" }}>
           <Typography fontSize={"13px"}>

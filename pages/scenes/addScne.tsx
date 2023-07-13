@@ -61,7 +61,7 @@ const AddScene = (props: {
       entryDate: new Date(),
       readOnly: readonly,
     };
-    
+
     const request = await fetchData(
       "sceneMemberShip",
       "create",
@@ -82,15 +82,25 @@ const AddScene = (props: {
         model: model,
         sessionID: props.sessionID,
         idUser: props.user.id,
-      }), // TODO: sessionID
-      // headers: {
-      //   "Content-Type": "application/json",
-      // },
+      }),
     });
 
     const result = await response.json();
 
     return result;
+
+    // TODO:
+    // const rquestInsertModel = await fetchData(
+    //   "model",
+    //   "create",
+    //   model,
+    //   null,
+    //   { user: true }
+    // );
+
+    // if (rquestInsertModel.err) return;
+
+    // return rquestInsertModel;
   };
 
   return (

@@ -23,10 +23,10 @@ export default async function DB_checkPassword(
   });
 
   if (selectedUser == null) {
-    console.log("DB_SELECT FIRST -> checkpassword FALSE");
+    console.log("checkpassword => FALSE");
     res.status(200).json(null);
   } else {
-    console.log("DB_SELECT FIRST -> checkpassword TRUE");
+    console.log("checkpassword => TRUE");
 
     const session: Session = await insertSession(selectedUser.id);
     console.log("DB_INSERT session -> sessionID: " + session.id);
