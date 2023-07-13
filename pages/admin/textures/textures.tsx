@@ -183,15 +183,11 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
 
           <div>
             <h3>Ausgewählte Dateien:</h3>
-            {selectedFiles ? (
-              <ul>
-                {selectedFiles.map((file) => (
-                  <li key={file.name}>{file.name}</li>
-                ))}
-              </ul>
-            ) : (
-              <p>keine Datei ausgewählt</p>
-            )}
+            <ul>
+              {selectedFiles.map((file) => (
+                <li key={file.name}>{file.name}</li>
+              ))}
+            </ul>
           </div>
           {validateSelectedFiles(selectedFiles) ? (
             <Stack direction={"row"} sx={{ m: "8px" }}>
@@ -211,7 +207,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
                   }
                   await addTextureFilesToFS(textureName);
                   setReload(Math.random());
-                  setSelectedFiles(null);
+                  setSelectedFiles([]);
                   setTextureName("");
                 }}
               >

@@ -50,8 +50,10 @@ const handler: NextApiHandler = async (req, res) => {
 
   let form1 = formidable();
   form1.parse(req, (err, fields, files) => {
-    const textureName = fields.textureName123;
-    console.log("Texture Name:", textureName);
+    const sessionID = fields.sessionID;
+    const idUser = fields.idUser;
+    console.log("sessionID: ", sessionID);
+    console.log("idUser: ", idUser);
   });
 
   try {
