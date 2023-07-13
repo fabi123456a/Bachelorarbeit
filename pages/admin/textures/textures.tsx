@@ -40,12 +40,13 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
   const addTextureFilesToFS = async (textureName: string) => {
     const formData = new FormData();
 
-    for (let i = 0; i < selectedFiles.length; i++) {
-      formData.append("files", selectedFiles[i]);
-    }
+    // for (let i = 0; i < selectedFiles.length; i++) {
+    //   formData.append("files", selectedFiles[i]);
+    // }
 
-    formData.append("sessionID", props.sessionID);
-    formData.append("idUser", props.loggedInUser.id);
+    selectedFiles.map((file) => {
+      formData.append("files", file);
+    });
 
     const xxx = await fetch(
       `api/filesystem/FS_uploadTexture?textureName=${textureName}`,

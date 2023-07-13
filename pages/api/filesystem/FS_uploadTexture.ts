@@ -48,13 +48,13 @@ const handler: NextApiHandler = async (req, res) => {
 
   fbxFolderPath += textureName;
 
-  let form1 = formidable();
-  form1.parse(req, (err, fields, files) => {
-    const sessionID = fields.sessionID;
-    const idUser = fields.idUser;
-    console.log("sessionID: ", sessionID);
-    console.log("idUser: ", idUser);
-  });
+  // let form1 = formidable();
+  // form1.parse(req, (err, fields, files) => {
+  //   const sessionID = fields.sessionID;
+  //   const idUser = fields.idUser;
+  //   console.log("sessionID: ", sessionID);
+  //   console.log("idUser: ", idUser);
+  // });
 
   try {
     await fs.readdir(
