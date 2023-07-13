@@ -4,7 +4,7 @@ import { DeleteForeverOutlined } from "@mui/icons-material";
 import DatabaseTable from "./databaseTable/databaseTable";
 import FbxList from "./fbxModels/fbxList";
 import { Scene, User } from "@prisma/client";
-import MemberList from "./memberships/membersList";
+import MemberList from "./memberships/sceneMembershipsList";
 
 const AdminArea = (props: {
   setAdminArea: (flag: boolean) => void;
@@ -19,10 +19,16 @@ const AdminArea = (props: {
       method: "POST",
       body: JSON.stringify({
         sessionID: props.sessionID,
+        idUser: props.user.id,
       }),
     });
 
     const scenes: Scene[] = await requestetScenes.json();
+
+    if (scenes["error"]) {
+      alert("alle scenen laden fehlgeschlagen");
+      return [];
+    }
 
     return scenes;
   };
@@ -34,7 +40,7 @@ const AdminArea = (props: {
   }, []);
 
   return props.user ? (
-    props.user.isAdmin ? (
+    props.user.isAdmin ? ( //|| true
       <Stack className="adminArea">
         <DatabaseTable
           user={props.user}
@@ -43,8 +49,9 @@ const AdminArea = (props: {
           sessionID={props.sessionID}
         ></DatabaseTable>
         <Divider orientation="horizontal"></Divider>
-        {loadedScenes ? (
+        {loadedScenes && !loadedScenes["error"] ? (
           <MemberList
+            idUser={props.user.id}
             sessionID={props.sessionID}
             scenes={loadedScenes}
             setScene={props.setScene}

@@ -59,6 +59,7 @@ const SceneDetails = (props: {
         body: JSON.stringify({
           idScene: props.scene.id,
           sessionID: props.sessionID,
+          idUser: props.loggedInUser.id,
         }),
       }
     );
@@ -123,7 +124,7 @@ const SceneDetails = (props: {
       </Stack>
 
       <MembersList
-       sessionID={props.sessionID}
+        sessionID={props.sessionID}
         members={members}
         scene={props.scene}
         setReload={setReload}

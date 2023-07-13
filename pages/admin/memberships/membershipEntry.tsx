@@ -1,6 +1,6 @@
 import { Checkbox, IconButton, Stack, Typography } from "@mui/material";
 import { Scene, SceneMemberShip, User } from "@prisma/client";
-import MemberListEntry from "./membersListEntry";
+import MemberListEntry from "./membersList";
 import { useState } from "react";
 import { DeleteForever } from "@mui/icons-material";
 
@@ -11,6 +11,7 @@ const MembershipEntry = (props: {
   scene: Scene;
   setReload: (n: number) => void;
   sessionID: string;
+  idUser: string;
 }) => {
   const [checkbox, setCheckbox] = useState<boolean>(props.membership.readOnly);
   const [isHovered, setIsHovered] = useState(false);
@@ -31,6 +32,7 @@ const MembershipEntry = (props: {
         body: JSON.stringify({
           id: id,
           sessionID: props.sessionID,
+          idUser: props.idUser,
         }),
       }
     );
@@ -49,6 +51,7 @@ const MembershipEntry = (props: {
           id: id,
           readonly: readonly,
           sessionID: props.sessionID,
+          idUser: props.idUser,
         }),
       }
     );

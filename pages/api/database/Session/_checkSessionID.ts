@@ -17,7 +17,7 @@ export async function checkSessionID(
   });
 
   if (!session) {
-    console.log("request ZUGRIFF VERWEIGERT");
+    console.log("request ZUGRIFF VERWEIGERT - ungültige sessionID");
     response.status(403).json({ error: "Zugriff verweigert." });
     return false;
   } else {

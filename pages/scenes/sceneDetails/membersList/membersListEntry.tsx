@@ -32,6 +32,7 @@ const MembersListEntry = (props: {
         body: JSON.stringify({
           id: id,
           sessionID: props.sessionID,
+          idUser: props.loggedInUser.id,
         }),
       }
     );
@@ -50,6 +51,7 @@ const MembersListEntry = (props: {
           id: id,
           readonly: readonly,
           sessionID: props.sessionID,
+          idUser: props.loggedInUser.id,
         }),
       }
     );

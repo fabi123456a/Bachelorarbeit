@@ -43,11 +43,12 @@ const DatabaseTable = (props: {
             tableName: props.tableName,
             orderBy: sortBy,
             sessionID: props.sessionID,
+            idUser: props.user.id,
           }),
         });
 
         const result = await response.json();
-        if (!result) return;
+        if (!result || result["error"]) return;
 
         setData(result);
         setProperties(Object.keys(result[0]));

@@ -38,6 +38,8 @@ const Insert = (props: {
   };
 
   const createObjectFromArray = (keys: string[]): { [key: string]: any } => {
+    if (keys.length <= 0) return;
+
     const obj: { [key: string]: any } = {};
 
     keys.forEach((key, index) => {

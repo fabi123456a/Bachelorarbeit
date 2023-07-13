@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 import { NextApiRequest, NextApiResponse } from "next";
 import { prismaClient } from "../../prismaclient/_prismaClient";
 import { checkSessionID } from "../Session/_checkSessionID";
+import checkUserRights from "../User/_checkUserRights";
 
 // fügt einen neuen user in die database ein
 // wenn es funktioniert hat, wird das user object zurückgeliefert ansonsten NULL
@@ -11,7 +12,10 @@ export default async function handler(
 ) {
   const flag = await checkSessionID(req, res);
   if (!flag) return;
-  
+
+  const rights = await checkUserRights(req, res, false, true); // TODO: nur ertseller und admin
+  if (!rights) return;
+
   const b = req.body;
   const requestData = JSON.parse(b);
   const id = requestData["id"];

@@ -12,7 +12,7 @@ export default async function checkUserRights(
   const idUser = requestBody["idUser"];
 
   if (!idUser) {
-    console.log("request ZUGRIFF VERWEIGERT");
+    console.log("request ZUGRIFF VERWEIGERT - keine idUSer angegeben");
     res.status(403).json({ error: "Zugriff verweigert." });
     return false;
   }
@@ -23,25 +23,40 @@ export default async function checkUserRights(
     },
   });
 
+  // if (!user.id) {
+  //   console.log("request ZUGRIFF VERWEIGERT - keine rechte");
+  //   res.status(403).json({ error: "Zugriff verweigert." });
+  //   return false;
+  // }
+
   if (checkAdmin) {
     if (user.isAdmin) {
       console.log("request ZUGRIFF ERLAUBT");
       return true;
     } else {
-      console.log("request ZUGRIFF VERWEIGERT");
+      console.log("request ZUGRIFF VERWEIGERT - keine rechte");
       res.status(403).json({ error: "Zugriff verweigert." });
       return false;
     }
   }
 
   if (checkReadonlyUser) {
-    if (!user.readOnly) {
+    if (!user.readOnly || user.isAdmin) {
       console.log("request ZUGRIFF ERLAUBT");
       return true;
     } else {
-      console.log("request ZUGRIFF VERWEIGERT");
+      console.log("request ZUGRIFF VERWEIGERT - keine rechte");
       res.status(403).json({ error: "Zugriff verweigert." });
       return false;
     }
+  }
+
+  if (!user.id) {
+    console.log("request ZUGRIFF VERWEIGERT - keine rechte");
+    res.status(403).json({ error: "Zugriff verweigert." });
+    return false;
+  } else {
+    console.log("request ZUGRIFF ERLAUBT");
+    return true;
   }
 }

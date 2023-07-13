@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { prismaClient } from "../../prismaclient/_prismaClient";
 import { Scene } from "@prisma/client";
 import { checkSessionID } from "../Session/_checkSessionID";
+import checkUserRights from "../User/_checkUserRights";
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,6 +10,9 @@ export default async function handler(
 ) {
   const flag = await checkSessionID(req, res);
   if (!flag) return;
+
+  const rights = await checkUserRights(req, res, true, false);
+  if (!rights) return;
 
   try {
     const allScenes: Scene[] = await prismaClient.scene.findMany();
