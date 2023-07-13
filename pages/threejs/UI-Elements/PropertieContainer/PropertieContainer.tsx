@@ -15,7 +15,8 @@ import CloseIcon from "@mui/icons-material/Close";
 function PropertieContainer(props: {
   setObjProps: Function;
   objProps: TypeObjectProps;
-  sessionID: string
+  sessionID: string;
+  idUser: string;
 }) {
   const [visible, setVisible] = useState<boolean>(true);
 
@@ -184,7 +185,8 @@ function PropertieContainer(props: {
                   }
                 ></ColorPicker>
                 <TextureSelector
-                 sessionID={props.sessionID}
+                  idUser={props.idUser}
+                  sessionID={props.sessionID}
                   currentObjProps={props.objProps}
                   setCurrentObjProps={
                     props.setObjProps as (props: TypeObjectProps) => void

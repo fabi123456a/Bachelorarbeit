@@ -599,6 +599,7 @@ export default function Main(props: {
 
               {/* PropertieContainer */}
               <PropertieContainer
+                idUser={props.user.id}
                 sessionID={props.sessionID}
                 objProps={currentObjectProps}
                 setObjProps={setCurrentObjectProps}
