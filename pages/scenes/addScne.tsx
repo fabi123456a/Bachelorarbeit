@@ -39,6 +39,7 @@ const AddScene = (props: {
     };
 
     const requestInsertScene = await fetchData(
+      props.sessionID,
       "scene",
       "create",
       {},
@@ -81,6 +82,7 @@ const AddScene = (props: {
     };
 
     const request = await fetchData(
+      props.sessionID,
       "sceneMemberShip",
       "create",
       {},
@@ -109,6 +111,7 @@ const AddScene = (props: {
 
     // TODO:
     const rquestInsertModel = await fetchData(
+      props.sessionID,
       "model",
       "create",
       {},

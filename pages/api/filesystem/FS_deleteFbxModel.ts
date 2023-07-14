@@ -10,11 +10,18 @@ export default async function FS_deleteFbxModel(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const flag = await checkSessionID(req, res);
-  if (!flag) return;
+  const b = req.body;
+  const requestData = JSON.parse(b);
+  const sessionID = requestData["sessionID"];
 
-  const rights = await checkUserRights(req, res, true, false);
-  if (!rights) return;
+  const check = await checkSessionID(sessionID);
+  if (!check) {
+    res.status(403).json({
+      error:
+        "Zugriff verweigert: Der Nutzer hat keine Rechte für diese Aktion.",
+    });
+    return;
+  }
 
   const modelsFbxFolder = "/public/ModelsFBX/";
   const requestBody = JSON.parse(req.body);

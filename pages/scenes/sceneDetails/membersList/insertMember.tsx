@@ -39,6 +39,7 @@ const AddMember = (props: {
     // const user = await userRequest.json();
 
     const requestedUser = await fetchData(
+      props.sessionID,
       "user",
       "select",
       { loginID: loginID1 },
@@ -82,6 +83,7 @@ const AddMember = (props: {
     };
 
     const request = await fetchData(
+      props.sessionID,
       "sceneMemberShip",
       "create",
       null,
@@ -110,8 +112,6 @@ const AddMember = (props: {
 
   return (
     <Stack className="" sx={{ mt: "2vh" }}>
-      <p>{user ? JSON.stringify(user) : "xx"}</p>
-      <p>{user ? JSON.stringify(user["id"]) + "_" : "xx"}</p>
       <Stack direction={"row"}>
         <TextField
           label="User hinzufügen..."
@@ -143,8 +143,6 @@ const AddMember = (props: {
           Hinzufügen
         </Button>
       </Stack>
-
-      {JSON.stringify(user)}
       {user ? (
         <Stack direction={"row"} sx={{ m: "8px" }}>
           <Typography fontSize={"13px"}>

@@ -36,6 +36,7 @@ const Insert = (props: {
     // const erg = await response.json();
 
     const requestInsert = await fetchData(
+      props.sessionID,
       props.tableName,
       "create",
       null,

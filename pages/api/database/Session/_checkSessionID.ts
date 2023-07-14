@@ -2,13 +2,14 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { prismaClient } from "../../prismaclient/_prismaClient";
 import { Session } from "@prisma/client";
 
-export async function checkSessionID(
-  request: NextApiRequest,
-  response: NextApiResponse
-): Promise<boolean> {
-  const body = request.body;
-  const requestData = JSON.parse(body);
-  const sessionID = requestData["sessionID"];
+export async function checkSessionID(sessionID: string): Promise<boolean> {
+  if (!sessionID) {
+    console.log(
+      "\x1b[31m%s\x1b[0m",
+      "request ZUGRIFF VERWEIGERT - ungültige sessionID"
+    );
+    return false;
+  }
 
   const session: Session = await prismaClient.session.findFirst({
     where: {
@@ -17,11 +18,13 @@ export async function checkSessionID(
   });
 
   if (!session) {
-    console.log("request ZUGRIFF VERWEIGERT - ungültige sessionID");
-    response.status(403).json({ error: "Zugriff verweigert." });
+    console.log(
+      "\x1b[31m%s\x1b[0m",
+      "request ZUGRIFF VERWEIGERT - ungültige sessionID"
+    );
     return false;
   } else {
-    console.log("request ZUGRIFF ERLAUBT");
+    console.log("\x1b[32m%s\x1b[0m", "request ZUGRIFF ERLAUBT");
     return true;
   }
 }

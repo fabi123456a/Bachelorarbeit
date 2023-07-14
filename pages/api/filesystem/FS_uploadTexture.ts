@@ -4,6 +4,7 @@ import { NextApiHandler, NextApiRequest } from "next";
 import formidable from "formidable";
 import path from "path";
 import fs from "fs/promises";
+import { checkSessionID } from "../database/Session/_checkSessionID";
 
 export const config = {
   api: {
@@ -44,6 +45,19 @@ const readFile = (
 };
 
 const handler: NextApiHandler = async (req, res) => {
+  // const b = req.body;
+  // const requestData = JSON.parse(b);
+  // const sessionID = requestData["sessionID"];
+
+  // const check = await checkSessionID(sessionID);
+  // if (!check) {
+  //   res.status(403).json({
+  //     error:
+  //       "Zugriff verweigert: Der Nutzer hat keine Rechte für diese Aktion.",
+  //   });
+  //   return;
+  // }
+
   const { textureName } = req.query;
 
   fbxFolderPath += textureName;

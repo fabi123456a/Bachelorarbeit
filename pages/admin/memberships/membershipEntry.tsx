@@ -41,6 +41,7 @@ const MembershipEntry = (props: {
     // const erg = await deleteRequest.json();
 
     const requestDelete = await fetchData(
+      props.sessionID,
       "sceneMemberShip",
       "delete",
       { id: id },
@@ -69,6 +70,7 @@ const MembershipEntry = (props: {
     // );
 
     const requestedChatEntries = await fetchData(
+      props.sessionID,
       "sceneMemberShip",
       "update",
       { id: id },
@@ -86,25 +88,22 @@ const MembershipEntry = (props: {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {props.scene.idUserCreater == props.membership.user.id ? null : (
-        <IconButton
-          onClick={async () => {
-            //alert(member.user.loginID);
-            const confirmed = window.confirm(
-              "Willst du " +
-                props.membership.user.loginID +
-                " wirklich löschen?"
-            );
+      <IconButton
+        onClick={async () => {
+          //alert(member.user.loginID);
+          const confirmed = window.confirm(
+            "Willst du " + props.membership.user.loginID + " wirklich löschen?"
+          );
 
-            if (!confirmed) return;
+          if (!confirmed) return;
 
-            await deleteMemberShipByIdInDB(props.membership.id);
-            props.setReload(Math.random());
-          }}
-        >
-          <DeleteForever></DeleteForever>
-        </IconButton>
-      )}
+          await deleteMemberShipByIdInDB(props.membership.id);
+          props.setReload(Math.random());
+        }}
+      >
+        <DeleteForever></DeleteForever>
+      </IconButton>
+
       <Typography sx={{ minWidth: "20vh" }}>
         {props.scene.idUserCreater == props.membership.user.id
           ? props.membership.user.loginID + " (Ersteller)"

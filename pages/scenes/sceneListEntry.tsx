@@ -32,6 +32,7 @@ const SceneListEntry = (props: {
 
     // sceneMembership laden um an die id zu kommen zum deleten
     const requestDelete13 = await fetchData(
+      props.sessionID,
       "SceneMemberShip",
       "select",
       { idScene: props.scene.id, idUser: props.user.id },
@@ -41,6 +42,7 @@ const SceneListEntry = (props: {
 
     // memberhips der scene löschen
     const requestDelete12 = await fetchData(
+      props.sessionID,
       "SceneMemberShip",
       "delete",
       { id: requestDelete13[0].id },
@@ -50,6 +52,7 @@ const SceneListEntry = (props: {
 
     // alle models der scene laden für die id des models zum deleten
     const requestedModelsFromScene: Model[] = await fetchData(
+      props.sessionID,
       "model",
       "select",
       { idScene: props.scene.id },
@@ -60,6 +63,7 @@ const SceneListEntry = (props: {
     requestedModelsFromScene.map(async (model: Model) => {
       // models der scene löschen
       const requestDelete1 = await fetchData(
+        props.sessionID,
         "model",
         "delete",
         { id: model.id },
@@ -69,6 +73,7 @@ const SceneListEntry = (props: {
     });
 
     const requestDelete = await fetchData(
+      props.sessionID,
       "scene",
       "delete",
       { id: props.scene.id },
@@ -93,6 +98,7 @@ const SceneListEntry = (props: {
 
     // TODO:
     const requestedCreator = await fetchData(
+      props.sessionID,
       "user",
       "select",
       { id: props.scene.idUserCreater },
@@ -124,6 +130,7 @@ const SceneListEntry = (props: {
     // const models: Model[] = await modelsRequest.json();
 
     const requestedModels = await fetchData(
+      props.sessionID,
       "model",
       "select",
       {

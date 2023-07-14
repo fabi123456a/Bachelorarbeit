@@ -32,7 +32,14 @@ const AdminArea = (props: {
     //   return [];
     // }
 
-    const requestedScenes = await fetchData("scene", "select", {}, null, null);
+    const requestedScenes = await fetchData(
+      props.sessionID,
+      "scene",
+      "select",
+      {},
+      null,
+      null
+    );
 
     if (requestedScenes.err) return;
 

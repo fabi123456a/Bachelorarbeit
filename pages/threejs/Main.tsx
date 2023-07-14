@@ -179,6 +179,7 @@ export default function Main(props: {
       // const models: Model[] = await modelsRequest.json();
 
       const requestedModels = await fetchData(
+        props.sessionID,
         "model",
         "select",
         { idScene: props.scene.id, version: scenVersion },
@@ -465,6 +466,7 @@ export default function Main(props: {
     // const responseModel = await response.json();
 
     const requestChangeVersion = await fetchData(
+      props.sessionID,
       "scene",
       "update",
       { id: idScene },
@@ -488,6 +490,7 @@ export default function Main(props: {
 
     // TODO:
     const rquestInsertModel = await fetchData(
+      props.sessionID,
       "model",
       "create",
       {},

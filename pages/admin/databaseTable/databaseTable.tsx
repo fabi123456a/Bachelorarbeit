@@ -53,6 +53,7 @@ const DatabaseTable = (props: {
 
         // TODO: sortBy
         const request = await fetchData(
+          props.sessionID,
           props.tableName,
           "select",
           {},

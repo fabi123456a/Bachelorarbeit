@@ -31,27 +31,30 @@ const Index = () => {
 
   // neu fetchData
   const getSession = async (): Promise<Session> => {
-    // const requestedSession = await fetch(
-    //   "api/database/Session/DB_getSessionByUserID",
-    //   {
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //       idUser: idUser,
-    //     }),
-    //   }
-    // );
-
-    const requestedSession = await fetchData(
-      "session",
-      "select",
-      { idUser: actUser.id },
-      null,
-      null
+    const requestedSession = await fetch(
+      "api/database/Session/DB_getSessionByUserID",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          idUser: actUser.id,
+        }),
+      }
     );
 
-    if (requestedSession.error) return null;
+    // const requestedSession = await fetchData(
+    //   null,
+    //   "session",
+    //   "select",
+    //   { idUser: actUser.id },
+    //   null,
+    //   null
+    // );
 
-    return requestedSession;
+    const session = await requestedSession.json();
+
+    if (session.error) return null;
+
+    return session;
   };
 
   useEffect(() => {

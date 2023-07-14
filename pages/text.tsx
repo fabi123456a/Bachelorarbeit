@@ -14,15 +14,14 @@ const Test = () => {
       <Typography>{JSON.stringify(data)}</Typography>
       <Button
         onClick={async () => {
-          const requestedSession = await fetchData(
-            "SceneMemberShip",
-            "delete",
-            { idScene: "a1835266-8c1c-4e95-a147-0328feea2a0e" },
-            null,
-            null
-          );
-
-          if (requestedSession.error) return null;
+          // const requestedSession = await fetchData(
+          //   "SceneMemberShip",
+          //   "delete",
+          //   { idScene: "a1835266-8c1c-4e95-a147-0328feea2a0e" },
+          //   null,
+          //   null
+          // );
+          // if (requestedSession.error) return null;
         }}
       >
         Click ME

@@ -7,7 +7,16 @@ export default async function DB_executeSQL(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { tableName, action, where, data, include } = req.body;
+  const { tableName, action, where, data, include, sessionID } = req.body;
+
+  const check = await checkSessionID(sessionID);
+  if (!check) {
+    res.status(403).json({
+      error:
+        "Zugriff verweigert: Der Nutzer hat keine Rechte für diese Aktion.",
+    });
+    return;
+  }
 
   console.log(
     `D A T A B A S E : ${action} in ${tableName} where ${JSON.stringify(

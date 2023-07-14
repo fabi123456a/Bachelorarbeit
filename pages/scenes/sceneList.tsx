@@ -48,6 +48,7 @@ const SceneList = (props: {
     // const mebership = await requestedMembership.json();
 
     const requestedMembership = await fetchData(
+      props.sessionID,
       "SceneMemberShip",
       "select",
       {
@@ -80,6 +81,7 @@ const SceneList = (props: {
     //   }[] = await requestMemberships.json();
 
     const requestMemberships = await fetchData(
+      props.sessionID,
       "SceneMemberShip",
       "select",
       { idUser: props.user.id },

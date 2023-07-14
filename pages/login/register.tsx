@@ -4,9 +4,7 @@ import { User } from "@prisma/client";
 import fetchData from "../fetchData";
 import { v4 as uuidv4 } from "uuid";
 
-const Register = (props: {
-  setRegister: (flag: boolean) => void;
-}) => {
+const Register = (props: { setRegister: (flag: boolean) => void }) => {
   const [txtLoginID, setTxtLoginID] = useState<string>("");
   const [txtPw, setTxtPw] = useState<string>("");
 
@@ -30,7 +28,14 @@ const Register = (props: {
       isAdmin: false,
     };
 
-    const requestInsert = await fetchData("user", "create", {}, dataUser, null);
+    const requestInsert = await fetchData(
+      null,
+      "user",
+      "create",
+      {},
+      dataUser,
+      null
+    );
 
     if (requestInsert.err) return;
 
