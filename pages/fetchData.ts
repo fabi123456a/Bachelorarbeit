@@ -1,4 +1,5 @@
 export default async function fetchData(
+  idUser: string,
   sessionID: string,
   tableName: string,
   action: "select" | "create" | "update" | "delete",
@@ -10,6 +11,7 @@ export default async function fetchData(
     const response = await fetch("/api/database/DB_executeSQL", {
       method: "POST",
       body: JSON.stringify({
+        idUser: idUser,
         sessionID: sessionID,
         tableName: tableName,
         action: action,

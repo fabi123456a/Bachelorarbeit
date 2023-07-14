@@ -50,6 +50,7 @@ const EditData = (props: {
     // const erg = await response.json();
 
     const requestUpdate = await fetchData(
+      props.idUser,
       props.sessionID,
       props.tableName,
       "update",

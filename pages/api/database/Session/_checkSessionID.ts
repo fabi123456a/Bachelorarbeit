@@ -24,7 +24,10 @@ export async function checkSessionID(sessionID: string): Promise<boolean> {
     );
     return false;
   } else {
-    console.log("\x1b[32m%s\x1b[0m", "request ZUGRIFF ERLAUBT");
+    console.log(
+      "\x1b[32m%s\x1b[0m",
+      "request ZUGRIFF ERLAUBT - gültige sessionID"
+    );
     return true;
   }
 }

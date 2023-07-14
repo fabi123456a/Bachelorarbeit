@@ -24,11 +24,14 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
       id: uuidv4(),
       loginID: loginID,
       password: pw,
-      readOnly: false,
+      delete: false,
+      read: false,
+      write: false,
       isAdmin: false,
     };
 
     const requestInsert = await fetchData(
+      null,
       null,
       "user",
       "create",

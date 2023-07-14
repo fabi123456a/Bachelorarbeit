@@ -38,6 +38,7 @@ const MemberListEntry = (props: {
     // })[] = await requestMemberships.json();
 
     const requestedMemberships = await fetchData(
+      props.idUser,
       props.sessionID,
       "sceneMemberShip",
       "select",

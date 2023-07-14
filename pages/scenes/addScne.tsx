@@ -39,6 +39,7 @@ const AddScene = (props: {
     };
 
     const requestInsertScene = await fetchData(
+      props.user.id,
       props.sessionID,
       "scene",
       "create",
@@ -82,6 +83,7 @@ const AddScene = (props: {
     };
 
     const request = await fetchData(
+      props.user.id,
       props.sessionID,
       "sceneMemberShip",
       "create",
@@ -111,6 +113,7 @@ const AddScene = (props: {
 
     // TODO:
     const rquestInsertModel = await fetchData(
+      props.user.id,
       props.sessionID,
       "model",
       "create",
@@ -144,7 +147,7 @@ const AddScene = (props: {
 
             // insert scene into DB
             const scene: Scene = await addSceneToDB();
-            if (!scene.id) {
+            if (!scene) {
               alert("scene ertsellen fehlgeschlagen");
               return;
             }

@@ -68,6 +68,7 @@ export default function Chat(props: {
 
       // TODO: orderBy: { datum: "desc", }
       const requestedChatEntries = await fetchData(
+        props.user.id,
         props.sessionID,
         "ChatEntry",
         "select",
@@ -119,6 +120,7 @@ export default function Chat(props: {
       // });
       // const result: Session[] = await response.json();
       const request = await fetchData(
+        props.user.id,
         props.sessionID,
         "session",
         "select",

@@ -39,6 +39,7 @@ const AddMember = (props: {
     // const user = await userRequest.json();
 
     const requestedUser = await fetchData(
+      props.idUser,
       props.sessionID,
       "user",
       "select",
@@ -83,6 +84,7 @@ const AddMember = (props: {
     };
 
     const request = await fetchData(
+      props.idUser,
       props.sessionID,
       "sceneMemberShip",
       "create",

@@ -33,6 +33,7 @@ const AdminArea = (props: {
     // }
 
     const requestedScenes = await fetchData(
+      props.user.id,
       props.sessionID,
       "scene",
       "select",

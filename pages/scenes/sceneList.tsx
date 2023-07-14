@@ -48,6 +48,7 @@ const SceneList = (props: {
     // const mebership = await requestedMembership.json();
 
     const requestedMembership = await fetchData(
+      props.user.id,
       props.sessionID,
       "SceneMemberShip",
       "select",
@@ -81,6 +82,7 @@ const SceneList = (props: {
     //   }[] = await requestMemberships.json();
 
     const requestMemberships = await fetchData(
+      props.user.id,
       props.sessionID,
       "SceneMemberShip",
       "select",
@@ -152,14 +154,14 @@ const SceneList = (props: {
               })
             : "keine Leitstellen-Konfiguration vorhanden"}
           {/* bei readonly user ausblenden */}
-          {props.user.readOnly ? null : (
+          {props.user.write || true ? (
             <AddScene
               sessionID={props.sessionID}
               user={props.user}
               setScene={props.setScene}
               setReload={setReload}
             ></AddScene>
-          )}
+          ) : null}
         </Stack>
       </Stack>
     )

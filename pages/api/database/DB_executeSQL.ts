@@ -7,10 +7,25 @@ export default async function DB_executeSQL(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { tableName, action, where, data, include, sessionID } = req.body;
+  const { tableName, action, where, data, include, sessionID, idUser } =
+    req.body;
 
+  // SESSION
   const check = await checkSessionID(sessionID);
   if (!check) {
+    res.status(403).json({
+      error: "Zugriff verweigert: Unngültige SessionID.",
+    });
+    return;
+  }
+
+  // RECHTE
+  const rights = await checkUserRights(idUser, action);
+  if (!rights) {
+    console.log(
+      "\x1b[31m%s\x1b[0m",
+      "request ZUGRIFF VERWEIGERT - keine Rechte"
+    );
     res.status(403).json({
       error:
         "Zugriff verweigert: Der Nutzer hat keine Rechte für diese Aktion.",
@@ -19,6 +34,7 @@ export default async function DB_executeSQL(
   }
 
   console.log(
+    "\x1b[95m%s\x1b[0m",
     `D A T A B A S E : ${action} in ${tableName} where ${JSON.stringify(
       where
     )} `

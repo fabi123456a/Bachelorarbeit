@@ -34,6 +34,7 @@ const SceneDetails = (props: {
     // const user: User = await response.json();
 
     const requestedUser = await fetchData(
+      props.loggedInUser.id,
       props.sessionID,
       "user",
       "select",
@@ -64,6 +65,7 @@ const SceneDetails = (props: {
     // const models: Model[] = await modelsRequest.json();
 
     const requestedModels = await fetchData(
+      props.loggedInUser.id,
       props.sessionID,
       "Model",
       "select",
@@ -94,6 +96,7 @@ const SceneDetails = (props: {
     // })[] = await membersRequest.json();
 
     const requestedMembers = await fetchData(
+      props.loggedInUser.id,
       props.sessionID,
       "SceneMemberShip",
       "select",

@@ -59,13 +59,13 @@ const FbxList = (props: { loggedInUser: User; sessionID: string }) => {
             loggedInUser={props.loggedInUser}
           ></FbxListEntry>
         ))}
-        {props.loggedInUser.readOnly ? null : (
+        {props.loggedInUser.write ? (
           <UploadFbx
             setRefreshData={() => {
               setReload(Math.random());
             }}
           ></UploadFbx>
-        )}
+        ) : null}
       </Stack>
     </Stack>
   );

@@ -179,6 +179,7 @@ export default function Main(props: {
       // const models: Model[] = await modelsRequest.json();
 
       const requestedModels = await fetchData(
+        props.user.id,
         props.sessionID,
         "model",
         "select",
@@ -466,6 +467,7 @@ export default function Main(props: {
     // const responseModel = await response.json();
 
     const requestChangeVersion = await fetchData(
+      props.user.id,
       props.sessionID,
       "scene",
       "update",
@@ -490,6 +492,7 @@ export default function Main(props: {
 
     // TODO:
     const rquestInsertModel = await fetchData(
+      props.user.id,
       props.sessionID,
       "model",
       "create",
@@ -565,7 +568,7 @@ export default function Main(props: {
 
         {/* ui elements ausblenden bei readonly */}
         {props.user ? (
-          props.user.readOnly || props.membership.readOnly ? null : (
+          !props.user.write || props.membership.readOnly ? (
             <>
               {/* ModelList */}
               <ModelList
@@ -617,7 +620,7 @@ export default function Main(props: {
                 selectedId={treeViewSelectedId}
               ></SceneModelList>
             </>
-          )
+          ) : null
         ) : null}
 
         {/* Canvas/ThreeJS-scene */}

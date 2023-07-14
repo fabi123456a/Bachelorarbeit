@@ -32,6 +32,7 @@ const SceneListEntry = (props: {
 
     // sceneMembership laden um an die id zu kommen zum deleten
     const requestDelete13 = await fetchData(
+      props.user.id,
       props.sessionID,
       "SceneMemberShip",
       "select",
@@ -42,6 +43,7 @@ const SceneListEntry = (props: {
 
     // memberhips der scene löschen
     const requestDelete12 = await fetchData(
+      props.user.id,
       props.sessionID,
       "SceneMemberShip",
       "delete",
@@ -52,6 +54,7 @@ const SceneListEntry = (props: {
 
     // alle models der scene laden für die id des models zum deleten
     const requestedModelsFromScene: Model[] = await fetchData(
+      props.user.id,
       props.sessionID,
       "model",
       "select",
@@ -63,6 +66,7 @@ const SceneListEntry = (props: {
     requestedModelsFromScene.map(async (model: Model) => {
       // models der scene löschen
       const requestDelete1 = await fetchData(
+        props.user.id,
         props.sessionID,
         "model",
         "delete",
@@ -73,6 +77,7 @@ const SceneListEntry = (props: {
     });
 
     const requestDelete = await fetchData(
+      props.user.id,
       props.sessionID,
       "scene",
       "delete",
@@ -98,6 +103,7 @@ const SceneListEntry = (props: {
 
     // TODO:
     const requestedCreator = await fetchData(
+      props.user.id,
       props.sessionID,
       "user",
       "select",
@@ -130,6 +136,7 @@ const SceneListEntry = (props: {
     // const models: Model[] = await modelsRequest.json();
 
     const requestedModels = await fetchData(
+      props.user.id,
       props.sessionID,
       "model",
       "select",
@@ -202,27 +209,28 @@ const SceneListEntry = (props: {
       </Stack>
 
       {mouseOver ? (
-        props.user.readOnly ? null : props.user.id ==
-          props.scene.idUserCreater ? (
-          <DeleteForeverIcon
-            color="error"
-            sx={{ alignSelf: "center", marginLeft: "auto" }}
-            onClick={async (e) => {
-              e.stopPropagation();
+        props.user.write ? (
+          props.user.id == props.scene.idUserCreater ? (
+            <DeleteForeverIcon
+              color="error"
+              sx={{ alignSelf: "center", marginLeft: "auto" }}
+              onClick={async (e) => {
+                e.stopPropagation();
 
-              let result = confirm(
-                "Wollen Sie wirklich die Scene " +
-                  props.scene.name +
-                  " löschen?"
-              );
-              if (result) {
-                await deleteSceneFromDB();
-                // TODO: delte modles by sceneID
+                let result = confirm(
+                  "Wollen Sie wirklich die Scene " +
+                    props.scene.name +
+                    " löschen?"
+                );
+                if (result) {
+                  await deleteSceneFromDB();
+                  // TODO: delte modles by sceneID
 
-                props.setReload(Math.random());
-              }
-            }}
-          ></DeleteForeverIcon>
+                  props.setReload(Math.random());
+                }
+              }}
+            ></DeleteForeverIcon>
+          ) : null
         ) : null
       ) : null}
     </Stack>

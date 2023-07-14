@@ -155,7 +155,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
             </Stack>
           ))
         : null}
-      {!props.loggedInUser.readOnly ? (
+      {props.loggedInUser.write ? (
         <Stack className="roundedShadow textureContainer">
           <Typography>Texture hinzufügen</Typography>
           <Stack direction={"row"}>

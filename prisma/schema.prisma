@@ -13,13 +13,15 @@ datasource db {
 // INFO: taballen name in singular
 
 model User {
-  id        String     @id 
-  loginID   String  @unique
-  password  String?
-  readOnly  Boolean  
-  isAdmin   Boolean
-  chatEntry ChatEntry[]
-  memberships SceneMemberShip[]
+  id             String     @id 
+  loginID        String  @unique
+  password       String?
+  read           Boolean @default(true)
+  write          Boolean @default(false)
+  delete         Boolean @default(false)
+  isAdmin        Boolean @default(false)
+  chatEntry      ChatEntry[]
+  memberships    SceneMemberShip[]
 }
 
 model Scene {
@@ -38,51 +40,51 @@ model SceneMemberShip {
   entryDate      DateTime
   readOnly       Boolean
   user           User       @relation(fields: [idUser], references: [id])
-  scene           Scene       @relation(fields: [idScene], references: [id])
+  scene          Scene       @relation(fields: [idScene], references: [id])
 }
 
 model Session {
-  id        String     @id 
-  idUser    String
-  startDate DateTime
+  id             String     @id 
+  idUser         String
+  startDate      DateTime
 }
 
 model ChatEntry {
-  id      String     @id 
-  idScene String
-  idUser  String     
-  message String
-  datum   DateTime
-  user    User       @relation(fields: [idUser], references: [id])
+  id             String     @id 
+  idScene        String
+  idUser         String     
+  message        String
+  datum          DateTime
+  user           User       @relation(fields: [idUser], references: [id])
 }
 
 model Feedback {
-  id    String     @id 
-  text  String
+  id             String     @id 
+  text           String
 }
 
 model Model {
-  id                   String     @id
-  idScene              String
-  positionX            Float
-  positionY            Float
-  positionZ            Float
-  scaleX               Float
-  scaleY               Float
-  scaleZ               Float
-  rotationX            Float
-  rotationY            Float
-  rotationZ            Float
+  id                        String     @id
+  idScene                   String
+  positionX                 Float
+  positionY                 Float
+  positionZ                 Float
+  scaleX                    Float
+  scaleY                    Float
+  scaleZ                    Float
+  rotationX                 Float
+  rotationY                 Float
+  rotationZ                 Float
   visibleInOtherPerspective Boolean
-  showXTransform       Boolean
-  showYTransform       Boolean
-  showZTransform       Boolean
-  modelPath            String?
-  info                 String?
-  name                 String
-  color                String
-  texture              String?
-  version              Int
+  showXTransform            Boolean
+  showYTransform            Boolean
+  showZTransform            Boolean
+  modelPath                 String?
+  info                      String?
+  name                      String
+  color                     String
+  texture                   String?
+  version                   Int
 }
 
 

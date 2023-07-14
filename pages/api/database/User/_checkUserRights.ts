@@ -3,17 +3,14 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { prismaClient } from "../../prismaclient/_prismaClient";
 
 export default async function checkUserRights(
-  req: NextApiRequest,
-  res: NextApiResponse,
-  checkAdmin: boolean, // immer nur eins auf true setzen!
-  checkReadonlyUser: boolean
+  idUser: string,
+  action: "select" | "create" | "update" | "delete"
 ) {
-  const requestBody = JSON.parse(req.body);
-  const idUser = requestBody["idUser"];
-
   if (!idUser) {
-    console.log("request ZUGRIFF VERWEIGERT - keine idUSer angegeben");
-    res.status(403).json({ error: "Zugriff verweigert." });
+    console.log(
+      "\x1b[31m%s\x1b[0m",
+      "request ZUGRIFF VERWEIGERT - ungültige idUser"
+    );
     return false;
   }
 
@@ -23,40 +20,24 @@ export default async function checkUserRights(
     },
   });
 
-  // if (!user.id) {
-  //   console.log("request ZUGRIFF VERWEIGERT - keine rechte");
-  //   res.status(403).json({ error: "Zugriff verweigert." });
-  //   return false;
-  // }
-
-  if (checkAdmin) {
-    if (user.isAdmin) {
-      console.log("request ZUGRIFF ERLAUBT");
-      return true;
-    } else {
-      console.log("request ZUGRIFF VERWEIGERT - keine rechte");
-      res.status(403).json({ error: "Zugriff verweigert." });
-      return false;
-    }
-  }
-
-  if (checkReadonlyUser) {
-    if (!user.readOnly || user.isAdmin) {
-      console.log("request ZUGRIFF ERLAUBT");
-      return true;
-    } else {
-      console.log("request ZUGRIFF VERWEIGERT - keine rechte");
-      res.status(403).json({ error: "Zugriff verweigert." });
-      return false;
-    }
-  }
-
-  if (!user.id) {
-    console.log("request ZUGRIFF VERWEIGERT - keine rechte");
-    res.status(403).json({ error: "Zugriff verweigert." });
+  if (!user) {
+    console.log(
+      "\x1b[31m%s\x1b[0m",
+      "request ZUGRIFF VERWEIGERT - ungültige idUser"
+    );
     return false;
-  } else {
-    console.log("request ZUGRIFF ERLAUBT");
-    return true;
+  }
+
+  switch (action) {
+    case "select":
+      return user.read;
+    case "create":
+      return user.write;
+    case "update":
+      return user.write;
+    case "delete":
+      return user.delete;
+    default:
+      return false;
   }
 }

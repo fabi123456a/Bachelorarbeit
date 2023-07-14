@@ -41,6 +41,7 @@ const MembersListEntry = (props: {
     // const erg = await deleteRequest.json();
 
     const requestDelete = await fetchData(
+      props.loggedInUser.id,
       props.sessionID,
       "sceneMemberShip",
       "delete",
@@ -69,6 +70,7 @@ const MembersListEntry = (props: {
     //   }
     // );
     const requestedChatEntries = await fetchData(
+      props.loggedInUser.id,
       props.sessionID,
       "sceneMemberShip",
       "update",
