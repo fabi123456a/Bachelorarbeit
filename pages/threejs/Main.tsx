@@ -327,9 +327,9 @@ export default function Main(props: {
       rotation: { x: 0, y: 0, z: 0 },
       name: name,
       visibleInOtherPerspective: true,
-      color: pfad ? null : "",
+      color: "",
       info: "",
-      texture: null,
+      texture: "",
     };
     console.log("handleModelAdd");
     console.log(objProps);
