@@ -86,6 +86,7 @@ export default function Main(props: {
         method: "POST",
         body: JSON.stringify({
           idUser: props.user.id,
+          sessionID: props.sessionID,
         }),
       });
       let result = await response.json();
@@ -566,9 +567,11 @@ export default function Main(props: {
           </Alert>
         </Snackbar>
 
-        {/* ui elements ausblenden bei readonly */}
+        {/* ui elements ausblenden, wenn keine lese rechte oder kein admin oder readonly im membership */}
         {props.user ? (
-          !props.user.write || props.membership.readOnly ? (
+          !props.user.write ||
+          props.user.isAdmin ||
+          props.membership.readOnly ? (
             <>
               {/* ModelList */}
               <ModelList

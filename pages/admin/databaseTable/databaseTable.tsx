@@ -13,6 +13,8 @@ import Insert from "./insert";
 import EditData from "./editData";
 import { User } from "@prisma/client";
 import fetchData from "../../fetchData";
+import CloseIcon from "@mui/icons-material/Close";
+import CheckIcon from "@mui/icons-material/Check";
 
 const DatabaseTable = (props: {
   tableName: string;
@@ -135,16 +137,20 @@ const DatabaseTable = (props: {
                           actProp == prop &&
                           actData == dataRow[prop] &&
                           actDataRowID == dataRow["id"]
-                            ? { background: "#ed6c02" }
+                            ? { background: "#ffef62" }
                             : {}
                         }
                       >
                         {/* {dataRow[prop]} */}
-                        {typeof dataRow[prop] === "boolean"
-                          ? dataRow[prop]
-                            ? "Ja"
-                            : "Nein" // Convert boolean to string representation
-                          : dataRow[prop]}
+                        {typeof dataRow[prop] === "boolean" ? (
+                          dataRow[prop] ? (
+                            <CheckIcon color="success"></CheckIcon>
+                          ) : (
+                            <CloseIcon color="error"></CloseIcon>
+                          )
+                        ) : (
+                          dataRow[prop]
+                        )}
                       </TableCell>
                     ))}
                   </TableRow>

@@ -112,11 +112,12 @@ const SceneListEntry = (props: {
       null
     );
 
+    //alert(JSON.stringify(requestedCreator));
     if (requestedCreator.err) return;
 
-    // alert(JSON.stringify(requestedCreator));
+    //alert(JSON.stringify(requestedCreator));
 
-    setUserCreator(requestedCreator);
+    setUserCreator(requestedCreator[0]);
   };
 
   const getSceneModelsCount = async (idScene: string) => {
@@ -182,7 +183,7 @@ const SceneListEntry = (props: {
           mouseOver ? (
             <Stack>
               <Typography sx={{ fontSize: "12px" }}>
-                <b>Creator:</b> {" " + userCreator?.loginID}
+                <b>Creator:</b> {userCreator ? userCreator.loginID : "lädt..."}
               </Typography>
               <Typography sx={{ fontSize: "12px" }}>
                 <b>ertsellt am:</b>{" "}

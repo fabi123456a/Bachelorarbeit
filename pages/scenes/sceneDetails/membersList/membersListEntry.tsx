@@ -114,7 +114,7 @@ const MembersListEntry = (props: {
           </Stack>
         ) : (
           <Stack direction={"row"} sx={{ alignItems: "center" }}>
-            {props.membership.readOnly ? (
+            {props.membership.readOnly || !props.membership.user.write ? (
               <Typography sx={{ ml: "8px", color: "grey" }}>
                 readonly
               </Typography>

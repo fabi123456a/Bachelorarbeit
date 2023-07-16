@@ -138,6 +138,7 @@ const Insert = (props: {
 
           alert("DB_insertInTable erfolgreich");
           props.setReload(Math.random());
+          //setValues(Array.from({ length: values.length }, () => null)); // TODO: felder leeren nach insert
         }}
       >
         Hinzufügen

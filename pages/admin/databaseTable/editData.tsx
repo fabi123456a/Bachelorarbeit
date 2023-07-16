@@ -49,6 +49,31 @@ const EditData = (props: {
 
     // const erg = await response.json();
 
+    alert(props.porpertie);
+    alert(boolValue);
+
+    // wenn isAdmin auf true gesetzt wird dann read, write und delete auch auf true setzen
+    if (props.porpertie == "isAdmin" && boolValue) {
+      const requestUpdate = await fetchData(
+        props.idUser,
+        props.sessionID,
+        props.tableName,
+        "update",
+        { id: props.id },
+        {
+          [props.porpertie]:
+            props.dataType === "string" ? stringValue : boolValue,
+          read: true,
+          write: true,
+          delete: true,
+        },
+        null
+      );
+
+      if (requestUpdate.err) return;
+      return requestUpdate;
+    }
+
     const requestUpdate = await fetchData(
       props.idUser,
       props.sessionID,
@@ -63,7 +88,6 @@ const EditData = (props: {
     );
 
     if (requestUpdate.err) return;
-
     return requestUpdate;
   };
 

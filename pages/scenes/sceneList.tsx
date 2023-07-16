@@ -91,7 +91,7 @@ const SceneList = (props: {
       { scene: true }
     );
 
-    if (requestMemberships.err) return;
+    if (!requestMemberships || requestMemberships.err) return;
 
     const extractedScenes = requestMemberships.map(
       (membership) => membership.scene
