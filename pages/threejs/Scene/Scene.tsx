@@ -1,13 +1,12 @@
 import SceneModel from "../3D-Objects/SceneModel";
 import Camera from "./Camera";
 import { useThree } from "@react-three/fiber";
-import { useEffect, useState } from "react";
 import * as THREE from "three";
 import BoxGeoPivot from "../3D-Objects/BoxGeoPivot";
-import { Cylinder, Grid, Sky, Stars, Stats } from "@react-three/drei";
 import Cylinderqq from "../3D-Objects/CylinderPivot";
-import Cube from "../3D-Objects/test";
-import { checkPropsForNull } from "../../../utils/checkIfPropIsNull";
+import { TransformControls } from "@react-three/drei";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import PointlightPivot from "../3D-Objects/Pointlight";
 
 export default function Scene(props: {
   controlsRef: React.RefObject<any>;
@@ -19,6 +18,7 @@ export default function Scene(props: {
   wallVisibility: boolean;
   testMode: boolean;
   htmlSettings: boolean;
+  ambientValue: number;
 }) {
   // if (props.currentObjectProps) {
   //   const { scene } = useThree();
@@ -41,8 +41,16 @@ export default function Scene(props: {
         testMode={props.testMode}
       ></Camera>
       {/* Licht */}
-      <ambientLight intensity={1} />
-      <pointLight position={[10, 10, 10]} />
+      <ambientLight intensity={props.ambientValue} />
+      {/* <pointLight position={[10, 10, 10]} /> */}
+
+      <PointlightPivot
+        camPerspektive={props.perspektive}
+        controlsRef={props.controlsRef}
+        isSelected={"licht1" === props.currentObjectProps?.id}
+        setCurrentObjectProps={props.setCurrentObjectProps}
+      ></PointlightPivot>
+
       {/* Modelle */}
       {props.models.map((model) =>
         props.perspektive == "normal" ? (
@@ -80,6 +88,14 @@ export default function Scene(props: {
               testMode={props.testMode}
               htmlSettings={props.htmlSettings}
             ></Cylinderqq>
+          ) : model.info == "licht" ? (
+            <PointlightPivot
+              camPerspektive={props.perspektive}
+              controlsRef={props.controlsRef}
+              isSelected={model.id === props.currentObjectProps?.id}
+              setCurrentObjectProps={props.setCurrentObjectProps}
+              objProps={model}
+            ></PointlightPivot>
           ) : (
             <BoxGeoPivot
               key={model.id}

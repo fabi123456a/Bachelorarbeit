@@ -33,6 +33,8 @@ import { v4 as uuidv4 } from "uuid";
 //@ts-ignore
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import fetchData from "../fetchData";
+import { Light } from "@mui/icons-material";
+import LightSettings from "./UI-Elements/Light/lightSetting";
 
 let socket;
 
@@ -66,6 +68,9 @@ export default function Main(props: {
   const [scenVersion, setScenVersion] = useState<number>(
     props.scene.newestVersion
   );
+
+  // ambient light
+  const [ambientValue, setAmbientValue] = useState<number>(0.5);
 
   // htmlsettings
   const [htmlsettings, setHtmlsettings] = useState<boolean>(false);
@@ -349,6 +354,42 @@ export default function Main(props: {
     // objProps.insertBoundingBox(); // TODO:
   };
 
+  const handleWallAdd2 = () => {
+    const objPr: TypeObjectProps = {
+      id: uuidv4(),
+      position: {
+        x: 0,
+        y: 3,
+        z: 0,
+      },
+      scale: {
+        x: 1,
+        y: 1,
+        z: 1,
+      },
+      rotation: {
+        x: 0,
+        y: 0,
+        z: 0,
+      },
+      editMode: "translate", //props.editMode,
+      showXTransform: true, //props.showXTransform,
+      showYTransform: true, //props.showYTransform,
+      showZTransform: true, //props.showZTransform,
+      modelPath: "",
+      info: "licht",
+      visibleInOtherPerspective: false,
+      name: "pointLight",
+      color: "",
+      texture: "",
+    };
+
+    setModels([...models, objPr]);
+    setCurrentObjectProps(objPr);
+
+    // objProps.insertBoundingBox(); // TODO:
+  };
+
   const handleModelDelete = (id: string) => {
     setModels((prevModels) => prevModels.filter((model) => model.id !== id));
     setCurrentObjectProps(null!);
@@ -603,6 +644,13 @@ export default function Main(props: {
               {/* Wallist */}
               <WallList addWall={handleWallAdd}></WallList>
 
+              {/* lightSettings */}
+              <LightSettings
+                ambientValue={ambientValue}
+                setAmbientValue={setAmbientValue}
+                addLightToScene={handleWallAdd2}
+              ></LightSettings>
+
               {/* Chat */}
               {/* <Chat user={props.user} scene={props.scene}></Chat> */}
 
@@ -635,6 +683,7 @@ export default function Main(props: {
         >
           {/*TO ACCESS THE useThree hook in the Scene component*/}
           <ThreeJsScene
+            ambientValue={ambientValue}
             controlsRef={controlsRef}
             perspektive={perspective}
             currentObjectProps={currentObjectProps}

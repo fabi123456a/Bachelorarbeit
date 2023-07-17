@@ -76,6 +76,9 @@ function BoxGeometry(props: {
         />
       ) : (
         <meshStandardMaterial color={props.color ? props.color : ""} />
+        // <meshBasicMaterial
+        //   color={props.color ? props.color : ""}
+        // ></meshBasicMaterial>
       )}
 
       {props.htmlSettings ? (
