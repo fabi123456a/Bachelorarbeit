@@ -479,6 +479,7 @@ export default function Main(props: {
         alert("licht");
         return;
       }
+
       model = convertTypeObjectPropsToModel(
         objProp,
         props.scene.id,
