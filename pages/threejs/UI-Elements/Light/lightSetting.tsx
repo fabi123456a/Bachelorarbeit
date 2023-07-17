@@ -64,7 +64,7 @@ const LightSettings = (props: {
               props.addLightToScene();
             }}
           >
-            add Pointligth
+            add Pointlight
           </Button>
         </Stack>
       </Stack>

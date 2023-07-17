@@ -474,6 +474,11 @@ export default function Main(props: {
     models.forEach(async (objProp: TypeObjectProps) => {
       let model: Model;
 
+      if (objProp.info == "licht") {
+        // TODO: licht macht probleme beim speichern
+        alert("licht");
+        return;
+      }
       model = convertTypeObjectPropsToModel(
         objProp,
         props.scene.id,

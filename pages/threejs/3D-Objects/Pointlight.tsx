@@ -12,6 +12,7 @@ import { Vector3 } from "three";
 import BoxGeometry from "./BoxGeometry";
 import { useFrame } from "@react-three/fiber";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import { Group } from "three";
 
 // KOMPONENTE
 
@@ -85,46 +86,44 @@ function PointlightPivot(props: {
   // }
 
   return (
-    <>
-      <TransformControls
-        ref={tcRef}
-        mode={props.objProps ? props.objProps.editMode : "translate"}
-        showX={props.isSelected}
-        showY={props.isSelected}
-        showZ={props.isSelected}
-        position={props.objProps ? [10, 10, 10] : [27, 27, -27]}
-        onMouseUp={(e) => {
-          //Checks if an event happened or if component just rerendered
-          if (e) {
-            setCurrentObj();
-            console.log("_Kamerarotation frei");
+    <TransformControls
+      ref={tcRef}
+      mode={props.objProps ? props.objProps.editMode : "translate"}
+      showX={props.isSelected}
+      showY={props.isSelected}
+      showZ={props.isSelected}
+      position={props.objProps ? [10, 10, 10] : [27, 27, -27]}
+      onMouseUp={(e) => {
+        //Checks if an event happened or if component just rerendered
+        if (e) {
+          setCurrentObj();
+          console.log("_Kamerarotation frei");
 
-            if (props.camPerspektive === "normal") {
-              // kamera rotation nur freigeben wenn camPerspektive normal (== "0") ist, bei othogonaler perpektive soll cam drehen nicht gehen
-              props.controlsRef.current.enableRotate = true;
-            }
+          if (props.camPerspektive === "normal") {
+            // kamera rotation nur freigeben wenn camPerspektive normal (== "0") ist, bei othogonaler perpektive soll cam drehen nicht gehen
+            props.controlsRef.current.enableRotate = true;
           }
-        }}
-        onMouseDown={(e) => {
-          //Checks if an event happened or if component just rerendered
-          if (e) {
-            console.log("_Kamerarotation sperren");
-            props.controlsRef.current.enableRotate = false;
-          }
-        }}
-        onClick={(e) => {
-          if (e) {
-            e.stopPropagation();
+        }
+      }}
+      onMouseDown={(e) => {
+        //Checks if an event happened or if component just rerendered
+        if (e) {
+          console.log("_Kamerarotation sperren");
+          props.controlsRef.current.enableRotate = false;
+        }
+      }}
+      onClick={(e) => {
+        if (e) {
+          e.stopPropagation();
 
-            //insertBoundingBox();
-          }
-        }}
-      >
-        <>
-          {props.objProps ? (
-            <>
-              <pointLight intensity={1.5}></pointLight>
-              {/* <Sphere
+          //insertBoundingBox();
+        }
+      }}
+    >
+      {props.objProps ? (
+        <group>
+          <pointLight intensity={1.5}></pointLight>
+          {/* <Sphere
                 onClick={(e) => {
                   if (e) {
                     setCurrentObj();
@@ -135,46 +134,46 @@ function PointlightPivot(props: {
               >
                 <meshStandardMaterial color="red" />
               </Sphere> */}
-              <Html>
-                <LightModeIcon
-                  color="warning"
-                  onClick={(e) => {
-                    if (e) {
-                      setCurrentObj();
-                    }
-                  }}
-                ></LightModeIcon>
-              </Html>
-            </>
-          ) : (
-            // <pointLight intensity={2}></pointLight>
+          <Html>
+            <LightModeIcon
+              color="warning"
+              onClick={(e) => {
+                if (e) {
+                  setCurrentObj();
+                }
+              }}
+            ></LightModeIcon>
+          </Html>
+        </group>
+      ) : (
+        // <pointLight intensity={2}></pointLight>
 
-            <>
-              <Box
-                args={[1, 1, 2]} // Args for the buffer geometry
-                ref={boxRef}
-                onClick={(e) => {
-                  if (e) {
-                    setCurrentObj();
-                  }
-                }}
-                position={[0, 1, 0]}
-              >
-                <meshStandardMaterial color={"red"} />
-              </Box>
-              <SpotLight
-                distance={300}
-                angle={1}
-                attenuation={5}
-                anglePower={10} // Diffuse-cone anglePower (default: 5)
-              ></SpotLight>
-              <Html>
-                <LightModeIcon color="warning"></LightModeIcon>
-              </Html>
-            </>
-          )}
+        <group>
+          <Box
+            args={[1, 1, 2]} // Args for the buffer geometry
+            ref={boxRef}
+            onClick={(e) => {
+              if (e) {
+                setCurrentObj();
+              }
+            }}
+            position={[0, 1, 0]}
+          >
+            <meshStandardMaterial color={"red"} />
+          </Box>
+          <SpotLight
+            distance={300}
+            angle={1}
+            attenuation={5}
+            anglePower={10} // Diffuse-cone anglePower (default: 5)
+          ></SpotLight>
+          <Html>
+            <LightModeIcon color="warning"></LightModeIcon>
+          </Html>
+        </group>
+      )}
 
-          {/* <mesh
+      {/* <mesh
             ref={boxRef}
             geometry={new THREE.ConeGeometry(1, 2, 32)}
             material={new THREE.MeshStandardMaterial({ color: "hotpink" })}
@@ -186,9 +185,7 @@ function PointlightPivot(props: {
           >
             <meshStandardMaterial color="hotpink" />
           </mesh> */}
-        </>
-      </TransformControls>
-    </>
+    </TransformControls>
   );
 }
 
