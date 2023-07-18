@@ -22,6 +22,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
   const [reload, setReload] = useState(0);
 
   const getAllTexturesFromFS = async () => {
+    if(!props.loggedInUser)return;
     const requestTextures = await fetch("api/filesystem/FS_getTextures", {
       method: "POST",
       body: JSON.stringify({
@@ -114,7 +115,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
     return isValid;
   }
 
-  return (
+  return props.loggedInUser ? (
     <Stack className="texturesContainer">
       {textures
         ? textures.map((tex: string) => (
@@ -284,6 +285,8 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
         </Stack>
       ) : null}
     </Stack>
+  ) : (
+    <Typography>Einloggen erforderlich.</Typography>
   );
 };
 

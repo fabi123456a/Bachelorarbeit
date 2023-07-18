@@ -6,7 +6,7 @@ import FbxList from "./fbxModels/fbxList";
 import { Scene, User } from "@prisma/client";
 import MemberList from "./memberships/sceneMembershipsList";
 import ErrorIcon from "@mui/icons-material/Error";
-import fetchData from "../fetchData";
+import {fetchData} from "../fetchData";
 
 const AdminArea = (props: {
   setAdminArea: (flag: boolean) => void;

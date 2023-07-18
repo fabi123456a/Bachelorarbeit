@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Model, Scene, SceneMemberShip, User } from "@prisma/client";
 import AddScene from "./addScne";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import fetchData from "../fetchData";
+import {fetchData} from "../fetchData";
 
 const SceneListEntry = (props: {
   scene: Scene;

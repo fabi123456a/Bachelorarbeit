@@ -22,7 +22,7 @@ const Home = (props: {
   const [fbxModels, setFbxModels] = useState<boolean>(false);
   const [textures, setTextures] = useState<boolean>(false);
 
-  return (
+  return props.user ? (
     <Stack className="home">
       <NavigateBar
         setActSceneMembership={props.setActSceneMembership}
@@ -64,6 +64,8 @@ const Home = (props: {
         ></Textures>
       ) : null}
     </Stack>
+  ) : (
+    <Typography>Einloggen erforderlich</Typography>
   );
 };
 

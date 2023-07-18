@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import CloseIcon from "@mui/icons-material/Close";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import fetchData from "../../fetchData";
+import {fetchData} from "../../fetchData";
 
 const EditData = (props: {
   setShowEdit: (flag: boolean) => void;

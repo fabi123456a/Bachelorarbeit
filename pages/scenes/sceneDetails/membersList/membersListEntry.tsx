@@ -3,7 +3,7 @@ import { Model, Scene, SceneMemberShip, User } from "@prisma/client";
 import { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { DeleteForever } from "@mui/icons-material";
-import fetchData from "../../../fetchData";
+import { fetchData } from "../../../fetchData";
 
 const MembersListEntry = (props: {
   membership: SceneMemberShip & {
@@ -15,7 +15,9 @@ const MembersListEntry = (props: {
   sessionID: string;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [checkbox, setCheckbox] = useState<boolean>(props.membership.readOnly);
+  const [checkbox, setCheckbox] = useState<boolean>(
+    props.membership ? props.membership.readOnly : false
+  );
 
   const handleMouseEnter = () => {
     setIsHovered(true);

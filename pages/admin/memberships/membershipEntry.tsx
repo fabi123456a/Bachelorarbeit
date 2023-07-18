@@ -3,7 +3,7 @@ import { Scene, SceneMemberShip, User } from "@prisma/client";
 import MemberListEntry from "./membersList";
 import { useState } from "react";
 import { DeleteForever } from "@mui/icons-material";
-import fetchData from "../../fetchData";
+import {fetchData} from "../../fetchData";
 
 const MembershipEntry = (props: {
   membership: SceneMemberShip & {
@@ -14,7 +14,9 @@ const MembershipEntry = (props: {
   sessionID: string;
   idUser: string;
 }) => {
-  const [checkbox, setCheckbox] = useState<boolean>(props.membership.readOnly);
+  const [checkbox, setCheckbox] = useState<boolean>(
+    props.membership ? props.membership.readOnly : false
+  );
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -83,7 +85,7 @@ const MembershipEntry = (props: {
     if (requestedChatEntries.err) return;
   };
 
-  return (
+  return props.scene && props.membership ? (
     <Stack
       className="membershipEntry"
       direction={"row"}
@@ -125,6 +127,8 @@ const MembershipEntry = (props: {
         </>
       )}
     </Stack>
+  ) : (
+    <Typography>lädt...</Typography>
   );
 };
 

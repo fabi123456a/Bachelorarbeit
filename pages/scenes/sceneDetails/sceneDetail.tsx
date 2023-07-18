@@ -3,7 +3,7 @@ import { Model, Scene, SceneMemberShip, User } from "@prisma/client";
 import { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import MembersList from "./membersList/membersList";
-import fetchData from "../../fetchData";
+import { fetchData } from "../../fetchData";
 
 const SceneDetails = (props: {
   scene: Scene;
@@ -32,6 +32,8 @@ const SceneDetails = (props: {
     //   }),
     // });
     // const user: User = await response.json();
+
+    if (!props.scene) return;
 
     const requestedUser = await fetchData(
       props.loggedInUser.id,
@@ -111,13 +113,14 @@ const SceneDetails = (props: {
   };
 
   useEffect(() => {
+    if (!props.scene) return;
     getUserFromIdCreator(props.scene.idUserCreater).then((user: User) => {
       setCreator(user);
     });
     getSceneModelsCount(props.scene.id);
     getAllSceneMembers(props.scene.id);
   }, [reload]);
-  return (
+  return props.scene ? (
     <Stack sx={{ padding: "12px" }}>
       <Stack direction={"row"} sx={{ alignItems: "center" }}>
         <IconButton
@@ -180,6 +183,8 @@ const SceneDetails = (props: {
         Konfiguration betreten
       </Button>
     </Stack>
+  ) : (
+    <Typography>Scene lädt...</Typography>
   );
 };
 

@@ -2,7 +2,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import fetchData from "../../fetchData";
+import {fetchData} from "../../fetchData";
 
 const Insert = (props: {
   tableName: string;

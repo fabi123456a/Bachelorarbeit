@@ -32,7 +32,7 @@ import { v4 as uuidv4 } from "uuid";
 
 //@ts-ignore
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
-import fetchData from "../fetchData";
+import { fetchData } from "../fetchData";
 import { Light } from "@mui/icons-material";
 import LightSettings from "./UI-Elements/Light/lightSetting";
 
@@ -66,7 +66,7 @@ export default function Main(props: {
 
   // sceneVersion
   const [scenVersion, setScenVersion] = useState<number>(
-    props.scene.newestVersion
+    props.scene ? props.scene.newestVersion : null
   );
 
   // ambient light
@@ -87,6 +87,8 @@ export default function Main(props: {
   useEffect(() => {
     // alle fbx modelle vom server laden
     const fetchData = async () => {
+      if (!props.user) return;
+
       let response = await fetch("api/filesystem/FS_getFbxModels", {
         method: "POST",
         body: JSON.stringify({
@@ -184,6 +186,8 @@ export default function Main(props: {
 
       // const models: Model[] = await modelsRequest.json();
 
+      if (!props.user) return;
+
       const requestedModels = await fetchData(
         props.user.id,
         props.sessionID,
@@ -206,6 +210,8 @@ export default function Main(props: {
 
       setModels(typeObjectProps);
     };
+
+    if (!props.scene) return;
     getSceneModels(props.scene.id);
   }, [props.scene, scenVersion]);
 
@@ -513,6 +519,8 @@ export default function Main(props: {
     //   }),
     // });
     // const responseModel = await response.json();
+
+    if (!props.user) return;
 
     const requestChangeVersion = await fetchData(
       props.user.id,

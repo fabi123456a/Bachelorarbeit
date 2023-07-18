@@ -12,7 +12,7 @@ import { User, Scene, SceneMemberShip } from "@prisma/client";
 import AddScene from "./addScne";
 import SceneListEntry from "./sceneListEntry";
 import SceneDetails from "./sceneDetails/sceneDetail";
-import fetchData from "../fetchData";
+import {fetchData} from "../fetchData";
 
 const SceneList = (props: {
   setScene: (scene: Scene) => void;

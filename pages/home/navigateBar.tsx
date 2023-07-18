@@ -31,7 +31,7 @@ const NavigateBar = (props: {
 }) => {
   const [activeButton, setActiveButton] = useState("scenes");
 
-  return (
+  return props.user ? (
     <Stack className="navigateBar">
       <Stack className="accountImgComtainer">
         <Typography variant="h5">
@@ -142,6 +142,8 @@ const NavigateBar = (props: {
         setScene={props.setScene}
       ></Logout>
     </Stack>
+  ) : (
+    <Typography>Einloggen erforderlich</Typography>
   );
 };
 
