@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import Insert from "./insert";
 import EditData from "./editData";
 import { User } from "@prisma/client";
-import {fetchData} from "../../fetchData";
+import { fetchData } from "../../../utils/fetchData";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 

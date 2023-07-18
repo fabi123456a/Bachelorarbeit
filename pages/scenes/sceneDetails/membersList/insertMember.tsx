@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import {fetchData} from "../../../fetchData";
+import { fetchData } from "../../../../utils/fetchData";
 import { v4 as uuidv4 } from "uuid";
 
 const AddMember = (props: {

@@ -32,9 +32,9 @@ import { v4 as uuidv4 } from "uuid";
 
 //@ts-ignore
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
-import { fetchData } from "../fetchData";
 import { Light } from "@mui/icons-material";
 import LightSettings from "./UI-Elements/Light/lightSetting";
+import { fetchData } from "../../utils/fetchData";
 
 let socket;
 

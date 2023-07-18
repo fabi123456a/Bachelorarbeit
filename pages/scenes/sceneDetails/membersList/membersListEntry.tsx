@@ -3,7 +3,7 @@ import { Model, Scene, SceneMemberShip, User } from "@prisma/client";
 import { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { DeleteForever } from "@mui/icons-material";
-import { fetchData } from "../../../fetchData";
+import { fetchData } from "../../../../utils/fetchData";
 
 const MembersListEntry = (props: {
   membership: SceneMemberShip & {

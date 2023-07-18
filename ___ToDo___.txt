@@ -1,6 +1,6 @@
 TODO:
 
-
+- bug perspektive wechseln draggable
 - chat 
 - bei mouseUp wird ein anderes objekt selektiert
 - leere databaseTable und dann insert geht nicht, weil die props von dem erstel geladenen datensatz erst gesetzt werden

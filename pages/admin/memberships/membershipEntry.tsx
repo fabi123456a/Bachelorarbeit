@@ -3,7 +3,7 @@ import { Scene, SceneMemberShip, User } from "@prisma/client";
 import MemberListEntry from "./membersList";
 import { useState } from "react";
 import { DeleteForever } from "@mui/icons-material";
-import {fetchData} from "../../fetchData";
+import { fetchData } from "../../../utils/fetchData";
 
 const MembershipEntry = (props: {
   membership: SceneMemberShip & {

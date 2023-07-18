@@ -19,7 +19,7 @@ import Home from "./home/home";
 import SceneDetails from "./scenes/sceneDetails/sceneDetail";
 import Chat from "./chat/Chat";
 import Test from "./text";
-import {fetchData} from "./fetchData";
+import { fetchData } from "../utils/fetchData";
 
 const Index = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);

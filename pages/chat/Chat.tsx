@@ -10,7 +10,7 @@ import Draggable from "react-draggable";
 import CloseIcon from "@mui/icons-material/Close";
 import ChatIcon from "@mui/icons-material/Chat";
 import { v4 as uuidv4 } from "uuid";
-import {fetchData} from "../fetchData";
+import { fetchData } from "../../utils/fetchData";
 
 let socket;
 

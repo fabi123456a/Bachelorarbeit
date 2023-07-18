@@ -6,7 +6,7 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import Checkbox from "@mui/material/Checkbox";
 import MembershipEntry from "./membershipEntry";
 import AddMember from "../../scenes/sceneDetails/membersList/insertMember";
-import {fetchData} from "../../fetchData";
+import { fetchData } from "../../../utils/fetchData";
 
 const MemberListEntry = (props: {
   scene: Scene;

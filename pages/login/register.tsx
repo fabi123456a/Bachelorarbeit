@@ -1,7 +1,7 @@
 import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { User } from "@prisma/client";
-import {fetchData} from "../fetchData";
+import { fetchData } from "../../utils/fetchData";
 import { v4 as uuidv4 } from "uuid";
 
 const Register = (props: { setRegister: (flag: boolean) => void }) => {

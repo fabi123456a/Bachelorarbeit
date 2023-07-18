@@ -2,7 +2,7 @@ import { Typography, Stack, Button } from "@mui/material";
 import { User } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import {fetchData} from "./fetchData";
+import { fetchData } from "../utils/fetchData";
 
 const Test = () => {
   const [data, setData] = useState<object>({});

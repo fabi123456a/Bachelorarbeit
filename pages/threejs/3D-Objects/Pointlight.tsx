@@ -29,12 +29,12 @@ function PointlightPivot(props: {
   const boxRef = useRef<THREE.Mesh>();
   const x = useRef<THREE.Mesh>();
 
-  useFrame(() => {
-    // Aktualisiere die Rotation der Box-Komponente
-    if (!boxRef.current) return;
-    if (props.objProps) return;
-    boxRef.current.lookAt(0, 0, 0);
-  });
+  // useFrame(() => {
+  //   // Aktualisiere die Rotation der Box-Komponente
+  //   if (!boxRef.current) return;
+  //   if (props.objProps) return;
+  //   boxRef.current.lookAt(0, 0, 0);
+  // });
 
   // function
   const setCurrentObj = () => {

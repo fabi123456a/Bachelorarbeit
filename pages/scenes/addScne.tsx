@@ -2,7 +2,7 @@ import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useRef, useState } from "react";
 import { Model, Scene, SceneMemberShip, User } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
-import {fetchData} from "../fetchData";
+import { fetchData } from "../../utils/fetchData";
 
 // einmal in DB und json file to FS
 const AddScene = (props: {

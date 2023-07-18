@@ -26,7 +26,7 @@ const FbxListEntry = (props: {
     return erg;
   };
 
-  return (
+  return props.file ? (
     <Stack className="roundedShadow fbxListEntry">
       <ModelPreview fbxName={props.file}></ModelPreview>
       <Typography>{props.file.toLowerCase().replace(".fbx", "")}</Typography>
@@ -52,6 +52,8 @@ const FbxListEntry = (props: {
         </IconButton>
       ) : null}
     </Stack>
+  ) : (
+    <Typography>lädt..,</Typography>
   );
 };
 
