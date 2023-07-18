@@ -9,7 +9,7 @@ import {
 } from "@react-three/drei";
 import * as THREE from "three";
 import { Vector3 } from "three";
-import BoxGeometry from "./BoxGeometry";
+import BoxGeometry from "../pages/threejs/3D-Objects/BoxGeometry";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { Group } from "three";
 import { useFrame } from "@react-three/fiber";

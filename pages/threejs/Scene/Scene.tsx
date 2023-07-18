@@ -6,7 +6,7 @@ import BoxGeoPivot from "../3D-Objects/BoxGeoPivot";
 import Cylinderqq from "../3D-Objects/CylinderPivot";
 import { TransformControls } from "@react-three/drei";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import PointlightPivot from "../3D-Objects/Pointlight";
+import PointlightPivot from "../../../components/Pointlight";
 
 export default function Scene(props: {
   controlsRef: React.RefObject<any>;
