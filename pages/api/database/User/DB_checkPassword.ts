@@ -16,6 +16,8 @@ export default async function DB_checkPassword(
   const user = requestData["loginID"];
   const pw = requestData["pw"];
 
+  if (!prismaClient) res.status(200).json({ error: "prismaclient fehler" });
+
   const selectedUser: User = await prismaClient.user.findFirst({
     where: {
       AND: [{ loginID: user }, { password: pw }],
