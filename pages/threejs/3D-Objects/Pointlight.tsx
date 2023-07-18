@@ -10,9 +10,9 @@ import {
 import * as THREE from "three";
 import { Vector3 } from "three";
 import BoxGeometry from "./BoxGeometry";
-import { useFrame } from "@react-three/fiber";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { Group } from "three";
+import { useFrame } from "@react-three/fiber";
 
 // KOMPONENTE
 
@@ -29,12 +29,12 @@ function PointlightPivot(props: {
   const boxRef = useRef<THREE.Mesh>();
   const x = useRef<THREE.Mesh>();
 
-  // useFrame(() => {
-  //   // Aktualisiere die Rotation der Box-Komponente
-  //   if (!boxRef.current) return;
-  //   if (props.objProps) return;
-  //   boxRef.current.lookAt(0, 0, 0);
-  // });
+  useFrame(() => {
+    // Aktualisiere die Rotation der Box-Komponente
+    if (!boxRef.current) return;
+    if (props.objProps) return;
+    boxRef.current.lookAt(0, 0, 0);
+  });
 
   // function
   const setCurrentObj = () => {
@@ -79,11 +79,6 @@ function PointlightPivot(props: {
   useEffect(() => {
     //alert(props.info + props.color);
   }, []);
-
-  // bedingtes rendern
-  // if (checkPropsForNull(props)) {
-  //   return null;
-  // }
 
   return (
     <TransformControls

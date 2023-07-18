@@ -1,6 +1,6 @@
 import Stack from "@mui/material/Stack";
 import { useState, useEffect, useRef } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import {
   Alert,
   Button,
@@ -689,12 +689,12 @@ export default function Main(props: {
         ) : null}
 
         {/* Canvas/ThreeJS-scene */}
-        <Canvas
+        {/* <Canvas
           onPointerMissed={() => {
             setCurrentObjectProps(null);
           }}
           className="canvas"
-        >
+        > */}
           {/*TO ACCESS THE useThree hook in the Scene component*/}
           <ThreeJsScene
             ambientValue={ambientValue}
@@ -708,7 +708,7 @@ export default function Main(props: {
             testMode={isTestMode}
             htmlSettings={htmlsettings}
           ></ThreeJsScene>
-        </Canvas>
+        {/* </Canvas> */}
       </Stack>
     </Stack>
   );

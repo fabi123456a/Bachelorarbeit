@@ -1,6 +1,6 @@
 import SceneModel from "../3D-Objects/SceneModel";
 import Camera from "./Camera";
-import { useThree } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import BoxGeoPivot from "../3D-Objects/BoxGeoPivot";
 import Cylinderqq from "../3D-Objects/CylinderPivot";
@@ -25,13 +25,19 @@ export default function Scene(props: {
   //   props.sceneRef.current = scene;
   // }
 
-  if (props.perspektive != null) {
-    const { scene } = useThree();
-    props.sceneRef.current = scene;
-  }
+  //if (props.perspektive != null) {
+  //const { scene } = useThree();
+  //props.sceneRef.current = scene;
+  //}
 
   return props.models ? (
-    <>
+    <Canvas
+      onPointerMissed={() => {
+        props.setCurrentObjectProps(null);
+      }}
+      className="canvas"
+      ref={props.sceneRef}
+    >
       {/* Canvas nimmt größe von parent container */}
       {/* Canvas richtet eine Szene & Kamera ein */}
       {/* Kamera */}
@@ -181,6 +187,6 @@ export default function Scene(props: {
       {/* <Cube></Cube> */}
 
       {/* <Stats className="stats" /> */}
-    </>
+    </Canvas>
   ) : null;
 }
