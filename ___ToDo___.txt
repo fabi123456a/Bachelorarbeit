@@ -1,5 +1,6 @@
 TODO:
 
+- scene speicher und mit socketio synchronisieren
 - bug perspektive wechseln draggable
 - chat 
 - bei mouseUp wird ein anderes objekt selektiert
