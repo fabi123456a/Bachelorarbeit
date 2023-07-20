@@ -103,9 +103,10 @@ export default function Scene(props: {
       ></Camera>
 
       {workers
-        ? workers.map((worker: CurrentSceneEdit) => (
-            <User worker={worker}></User>
-          ))
+        ? workers.map((worker: CurrentSceneEdit) => {
+            if (props.refCurrentWorkingScene.current.id == worker.id) return;
+            return <User worker={worker}></User>;
+          })
         : null}
 
       {/* Licht */}
