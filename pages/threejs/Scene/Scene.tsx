@@ -109,7 +109,13 @@ export default function Scene(props: {
       {workers
         ? workers.map((worker: CurrentSceneEdit) => {
             if (props.refCurrentWorkingScene.current.id == worker.id) return;
-            return <User worker={worker}></User>;
+            return (
+              <User
+                worker={worker}
+                idUser={props.idUser}
+                sessionID={props.sessionID}
+              ></User>
+            );
           })
         : null}
 
