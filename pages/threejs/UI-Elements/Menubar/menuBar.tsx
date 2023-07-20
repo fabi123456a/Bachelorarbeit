@@ -8,10 +8,11 @@ import {
   Typography,
   IconButton,
 } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
-import { Scene } from "@prisma/client";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
+import { CurrentSceneEdit, Scene } from "@prisma/client";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { checkPropsForNull } from "../../../../utils/checkIfPropIsNull";
+import { fetchData } from "../../../../utils/fetchData";
 
 const MenuBar = (props: {
   setScene: (scene: Scene) => void;
@@ -19,16 +20,40 @@ const MenuBar = (props: {
   isTestMode: boolean;
   sceneVersion: number;
   setSceneVersion: (version: number) => void;
+  currentWorkingScene: MutableRefObject<CurrentSceneEdit>;
+  idUser: string;
+  sessionID: string;
 }) => {
   // bedingtes rendern
   if (checkPropsForNull(props)) return null;
+
+  const deleteCurrentWorkingScene = async () => {
+    const requestedMembership = await fetchData(
+      props.idUser,
+      props.sessionID,
+      "CurrentSceneEdit",
+      "delete",
+      {
+        id: props.currentWorkingScene.current.id,
+      },
+      null,
+      null
+    );
+
+    if (requestedMembership.error) return null;
+
+    return requestedMembership;
+  };
 
   return (
     <Stack className="menuBar" direction={"row"}>
       <Button
         sx={{ mr: "16px", ml: "7px", color: "black" }}
-        onClick={() => {
+        onClick={async () => {
           props.setScene(null);
+
+          // alert(props.currentWorkingScene.current.id);
+          await deleteCurrentWorkingScene();
         }}
         className="iconButton"
       >

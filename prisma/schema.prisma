@@ -33,6 +33,13 @@ model Scene {
   memberships    SceneMemberShip[]
 }
 
+model CurrentSceneEdit {
+  id             String     @id 
+  idUser         String 
+  idScene        String
+  entryDate      DateTime
+}
+
 model SceneMemberShip {
   id             String     @id 
   idScene        String 

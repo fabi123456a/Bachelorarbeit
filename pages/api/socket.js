@@ -26,8 +26,13 @@ const SocketHandler = (req, res) => {
         io.emit("getChatEntry", chatEntrys);
       });
       // scene
-      socket.on("sceneRefresh", async (msg) => {
-        io.emit("getSceneRefresh", msg);
+      socket.on("setSyncScene", async (data) => {
+        io.emit("syncScene", data);
+      });
+      // userCam
+      socket.on("setUserCamData", async (data) => {
+        io.emit("getUsersCamData", data);
+        //console.log(JSON.stringify(data));
       });
     });
   }

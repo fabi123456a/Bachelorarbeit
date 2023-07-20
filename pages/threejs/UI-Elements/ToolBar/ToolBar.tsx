@@ -33,7 +33,7 @@ function ToolBar(props: {
   removeObject: () => void;
   setPerspective: (perspective: string) => void; // funktion setzt die Kamera Perspektive -> "0"=normal, "1"=topDown, "2"=frontal, "3"=leftMid, "4"=rightMid
   setWallVisibility: (flag: boolean) => void;
-  saveScene: () => void;
+  saveScene: (idScene: string) => void;
   setIsTestMode: (flag: boolean) => void;
   isTestMode: boolean;
   setCurentObj: (obj: TypeObjectProps) => void;
@@ -270,7 +270,7 @@ function ToolBar(props: {
               style={{ ...(buttonWithTextStyle as any) }}
               title="Save current Scene"
               onClick={() => {
-                props.saveScene(); // TODO: await props.safeScene
+                props.saveScene(props.scene.id); // TODO: await props.safeScene
 
                 socket1.emit("sceneRefresh", props.scene.id);
               }}

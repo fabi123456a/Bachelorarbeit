@@ -1,8 +1,8 @@
 import { Stack, Typography } from "@mui/material";
 import SceneList from "../scenes/sceneList";
-import { Scene, SceneMemberShip, User } from "@prisma/client";
+import { CurrentSceneEdit, Scene, SceneMemberShip, User } from "@prisma/client";
 import NavigateBar from "./navigateBar";
-import { useState } from "react";
+import { MutableRefObject, useState } from "react";
 import AdminArea from "../admin/adminArea";
 import Settings from "../settings/settings";
 import FbxList from "../admin/fbxModels/fbxList";
@@ -15,6 +15,7 @@ const Home = (props: {
   setLoggedIn: (flag: boolean) => void;
   setActSceneMembership: (membership: SceneMemberShip) => void;
   sessionID: string;
+  currentWorkingScene: MutableRefObject<CurrentSceneEdit>;
 }) => {
   const [adminArea, setAdminArea] = useState<boolean>(false);
   const [settings, setSettings] = useState<boolean>(false);
@@ -38,6 +39,7 @@ const Home = (props: {
       ></NavigateBar>
       {scenes ? (
         <SceneList
+          currentWorkingScene={props.currentWorkingScene}
           sessionID={props.sessionID}
           user={props.user}
           setScene={props.setScene}

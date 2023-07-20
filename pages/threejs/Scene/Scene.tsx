@@ -7,8 +7,14 @@ import Cylinderqq from "../3D-Objects/CylinderPivot";
 import { Box, TransformControls } from "@react-three/drei";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import PointlightPivot from "../../../components/Pointlight";
-import { useState } from "react";
+import { MutableRefObject, useEffect, useState } from "react";
 import Cube from "../3D-Objects/test";
+import { fetchData } from "../../../utils/fetchData";
+import { CurrentSceneEdit } from "@prisma/client";
+import User from "../3D-Objects/User";
+import io from "socket.io-client";
+
+let socket;
 
 export default function Scene(props: {
   controlsRef: React.RefObject<any>;
@@ -21,18 +27,60 @@ export default function Scene(props: {
   testMode: boolean;
   htmlSettings: boolean;
   ambientValue: number;
+  setCamPos: (pos: number[]) => void;
+  setRotCam: (rot: number[]) => void;
+  posCam: number[];
+  rotCam: number[];
+  sessionID: string;
+  idUser: string;
+  idScene: string;
+  refCurrentWorkingScene: MutableRefObject<CurrentSceneEdit>;
 }) {
-  // if (props.currentObjectProps) {
-  //   const { scene } = useThree();
-  //   props.sceneRef.current = scene;
-  // }
+  const [workers, setWorkers] = useState<CurrentSceneEdit[]>(null);
+  const [reload, setReload] = useState<number>(null);
 
-  //if (props.perspektive != null) {
-  //const { scene } = useThree();
-  //props.sceneRef.current = scene;
-  //}
-  const [posCam, setPosCam] = useState<number[]>(null);
-  const [rotCam, setRotCam] = useState<number[]>(null);
+  const getWorkers = async () => {
+    const requestedWorkers = await fetchData(
+      props.idUser,
+      props.sessionID,
+      "CurrentSceneEdit",
+      "select",
+      {
+        idScene: props.idScene,
+      },
+      null,
+      null
+    );
+
+    if (requestedWorkers.error) return null;
+    setWorkers(requestedWorkers);
+    return requestedWorkers;
+  };
+
+  useEffect(() => {
+    getWorkers();
+  }, [reload]);
+
+  useEffect(() => {
+    if (!workers) return;
+    //alert(workers.length);
+  }, [workers]);
+
+  useEffect(() => {
+    const socketInitializer = async () => {
+      await fetch("/api/socket");
+      socket = io();
+
+      // socket.on("connect", () => {
+      //   console.log("connected");
+      // });
+
+      socket.on("getUsersCamData", (data) => {
+        setReload(Math.random());
+      });
+    };
+    socketInitializer();
+  }, []);
 
   return props.models ? (
     <Canvas
@@ -46,22 +94,19 @@ export default function Scene(props: {
       {/* Canvas richtet eine Szene & Kamera ein */}
       {/* Kamera */}
       <Camera
+        refCurrentWorkingScene={props.refCurrentWorkingScene}
         controlsRef={props.controlsRef}
         perspektive={props.perspektive}
         testMode={props.testMode}
-        setCamPos={setPosCam}
-        setRotCam={setRotCam}
+        setCamPos={props.setCamPos}
+        setRotCam={props.setRotCam}
       ></Camera>
-      {posCam ? (
-        <Box
-          args={[2, 2, 2]}
-          position={[-posCam[0], posCam[1], -posCam[2]]}
-          rotation={[rotCam[0], rotCam[1], rotCam[2]]}
-          material={
-            new THREE.MeshStandardMaterial({ color: new THREE.Color("red") })
-          }
-        ></Box>
-      ) : null}
+
+      {workers
+        ? workers.map((worker: CurrentSceneEdit) => (
+            <User worker={worker}></User>
+          ))
+        : null}
 
       {/* Licht */}
       <ambientLight intensity={props.ambientValue} />

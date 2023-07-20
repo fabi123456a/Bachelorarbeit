@@ -1,5 +1,5 @@
 import Stack from "@mui/material/Stack";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, MutableRefObject } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   Alert,
@@ -18,7 +18,13 @@ import * as THREE from "three";
 import { arrayBufferToBase64, base64ToBlob } from "../../utils/converting";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import exportToGLTF from "../../utils/exporting";
-import { Model, Scene, SceneMemberShip, User } from "@prisma/client";
+import {
+  CurrentSceneEdit,
+  Model,
+  Scene,
+  SceneMemberShip,
+  User,
+} from "@prisma/client";
 import WallList from "./UI-Elements/WallList/WallList";
 import { debug } from "console";
 import SceneModelList from "./UI-Elements/SceneModelTreeView/SceneModelList";
@@ -44,6 +50,7 @@ export default function Main(props: {
   setScene: (scene: Scene) => void;
   membership: SceneMemberShip;
   sessionID: string;
+  currentWorkingScene: MutableRefObject<CurrentSceneEdit>;
 }) {
   // ---- STATES ----
   const [treeViewSelectedId, setTreeViewSelectedId] = useState<string>(null);
@@ -74,7 +81,10 @@ export default function Main(props: {
 
   // htmlsettings
   const [htmlsettings, setHtmlsettings] = useState<boolean>(false);
-  const [refreshedSceneID, setRefreshedSceneID] = useState<string>("");
+
+  // kamera position & rotatre
+  const [camPos, setCamPos] = useState<number[]>(null);
+  const [camRot, setCamRot] = useState<number[]>(null);
 
   // ---- REFS ----
   const sceneRef = useRef<any>(null!);
@@ -168,82 +178,59 @@ export default function Main(props: {
     console.log(currentObjectProps);
   }, [currentObjectProps]);
 
+  const getSceneModels = async (idScene: string, version: number) => {
+    if (!props.user) return;
+
+    const requestedModels = await fetchData(
+      props.user.id,
+      props.sessionID,
+      "model",
+      "select",
+      { idScene: props.scene.id, version: version },
+      null,
+      null
+    );
+
+    if (requestedModels.err) return;
+
+    const typeObjectProps: TypeObjectProps[] = [];
+
+    // models vom Typ Model (prismaClient) zu TypeObjectProps ändern
+    requestedModels.forEach((model: Model) => {
+      const obj: TypeObjectProps = convertModelToTypeObjectProps(model);
+      typeObjectProps.push(obj);
+    });
+
+    setModels(typeObjectProps);
+  };
+
   // anfangs scene laden, nach dem eine scene in der sceneList ausgewählt wurde und models mit setModels setzen
   useEffect(() => {
-    const getSceneModels = async (idScene: string) => {
-      // const modelsRequest = await fetch(
-      //   "/api/database/Model/DB_getAllModelsByID",
-      //   {
-      //     method: "POST",
-      //     body: JSON.stringify({
-      //       idScene: props.scene.id,
-      //       version: scenVersion,
-      //       sessionID: props.sessionID,
-      //       idUser: props.user.id,
-      //     }),
-      //   }
-      // );
-
-      // const models: Model[] = await modelsRequest.json();
-
-      if (!props.user) return;
-
-      const requestedModels = await fetchData(
-        props.user.id,
-        props.sessionID,
-        "model",
-        "select",
-        { idScene: props.scene.id, version: scenVersion },
-        null,
-        null
-      );
-
-      if (requestedModels.err) return;
-
-      const typeObjectProps: TypeObjectProps[] = [];
-
-      // models vom Typ Model (prismaClient) zu TypeObjectProps ändern
-      requestedModels.forEach((model: Model) => {
-        const obj: TypeObjectProps = convertModelToTypeObjectProps(model);
-        typeObjectProps.push(obj);
-      });
-
-      setModels(typeObjectProps);
-    };
-
     if (!props.scene) return;
-    getSceneModels(props.scene.id);
+    getSceneModels(props.scene.id, scenVersion);
   }, [props.scene, scenVersion]);
 
   // scene neu socket.io laden // TODO:
   useEffect(() => {
-    // const socketInitializer = async () => {
-    //   await fetch("/api/socket");
-    //   socket = io();
-    //   // socket.on("connect", () => {
-    //   //   console.log("connected");
-    //   // });
-    //   socket.on("getSceneRefresh", (msg) => {
-    //     // msg => scene id von der seite die jemand gespeichert hat
-    //     //setInput([...input, msg]);xxxx
-    //     console.log("scene wurde refresht: " + msg);
-    //     setRefreshedSceneID(msg);
-    //     if (msg == props.scene.id) {
-    //       const handle = async () => {
-    //         const response = await fetch("/api/filesystem/FS_getSceneByID", {
-    //           method: "POST",
-    //           body: JSON.stringify({
-    //             sceneID: props.scene.id,
-    //           }),
-    //         });
-    //         const result = await response.json();
-    //         //TODO: setModels
-    //       };
-    //       handle();
-    //     }
-    //   });
-    // };
-    // socketInitializer();
+    const socketInitializer = async () => {
+      await fetch("/api/socket");
+      socket = io();
+
+      // socket.on("connect", () => {
+      //   console.log("connected");
+      // });
+
+      socket.on("syncScene", (data) => {
+        console.log("scene wird refresht: " + JSON.stringify(data));
+
+        if (props.scene.id == data.idScene) {
+          setScenVersion(data.version);
+          // alert("xxxxversion hat sich geändert " + data.idScene);
+          getSceneModels(props.scene.id, data.version);
+        }
+      });
+    };
+    socketInitializer();
   }, []);
 
   // ----- FUNCTIONS ----
@@ -471,12 +458,13 @@ export default function Main(props: {
   };
 
   // save Scene
-  async function saveScene() {
+  async function saveScene(idScene: string) {
     // scene speicher,also alle models in DB speichern
 
+    // erst neue version
     const newVersion = props.scene.newestVersion + 1;
 
-    // dann alle neu einfügen
+    // dann alle neu einfügen, mit nuer version als vermerk
     models.forEach(async (objProp: TypeObjectProps) => {
       let model: Model;
 
@@ -506,20 +494,15 @@ export default function Main(props: {
     };
     props.setScene(updatedScene);
     setScenVersion(newVersion);
+
+    // socket.io
+    socket.emit("setSyncScene", {
+      version: newVersion,
+      idScene: idScene,
+    });
   }
 
   async function changeSceneVersion(idScene: String, version: number) {
-    // const response = await fetch("/api/database/Scene/DB_changeNewestVersion", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     idScene: idScene,
-    //     version: version,
-    //     sessionID: props.sessionID,
-    //     idUser: props.user.id,
-    //   }),
-    // });
-    // const responseModel = await response.json();
-
     if (!props.user) return;
 
     const requestChangeVersion = await fetchData(
@@ -536,17 +519,6 @@ export default function Main(props: {
   }
 
   async function insertModelToDB(model: Model) {
-    // const response = await fetch("/api/database/Model/DB_insertModel", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     model: model,
-    //     sessionID: props.sessionID,
-    //     idUser: props.user.id,
-    //   }),
-    // });
-    // const responseModel = await response.json();
-
-    // TODO:
     const rquestInsertModel = await fetchData(
       props.user.id,
       props.sessionID,
@@ -571,6 +543,9 @@ export default function Main(props: {
     <Stack className="main">
       {/* menubar */}
       <MenuBar
+        idUser={props.user.id}
+        sessionID={props.sessionID}
+        currentWorkingScene={props.currentWorkingScene}
         setScene={props.setScene}
         scene={props.scene}
         isTestMode={isTestMode}
@@ -624,9 +599,8 @@ export default function Main(props: {
 
         {/* ui elements ausblenden, wenn keine lese rechte oder kein admin oder readonly im membership */}
         {props.user ? (
-          !props.user.write ||
-          props.user.isAdmin ||
-          props.membership.readOnly ? (
+          (props.user.write && !props.membership.readOnly) ||
+          props.user.isAdmin ? (
             <>
               {/* ModelList */}
               <ModelList
@@ -695,19 +669,27 @@ export default function Main(props: {
           }}
           className="canvas"
         > */}
-          {/*TO ACCESS THE useThree hook in the Scene component*/}
-          <ThreeJsScene
-            ambientValue={ambientValue}
-            controlsRef={controlsRef}
-            perspektive={perspective}
-            currentObjectProps={currentObjectProps}
-            setCurrentObjectProps={setCurrentObjectProps}
-            models={models}
-            sceneRef={sceneRef}
-            wallVisibility={wallVisiblity}
-            testMode={isTestMode}
-            htmlSettings={htmlsettings}
-          ></ThreeJsScene>
+        {/*TO ACCESS THE useThree hook in the Scene component*/}
+        <ThreeJsScene
+          refCurrentWorkingScene={props.currentWorkingScene}
+          ambientValue={ambientValue}
+          controlsRef={controlsRef}
+          perspektive={perspective}
+          currentObjectProps={currentObjectProps}
+          setCurrentObjectProps={setCurrentObjectProps}
+          models={models}
+          sceneRef={sceneRef}
+          wallVisibility={wallVisiblity}
+          testMode={isTestMode}
+          htmlSettings={htmlsettings}
+          posCam={camPos}
+          rotCam={camRot}
+          setCamPos={setCamPos}
+          setRotCam={setCamRot}
+          idUser={props.user.id}
+          sessionID={props.sessionID}
+          idScene={props.scene.id}
+        ></ThreeJsScene>
         {/* </Canvas> */}
       </Stack>
     </Stack>

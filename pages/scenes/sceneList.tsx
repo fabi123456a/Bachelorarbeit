@@ -7,8 +7,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
-import { User, Scene, SceneMemberShip } from "@prisma/client";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
+import { User, Scene, SceneMemberShip, CurrentSceneEdit } from "@prisma/client";
 import AddScene from "./addScne";
 import SceneListEntry from "./sceneListEntry";
 import SceneDetails from "./sceneDetails/sceneDetail";
@@ -19,6 +19,7 @@ const SceneList = (props: {
   user: User;
   setActSceneMembership: (mebership: SceneMemberShip) => void;
   sessionID: string;
+  currentWorkingScene: MutableRefObject<CurrentSceneEdit>;
 }) => {
   const [scenes, setScenes] = useState<Scene[]>();
   const [reload, setReload] = useState<number>();
@@ -33,20 +34,6 @@ const SceneList = (props: {
   >(null);
 
   const getMembershipFromSceneID = async (idUser: string, idScene: string) => {
-    // const requestedMembership = await fetch(
-    //   "/api/database/Membership/DB_getMembershipBySceneID",
-    //   {
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //       idUser: idUser,
-    //       idScene: idScene,
-    //       sessionID: props.sessionID,
-    //     }),
-    //   }
-    // );
-
-    // const mebership = await requestedMembership.json();
-
     const requestedMembership = await fetchData(
       props.user.id,
       props.sessionID,
@@ -66,21 +53,6 @@ const SceneList = (props: {
   };
 
   const getAllSceneMemberships = async () => {
-    // const requestMemberships = await fetch(
-    //   "/api/database/Membership/DB_getAllMembershipsByUserID",
-    //   {
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //       idUser: props.user.id,
-    //       sessionID: props.sessionID,
-    //     }),
-    //   }
-    // );
-    // const memberships: SceneMemberShip &
-    //   {
-    //     scene: Scene;
-    //   }[] = await requestMemberships.json();
-
     const requestMemberships = await fetchData(
       props.user.id,
       props.sessionID,
@@ -122,6 +94,7 @@ const SceneList = (props: {
         setScene={props.setScene}
         loggedInUser={props.user}
         ownMembership={sceneMembership}
+        currentWorkingScene={props.currentWorkingScene}
       ></SceneDetails>
     ) : (
       <Stack className="sceneList">

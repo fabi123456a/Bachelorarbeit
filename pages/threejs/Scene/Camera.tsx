@@ -1,8 +1,12 @@
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
-import { useEffect, useState } from "react";
+import { MutableRefObject, useEffect, useState } from "react";
 import * as THREE from "three";
 import { FlyControls } from "@react-three/drei";
 import { checkPropsForNull } from "../../../utils/checkIfPropIsNull";
+import io from "socket.io-client";
+import { CurrentSceneEdit } from "@prisma/client";
+
+let socket;
 
 export default function Camera(props: {
   controlsRef: React.RefObject<any>;
@@ -10,6 +14,7 @@ export default function Camera(props: {
   testMode: boolean;
   setCamPos: (pos: number[]) => void;
   setRotCam: (rot: number[]) => void;
+  refCurrentWorkingScene: MutableRefObject<CurrentSceneEdit>;
 }) {
   const [camPos, setCamPos] = useState<TypeCamPosition>({
     topDown: new THREE.Vector3(0, 999, 0),
@@ -29,8 +34,26 @@ export default function Camera(props: {
 
       const rot = props.controlsRef.current.object.rotation;
       props.setRotCam([rot.x, rot.y, rot.z]);
-      // console.log(rot);
+
+      socket.emit("setUserCamData", {
+        [props.refCurrentWorkingScene.current.id]: {
+          position: pos,
+          rotation: rot,
+        },
+      });
     });
+  }, []);
+
+  useEffect(() => {
+    const socketInitializer = async () => {
+      await fetch("/api/socket");
+      socket = io();
+
+      // socket.on("connect", () => {
+      //   console.log("connected");
+      // });
+    };
+    socketInitializer();
   }, []);
 
   return props.controlsRef ? (

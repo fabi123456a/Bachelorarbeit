@@ -1,6 +1,12 @@
 import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import { Model, Scene, SceneMemberShip, User } from "@prisma/client";
+import {
+  CurrentSceneEdit,
+  Model,
+  Scene,
+  SceneMemberShip,
+  User,
+} from "@prisma/client";
 import AddScene from "./addScne";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { fetchData } from "../../utils/fetchData";
@@ -17,19 +23,9 @@ const SceneListEntry = (props: {
   const [userCreator, setUserCreator] = useState<User>();
   const [mouseOver, setMouseOver] = useState<boolean>(false);
   const [modelsCount, setModelsCount] = useState<number>(null);
+  const [currentEdits, setCurrentEdits] = useState<CurrentSceneEdit[]>(null);
 
   const deleteSceneFromDB = async () => {
-    // const response = await fetch("/api/database/Scene/DB_deleteSceneByID", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     idScene: props.scene.id,
-    //     sessionID: props.sessionID,
-    //     idUser: props.user.id,
-    //   }),
-    // });
-
-    // return response;
-
     // sceneMembership laden um an die id zu kommen zum deleten
     const requestDelete13 = await fetchData(
       props.user.id,
@@ -91,17 +87,6 @@ const SceneListEntry = (props: {
 
   // neu fecthData
   const getUserFromScene = async () => {
-    // const response = await fetch("/api/database/User/DB_getUserByID", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     idUser: props.scene.idUserCreater,
-    //     sessionID: props.sessionID,
-    //   }),
-    // });
-
-    // const user = (await response.json()) as User;
-
-    // TODO:
     const requestedCreator = await fetchData(
       props.user.id,
       props.sessionID,
@@ -121,21 +106,6 @@ const SceneListEntry = (props: {
   };
 
   const getSceneModelsCount = async (idScene: string) => {
-    // const modelsRequest = await fetch(
-    //   "/api/database/Model/DB_getAllModelsByID",
-    //   {
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //       idScene: props.scene.id,
-    //       version: props.scene.newestVersion,
-    //       sessionID: props.sessionID,
-    //       idUser: props.user.id,
-    //     }),
-    //   }
-    // );
-
-    // const models: Model[] = await modelsRequest.json();
-
     const requestedModels = await fetchData(
       props.user.id,
       props.sessionID,
@@ -154,9 +124,28 @@ const SceneListEntry = (props: {
     setModelsCount(requestedModels.length);
   };
 
+  const getCurrentEdit = async () => {
+    const requestedCurrentEdit = await fetchData(
+      props.user.id,
+      props.sessionID,
+      "CurrentSceneEdit",
+      "select",
+      { idScene: props.scene.id },
+      null,
+      null
+    );
+
+    if (requestedCurrentEdit.err) return;
+
+    //alert(requestedCurrentEdit[0]);
+
+    setCurrentEdits(requestedCurrentEdit);
+  };
+
   useEffect(() => {
     getUserFromScene();
     getSceneModelsCount(props.scene.id);
+    getCurrentEdit();
   }, []);
 
   return props.scene && props.setReload && props.setScene && props.user ? (
@@ -175,6 +164,9 @@ const SceneListEntry = (props: {
       }}
     >
       <Stack>
+        {currentEdits ? (
+          <Typography>Aktuell working: {currentEdits.length}</Typography>
+        ) : null}
         <Typography sx={{ fontWeight: "bold", fontSize: "16px", mb: "6px" }}>
           {props.scene.name}
         </Typography>

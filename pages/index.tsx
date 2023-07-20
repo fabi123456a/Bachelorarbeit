@@ -7,7 +7,13 @@ import Login from "./login/login";
 import SceneList from "./scenes/sceneList";
 import Main from "./threejs/Main";
 import Stack from "@mui/material/Stack";
-import { User, Scene, SceneMemberShip, Session } from "@prisma/client";
+import {
+  User,
+  Scene,
+  SceneMemberShip,
+  Session,
+  CurrentSceneEdit,
+} from "@prisma/client";
 import CubeRotater from "./login/cubeRotater";
 import Logout from "./login/logout";
 import DatabaseTable from "./admin/databaseTable/databaseTable";
@@ -28,6 +34,7 @@ const Index = () => {
   const [scene, setScene] = useState<Scene>(null);
   const [sceneMembership, setSceneMembership] = useState<SceneMemberShip>();
   const [session, setSession] = useState<Session>(null);
+  const refCurrentWorkingScene = useRef<CurrentSceneEdit>();
 
   // neu fetchData
   const getSession = async (): Promise<Session> => {
@@ -74,6 +81,7 @@ const Index = () => {
         scene ? (
           session ? (
             <Main
+              currentWorkingScene={refCurrentWorkingScene}
               scene={scene}
               setScene={setScene}
               user={actUser}
@@ -83,6 +91,7 @@ const Index = () => {
           ) : null
         ) : session ? (
           <Home
+            currentWorkingScene={refCurrentWorkingScene}
             sessionID={session.id}
             setActSceneMembership={setSceneMembership}
             setScene={setScene}

@@ -1,9 +1,16 @@
 import { Button, IconButton, Stack, Typography } from "@mui/material";
-import { Model, Scene, SceneMemberShip, User } from "@prisma/client";
-import { useEffect, useState } from "react";
+import {
+  CurrentSceneEdit,
+  Model,
+  Scene,
+  SceneMemberShip,
+  User,
+} from "@prisma/client";
+import { MutableRefObject, useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import MembersList from "./membersList/membersList";
 import { fetchData } from "../../../utils/fetchData";
+import { v4 as uuidv4 } from "uuid";
 
 const SceneDetails = (props: {
   scene: Scene;
@@ -12,8 +19,8 @@ const SceneDetails = (props: {
   loggedInUser: User;
   ownMembership: SceneMemberShip;
   sessionID: string;
+  currentWorkingScene: MutableRefObject<CurrentSceneEdit>;
 }) => {
-  //const [scenes, setScenes] = useState<Scene[]>();
   const [creator, setCreator] = useState<User>();
   const [modelsCount, setModelsCount] = useState<number>();
   const [members, setMembers] = useState<
@@ -24,15 +31,6 @@ const SceneDetails = (props: {
   const [reload, setReload] = useState<number>(0);
 
   const getUserFromIdCreator = async (idCreator: string): Promise<User> => {
-    // const response = await fetch("/api/database/User/DB_getUserByID", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     idUser: props.scene.idUserCreater,
-    //     sessionID: props.sessionID,
-    //   }),
-    // });
-    // const user: User = await response.json();
-
     if (!props.scene) return;
 
     const requestedUser = await fetchData(
@@ -51,21 +49,6 @@ const SceneDetails = (props: {
   };
 
   const getSceneModelsCount = async (idScene: string) => {
-    // const modelsRequest = await fetch(
-    //   "/api/database/Model/DB_getAllModelsByID",
-    //   {
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //       idScene: props.scene.id,
-    //       version: props.scene.newestVersion,
-    //       sessionID: props.sessionID,
-    //       idUser: props.loggedInUser.id,
-    //     }),
-    //   }
-    // );
-
-    // const models: Model[] = await modelsRequest.json();
-
     const requestedModels = await fetchData(
       props.loggedInUser.id,
       props.sessionID,
@@ -81,22 +64,6 @@ const SceneDetails = (props: {
   };
 
   const getAllSceneMembers = async (idScene: string) => {
-    // const membersRequest = await fetch(
-    //   "/api/database/Membership/DB_getAllMembersBySceneID",
-    //   {
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //       idScene: props.scene.id,
-    //       sessionID: props.sessionID,
-    //       idUser: props.loggedInUser.id,
-    //     }),
-    //   }
-    // );
-
-    // const members: (SceneMemberShip & {
-    //   user: User;
-    // })[] = await membersRequest.json();
-
     const requestedMembers = await fetchData(
       props.loggedInUser.id,
       props.sessionID,
@@ -112,6 +79,31 @@ const SceneDetails = (props: {
     setMembers(requestedMembers);
   };
 
+  const insertCurrentSceneEdit = async () => {
+    const currentSceneEditData: CurrentSceneEdit = {
+      id: uuidv4(),
+      entryDate: new Date(),
+      idScene: props.scene.id,
+      idUser: props.loggedInUser.id,
+    };
+
+    const requestedInsert = await fetchData(
+      props.loggedInUser.id,
+      props.sessionID,
+      "CurrentSceneEdit",
+      "create",
+      {},
+      currentSceneEditData,
+      null
+    );
+
+    if (requestedInsert.err) {
+      alert(requestedInsert.err);
+      return;
+    }
+    return requestedInsert;
+  };
+
   useEffect(() => {
     if (!props.scene) return;
     getUserFromIdCreator(props.scene.idUserCreater).then((user: User) => {
@@ -120,6 +112,7 @@ const SceneDetails = (props: {
     getSceneModelsCount(props.scene.id);
     getAllSceneMembers(props.scene.id);
   }, [reload]);
+
   return props.scene ? (
     <Stack sx={{ padding: "12px" }}>
       <Stack direction={"row"} sx={{ alignItems: "center" }}>
@@ -175,8 +168,17 @@ const SceneDetails = (props: {
       ></MembersList>
 
       <Button
-        onClick={() => {
+        onClick={async () => {
           props.setScene(props.scene);
+
+          const currentWorkingScene: CurrentSceneEdit =
+            await insertCurrentSceneEdit();
+
+          if (currentWorkingScene) {
+            props.currentWorkingScene.current = currentWorkingScene;
+          }
+
+          //alert(JSON.stringify(props.currentWorkingScene.current));
         }}
         variant="contained"
       >
