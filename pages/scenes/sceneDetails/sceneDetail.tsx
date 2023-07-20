@@ -11,6 +11,9 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import MembersList from "./membersList/membersList";
 import { fetchData } from "../../../utils/fetchData";
 import { v4 as uuidv4 } from "uuid";
+import io from "socket.io-client";
+
+let socket;
 
 const SceneDetails = (props: {
   scene: Scene;
@@ -113,6 +116,14 @@ const SceneDetails = (props: {
     getAllSceneMembers(props.scene.id);
   }, [reload]);
 
+  useEffect(() => {
+    const socketInitializer = async () => {
+      await fetch("/api/socket");
+      socket = io();
+    };
+    socketInitializer();
+  }, []);
+
   return props.scene ? (
     <Stack sx={{ padding: "12px" }}>
       <Stack direction={"row"} sx={{ alignItems: "center" }}>
@@ -179,6 +190,7 @@ const SceneDetails = (props: {
           }
 
           //alert(JSON.stringify(props.currentWorkingScene.current));
+          socket.emit("refreshWorkers", {});
         }}
         variant="contained"
       >

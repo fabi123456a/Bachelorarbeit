@@ -34,6 +34,10 @@ const SocketHandler = (req, res) => {
         io.emit("getUsersCamData", data);
         //console.log(JSON.stringify(data));
       });
+      // refresh workers
+      socket.on("refreshWorkers", async () => {
+        io.emit("getRefreshWorkers");
+      });
     });
   }
   res.end();

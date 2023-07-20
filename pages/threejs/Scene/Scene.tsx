@@ -76,6 +76,10 @@ export default function Scene(props: {
       // });
 
       socket.on("getUsersCamData", (data) => {
+        //setReload(Math.random());
+      });
+
+      socket.on("getRefreshWorkers", () => {
         setReload(Math.random());
       });
     };
