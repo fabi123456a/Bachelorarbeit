@@ -13,6 +13,7 @@ let socket;
 
 function User(props: { worker: CurrentSceneEdit }) {
   const [pos, setPos] = useState<{ x: number; y: number; z: number }>(null);
+  const [rot, setRot] = useState<{ _x: number; _y: number; _z: number }>(null);
 
   useEffect(() => {
     const socketInitializer = async () => {
@@ -26,8 +27,11 @@ function User(props: { worker: CurrentSceneEdit }) {
       socket.on("getUsersCamData", (data) => {
         //console.log(JSON.stringify(data));
         if (props.worker.id in data) {
-          console.log(JSON.stringify(data[props.worker.id].position));
+          console.log(
+            "rotation: " + JSON.stringify(data[props.worker.id].rotation)
+          );
           setPos(data[props.worker.id].position);
+          setRot(data[props.worker.id].rotation);
         }
       });
     };
@@ -37,6 +41,7 @@ function User(props: { worker: CurrentSceneEdit }) {
     <Box
       material={new THREE.MeshStandardMaterial({ color: "red" })}
       position={[pos.x, pos.y, pos.z]}
+      rotation={[rot._x, rot._y, rot._z]}
     ></Box>
   ) : (
     <Box
