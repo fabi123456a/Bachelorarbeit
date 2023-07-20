@@ -37,18 +37,24 @@ function User(props: { worker: CurrentSceneEdit }) {
     };
     socketInitializer();
   }, []);
+
+  // return pos ? (
+  //   <Box
+  //     material={new THREE.MeshStandardMaterial({ color: "red" })}
+  //     position={[pos.x, pos.y, pos.z]}
+  //     rotation={[rot._x, rot._y, rot._z]}
+  //   ></Box>
+  // ) : null;
+
   return pos ? (
-    <Box
-      material={new THREE.MeshStandardMaterial({ color: "red" })}
-      position={[pos.x, pos.y, pos.z]}
-      rotation={[rot._x, rot._y, rot._z]}
-    ></Box>
-  ) : (
-    <Box
-      material={new THREE.MeshStandardMaterial({ color: "red" })}
-      position={[1, 1, 1]}
-    ></Box>
-  );
+    <>
+      <Box
+        material={new THREE.MeshStandardMaterial({ color: "red" })}
+        position={[pos.x, pos.y, pos.z]}
+        rotation={[rot._x, rot._y, rot._z]}
+      ></Box>
+    </>
+  ) : null;
 }
 
 export default User;
