@@ -155,6 +155,7 @@ export default function Scene(props: {
               info={""}
               name={model.name}
               texture={null}
+              idScene={model.idScene}
             ></SceneModel>
           ) : model.info == "cylinder" ? (
             <Cylinderqq
@@ -166,6 +167,7 @@ export default function Scene(props: {
               setCurrentObjectProps={props.setCurrentObjectProps}
               testMode={props.testMode}
               htmlSettings={props.htmlSettings}
+              idScene={model.idScene}
             ></Cylinderqq>
           ) : model.info == "licht" ? (
             <PointlightPivot
@@ -185,6 +187,7 @@ export default function Scene(props: {
               objProps={model}
               htmlSettings={props.htmlSettings}
               testMode={props.testMode}
+              idScene={model.idScene}
             ></BoxGeoPivot>
           )
         ) : model.visibleInOtherPerspective ? (
@@ -210,6 +213,7 @@ export default function Scene(props: {
               info={""}
               name={model.name}
               texture={null}
+              idScene={model.idScene}
             ></SceneModel>
           ) : model.info == "cylinder" ? (
             <Cylinderqq
@@ -221,6 +225,7 @@ export default function Scene(props: {
               setCurrentObjectProps={props.setCurrentObjectProps}
               testMode={props.testMode}
               htmlSettings={props.htmlSettings}
+              idScene={model.idScene}
             ></Cylinderqq>
           ) : (
             <BoxGeoPivot
@@ -241,6 +246,7 @@ export default function Scene(props: {
               objProps={model}
               htmlSettings={props.htmlSettings}
               testMode={props.testMode}
+              idScene={model.idScene}
               // info={model.info}
               // color={model.color}
               // testMode={props.testMode}

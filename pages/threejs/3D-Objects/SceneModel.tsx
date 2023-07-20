@@ -74,6 +74,7 @@ function SceneModel(
       color: props.color ? props.color : "",
       info: props.info ? props.info : "",
       texture: "",
+      idScene: props.idScene,
     });
   };
 

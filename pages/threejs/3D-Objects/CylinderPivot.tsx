@@ -17,6 +17,7 @@ function Cylinderqq(props: {
   setCurrentObjectProps: (props: TypeObjectProps) => void;
   testMode: boolean;
   htmlSettings: boolean;
+  idScene: string;
 }) {
   // referenz auf das Mesh des FBX-Models
   const refMesh = useRef<THREE.Mesh>(null);
@@ -65,6 +66,7 @@ function Cylinderqq(props: {
       name: props.objProps.name,
       color: props.objProps.color ? props.objProps.color : "",
       texture: props.objProps ? props.objProps.texture : null,
+      idScene: props.idScene,
     });
   };
 

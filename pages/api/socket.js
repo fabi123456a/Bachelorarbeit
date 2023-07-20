@@ -38,6 +38,10 @@ const SocketHandler = (req, res) => {
       socket.on("refreshWorkers", async () => {
         io.emit("getRefreshWorkers");
       });
+      // sync currentObjectProps
+      socket.on("newObjectData", async (data) => {
+        io.emit("getNewObjectData", data);
+      });
     });
   }
   res.end();

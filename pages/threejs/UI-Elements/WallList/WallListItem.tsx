@@ -6,6 +6,7 @@ export default function WallListItem(props: {
   name: string;
   data: object;
   addWall: (objProps: TypeObjectProps) => void;
+  idScene: string;
 }) {
   return (
     <Stack style={{ margin: "8px" }} direction={"row"}>
@@ -33,6 +34,7 @@ export default function WallListItem(props: {
             info: "",
             visibleInOtherPerspective: true,
             texture: "",
+            idScene: props.idScene,
           };
 
           props.addWall(x);

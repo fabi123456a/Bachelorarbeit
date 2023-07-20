@@ -86,6 +86,9 @@ export default function Main(props: {
   const [camPos, setCamPos] = useState<number[]>(null);
   const [camRot, setCamRot] = useState<number[]>(null);
 
+  // set ne data from socket io
+  const [newSocketioData, setNewSocketioData] = useState<TypeObjectProps>(null);
+
   // ---- REFS ----
   const sceneRef = useRef<any>(null!);
   const controlsRef = useRef<any>(null);
@@ -176,6 +179,9 @@ export default function Main(props: {
 
     // zum debuggebn
     console.log(currentObjectProps);
+
+    // socket io
+    socket.emit("newObjectData", { currentObjectProps });
   }, [currentObjectProps]);
 
   const getSceneModels = async (idScene: string, version: number) => {
@@ -229,11 +235,45 @@ export default function Main(props: {
           getSceneModels(props.scene.id, data.version);
         }
       });
+
+      // xxx
+      socket.on("getNewObjectData", (data) => {
+        if (
+          props.currentWorkingScene.current.idScene ==
+          data.currentObjectProps.idScene
+        ) {
+          setNewSocketioData(data.currentObjectProps);
+        }
+        // console.log(JSON.stringify(data));
+        // console.log(data.currentObjectProps.idScene);
+      });
     };
     socketInitializer();
   }, []);
 
+  useEffect(() => {
+    if (!newSocketioData) return;
+    updateModelById(newSocketioData.id, newSocketioData);
+  }, [newSocketioData]);
+
   // ----- FUNCTIONS ----
+
+  // Funktion zum Aktualisieren des Modells mit einer bestimmten id
+  const updateModelById = (idToUpdate, updatedModelData) => {
+    // Verwenden Sie die map-Funktion, um die Liste der Modelle zu durchlaufen
+    const updatedModels = models.map((model) => {
+      // Wenn die id des aktuellen Modells mit der idToUpdate übereinstimmt,
+      // geben Sie ein aktualisiertes Modell mit den neuen Daten zurück
+      if (model.id === idToUpdate) {
+        return updatedModelData;
+      }
+      // Andernfalls geben Sie das ursprüngliche Modell unverändert zurück
+      return model;
+    });
+
+    // Setzen Sie die aktualisierte Liste zurück, um den Zustand zu aktualisieren
+    setModels(updatedModels);
+  };
 
   // Model (prisma) -> TypeObjectProps
   function convertModelToTypeObjectProps(model: Model) {
@@ -255,7 +295,7 @@ export default function Main(props: {
       z: model.rotationZ,
     };
 
-    const typeObjectProps = {
+    const typeObjectProps: TypeObjectProps = {
       id: model.id,
       position: position,
       scale: scale,
@@ -270,6 +310,7 @@ export default function Main(props: {
       info: model.info || "",
       color: model.color,
       texture: model.texture || "",
+      idScene: model.idScene,
     };
 
     return typeObjectProps;
@@ -283,7 +324,7 @@ export default function Main(props: {
   ) {
     const model: Model = {
       id: Math.random().toString(), // neue id wegen datum feld, new uuid4() ging nicht
-      idScene: idScene,
+      idScene: typeObjectProps.idScene,
       positionX: typeObjectProps.position.x,
       positionY: typeObjectProps.position.y,
       positionZ: typeObjectProps.position.z,
@@ -328,6 +369,7 @@ export default function Main(props: {
       color: "",
       info: "",
       texture: "",
+      idScene: props.scene.id,
     };
     console.log("handleModelAdd");
     console.log(objProps);
@@ -375,6 +417,7 @@ export default function Main(props: {
       name: "pointLight",
       color: "",
       texture: "",
+      idScene: props.scene.id,
     };
 
     setModels([...models, objPr]);
@@ -541,6 +584,7 @@ export default function Main(props: {
   // ---- COMPONENT ----
   return (
     <Stack className="main">
+      {models ? <Typography>{models.length}</Typography> : null}
       {/* menubar */}
       <MenuBar
         idUser={props.user.id}
