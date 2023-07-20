@@ -1,5 +1,5 @@
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as THREE from "three";
 import { FlyControls } from "@react-three/drei";
 import { checkPropsForNull } from "../../../utils/checkIfPropIsNull";
@@ -8,6 +8,8 @@ export default function Camera(props: {
   controlsRef: React.RefObject<any>;
   perspektive: string;
   testMode: boolean;
+  setCamPos: (pos: number[]) => void;
+  setRotCam: (rot: number[]) => void;
 }) {
   const [camPos, setCamPos] = useState<TypeCamPosition>({
     topDown: new THREE.Vector3(0, 999, 0),
@@ -18,6 +20,18 @@ export default function Camera(props: {
 
   // bedingtes rendern
   if (checkPropsForNull(props)) return null;
+
+  useEffect(() => {
+    props.controlsRef.current.addEventListener("change", (event) => {
+      const pos = props.controlsRef.current.object.position;
+
+      props.setCamPos([pos.x, pos.y, pos.z]);
+
+      const rot = props.controlsRef.current.object.rotation;
+      props.setRotCam([rot.x, rot.y, rot.z]);
+      // console.log(rot);
+    });
+  }, []);
 
   return props.controlsRef ? (
     <>

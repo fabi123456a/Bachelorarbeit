@@ -4,9 +4,11 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import BoxGeoPivot from "../3D-Objects/BoxGeoPivot";
 import Cylinderqq from "../3D-Objects/CylinderPivot";
-import { TransformControls } from "@react-three/drei";
+import { Box, TransformControls } from "@react-three/drei";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import PointlightPivot from "../../../components/Pointlight";
+import { useState } from "react";
+import Cube from "../3D-Objects/test";
 
 export default function Scene(props: {
   controlsRef: React.RefObject<any>;
@@ -29,6 +31,8 @@ export default function Scene(props: {
   //const { scene } = useThree();
   //props.sceneRef.current = scene;
   //}
+  const [posCam, setPosCam] = useState<number[]>(null);
+  const [rotCam, setRotCam] = useState<number[]>(null);
 
   return props.models ? (
     <Canvas
@@ -45,7 +49,20 @@ export default function Scene(props: {
         controlsRef={props.controlsRef}
         perspektive={props.perspektive}
         testMode={props.testMode}
+        setCamPos={setPosCam}
+        setRotCam={setRotCam}
       ></Camera>
+      {posCam ? (
+        <Box
+          args={[2, 2, 2]}
+          position={[-posCam[0], posCam[1], -posCam[2]]}
+          rotation={[rotCam[0], rotCam[1], rotCam[2]]}
+          material={
+            new THREE.MeshStandardMaterial({ color: new THREE.Color("red") })
+          }
+        ></Box>
+      ) : null}
+
       {/* Licht */}
       <ambientLight intensity={props.ambientValue} />
       {/* <pointLight position={[10, 10, 10]} /> */}
