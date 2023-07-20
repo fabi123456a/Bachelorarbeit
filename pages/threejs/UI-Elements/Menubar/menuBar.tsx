@@ -13,6 +13,9 @@ import { CurrentSceneEdit, Scene } from "@prisma/client";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { checkPropsForNull } from "../../../../utils/checkIfPropIsNull";
 import { fetchData } from "../../../../utils/fetchData";
+import io from "socket.io-client";
+
+let socket;
 
 const MenuBar = (props: {
   setScene: (scene: Scene) => void;
@@ -45,6 +48,14 @@ const MenuBar = (props: {
     return requestedMembership;
   };
 
+  useEffect(() => {
+    const socketInitializer = async () => {
+      await fetch("/api/socket");
+      socket = io();
+    };
+    socketInitializer();
+  }, []);
+
   return (
     <Stack className="menuBar" direction={"row"}>
       <Button
@@ -54,6 +65,8 @@ const MenuBar = (props: {
 
           // alert(props.currentWorkingScene.current.id);
           await deleteCurrentWorkingScene();
+
+          socket.emit("refreshWorkers", {});
         }}
         className="iconButton"
       >

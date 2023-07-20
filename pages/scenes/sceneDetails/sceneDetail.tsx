@@ -144,7 +144,7 @@ const SceneDetails = (props: {
       <Stack className="roundedShadow" direction={"column"}>
         <Stack direction={"row"}></Stack>
         <Typography fontWeight={"bold"} sx={{ mb: "2vh" }}>
-          Infos:{" "}
+          Infos:
         </Typography>
 
         <Stack direction={"row"}>
@@ -189,7 +189,6 @@ const SceneDetails = (props: {
             props.currentWorkingScene.current = currentWorkingScene;
           }
 
-          //alert(JSON.stringify(props.currentWorkingScene.current));
           socket.emit("refreshWorkers", {});
         }}
         variant="contained"
