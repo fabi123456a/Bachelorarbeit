@@ -27,6 +27,7 @@ const SocketHandler = (req, res) => {
       });
       // scene
       socket.on("setSyncScene", async (data) => {
+        // console.log("----------------" + JSON.stringify(data));
         io.emit("syncScene", data);
       });
       // userCam

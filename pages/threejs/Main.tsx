@@ -227,7 +227,7 @@ export default function Main(props: {
       // });
 
       socket.on("syncScene", (data) => {
-        console.log("scene wird refresht: " + JSON.stringify(data));
+        alert("scene wird refresht: " + JSON.stringify(data));
 
         if (props.scene.id == data.idScene) {
           setScenVersion(data.version);
@@ -535,6 +535,7 @@ export default function Main(props: {
       ...props.scene,
       newestVersion: newVersion,
     };
+
     props.setScene(updatedScene);
     setScenVersion(newVersion);
 
