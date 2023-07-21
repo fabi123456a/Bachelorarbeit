@@ -184,7 +184,7 @@ export default function Main(props: {
     socket.emit("newObjectData", { currentObjectProps });
   }, [currentObjectProps]);
 
-  const getSceneModels = async (idScene: string, version: number) => {
+  const getSceneModels = async (version: number) => {
     if (!props.user) return;
 
     const requestedModels = await fetchData(
@@ -213,8 +213,7 @@ export default function Main(props: {
   // anfangs scene laden, nach dem eine scene in der sceneList ausgewählt wurde und models mit setModels setzen
   useEffect(() => {
     if (!props.scene) return;
-    //getSceneModels(props.scene.id, scenVersion);
-    getSceneModels(props.scene.id, props.scene.newestVersion);
+    getSceneModels(props.scene.newestVersion);
   }, [props.scene]); // [props.scene, sceneVersion]
 
   // scene neu socket.io laden // TODO:
@@ -223,13 +222,8 @@ export default function Main(props: {
       await fetch("/api/socket");
       socket = io();
 
-      // socket.on("connect", () => {
-      //   console.log("connected");
-      // });
-
       socket.on("syncScene", async (data) => {
         if (props.scene.id == data.idScene) {
-          //setScenVersion(data.version);
           const scene = await fetchData(
             props.user.id,
             props.sessionID,
@@ -239,8 +233,8 @@ export default function Main(props: {
             null,
             null
           );
-          props.setScene(scene);
-          //getSceneModels(props.scene.id, data.version);
+
+          props.setScene(scene[0]);
         }
       });
 
