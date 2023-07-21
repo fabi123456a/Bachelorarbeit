@@ -72,9 +72,9 @@ export default function Main(props: {
   const [valueGltf, setValueGltf] = useState<THREE.Group>(null!);
 
   // sceneVersion
-  const [scenVersion, setScenVersion] = useState<number>(
-    props.scene ? props.scene.newestVersion : null
-  );
+  // const [scenVersion, setScenVersion] = useState<number>(
+  //   props.scene ? props.scene.newestVersion : null
+  // );
 
   // ambient light
   const [ambientValue, setAmbientValue] = useState<number>(0.5);
@@ -213,8 +213,9 @@ export default function Main(props: {
   // anfangs scene laden, nach dem eine scene in der sceneList ausgewählt wurde und models mit setModels setzen
   useEffect(() => {
     if (!props.scene) return;
-    getSceneModels(props.scene.id, scenVersion);
-  }, [props.scene, scenVersion]);
+    //getSceneModels(props.scene.id, scenVersion);
+    getSceneModels(props.scene.id, props.scene.newestVersion);
+  }, [props.scene]); // [props.scene, sceneVersion]
 
   // scene neu socket.io laden // TODO:
   useEffect(() => {
@@ -226,13 +227,20 @@ export default function Main(props: {
       //   console.log("connected");
       // });
 
-      socket.on("syncScene", (data) => {
-        alert("scene wird refresht: " + JSON.stringify(data));
-
+      socket.on("syncScene", async (data) => {
         if (props.scene.id == data.idScene) {
-          setScenVersion(data.version);
-          // alert("xxxxversion hat sich geändert " + data.idScene);
-          getSceneModels(props.scene.id, data.version);
+          //setScenVersion(data.version);
+          const scene = await fetchData(
+            props.user.id,
+            props.sessionID,
+            "scene",
+            "select",
+            { id: props.scene.id },
+            null,
+            null
+          );
+          props.setScene(scene);
+          //getSceneModels(props.scene.id, data.version);
         }
       });
 
@@ -502,8 +510,6 @@ export default function Main(props: {
 
   // save Scene
   async function saveScene(idScene: string) {
-    // scene speicher,also alle models in DB speichern
-
     // erst neue version
     const newVersion = props.scene.newestVersion + 1;
 
@@ -530,14 +536,14 @@ export default function Main(props: {
     });
 
     // neu version in scene speichern
-    await changeSceneVersion(props.scene.id, newVersion);
+    await changeSceneVersion(newVersion);
     const updatedScene = {
       ...props.scene,
       newestVersion: newVersion,
     };
 
+    alert(JSON.stringify(updatedScene));
     props.setScene(updatedScene);
-    setScenVersion(newVersion);
 
     // socket.io
     socket.emit("setSyncScene", {
@@ -546,15 +552,16 @@ export default function Main(props: {
     });
   }
 
-  async function changeSceneVersion(idScene: String, version: number) {
+  async function changeSceneVersion(version: number) {
     if (!props.user) return;
 
+    alert(props.scene.id);
     const requestChangeVersion = await fetchData(
       props.user.id,
       props.sessionID,
       "scene",
       "update",
-      { id: idScene },
+      { id: props.scene.id },
       { newestVersion: version },
       null
     );
@@ -594,8 +601,6 @@ export default function Main(props: {
         setScene={props.setScene}
         scene={props.scene}
         isTestMode={isTestMode}
-        sceneVersion={scenVersion}
-        setSceneVersion={setScenVersion}
       ></MenuBar>
 
       <Stack

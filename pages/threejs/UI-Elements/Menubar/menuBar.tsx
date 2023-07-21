@@ -21,8 +21,6 @@ const MenuBar = (props: {
   setScene: (scene: Scene) => void;
   scene: Scene;
   isTestMode: boolean;
-  sceneVersion: number;
-  setSceneVersion: (version: number) => void;
   currentWorkingScene: MutableRefObject<CurrentSceneEdit>;
   idUser: string;
   sessionID: string;
@@ -78,14 +76,14 @@ const MenuBar = (props: {
           <b>{props.scene.name}</b>
         </Typography>
       ) : null}
-      {props.sceneVersion >= 1 ? (
+      {props.scene.newestVersion >= 1 ? (
         <Select
           size="small"
           sx={{ ml: "14px" }}
           onChange={(e) => {
-            props.setSceneVersion(e.target.value as number);
+            //props.setSceneVersion(e.target.value as number);
           }}
-          value={props.sceneVersion}
+          value={props.scene.newestVersion}
         >
           {Array.from({ length: props.scene.newestVersion }, (_, index) => (
             <MenuItem key={index} value={index + 1}>{`Version ${
