@@ -42,6 +42,7 @@ import { Light } from "@mui/icons-material";
 import LightSettings from "../../components/threejs/UI-Elements/Light/lightSetting";
 import { fetchData } from "../../utils/fetchData";
 import { TypeModel, TypeObjectProps } from "./types";
+import { get_model_name } from "../../components/threejs/UI-Elements/ModelList/ModelListItem";
 
 let socket;
 
@@ -87,8 +88,13 @@ export default function Main(props: {
   const [camPos, setCamPos] = useState<number[]>(null);
   const [camRot, setCamRot] = useState<number[]>(null);
 
-  // set ne data from socket io
+  // synchronisation via socket io
   const [newSocketioData, setNewSocketioData] = useState<TypeObjectProps>(null);
+  const [newSocketioFbxModel, setNewSocketioFbxModel] = useState<{
+    modelPath: string;
+    idModel: string;
+  }>(null);
+  const [newSocketioWall, setNewSocketioWall] = useState<TypeObjectProps>(null);
 
   // ---- REFS ----
   const sceneRef = useRef<any>(null!);
@@ -239,7 +245,7 @@ export default function Main(props: {
         }
       });
 
-      // xxx
+      // object daten vie socket io synchronisieren
       socket.on("getNewObjectData", (data) => {
         if (
           props.currentWorkingScene.current.idScene ==
@@ -247,8 +253,30 @@ export default function Main(props: {
         ) {
           setNewSocketioData(data.currentObjectProps);
         }
-        // console.log(JSON.stringify(data));
-        // console.log(data.currentObjectProps.idScene);
+      });
+
+      // fbx add synchronisieren via socket io
+      socket.on("getAddFbx", (data) => {
+        if (data.idScene != props.scene.id || props.user.id == data.idUser)
+          return;
+
+        setNewSocketioFbxModel({
+          modelPath: data.modelPath,
+          idModel: data.modelID,
+        });
+      });
+
+      // wall, cuber, floor, cylinder add synchronisieren via socket io
+      socket.on("getAddWall", (data) => {
+        // {
+        //   wall: x,
+        //   idScene: props.idScene,
+        //   idUser: props.idUser,
+        // }
+        if (data.idScene != props.scene.id || props.user.id == data.idUser)
+          return;
+
+        setNewSocketioWall(data.wall);
       });
     };
     socketInitializer();
@@ -258,6 +286,20 @@ export default function Main(props: {
     if (!newSocketioData) return;
     updateModelById(newSocketioData.id, newSocketioData);
   }, [newSocketioData]);
+
+  useEffect(() => {
+    if (!newSocketioFbxModel) return;
+    handleModelAdd(
+      newSocketioFbxModel.modelPath,
+      get_model_name(newSocketioFbxModel.modelPath),
+      newSocketioFbxModel.idModel
+    );
+  }, [newSocketioFbxModel]);
+
+  useEffect(() => {
+    if (!newSocketioWall) return;
+    handleWallAdd(newSocketioWall);
+  }, [newSocketioWall]);
 
   // ----- FUNCTIONS ----
 
@@ -326,7 +368,7 @@ export default function Main(props: {
     version: number
   ) {
     const model: Model = {
-      id: Math.random().toString(), // neue id wegen datum feld, new uuid4() ging nicht
+      id: uuidv4(), // neue id wegen datum feld, new uuid4() ging nicht
       idScene: typeObjectProps.idScene,
       positionX: typeObjectProps.position.x,
       positionY: typeObjectProps.position.y,
@@ -356,9 +398,10 @@ export default function Main(props: {
     setRefreshFbxModelPathsData((prevRefreshData) => !prevRefreshData);
   };
 
-  const handleModelAdd = (pfad: string, name: string) => {
+  const handleModelAdd = (pfad: string, name: string, id?: string) => {
+    id ? alert(id) : null;
     const objProps: TypeObjectProps = {
-      id: uuidv4(),
+      id: id ? id : uuidv4(),
       editMode: "translate",
       showXTransform: true,
       showYTransform: true,
@@ -377,7 +420,6 @@ export default function Main(props: {
     console.log("handleModelAdd");
     console.log(objProps);
 
-    alert(models.length);
     setModels([...models, objProps]);
 
     setCurrentObjectProps(objProps);
@@ -588,7 +630,7 @@ export default function Main(props: {
   // ---- COMPONENT ----
   return (
     <Stack className="main">
-      {models ? <Typography>{models.length}</Typography> : null}
+      {models ? <Typography>models.length: {models.length}</Typography> : null}
       {/* menubar */}
       <MenuBar
         idUser={props.user.id}
@@ -679,6 +721,7 @@ export default function Main(props: {
 
               {/* Wallist */}
               <WallList
+                idUser={props.user.id}
                 addWall={handleWallAdd}
                 idScene={props.scene.id}
               ></WallList>

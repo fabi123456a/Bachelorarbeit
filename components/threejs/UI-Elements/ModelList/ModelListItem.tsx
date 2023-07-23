@@ -2,13 +2,14 @@ import { Button } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useEffect } from "react";
 import io from "socket.io-client";
+import { v4 as uuidv4 } from "uuid";
 
 let socket;
 
 export default function ModelListItem(props: {
   name: string;
   pfad: string;
-  addObject: (pfad: string, info: string) => void;
+  addObject: (pfad: string, info: string, id?: string) => void;
   idScene: string;
   idUser: string;
 }) {
@@ -24,13 +25,19 @@ export default function ModelListItem(props: {
     <Stack style={{ margin: "8px" }} direction={"row"}>
       <Button
         onClick={() => {
+          const idModel = uuidv4();
           // TODO: prüfen ob das hinzufügen geklappt hat, und dann erst socket.emit
-          props.addObject(props.pfad, get_model_name(props.pfad.toLowerCase()));
+          props.addObject(
+            props.pfad,
+            get_model_name(props.pfad.toLowerCase()),
+            idModel
+          );
 
           socket.emit("addFbx", {
             modelPath: props.pfad,
             idScene: props.idScene,
             idUser: props.idUser,
+            modelID: idModel,
           });
         }}
         className="modelListEntry"

@@ -78,25 +78,6 @@ export default function Scene(props: {
       socket.on("getRefreshWorkers", () => {
         setReload(Math.random());
       });
-
-      socket.on("getAddFbx", (data) => {
-        // {
-        //   modelPath: props.pfad,
-        //   idScene: props.idScene,
-        // }
-        // alert(
-        //   (data.idScene != props.idScene).toString() +
-        //     " || " +
-        //     (props.idUser == data.idUser).toString()
-        // );
-        if (data.idScene != props.idScene || props.idUser == data.idUser)
-          return;
-
-        props.addObject(
-          data.modelPath,
-          get_model_name(data.modelPath.toLowerCase())
-        );
-      });
     };
     socketInitializer();
   }, []);

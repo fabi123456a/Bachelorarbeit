@@ -9,7 +9,7 @@ import Draggable from "react-draggable";
 
 export default function ModelList(props: {
   paths: { name: string; path: string }[]; // enthält alle Pfade der FBX-Models die auf dem Server liegen
-  addObject: (pfad: string, info: string) => void;
+  addObject: (pfad: string, info: string, id?: string) => void;
   setRefreshData: () => void;
   idScene: string;
   idUser: string;

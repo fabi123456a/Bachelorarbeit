@@ -5,6 +5,7 @@ import { FlyControls } from "@react-three/drei";
 import { checkPropsForNull } from "../../../utils/checkIfPropIsNull";
 import io from "socket.io-client";
 import { CurrentSceneEdit } from "@prisma/client";
+import { TypeCamPosition } from "../../../pages/threejs/types";
 
 let socket;
 

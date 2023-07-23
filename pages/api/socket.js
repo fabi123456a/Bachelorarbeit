@@ -48,6 +48,11 @@ const SocketHandler = (req, res) => {
         console.log(data);
         io.emit("getAddFbx", data);
       });
+      // wenn eine Wall, cube, floor zur scene hinzugefügt wird
+      socket.on("addWall", async (data) => {
+        console.log(data);
+        io.emit("getAddWall", data);
+      });
     });
   }
   res.end();

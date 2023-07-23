@@ -1,22 +1,34 @@
-import { Button, IconButton, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import { Stack } from "@mui/system";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { TypeObjectProps } from "../../../../pages/threejs/types";
+import { v4 as uuidv4 } from "uuid";
+import { useEffect } from "react";
+import io from "socket.io-client";
+
+let socket;
 
 export default function WallListItem(props: {
   name: string;
   data: object;
   addWall: (objProps: TypeObjectProps) => void;
   idScene: string;
+  idUser: string;
 }) {
+  useEffect(() => {
+    const socketInitializer = async () => {
+      await fetch("/api/socket");
+      socket = io();
+    };
+    socketInitializer();
+  }, []);
+
   return (
     <Stack style={{ margin: "8px" }} direction={"row"}>
       <Button
         variant="outlined"
         onClick={() => {
-          console.log(props.data);
-          console.log(props.name);
           let x: TypeObjectProps = {
-            id: "" + Math.random() * 1000,
+            id: uuidv4(),
             editMode: "translate",
             showXTransform: true,
             showYTransform: true,
@@ -29,7 +41,7 @@ export default function WallListItem(props: {
               z: props.data[props.name]["z"],
             },
             rotation: { x: 0, y: 0, z: 0 },
-            color: props.name == "floor" ? "#eee" : "#065623", // der boden soll eine andere farbe bekommen
+            color: "pink", // der boden soll eine andere farbe bekommen
             name: props.name,
             info: "",
             visibleInOtherPerspective: true,
@@ -38,8 +50,13 @@ export default function WallListItem(props: {
           };
 
           props.addWall(x);
-          console.log("walladd: " + x);
-          console.log(x);
+
+          // socket io synchronisieren
+          socket.emit("addWall", {
+            wall: x,
+            idScene: props.idScene,
+            idUser: props.idUser,
+          });
         }}
       >
         {props.name}

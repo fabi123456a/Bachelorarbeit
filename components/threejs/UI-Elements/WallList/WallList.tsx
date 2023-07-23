@@ -5,10 +5,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import Draggable from "react-draggable";
+import { TypeObjectProps } from "../../../../pages/threejs/types";
 
 export default function WallList(props: {
   addWall: (objProps: TypeObjectProps) => void;
   idScene: string;
+  idUser: string;
 }) {
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -41,6 +43,7 @@ export default function WallList(props: {
         <Stack direction={"row"}>
           {names.map((name: string) => (
             <WallListItem
+              idUser={props.idUser}
               idScene={props.idScene}
               key={name}
               name={name}
