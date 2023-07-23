@@ -39,16 +39,8 @@ function User(props: {
       await fetch("/api/socket");
       socket = io();
 
-      // socket.on("connect", () => {
-      //   console.log("connected");
-      // });
-
       socket.on("getUsersCamData", (data) => {
-        //console.log(JSON.stringify(data));
         if (props.worker.id in data) {
-          console.log(
-            "rotation: " + JSON.stringify(data[props.worker.id].rotation)
-          );
           setPos(data[props.worker.id].position);
           setRot(data[props.worker.id].rotation);
         }

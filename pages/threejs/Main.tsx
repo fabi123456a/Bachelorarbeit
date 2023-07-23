@@ -188,7 +188,10 @@ export default function Main(props: {
     console.log(currentObjectProps);
 
     // socket io
-    socket.emit("newObjectData", { currentObjectProps });
+    socket.emit("newObjectData", {
+      currentObjectProps: currentObjectProps,
+      user: props.user,
+    });
   }, [currentObjectProps]);
 
   const getSceneModels = async (version: number) => {
@@ -242,6 +245,10 @@ export default function Main(props: {
           );
 
           props.setScene(scene[0]);
+        }
+
+        if (props.scene.id == data.idScene && props.user.id != data.idUser) {
+          alert("Scene wird gespeichert...");
         }
       });
 
@@ -399,7 +406,6 @@ export default function Main(props: {
   };
 
   const handleModelAdd = (pfad: string, name: string, id?: string) => {
-    id ? alert(id) : null;
     const objProps: TypeObjectProps = {
       id: id ? id : uuidv4(),
       editMode: "translate",
@@ -567,9 +573,6 @@ export default function Main(props: {
         newVersion
       );
 
-      console.log("model");
-      console.log(model);
-
       await insertModelToDB(model);
     });
 
@@ -580,20 +583,19 @@ export default function Main(props: {
       newestVersion: newVersion,
     };
 
-    alert(JSON.stringify(updatedScene));
     props.setScene(updatedScene);
 
     // socket.io
     socket.emit("setSyncScene", {
       version: newVersion,
       idScene: idScene,
+      idUser: props.user.id,
     });
   }
 
   async function changeSceneVersion(version: number) {
     if (!props.user) return;
 
-    alert(props.scene.id);
     const requestChangeVersion = await fetchData(
       props.user.id,
       props.sessionID,

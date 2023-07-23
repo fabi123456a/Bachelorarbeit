@@ -20,6 +20,7 @@ import { Scene } from "@prisma/client";
 import ShowHtml from "./showHtml";
 import Draggable from "react-draggable";
 import CloseIcon from "@mui/icons-material/Close";
+import { TypeObjectProps } from "../../../../pages/threejs/types";
 
 let socket1;
 
@@ -272,7 +273,8 @@ function ToolBar(props: {
               onClick={() => {
                 props.saveScene(props.scene.id); // TODO: await props.safeScene
 
-                socket1.emit("sceneRefresh", props.scene.id);
+                // socket1.emit("sceneRefresh", props.scene.id);
+                alert("Scene wurde gespeichert");
               }}
             >
               <SaveIcon></SaveIcon>
