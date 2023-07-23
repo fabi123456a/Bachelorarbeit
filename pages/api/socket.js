@@ -43,6 +43,11 @@ const SocketHandler = (req, res) => {
       socket.on("newObjectData", async (data) => {
         io.emit("getNewObjectData", data);
       });
+      // wenn ein fbx zur scene hinzugefügt wird
+      socket.on("addFbx", async (data) => {
+        console.log(data);
+        io.emit("getAddFbx", data);
+      });
     });
   }
   res.end();

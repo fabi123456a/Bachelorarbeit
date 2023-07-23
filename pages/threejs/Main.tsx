@@ -41,6 +41,7 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { Light } from "@mui/icons-material";
 import LightSettings from "../../components/threejs/UI-Elements/Light/lightSetting";
 import { fetchData } from "../../utils/fetchData";
+import { TypeModel, TypeObjectProps } from "./types";
 
 let socket;
 
@@ -357,7 +358,7 @@ export default function Main(props: {
 
   const handleModelAdd = (pfad: string, name: string) => {
     const objProps: TypeObjectProps = {
-      id: "" + Math.random() * 1000,
+      id: uuidv4(),
       editMode: "translate",
       showXTransform: true,
       showYTransform: true,
@@ -376,6 +377,7 @@ export default function Main(props: {
     console.log("handleModelAdd");
     console.log(objProps);
 
+    alert(models.length);
     setModels([...models, objProps]);
 
     setCurrentObjectProps(objProps);
@@ -648,6 +650,8 @@ export default function Main(props: {
             <>
               {/* ModelList */}
               <ModelList
+                idUser={props.user.id}
+                idScene={props.scene.id}
                 addObject={handleModelAdd}
                 paths={modelPathsFS}
                 setRefreshData={handleRefreshFbxModelPaths}
@@ -718,6 +722,7 @@ export default function Main(props: {
         > */}
         {/*TO ACCESS THE useThree hook in the Scene component*/}
         <ThreeJsScene
+          addObject={handleModelAdd}
           refCurrentWorkingScene={props.currentWorkingScene}
           ambientValue={ambientValue}
           controlsRef={controlsRef}

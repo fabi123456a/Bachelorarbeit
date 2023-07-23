@@ -1,38 +1,38 @@
-type TypeWallVisibility = {
+export type TypeWallVisibility = {
   leftWall: boolean;
   rightWall: boolean;
 };
 
-type BoxGeometryValue = {
+export type BoxGeometryValue = {
   positionXYZ: number[];
   scaleXYZ: number[];
 };
 
-type TypeModel = { name: string; path: string };
+export type TypeModel = { name: string; path: string };
 
 // position des Objects
-type TypePosition = {
+export type TypePosition = {
   x: number;
   y: number;
   z: number;
 };
 
 // skalierung des Objects
-type TypeScale = {
+export type TypeScale = {
   x: number; // beu cylinder -> radius
   y: number; // bei cylinder -> höhe
   z: number; // bei cylinder -> nix
 };
 
 // rotierung des Objects
-type TypeRotation = {
+export type TypeRotation = {
   x: number;
   y: number;
   z: number;
 };
 
 // schnittstelle zum currentObject
-type TypeObjectProps = {
+export type TypeObjectProps = {
   id: string;
   position: TypePosition;
   scale: TypeScale;
@@ -49,26 +49,27 @@ type TypeObjectProps = {
   texture: string;
   idScene: string;
 };
-type TypeCamPerspektive = {
+export type TypeCamPerspektive = {
   topDown: boolean;
   leftToMid: boolean;
   rightToMid: boolean;
   frontal: boolean;
 };
-type TypeRoomDimensions = {
+
+export type TypeRoomDimensions = {
   height: number;
   width: number;
   depth: number;
 };
 
-type TypeCamPosition = {
+export type TypeCamPosition = {
   topDown: THREE.Vector3;
   leftToMid: THREE.Vector3;
   rightToMid: THREE.Vector3;
   frontal: THREE.Vector3;
 };
 
-type ExportedScene = {
+export type ExportedScene = {
   roomDimensions: TypeRoomDimensions;
   models: TypeModel[];
   fbx_models: { pathName: string; name: string; file: string }[];

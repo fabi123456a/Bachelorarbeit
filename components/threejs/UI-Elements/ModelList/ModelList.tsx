@@ -5,13 +5,14 @@ import UploadFbx from "./fbxHandle/uploadFbx";
 import ModelListItem from "./ModelListItem";
 import { checkPropsForNull } from "../../../../utils/checkIfPropIsNull";
 import { useState } from "react";
-import ReorderIcon from "@mui/icons-material/Reorder";
 import Draggable from "react-draggable";
 
 export default function ModelList(props: {
   paths: { name: string; path: string }[]; // enthält alle Pfade der FBX-Models die auf dem Server liegen
   addObject: (pfad: string, info: string) => void;
   setRefreshData: () => void;
+  idScene: string;
+  idUser: string;
 }) {
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -39,6 +40,8 @@ export default function ModelList(props: {
         <Stack className="modelListEntryContainer">
           {props.paths.map((path) => (
             <ModelListItem
+              idUser={props.idUser}
+              idScene={props.idScene}
               name={path.name}
               key={path.path}
               pfad={path.path}

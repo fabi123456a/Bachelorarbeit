@@ -4,6 +4,7 @@ import { useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import * as THREE from "three";
 import { Vector3 } from "three";
+import { TypeObjectProps } from "../../../pages/threejs/types";
 
 // KOMPONENTE
 

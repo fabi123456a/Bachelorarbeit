@@ -22,4 +22,4 @@ shader, also von texture zu normal https://codesandbox.io/s/toggle-texture-of-in
 
 /// Text Bachelorarbeit
 datenstrrukturen  Model -> TypeObjectProps
-||dxs
+||

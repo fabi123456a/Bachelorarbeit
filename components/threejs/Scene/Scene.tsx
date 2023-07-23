@@ -14,6 +14,8 @@ import SceneModel from "../threejsObjects/SceneModel";
 import BoxGeoPivot from "../threejsObjects/BoxGeoPivot";
 import Cylinderqq from "../threejsObjects/CylinderPivot";
 import User from "../threejsObjects/UserCam";
+import { get_model_name } from "../UI-Elements/ModelList/ModelListItem";
+import { TypeObjectProps } from "../../../pages/threejs/types";
 
 let socket;
 
@@ -36,6 +38,7 @@ export default function Scene(props: {
   idUser: string;
   idScene: string;
   refCurrentWorkingScene: MutableRefObject<CurrentSceneEdit>;
+  addObject: (pfad: string, info: string) => void;
 }) {
   const [workers, setWorkers] = useState<CurrentSceneEdit[]>(null);
   const [reload, setReload] = useState<number>(null);
@@ -72,16 +75,27 @@ export default function Scene(props: {
       await fetch("/api/socket");
       socket = io();
 
-      // socket.on("connect", () => {
-      //   console.log("connected");
-      // });
-
-      socket.on("getUsersCamData", (data) => {
-        //setReload(Math.random());
-      });
-
       socket.on("getRefreshWorkers", () => {
         setReload(Math.random());
+      });
+
+      socket.on("getAddFbx", (data) => {
+        // {
+        //   modelPath: props.pfad,
+        //   idScene: props.idScene,
+        // }
+        // alert(
+        //   (data.idScene != props.idScene).toString() +
+        //     " || " +
+        //     (props.idUser == data.idUser).toString()
+        // );
+        if (data.idScene != props.idScene || props.idUser == data.idUser)
+          return;
+
+        props.addObject(
+          data.modelPath,
+          get_model_name(data.modelPath.toLowerCase())
+        );
       });
     };
     socketInitializer();

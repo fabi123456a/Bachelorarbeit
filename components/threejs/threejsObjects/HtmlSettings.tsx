@@ -1,6 +1,7 @@
 import { Checkbox, Stack, Typography } from "@mui/material";
 import { Html } from "@react-three/drei";
 import React from "react";
+import { TypeObjectProps } from "../../../pages/threejs/types";
 
 
 function HtmlSettings(props: {

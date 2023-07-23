@@ -1,21 +1,37 @@
-import { Button, IconButton } from "@mui/material";
+import { Button } from "@mui/material";
 import { Stack } from "@mui/system";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { checkPropsForNull } from "../../../../utils/checkIfPropIsNull";
+import { useEffect } from "react";
+import io from "socket.io-client";
+
+let socket;
 
 export default function ModelListItem(props: {
   name: string;
   pfad: string;
   addObject: (pfad: string, info: string) => void;
+  idScene: string;
+  idUser: string;
 }) {
-  // bedingtes rendern
-  if (checkPropsForNull(props)) return null;
+  useEffect(() => {
+    const socketInitializer = async () => {
+      await fetch("/api/socket");
+      socket = io();
+    };
+    socketInitializer();
+  }, []);
 
   return props.name ? (
     <Stack style={{ margin: "8px" }} direction={"row"}>
       <Button
         onClick={() => {
+          // TODO: prüfen ob das hinzufügen geklappt hat, und dann erst socket.emit
           props.addObject(props.pfad, get_model_name(props.pfad.toLowerCase()));
+
+          socket.emit("addFbx", {
+            modelPath: props.pfad,
+            idScene: props.idScene,
+            idUser: props.idUser,
+          });
         }}
         className="modelListEntry"
         variant="contained"
@@ -34,7 +50,7 @@ export default function ModelListItem(props: {
   ) : null;
 }
 
-function get_model_name(path: string): string {
+export function get_model_name(path: string): string {
   // Teile den Pfad anhand des Schrägstrichs (/) auf
   const parts = path.split("/");
 

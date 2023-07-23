@@ -3,6 +3,7 @@ import { Cylinder, TransformControls } from "@react-three/drei";
 import * as THREE from "three";
 import { MeshBasicMaterial, Vector3 } from "three";
 import HtmlSettings from "./HtmlSettings";
+import { TypeObjectProps } from "../../../pages/threejs/types";
 
 // KOMPONENTE
 

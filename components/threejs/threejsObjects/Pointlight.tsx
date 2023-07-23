@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { Vector3 } from "three";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { useFrame } from "@react-three/fiber";
+import { TypeObjectProps } from "../../../pages/threejs/types";
 
 // KOMPONENTE
 
