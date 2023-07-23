@@ -148,11 +148,26 @@ body {
   width: 24vh;
   margin: 18px;
   padding: 8px;
+  position: relative;
 
   transition: width 0.5s, height 0.5s, box-shadow 0.5s, background-color 0.5s;
 
   box-shadow: 7px 7px 14px 2px rgba(0, 0, 0, 0.5);
   border-radius: 20px;
+}
+
+.sceneListEntryOnline {
+  padding: 6px;
+  border-radius: 20px;
+  background: rgb(238, 227, 7);
+  position: absolute;
+  right: -6px;
+  top: -4px;
+  height: 18px;
+  width: 18px;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
 }
 
 .sceneListEntry:hover {
@@ -249,7 +264,7 @@ body {
   height: 100px;
   left: 25%;
   top: 6vh;
-  z-index: 10;
+  z-index: 999;
   cursor: grabbing;
   min-width: 50%;
   max-height: 8vh;

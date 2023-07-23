@@ -14,7 +14,6 @@ import {
   Session,
   CurrentSceneEdit,
 } from "@prisma/client";
-import CubeRotater from "../components/kram/cubeRotater";
 import Logout from "./authentication/logout";
 import DatabaseTable from "../components/adminArea/databaseTable/databaseTable";
 import UploadFbx from "../components/threejs/UI-Elements/ModelList/fbxHandle/uploadFbx";
@@ -26,6 +25,7 @@ import SceneDetails from "../components/sceneList/sceneListEntry/sceneDetails";
 import Chat from "../components/chat/Chat";
 import Test from "./text";
 import { fetchData } from "../utils/fetchData";
+import { deleteOldSceneEdits } from "../components/threejs/Scene/Scene";
 
 const Index = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -71,6 +71,11 @@ const Index = () => {
       setSession(session);
     });
   }, [actUser]);
+
+  useEffect(() => {
+    if (!actUser || !session) return;
+    deleteOldSceneEdits(actUser.id, session.id);
+  }, [actUser, session]);
 
   return false ? (
     <Test></Test>

@@ -18,6 +18,7 @@ const SceneListEntry = (props: {
   user: User;
   setSelectedScene: (scene: Scene) => void;
   sessionID: string;
+  reload: number;
 }) => {
   // user der die scene ertsellt hat
   const [userCreator, setUserCreator] = useState<User>();
@@ -124,7 +125,7 @@ const SceneListEntry = (props: {
     setModelsCount(requestedModels.length);
   };
 
-  const getCurrentEdit = async () => {
+  const getCurrentEdits = async () => {
     const requestedCurrentEdit = await fetchData(
       props.user.id,
       props.sessionID,
@@ -145,8 +146,8 @@ const SceneListEntry = (props: {
   useEffect(() => {
     getUserFromScene();
     getSceneModelsCount(props.scene.id);
-    getCurrentEdit();
-  }, []);
+    getCurrentEdits();
+  }, [props.reload]);
 
   return props.scene && props.setReload && props.setScene && props.user ? (
     <Stack
@@ -165,7 +166,11 @@ const SceneListEntry = (props: {
     >
       <Stack>
         {currentEdits ? (
-          <Typography>Aktuell working: {currentEdits.length}</Typography>
+          currentEdits.length > 0 ? (
+            <Stack className="sceneListEntryOnline">
+              {currentEdits.length}
+            </Stack>
+          ) : null
         ) : null}
         <Typography sx={{ fontWeight: "bold", fontSize: "16px", mb: "6px" }}>
           {props.scene.name}

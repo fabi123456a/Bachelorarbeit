@@ -1,6 +1,7 @@
 import {
   Button,
   Divider,
+  IconButton,
   MenuItem,
   Select,
   Stack,
@@ -13,6 +14,8 @@ import AddScene from "../../components/sceneList/addScne";
 import SceneListEntry from "../../components/sceneList/sceneListEntry";
 import SceneDetails from "../../components/sceneList/sceneListEntry/sceneDetails";
 import { fetchData } from "../../utils/fetchData";
+import { deleteOldSceneEdits } from "../../components/threejs/Scene/Scene";
+import ReplayIcon from "@mui/icons-material/Replay";
 
 const SceneList = (props: {
   setScene: (scene: Scene) => void;
@@ -72,7 +75,9 @@ const SceneList = (props: {
   };
 
   useEffect(() => {
-    getAllSceneMemberships();
+    deleteOldSceneEdits(props.user.id, props.sessionID).then(() => {
+      getAllSceneMemberships();
+    });
   }, [reload]);
 
   useEffect(() => {
@@ -98,23 +103,36 @@ const SceneList = (props: {
       ></SceneDetails>
     ) : (
       <Stack className="sceneList">
-        <Select
-          label="Sortierung"
-          onChange={(e) => {
-            setCmboBox(e.target.value as string);
-          }}
-          value={cmboBox}
-          size="small"
-          className="select"
+        <Stack
+          direction={"row"}
+          sx={{ justifyContent: "center", alignItems: "center" }}
         >
-          <MenuItem value={props.user.id}>nur meine</MenuItem>
-          <MenuItem value={"-1"}>alle</MenuItem>
-        </Select>
+          <Select
+            label="Sortierung"
+            onChange={(e) => {
+              setCmboBox(e.target.value as string);
+            }}
+            value={cmboBox}
+            size="small"
+            className="select"
+          >
+            <MenuItem value={props.user.id}>nur meine</MenuItem>
+            <MenuItem value={"-1"}>alle</MenuItem>
+          </Select>
+          <IconButton
+            onClick={() => {
+              setReload(Math.random());
+            }}
+          >
+            <ReplayIcon></ReplayIcon>
+          </IconButton>
+        </Stack>
         <Stack className="sceneListEntriesContainer">
           {scenes
             ? scenes.map((scene: Scene) => {
                 return (
                   <SceneListEntry
+                    reload={reload}
                     sessionID={props.sessionID}
                     user={props.user}
                     key={scene.id}

@@ -82,10 +82,34 @@ export default function Scene(props: {
     socketInitializer();
   }, []);
 
+  const keepSceneEditAlive = async () => {
+    const requestedUpdate = await fetchData(
+      props.idUser,
+      props.sessionID,
+      "CurrentSceneEdit",
+      "update",
+      {
+        id: props.refCurrentWorkingScene.current.id,
+      },
+      {
+        entryDate: new Date(),
+      },
+      null
+    );
+
+    if (requestedUpdate.error) return null;
+    return requestedUpdate;
+  };
+
   return props.models ? (
     <Canvas
       onPointerMissed={() => {
         props.setCurrentObjectProps(null);
+      }}
+      onClick={async () => {
+        // membersceneentry
+        await keepSceneEditAlive();
+        await deleteOldSceneEdits(props.idUser, props.sessionID);
       }}
       className="canvas"
       ref={props.sceneRef}
@@ -265,3 +289,38 @@ export default function Scene(props: {
     </Canvas>
   ) : null;
 }
+
+export const deleteOldSceneEdits = async (
+  idUser: string,
+  sessionID: string
+) => {
+  const requestedOldCurrentEdits: CurrentSceneEdit[] = await fetchData(
+    idUser,
+    sessionID,
+    "CurrentSceneEdit",
+    "select",
+    {
+      entryDate: {
+        lte: new Date(Date.now() - 20 * 1000), // 30sek new Date(Date.now() - 30 * 1000), // 7min new Date(Date.now() - 7 * 60 * 1000),
+      },
+    },
+    null,
+    null
+  );
+
+  if (!requestedOldCurrentEdits) return;
+
+  requestedOldCurrentEdits.forEach(async (el: CurrentSceneEdit) => {
+    await fetchData(
+      idUser,
+      sessionID,
+      "CurrentSceneEdit",
+      "delete",
+      {
+        id: el.id,
+      },
+      null,
+      null
+    );
+  });
+};
