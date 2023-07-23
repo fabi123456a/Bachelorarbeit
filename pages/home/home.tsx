@@ -1,12 +1,12 @@
 import { Stack, Typography } from "@mui/material";
 import SceneList from "../scenes/sceneList";
 import { CurrentSceneEdit, Scene, SceneMemberShip, User } from "@prisma/client";
-import NavigateBar from "./navigateBar";
+import NavigateBar from "../../components/home/navigateBar";
 import { MutableRefObject, useState } from "react";
 import AdminArea from "../admin/adminArea";
 import Settings from "../settings/settings";
-import FbxList from "../admin/fbxModels/fbxList";
-import Textures from "../admin/textures/textures";
+import FbxList from "../fbxModels/fbxList";
+import Textures from "../textures/textures";
 
 const Home = (props: {
   setScene: (scene: Scene) => void;

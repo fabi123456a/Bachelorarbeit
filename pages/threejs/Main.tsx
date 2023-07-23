@@ -10,10 +10,10 @@ import {
   Snackbar,
   Typography,
 } from "@mui/material";
-import PropertieContainer from "./UI-Elements/PropertieContainer/PropertieContainer";
-import ToolBar from "./UI-Elements/ToolBar/ToolBar";
-import ModelList from "./UI-Elements/ModelList/ModelList";
-import ThreeJsScene from "./Scene/Scene";
+import PropertieContainer from "../../components/threejs/UI-Elements/PropertieContainer/PropertieContainer";
+import ToolBar from "../../components/threejs/UI-Elements/ToolBar/ToolBar";
+import ModelList from "../../components/threejs/UI-Elements/ModelList/ModelList";
+import ThreeJsScene from "../../components/threejs/Scene/Scene";
 import * as THREE from "three";
 import { arrayBufferToBase64, base64ToBlob } from "../../utils/converting";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -25,21 +25,21 @@ import {
   SceneMemberShip,
   User,
 } from "@prisma/client";
-import WallList from "./UI-Elements/WallList/WallList";
+import WallList from "../../components/threejs/UI-Elements/WallList/WallList";
 import { debug } from "console";
-import SceneModelList from "./UI-Elements/SceneModelTreeView/SceneModelList";
+import SceneModelList from "../../components/threejs/UI-Elements/SceneModelTreeView/SceneModelList";
 import { Radio } from "@mui/material";
 import { RadioGroup } from "@mui/material";
 import { FormControlLabel } from "@mui/material";
-import Chat from "../chat/Chat";
+import Chat from "../../components/chat/Chat";
 import io from "socket.io-client";
-import MenuBar from "./UI-Elements/Menubar/menuBar";
+import MenuBar from "../../components/threejs/UI-Elements/Menubar/menuBar";
 import { v4 as uuidv4 } from "uuid";
 
 //@ts-ignore
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { Light } from "@mui/icons-material";
-import LightSettings from "./UI-Elements/Light/lightSetting";
+import LightSettings from "../../components/threejs/UI-Elements/Light/lightSetting";
 import { fetchData } from "../../utils/fetchData";
 
 let socket;
@@ -674,7 +674,10 @@ export default function Main(props: {
               ></ToolBar>
 
               {/* Wallist */}
-              <WallList addWall={handleWallAdd}></WallList>
+              <WallList
+                addWall={handleWallAdd}
+                idScene={props.scene.id}
+              ></WallList>
 
               {/* lightSettings */}
               <LightSettings

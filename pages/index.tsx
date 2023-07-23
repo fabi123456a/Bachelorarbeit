@@ -1,9 +1,9 @@
 import { Button, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import AddSceneToDB from "./scenes/addScne";
-import GetFbx from "./threejs/UI-Elements/ModelList/fbxHandle/getFbx";
-import UploadFile from "./threejs/UI-Elements/ModelList/fbxHandle/uploadFbx";
-import Login from "./login/login";
+import AddSceneToDB from "../components/sceneList/addScne";
+import GetFbx from "../components/threejs/UI-Elements/ModelList/fbxHandle/getFbx";
+import UploadFile from "../components/threejs/UI-Elements/ModelList/fbxHandle/uploadFbx";
+import Login from "./authentication/login";
 import SceneList from "./scenes/sceneList";
 import Main from "./threejs/Main";
 import Stack from "@mui/material/Stack";
@@ -14,16 +14,16 @@ import {
   Session,
   CurrentSceneEdit,
 } from "@prisma/client";
-import CubeRotater from "./login/cubeRotater";
-import Logout from "./login/logout";
-import DatabaseTable from "./admin/databaseTable/databaseTable";
-import UploadFbx from "./threejs/UI-Elements/ModelList/fbxHandle/uploadFbx";
-import Register from "./login/register";
-import FbxList from "./admin/fbxModels/fbxList";
+import CubeRotater from "../components/kram/cubeRotater";
+import Logout from "./authentication/logout";
+import DatabaseTable from "../components/adminArea/databaseTable/databaseTable";
+import UploadFbx from "../components/threejs/UI-Elements/ModelList/fbxHandle/uploadFbx";
+import Register from "./authentication/register";
+import FbxList from "./fbxModels/fbxList";
 import AdminArea from "./admin/adminArea";
 import Home from "./home/home";
-import SceneDetails from "./scenes/sceneDetails/sceneDetail";
-import Chat from "./chat/Chat";
+import SceneDetails from "../components/sceneList/sceneListEntry/sceneDetails";
+import Chat from "../components/chat/Chat";
 import Test from "./text";
 import { fetchData } from "../utils/fetchData";
 

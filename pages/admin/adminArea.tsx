@@ -1,10 +1,10 @@
 import { Button, Divider, IconButton, Stack, Typography } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { DeleteForeverOutlined } from "@mui/icons-material";
-import DatabaseTable from "./databaseTable/databaseTable";
-import FbxList from "./fbxModels/fbxList";
+import DatabaseTable from "../../components/adminArea/databaseTable/databaseTable";
+import FbxList from "../fbxModels/fbxList";
 import { Scene, User } from "@prisma/client";
-import MemberList from "./memberships/sceneMembershipsList";
+import MemberList from "../../components/adminArea/memberships/sceneMembershipsList";
 import ErrorIcon from "@mui/icons-material/Error";
 import { fetchData } from "../../utils/fetchData";
 

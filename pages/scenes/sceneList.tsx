@@ -9,9 +9,9 @@ import {
 } from "@mui/material";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { User, Scene, SceneMemberShip, CurrentSceneEdit } from "@prisma/client";
-import AddScene from "./addScne";
-import SceneListEntry from "./sceneListEntry";
-import SceneDetails from "./sceneDetails/sceneDetail";
+import AddScene from "../../components/sceneList/addScne";
+import SceneListEntry from "../../components/sceneList/sceneListEntry";
+import SceneDetails from "../../components/sceneList/sceneListEntry/sceneDetails";
 import { fetchData } from "../../utils/fetchData";
 
 const SceneList = (props: {
