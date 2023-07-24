@@ -23,7 +23,7 @@ function User(props: {
       props.sessionID,
       "user",
       "select",
-      { id: props.idUser },
+      { id: props.worker.idUser },
       null,
       null
     );

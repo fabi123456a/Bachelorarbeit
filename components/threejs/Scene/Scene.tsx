@@ -301,7 +301,7 @@ export const deleteOldSceneEdits = async (
     "select",
     {
       entryDate: {
-        lte: new Date(Date.now() - 20 * 1000), // 30sek new Date(Date.now() - 30 * 1000), // 7min new Date(Date.now() - 7 * 60 * 1000),
+        lte: new Date(Date.now() - 40 * 1000), // 30sek new Date(Date.now() - 30 * 1000), // 7min new Date(Date.now() - 7 * 60 * 1000),
       },
     },
     null,

@@ -26,7 +26,7 @@ const SceneList = (props: {
 }) => {
   const [scenes, setScenes] = useState<Scene[]>();
   const [reload, setReload] = useState<number>();
-  const [cmboBox, setCmboBox] = useState<string>("-1"); // -1 wenn alle
+  const [cmboBox, setCmboBox] = useState<string>("-1"); // -1 => alle
   const [actScene, setActScene] = useState<Scene>(null);
   const [sceneMembership, setSceneMembership] = useState<SceneMemberShip>(null);
   const [memberships, setMemberships] = useState<
@@ -61,7 +61,7 @@ const SceneList = (props: {
       props.sessionID,
       "SceneMemberShip",
       "select",
-      { idUser: props.user.id },
+      { idUser: props.user.id }, // {idUser: props.user.id}
       null,
       { scene: true }
     );
@@ -74,11 +74,26 @@ const SceneList = (props: {
     setScenes(extractedScenes);
   };
 
+  const getOwnScenes = (scenes: Scene[]): Scene[] => {
+    const idUserCreator: string = props.user.id;
+
+    const scenesWithMatchingCreator = scenes.filter(
+      (scene) => scene.idUserCreater === idUserCreator
+    );
+
+    return scenesWithMatchingCreator;
+  };
+
   useEffect(() => {
     deleteOldSceneEdits(props.user.id, props.sessionID).then(() => {
-      getAllSceneMemberships();
+      getAllSceneMemberships().then(() => {
+        if (cmboBox == props.user.id) {
+          // nur eigene escenen rausfiltern
+          setScenes(getOwnScenes(scenes));
+        }
+      });
     });
-  }, [reload]);
+  }, [reload, cmboBox]);
 
   useEffect(() => {
     if (!actScene) return;
