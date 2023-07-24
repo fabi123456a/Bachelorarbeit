@@ -16,6 +16,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import { checkPropsForNull } from "../../../../utils/checkIfPropIsNull";
+import { TypeObjectProps } from "../../../../pages/threejs/types";
 
 export default function SceneModelListItem(props: {
   model: TypeObjectProps;

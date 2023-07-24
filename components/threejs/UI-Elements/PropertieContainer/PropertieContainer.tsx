@@ -6,6 +6,7 @@ import TextureSelector from "./textureSelector";
 import Draggable from "react-draggable";
 import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
+import { TypeObjectProps } from "../../../../pages/threejs/types";
 
 // https://mui.com/material-ui/react-typography/#main-content
 // links oben auf die 2 Striche klicken,

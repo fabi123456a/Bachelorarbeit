@@ -14,6 +14,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import SceneModelListItem from "./ScenModeListItem";
 import Draggable from "react-draggable";
 import CloseIcon from "@mui/icons-material/Close";
+import { TypeObjectProps } from "../../../../pages/threejs/types";
 
 export default function SceneModelList(props: {
   models: TypeObjectProps[];

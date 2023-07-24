@@ -6,6 +6,7 @@ import {
 } from "@mui/material";
 import React, { useRef } from "react";
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
+import { TypeObjectProps } from "../../../../pages/threejs/types";
 
 export default function PerspectiveSelector(props: {
   controlsRef: React.RefObject<any>;

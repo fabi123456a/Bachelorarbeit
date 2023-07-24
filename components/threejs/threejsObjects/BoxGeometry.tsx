@@ -3,6 +3,7 @@ import { BufferGeometry, Material, Mesh } from "three";
 import HtmlSettings from "./HtmlSettings";
 import { TextureLoader } from "three/src/loaders/TextureLoader";
 import { useLoader } from "@react-three/fiber";
+import { BoxGeometryValue, TypeObjectProps } from "../../../pages/threejs/types";
 
 function BoxGeometry(props: {
   // position & skalieren der Box

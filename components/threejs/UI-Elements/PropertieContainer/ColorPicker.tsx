@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Stack, Typography } from "@mui/material";
+import { TypeObjectProps } from "../../../../pages/threejs/types";
 
 function ColorPicker(props: {
   setCurrentObjectProps: (props: TypeObjectProps) => void;

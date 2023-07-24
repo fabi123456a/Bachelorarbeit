@@ -630,10 +630,9 @@ export default function Main(props: {
   };
 
   // ---- COMPONENT ----
-  return (
+  return props.user && props.sessionID ? (
     <Stack className="main">
       {models ? <Typography>models.length: {models.length}</Typography> : null}
-      {/* menubar */}
       <MenuBar
         idUser={props.user.id}
         sessionID={props.sessionID}
@@ -642,7 +641,7 @@ export default function Main(props: {
         scene={props.scene}
         isTestMode={isTestMode}
       ></MenuBar>
-
+      )
       <Stack
         direction="row"
         style={{ height: "100%", background: "#d9d9d9", overflowY: "auto" }}
@@ -795,5 +794,5 @@ export default function Main(props: {
         {/* </Canvas> */}
       </Stack>
     </Stack>
-  );
+  ) : null;
 }

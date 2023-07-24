@@ -5,7 +5,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import { Check } from "@mui/icons-material";
 
 const Settings = (props: { user: User }) => {
-  return (
+  return props.user ? (
     <Stack sx={{ padding: "12px" }}>
       <Stack direction={"row"}>
         <Stack>
@@ -43,6 +43,8 @@ const Settings = (props: { user: User }) => {
         </Stack>
       </Stack>
     </Stack>
+  ) : (
+    <Typography>lädt...</Typography>
   );
 };
 

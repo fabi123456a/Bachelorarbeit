@@ -1,8 +1,7 @@
-import { Button, Divider, IconButton, Stack, Typography } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import { IconButton, Stack, Typography } from "@mui/material";
+import React from "react";
 import ModelPreview from "./modelPreview";
 import { DeleteForeverOutlined } from "@mui/icons-material";
-import UploadFbx from "../UI-Elements/ModelList/fbxHandle/uploadFbx";
 import { User } from "@prisma/client";
 
 const FbxListEntry = (props: {

@@ -1,5 +1,6 @@
 TODO:
-
+/settings/settings
+        /threejs/Main
 - scene speicher und mit socketio synchronisieren
 - bug perspektive wechseln draggable
 - chat 

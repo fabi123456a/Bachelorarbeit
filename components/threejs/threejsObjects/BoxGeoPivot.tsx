@@ -6,6 +6,7 @@ import BoxGeometry from "./BoxGeometry";
 import { Button } from "@mui/material";
 import HtmlSettings from "./HtmlSettings";
 import { checkPropsForNull } from "../../../utils/checkIfPropIsNull";
+import { TypeObjectProps } from "../../../pages/threejs/types";
 
 // KOMPONENTE
 

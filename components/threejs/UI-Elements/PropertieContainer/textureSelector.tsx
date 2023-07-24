@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { TypeObjectProps } from "../../../../pages/threejs/types";
 
 export default function TextureSelector(props: {
   currentObjProps: TypeObjectProps;
