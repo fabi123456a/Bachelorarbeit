@@ -1,8 +1,14 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { MutableRefObject, useEffect, useState } from "react";
 import io from "socket.io-client";
 
-import { ChatEntry, Scene, Session, User } from "@prisma/client";
+import {
+  ChatEntry,
+  CurrentSceneEdit,
+  Scene,
+  Session,
+  User,
+} from "@prisma/client";
 import { randomUUID } from "crypto";
 import { prismaClient } from "../../pages/api/prismaclient/_prismaClient";
 import UserOnlineItem from "./UserOnlineItem";
@@ -19,6 +25,7 @@ export default function Chat(props: {
   user: User;
   sessionID: string;
 }) {
+  const [reload, setReload] = useState<number>(null);
   const [text, setText] = useState<string>("");
   const [msgs, setMsgs] = useState<
     (ChatEntry & {
@@ -30,9 +37,9 @@ export default function Chat(props: {
       user: User;
     })[]
   >([]);
-  const [users, setUsers] = useState<User[]>([]);
   const [visible, setVisible] = useState<boolean>(false);
   const [fontSize1, setFontSize] = useState<string>("12px");
+  let counter = 0;
 
   // socket IO
   useEffect(() => {
@@ -40,85 +47,46 @@ export default function Chat(props: {
       await fetch("/api/socket");
       socket = io();
 
-      socket.on("connect", () => {
-        console.log("connected");
-      });
-
-      socket.on("getChatEntry", (chatEntrys) => {
-        setMsgs(chatEntrys);
+      socket.on("getChatEntry", (data: { idScene: string }) => {
+        setReload(Math.random());
       });
     };
     socketInitializer();
   }, []);
 
+  const getAllChatEntry = async () => {
+    let requestedChatEntries;
+
+    // TODO: orderBy: { datum: "desc", }
+    props.scene
+      ? (requestedChatEntries = await fetchData(
+          props.user.id,
+          props.sessionID,
+          "ChatEntry",
+          "select",
+          { idScene: props.scene.id },
+          null,
+          {
+            user: true,
+          }
+        ))
+      : null;
+
+    if (requestedChatEntries.err) return;
+
+    return requestedChatEntries;
+  };
+
   // alle chat einträge laden
   useEffect(() => {
-    const getAllChatEntry = async () => {
-      // const response = await fetch(
-      //   "/api/database/ChatEntry/DB_getAllChatEntrys",
-      //   {
-      //     method: "POST",
-      //     body: JSON.stringify({
-      //       sessionID: props.sessionID,
-      //       idUser: props.user.id,
-      //     }),
-      //   }
-      // );
-      // const result = await response.json();
-
-      // TODO: orderBy: { datum: "desc", }
-      const requestedChatEntries = await fetchData(
-        props.user.id,
-        props.sessionID,
-        "ChatEntry",
-        "select",
-        {},
-        null,
-        {
-          user: true,
-        }
-      );
-
-      if (requestedChatEntries.err) return;
-
-      return requestedChatEntries;
-    };
-
     getAllChatEntry().then((chatEntrys) => {
       setMsgs(chatEntrys);
     });
-  }, []);
-
-  // alle user laden um von id zu user zu mappen
-  useEffect(() => {
-    // const getAllUser = async () => { // TODO: war einkommentiert, aber am anfang mit getAll alle chantentrys laden war der forbidden fehler
-    //   const response = await fetch("/api/database/DB_getAll", {
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //       tableName: "user",
-    //       sessionID: props.sessionID,
-    //       idUser: props.user.id,
-    //     }),
-    //   });
-    //   const result: User[] = await response.json();
-    //   return result;
-    // };
-    // getAllUser().then((users: User[]) => {
-    //   setUsers(users);
-    // });
-  }, []);
+  }, [props.scene, reload]);
 
   // laden wer alles online ist
   useEffect(() => {
     const getAllSessions = async () => {
-      // const response = await fetch("/api/database/Session/DB_getAllSessions", {
-      //   method: "POST",
-      //   body: JSON.stringify({
-      //     sessionID: props.sessionID,
-      //     idUser: props.user.id,
-      //   }),
-      // });
-      // const result: Session[] = await response.json();
       const request = await fetchData(
         props.user.id,
         props.sessionID,
@@ -174,8 +142,6 @@ export default function Chat(props: {
     });
   };
 
-  let counter = 0;
-
   return visible ? (
     <Draggable>
       <Stack
@@ -193,60 +159,57 @@ export default function Chat(props: {
             setVisible(false);
           }}
         ></CloseIcon>
-        <Stack direction={"row"}>
-          <TextField
-            onChange={onChangeHandler}
-            value={text}
-            size="small"
-            sx={{ fontSize: fontSize1 }}
-          ></TextField>
-          <Button variant="outlined" onClick={onClickHandler}>
-            send
-          </Button>
-        </Stack>
+        {props.scene ? (
+          <>
+            <Typography>
+              {props.scene ? "Chat: " + props.scene.name : "alle chats"}
+            </Typography>
+            <Stack direction={"row"}>
+              <TextField
+                onChange={onChangeHandler}
+                value={text}
+                size="small"
+                sx={{ fontSize: fontSize1 }}
+              ></TextField>
+              <Button variant="outlined" onClick={onClickHandler}>
+                send
+              </Button>
+            </Stack>
 
-        <Stack
-          sx={{
-            overflowY: "scroll",
-          }}
-        >
-          {msgs.map(
-            (
-              msg: ChatEntry & {
-                user: User;
-              }
-            ) => {
-              const color = counter % 2 === 0 ? "#abdbe3" : "#eab676";
-              counter++;
+            <Stack
+              sx={{
+                overflowY: "scroll",
+              }}
+            >
+              {msgs.map(
+                (
+                  msg: ChatEntry & {
+                    user: User;
+                  }
+                ) => {
+                  const color = counter % 2 === 0 ? "#abdbe3" : "#eab676";
+                  counter++;
 
-              return (
-                <Typography
-                  style={{ background: color, fontSize: fontSize1 }}
-                  key={msg.id}
-                >
-                  {new Date(msg.datum).toLocaleTimeString() +
-                    ": " +
-                    msg.message +
-                    " (" +
-                    msg.user.loginID +
-                    ")"}
-                </Typography>
-              );
-            }
-          )}
-        </Stack>
-        {/* <Stack sx={{ overflowY: "scroll" }}>
-          <Typography fontSize={{ fontSize: fontSize1 }}>Online: </Typography>
-          {sessions.map((session) => {
-            return (
-              <UserOnlineItem
-                session={session}
-                key={session.id}
-                fontSize={fontSize1}
-              ></UserOnlineItem>
-            );
-          })}
-        </Stack> */}
+                  return (
+                    <Typography
+                      style={{ background: color, fontSize: fontSize1 }}
+                      key={msg.id}
+                    >
+                      {new Date(msg.datum).toLocaleTimeString() +
+                        ": " +
+                        msg.message +
+                        " (" +
+                        msg.user.loginID +
+                        ")"}
+                    </Typography>
+                  );
+                }
+              )}
+            </Stack>
+          </>
+        ) : (
+          <Typography>Betreten Sie erste eine scene</Typography>
+        )}
       </Stack>
     </Draggable>
   ) : (

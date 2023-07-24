@@ -692,6 +692,11 @@ export default function Main(props: {
           (props.user.write && !props.membership.readOnly) ||
           props.user.isAdmin ? (
             <>
+              <Chat
+                scene={props.scene}
+                sessionID={props.sessionID}
+                user={props.user}
+              ></Chat>
               {/* ModelList */}
               <ModelList
                 idUser={props.user.id}

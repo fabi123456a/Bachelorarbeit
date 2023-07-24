@@ -16,19 +16,6 @@ const AddScene = (props: {
 
   const addSceneToDB = async () => {
     refSceneID.current = uuidv4();
-    // const response = await fetch("/api/database/Scene/DB_insertScene", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     idScene: refSceneID.current,
-    //     idUserCreator: props.user.id,
-    //     name: name,
-    //     version: 0,
-    //     sessionID: props.sessionID,
-    //     idUser: props.user.id,
-    //   }),
-    // });
-
-    // const result = await response.json();
 
     const sceneData: Scene = {
       id: refSceneID.current,
@@ -59,21 +46,6 @@ const AddScene = (props: {
     idUser1: string,
     readonly: boolean
   ) => {
-    // const response = await fetch(
-    //   "/api/database/Membership/DB_insertMemberShip",
-    //   {
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //       idScene: idScene,
-    //       idUser: idUser,
-    //       readonly: readonly,
-    //       sessionID: props.sessionID,
-    //     }),
-    //   }
-    // );
-
-    // const result = await response.json();
-
     const membership: SceneMemberShip = {
       id: uuidv4(),
       idScene: idScene1,
@@ -140,7 +112,7 @@ const AddScene = (props: {
         ></TextField>
         <Button
           onClick={async () => {
-            if (name == null) {
+            if (!name) {
               alert("Scenename eingeben");
               return;
             }

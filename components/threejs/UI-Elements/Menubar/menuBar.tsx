@@ -63,6 +63,7 @@ const MenuBar = (props: {
 
           // alert(props.currentWorkingScene.current.id);
           await deleteCurrentWorkingScene();
+          props.currentWorkingScene.current = null;
 
           socket.emit("refreshWorkers", {});
         }}

@@ -14,16 +14,11 @@ const SocketHandler = (req, res) => {
         const selectedUser = await prismaClient.chatEntry.create({
           data: chatEntry,
         });
-        const chatEntrys = await prismaClient.chatEntry.findMany({
-          orderBy: {
-            datum: "desc", // oder 'desc' für absteigende Sortierung
-          },
-          include: {
-            user: true, // Hier wird die Beziehung zum User eingeschlossen
-          },
-        });
+
         //socket.broadcast.emit("getChatEntry", chatEntrys);
-        io.emit("getChatEntry", chatEntrys);
+
+        console.log("---CHAT---" + chatEntry.idScene);
+        io.emit("getChatEntry", { idScene: chatEntry.idScene });
       });
       // scene
       socket.on("setSyncScene", async (data) => {

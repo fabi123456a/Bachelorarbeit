@@ -34,7 +34,7 @@ const Index = () => {
   const [scene, setScene] = useState<Scene>(null);
   const [sceneMembership, setSceneMembership] = useState<SceneMemberShip>();
   const [session, setSession] = useState<Session>(null);
-  const refCurrentWorkingScene = useRef<CurrentSceneEdit>();
+  const refCurrentWorkingScene = useRef<CurrentSceneEdit>(null);
 
   // neu fetchData
   const getSession = async (): Promise<Session> => {
@@ -116,9 +116,7 @@ const Index = () => {
 
       {register ? <Register setRegister={setRegister}></Register> : null}
 
-      {loggedIn && session ? (
-        <Chat user={actUser} scene={scene} sessionID={session.id}></Chat>
-      ) : null}
+      <Typography>{scene ? scene.name : "null"}</Typography>
     </Stack>
   );
 };
