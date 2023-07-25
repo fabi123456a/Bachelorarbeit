@@ -10,15 +10,12 @@ const SocketHandler = (req, res) => {
     res.socket.server.io = io;
     io.on("connection", (socket) => {
       // chat
-      socket.on("addChatEntry", async (chatEntry) => {
-        const selectedUser = await prismaClient.chatEntry.create({
+      socket.on("emitChatEntry", async (chatEntry) => {
+        await prismaClient.chatEntry.create({
           data: chatEntry,
         });
 
-        //socket.broadcast.emit("getChatEntry", chatEntrys);
-
-        console.log("---CHAT---" + chatEntry.idScene);
-        io.emit("getChatEntry", { idScene: chatEntry.idScene });
+        io.emit("getChatEntry", chatEntry.idScene);
       });
       // scene
       socket.on("setSyncScene", async (data) => {

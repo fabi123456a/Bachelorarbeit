@@ -38,12 +38,6 @@ export default function SceneModelList(props: {
     visible ? (
       <Draggable>
         <Stack className="sceneTreeView roundedShadow">
-          {/* <CloseIcon
-            className="iconButton"
-            onClick={() => {
-              setVisible(false);
-            }}
-          ></CloseIcon> */}
           <TreeView
             defaultCollapseIcon={<ExpandMoreIcon />}
             defaultExpandIcon={<ChevronRightIcon />}

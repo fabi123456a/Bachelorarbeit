@@ -91,6 +91,7 @@ export default function SceneModelListItem(props: {
                 />
 
                 <DriveFileRenameOutlineIcon
+                  sx={{ mr: "4px" }}
                   onClick={(e) => {
                     setRename((prev) => !prev);
                   }}

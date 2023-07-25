@@ -117,9 +117,6 @@ export default function Chat(props: {
 
   // socket IO chatEntry 'verteilen'
   const onClickHandler = async () => {
-    // textfeld leeren
-    setText("");
-
     // model für chat eintrag erstellen
     const chatEntry: ChatEntry = {
       id: uuidv4(),
@@ -129,10 +126,10 @@ export default function Chat(props: {
       datum: new Date(),
     };
 
-    //  model verteilen
-    socket.emit("addChatEntry", chatEntry);
+    // chatentry verteilen
+    socket.emit("emitChatEntry", chatEntry);
 
-    // test sessio keep alive
+    // session keep alive
     await fetch("api/database/Session/DB_sessionKeepAlive", {
       method: "POST",
       body: JSON.stringify({
@@ -140,6 +137,9 @@ export default function Chat(props: {
         idUser: props.user.id,
       }),
     });
+
+    // textfeld leeren
+    setText("");
   };
 
   return visible ? (
