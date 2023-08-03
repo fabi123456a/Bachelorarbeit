@@ -64,11 +64,12 @@ const AdminArea = (props: {
           sx={{
             alignItems: "center",
             justifyContent: "center",
-            position: "fixed",
+            position: "sticky",
             top: 0,
             left: 0,
             right: 0,
             background: "white",
+            padding: "14px",
           }}
         >
           <Button

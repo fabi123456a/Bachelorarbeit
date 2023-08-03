@@ -130,12 +130,6 @@ function SceneModel(
             setCurrentObj();
           }
         }}
-        // TODO: für roten punkte auf höhe null immer beim verschieben
-        // onPointerMove={(e) => {
-        //   if (e) {
-        //     setKey((prevKey) => prevKey + 1);
-        //   }
-        // }}
       >
         <primitive
           onClick={() => {

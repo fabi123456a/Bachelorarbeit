@@ -60,6 +60,7 @@ const SceneListEntry = (props: {
       null
     );
 
+    // TODO: models, secne und memberships nur dann löschen wenn der ertseller die scene löscht, ansosnten nur scenMemberShip löschen
     requestedModelsFromScene.map(async (model: Model) => {
       // models der scene löschen
       const requestDelete1 = await fetchData(

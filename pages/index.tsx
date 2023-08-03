@@ -115,8 +115,6 @@ const Index = () => {
       )}
 
       {register ? <Register setRegister={setRegister}></Register> : null}
-
-      <Typography>{scene ? scene.name : "null"}</Typography>
     </Stack>
   );
 };
