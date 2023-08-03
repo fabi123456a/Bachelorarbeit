@@ -1,6 +1,6 @@
 TODO:
-/settings/settings
-        /threejs/Main
+
+- schatten: https://codesandbox.io/s/react-three-fiber-shadow-reference-5ju4u?file=/src/App.js:0-38
 - scene speicher und mit socketio synchronisieren
 - bug perspektive wechseln draggable
 - chat 

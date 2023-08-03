@@ -688,8 +688,8 @@ export default function Main(props: {
 
         {/* ui elements ausblenden, wenn keine lese rechte oder kein admin oder readonly im membership */}
         {props.user ? (
-          (props.user.write && !props.membership.readOnly) ||
-          props.user.isAdmin ? (
+          props.user.isAdmin ||
+          (props.user.write && !props.membership.readOnly) ? (
             <>
               <Chat
                 scene={props.scene}

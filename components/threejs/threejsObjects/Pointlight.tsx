@@ -65,7 +65,7 @@ function PointlightPivot(props: {
       name: props.objProps ? props.objProps.name : "lichtquelle",
       color: "",
       texture: "",
-      idScene: props.objProps.idScene,
+      idScene: props.objProps ? props.objProps.idScene : null,
     });
   };
 

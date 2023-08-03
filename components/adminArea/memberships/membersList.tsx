@@ -7,6 +7,7 @@ import Checkbox from "@mui/material/Checkbox";
 import MembershipEntry from "./membershipEntry";
 import AddMember from "../../sceneList/sceneListEntry/insertMember";
 import { fetchData } from "../../../utils/fetchData";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const MemberListEntry = (props: {
   scene: Scene;
@@ -66,13 +67,13 @@ const MemberListEntry = (props: {
     <Stack className="">
       <Stack direction={"row"} sx={{ alignItems: "center" }}>
         <Typography fontWeight={"bold"}>{props.scene.name}</Typography>
-        <Button
+        <IconButton
           onClick={() => {
             props.setScene(props.scene);
           }}
         >
-          ansehen
-        </Button>
+          <VisibilityIcon />
+        </IconButton>
       </Stack>
       <Typography fontSize={"small"} sx={{ mt: "-1vh", mb: "2vh" }}>
         {"Version: " + props.scene.newestVersion + ".0"}
