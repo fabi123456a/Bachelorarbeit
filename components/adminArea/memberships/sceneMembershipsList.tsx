@@ -9,19 +9,12 @@ const MemberList = (props: {
   idUser: string;
 }) => {
   return props.scenes ? (
-    <Stack className="roundedShadow adminMembersList">
-      <Typography
-        sx={{ alignSelf: "center", pb: "12px" }}
-        fontWeight={"bold"}
-        fontSize={"20px"}
-      >
-        Alle Scenes + Mitglieder
-      </Typography>
+    <Stack className="adminMembersList">
       {props.scenes.map((scene: Scene) => {
         return (
           <Stack className="roundedShadow" key={scene.id + props.sessionID}>
             <MemberListEntry
-            idUser={props.idUser}
+              idUser={props.idUser}
               key={scene.id}
               sessionID={props.sessionID}
               scene={scene}

@@ -82,7 +82,7 @@ const AdminArea = (props: {
                 : {}
             }
           >
-            Benutzer
+            Alle Benutzer
           </Button>
           <Divider orientation="vertical" sx={{ m: "8px" }}></Divider>
           <Button
@@ -95,13 +95,12 @@ const AdminArea = (props: {
                 : {}
             }
           >
-            Konfigurationen
+            Alle Konfigurationen
           </Button>
         </Stack>
         {actPage == "users" ? (
           <DatabaseTable
             user={props.user}
-            tableName="user"
             showInsert={true}
             sessionID={props.sessionID}
           ></DatabaseTable>

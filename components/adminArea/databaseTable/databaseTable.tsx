@@ -86,13 +86,9 @@ const DatabaseTable = (props: {
   }, [reload, sortBy]);
 
   return (
-    <Stack className="databaseTableContainer roundedShadow">
+    <Stack className="databaseTableContainer">
       <Stack className="roundedShadow">
-        <Typography
-          sx={{ alignSelf: "center", pb: "12px" }}
-          fontWeight={"bold"}
-          fontSize={"20px"}
-        >
+        <Typography sx={{ p: "12px" }} fontWeight={"bold"} fontSize={"20px"}>
           {data ? "Alle Benutzer" : null}
         </Typography>
 

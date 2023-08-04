@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { fetchData } from "../../../utils/fetchData";
 import { User } from "@prisma/client";
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 
 const Insert = (props: {
   setReload: (zahl: number) => void;
@@ -18,7 +19,13 @@ const Insert = (props: {
   const [checkedDelete, setCheckedDelete] = useState(false);
   const [checkedAdmin, setCheckedAdmin] = useState(false);
 
-  const handleInsert = async () => {
+  // legt einen User an und gibt ihn zurück
+  const handleInsert = async (): Promise<User> => {
+    if (!txtLogin || !txtPw) {
+      alert("Bitte geben Sie einen Benutzernamen UND ein Passwort an.");
+      return;
+    }
+
     let insertData: User = {
       id: uuidv4(),
       loginID: txtLogin,
@@ -28,18 +35,6 @@ const Insert = (props: {
       delete: checkedDelete,
       isAdmin: checkedAdmin,
     };
-
-    // const response = await fetch("/api/database/DB_insertInTable", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     tableName: props.tableName,
-    //     data: insertData,
-    //     sessionID: props.sessionID,
-    //     idUser: props.idUser,
-    //   }),
-    // });
-
-    // const erg = await response.json();
 
     const requestInsert = await fetchData(
       props.idUser,
@@ -58,16 +53,19 @@ const Insert = (props: {
 
   return (
     <Stack>
-      <Typography
-        fontWeight={"bold"}
-        fontSize={"20px"}
-        sx={{ alignSelf: "center" }}
-      >
-        Neuen User erstellen
-      </Typography>
+      <Stack direction={"row"} sx={{ alignItems: "center" }}>
+        <Typography fontWeight={"bold"} fontSize={"20px"} sx={{ p: "12px" }}>
+          Neuen User erstellen
+        </Typography>
+        <PersonAddAltIcon
+          color={"success"}
+          sx={{ m: "10px" }}
+        ></PersonAddAltIcon>
+      </Stack>
+
       <Stack sx={{ m: "10px", maxWidth: "300px" }}>
         <TextField
-          label="Login ID"
+          label="Benutzernamen"
           value={txtLogin}
           onChange={(e) => {
             setTxtxLogin(e.target.value);
@@ -130,8 +128,20 @@ const Insert = (props: {
       </Stack>
       <Button
         onClick={async () => {
-          await handleInsert();
-          props.setReload(Math.random());
+          const insertedUser = await handleInsert();
+          if (!insertedUser) {
+            alert("Fehler beim hinzufügen des Benutzers.");
+            return;
+          } else {
+            props.setReload(Math.random());
+            setTxtPw("");
+            setTxtxLogin("");
+            setCheckedRead(false);
+            setCheckedWrite(false);
+            setCheckedUpdate(false);
+            setCheckedDelete(false);
+            setCheckedAdmin(false);
+          }
         }}
       >
         Hinzufügen
