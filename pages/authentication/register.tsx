@@ -1,48 +1,28 @@
-import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { Button, Stack, TextField, Typography } from "@mui/material";
+import { useState } from "react";
+import { SHA256 } from "crypto-js";
 import { User } from "@prisma/client";
-import { fetchData } from "../../utils/fetchData";
-import { v4 as uuidv4 } from "uuid";
 
 const Register = (props: { setRegister: (flag: boolean) => void }) => {
   const [txtLoginID, setTxtLoginID] = useState<string>("");
   const [txtPw, setTxtPw] = useState<string>("");
 
-  const handleBtnRegisterClick = async (loginID: string, pw: string) => {
-    // const response = await fetch("/api/database/User/DB_insertUser", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     loginID: loginID,
-    //     pw: pw,
-    //     sessionID: props.sessionID, // TODO:
-    //   }),
-    // });
+  const handleBtnRegisterClick = async (
+    loginID: string,
+    pw: string
+  ): Promise<User> => {
+    const hashedPw = SHA256(pw).toString();
 
-    // const result = await response.json();
+    const response = await fetch("/api/database/User/register", {
+      method: "POST",
+      body: JSON.stringify({
+        loginID: loginID,
+        password: hashedPw,
+      }),
+    });
 
-    const dataUser: User = {
-      id: uuidv4(),
-      loginID: loginID,
-      password: pw,
-      delete: false,
-      read: false,
-      write: false,
-      isAdmin: false,
-    };
-
-    const requestInsert = await fetchData(
-      null,
-      null,
-      "user",
-      "create",
-      {},
-      dataUser,
-      null
-    );
-
-    if (requestInsert.err) return;
-
-    return requestInsert;
+    const result = await response.json();
+    return result;
   };
 
   return (
@@ -73,13 +53,18 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
             alert("LoginID oder PW ist leer, bitte geben sie beides an.");
             return;
           }
-          let erg = handleBtnRegisterClick(txtLoginID, txtPw);
+          const registeredUser: User = await handleBtnRegisterClick(
+            txtLoginID,
+            txtPw
+          );
 
-          if (erg == null) alert("Registrierung fehlgeschlagen");
-          else {
+          if (!registeredUser) {
+            alert("Registrierung fehlgeschlagen");
+            return;
+          } else {
             alert(
-              "Sie haben sich erfolgreich mit der LoginID '" +
-                txtLoginID +
+              "Sie haben sich erfolgreich als '" +
+                registeredUser.loginID +
                 "' registriert"
             );
             props.setRegister(false);

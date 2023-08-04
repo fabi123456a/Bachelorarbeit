@@ -17,7 +17,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 
 const DatabaseTable = (props: {
-  tableName: string;
   showInsert: boolean;
   sessionID: string;
   user: User;
@@ -57,7 +56,7 @@ const DatabaseTable = (props: {
         const request = await fetchData(
           props.user.id,
           props.sessionID,
-          props.tableName,
+          "user",
           "select",
           {},
           null,
@@ -84,7 +83,7 @@ const DatabaseTable = (props: {
     }
 
     loadData();
-  }, [props.tableName, reload, sortBy]);
+  }, [reload, sortBy]);
 
   return (
     <Stack className="databaseTableContainer roundedShadow">
@@ -94,7 +93,7 @@ const DatabaseTable = (props: {
           fontWeight={"bold"}
           fontSize={"20px"}
         >
-          {data ? "alle " + props.tableName + "'s" : null}
+          {data ? "Alle Benutzer" : null}
         </Typography>
 
         <Table size="small" className="">
@@ -123,8 +122,8 @@ const DatabaseTable = (props: {
                       <TableCell
                         key={dataRow[prop] + dataRow["id"] + prop}
                         onClick={() => {
-                          if (prop === "id") {
-                            //alert("ID's ändern ist eine schlechte Idee :(");
+                          if (prop === "id" || prop == "password") {
+                            alert("Das kann nicht geändert werden.");
                             return;
                           }
                           setActProp(prop);
@@ -165,10 +164,7 @@ const DatabaseTable = (props: {
           <Insert
             idUser={props.user.id}
             sessionID={props.sessionID}
-            tableName={props.tableName}
-            porperties={properties}
             setReload={setReload}
-            types={types}
           ></Insert>
         </Stack>
       ) : null}
@@ -178,7 +174,7 @@ const DatabaseTable = (props: {
           idUser={props.user.id}
           sessionID={props.sessionID}
           setShowEdit={setShowEditData}
-          tableName={props.tableName}
+          tableName={"user"}
           porpertie={actProp}
           id={actDataRowID}
           currentData={actData}

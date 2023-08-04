@@ -3,25 +3,31 @@ import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { fetchData } from "../../../utils/fetchData";
+import { User } from "@prisma/client";
 
 const Insert = (props: {
-  tableName: string;
-  porperties: string[];
   setReload: (zahl: number) => void;
-  types: string[];
   sessionID: string;
   idUser: string;
 }) => {
-  const [values, setValues] = useState<any[]>([]);
-
-  const handleTextFieldChange = (index: number, value: any) => {
-    const updatedTextFields = [...values];
-    updatedTextFields[index] = value;
-    setValues(updatedTextFields);
-  };
+  const [txtLogin, setTxtxLogin] = useState<string>("");
+  const [txtPw, setTxtPw] = useState<string>("");
+  const [checkedRead, setCheckedRead] = useState(false);
+  const [checkedWrite, setCheckedWrite] = useState(false);
+  const [checkedUpdate, setCheckedUpdate] = useState(false);
+  const [checkedDelete, setCheckedDelete] = useState(false);
+  const [checkedAdmin, setCheckedAdmin] = useState(false);
 
   const handleInsert = async () => {
-    let insertData = createObjectFromArray(props.porperties);
+    let insertData: User = {
+      id: uuidv4(),
+      loginID: txtLogin,
+      password: txtPw,
+      read: checkedRead,
+      write: checkedWrite,
+      delete: checkedDelete,
+      isAdmin: checkedAdmin,
+    };
 
     // const response = await fetch("/api/database/DB_insertInTable", {
     //   method: "POST",
@@ -38,7 +44,7 @@ const Insert = (props: {
     const requestInsert = await fetchData(
       props.idUser,
       props.sessionID,
-      props.tableName,
+      "user",
       "create",
       null,
       insertData,
@@ -50,33 +56,6 @@ const Insert = (props: {
     return requestInsert;
   };
 
-  const createObjectFromArray = (keys: string[]): { [key: string]: any } => {
-    if (keys.length <= 0) return;
-
-    const obj: { [key: string]: any } = {};
-
-    keys.forEach((key, index) => {
-      if (key == "id") obj[key] = uuidv4();
-      else
-        obj[key] =
-          values[props.porperties.indexOf(key)] == undefined &&
-          props.types[index] == "boolean"
-            ? false
-            : values[props.porperties.indexOf(key)];
-    });
-
-    return obj;
-  };
-
-  function hasUndefinedProperty(obj: any): boolean {
-    for (const key in obj) {
-      if (obj[key] === undefined) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   return (
     <Stack>
       <Typography
@@ -84,61 +63,75 @@ const Insert = (props: {
         fontSize={"20px"}
         sx={{ alignSelf: "center" }}
       >
-        Neuen {props.tableName} erstellen
+        Neuen User erstellen
       </Typography>
-      {props.porperties
-        ? props.porperties.map((prop: string, index: number) => {
-            if (prop === "id") {
-              return null; // Überspringe den Code für "id"
-            }
-
-            return (
-              <Stack key={prop}>
-                {/* <Typography>
-                  {prop}, {props.types[index]}
-                </Typography> */}
-                {props.types[index] === "string" ? (
-                  <TextField
-                    sx={{ margin: "8px", maxWidth: "200px" }}
-                    key={prop}
-                    label={prop}
-                    onChange={(e) =>
-                      handleTextFieldChange(index, e.target.value)
-                    }
-                  ></TextField>
-                ) : (
-                  <Stack direction={"row"} className="centerV">
-                    <Checkbox
-                      onChange={(e) => {
-                        handleTextFieldChange(index, e.target.checked);
-                      }}
-                    ></Checkbox>
-                    <Typography>{prop}</Typography>
-                  </Stack>
-                )}
-              </Stack>
-            );
-          })
-        : null}
+      <Stack sx={{ m: "10px", maxWidth: "300px" }}>
+        <TextField
+          label="Login ID"
+          value={txtLogin}
+          onChange={(e) => {
+            setTxtxLogin(e.target.value);
+          }}
+        ></TextField>
+      </Stack>
+      <Stack sx={{ m: "10px", maxWidth: "300px" }}>
+        <TextField
+          label="Passwort"
+          value={txtPw}
+          onChange={(e) => {
+            setTxtPw(e.target.value);
+          }}
+        ></TextField>
+      </Stack>
+      <Stack direction={"row"} sx={{ alignItems: "center" }}>
+        <Checkbox
+          checked={checkedRead}
+          onChange={(e) => {
+            setCheckedRead(e.target.checked);
+          }}
+        ></Checkbox>
+        <Typography>lesen</Typography>
+      </Stack>
+      <Stack direction={"row"} sx={{ alignItems: "center" }}>
+        <Checkbox
+          checked={checkedWrite}
+          onChange={(e) => {
+            setCheckedWrite(e.target.checked);
+          }}
+        ></Checkbox>
+        <Typography>schreiben</Typography>
+      </Stack>
+      <Stack direction={"row"} sx={{ alignItems: "center" }}>
+        <Checkbox
+          checked={checkedUpdate}
+          onChange={(e) => {
+            setCheckedUpdate(e.target.checked);
+          }}
+        ></Checkbox>
+        <Typography>updaten</Typography>
+      </Stack>
+      <Stack direction={"row"} sx={{ alignItems: "center" }}>
+        <Checkbox
+          checked={checkedDelete}
+          onChange={(e) => {
+            setCheckedDelete(e.target.checked);
+          }}
+        ></Checkbox>
+        <Typography>löschen</Typography>
+      </Stack>
+      <Stack direction={"row"} sx={{ alignItems: "center" }}>
+        <Checkbox
+          checked={checkedAdmin}
+          onChange={(e) => {
+            setCheckedAdmin(e.target.checked);
+          }}
+        ></Checkbox>
+        <Typography>ist Admin</Typography>
+      </Stack>
       <Button
         onClick={async () => {
-          let insertData = createObjectFromArray(props.porperties);
-          if (hasUndefinedProperty(insertData)) {
-            alert(
-              "Füllen Sie alles aus. Wenn alles ausgefüllt ist, muss die Checkbox min. einmal angeklickt werden."
-            );
-            return;
-          }
-          const flag = await handleInsert();
-
-          if (!flag || flag.error) {
-            alert(flag.error);
-            return;
-          }
-
-          alert("DB_insertInTable erfolgreich");
+          await handleInsert();
           props.setReload(Math.random());
-          //setValues(Array.from({ length: values.length }, () => null)); // TODO: felder leeren nach insert
         }}
       >
         Hinzufügen

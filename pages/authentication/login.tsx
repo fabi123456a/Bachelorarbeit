@@ -1,6 +1,7 @@
 import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { User } from "@prisma/client";
+import { SHA256 } from "crypto-js";
 
 const Home = (props: {
   setLoggedIn: (flag: boolean) => void;
@@ -22,8 +23,7 @@ const Home = (props: {
       method: "POST",
       body: JSON.stringify({
         loginID: txtLoginID,
-        pw: txtPassword,
-        // sessionID: props.sessionID,
+        pw: SHA256(txtPassword).toString(),
       }),
     });
     const result = await response.json();
