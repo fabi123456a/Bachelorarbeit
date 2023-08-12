@@ -22,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const hashedPw = SHA256(newPassword).toString();
 
   await prismaClient.user.update({
-    where: { loginID: email },
+    where: { email: email },
     data: { password: hashedPw },
   });
 

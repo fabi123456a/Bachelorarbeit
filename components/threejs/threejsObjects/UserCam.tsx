@@ -56,7 +56,7 @@ function User(props: {
   return pos ? (
     <>
       <Html position={[pos.x, pos.y, pos.z]}>
-        <Typography>{user ? user.loginID : "lädt.."}</Typography>
+        <Typography>{user ? user.email : "lädt.."}</Typography>
       </Html>
       <Box
         material={new THREE.MeshStandardMaterial({ color: "red" })}

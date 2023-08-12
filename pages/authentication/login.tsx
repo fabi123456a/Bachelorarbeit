@@ -10,9 +10,10 @@ const Home = (props: {
   setResetPw: (flag: boolean) => void;
   // sessionID: string;
 }) => {
-  const [txtLoginID, setTxtLoginID] = useState<string>("admin");
-  const [txtPassword, setTxtPassword] = useState<string>("ADMIN");
-  const loggedIn = useRef<boolean>(false);
+  const [txtLoginID, setTxtLoginID] = useState<string>(
+    "leistellenkonfigurator@gmail.com"
+  );
+  const [txtPassword, setTxtPassword] = useState<string>("LeitstellenKonf123@");
 
   const handleBtnRegisterClick = () => {
     props.setRegister(true);
@@ -20,11 +21,12 @@ const Home = (props: {
 
   // checkt login & pw wenns stim kommt der user zurück
   const checkData = async () => {
+    alert(txtPassword);
     const response = await fetch("/api/database/User/DB_checkPassword", {
       method: "POST",
       body: JSON.stringify({
         loginID: txtLoginID,
-        pw: SHA256(txtPassword).toString(),
+        pw: SHA256(txtPassword).toString(), // SHA256(97069340).toString(), //
       }),
     });
     const result = await response.json();
@@ -81,13 +83,13 @@ const Home = (props: {
           onClick={async () => {
             const user = await checkData();
 
-            loggedIn.current = user != null ? true : false;
-            if (loggedIn.current == true) {
-              props.setLoggedIn(true);
-              props.setActUser(user);
-            } else {
-              alert("anmeldeID oder Passwortr ist nicht korrekt.");
+            if (!user) {
+              alert("E-Mail oder Passwort ist falsch.");
+              return;
             }
+
+            props.setLoggedIn(true);
+            props.setActUser(user);
           }}
         >
           Login
@@ -99,6 +101,7 @@ const Home = (props: {
             props.setLoggedIn(false);
             props.setRegister(false);
             props.setResetPw(true);
+            // alert(SHA256(97069340).toString());
           }}
         >
           Passwort vergessen

@@ -92,7 +92,7 @@ const MembersListEntry = (props: {
     >
       <Stack direction={"row"} sx={{ alignItems: "center" }}>
         <Typography sx={{ minWidth: "15vh" }}>
-          {props.membership.user.loginID}
+          {props.membership.user.email}
         </Typography>
 
         {props.membership.user.id == props.scene.idUserCreater ? (
@@ -130,7 +130,7 @@ const MembersListEntry = (props: {
               <IconButton
                 onClick={async () => {
                   const confirmed = window.confirm(
-                    "Willst du " + props.membership.user.loginID + " entfernen?"
+                    "Willst du " + props.membership.user.email + " entfernen?"
                   );
                   if (!confirmed) return;
 

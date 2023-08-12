@@ -96,7 +96,7 @@ const MembershipEntry = (props: {
         onClick={async () => {
           //alert(member.user.loginID);
           const confirmed = window.confirm(
-            "Willst du " + props.membership.user.loginID + " wirklich löschen?"
+            "Willst du " + props.membership.user.email + " wirklich löschen?"
           );
 
           if (!confirmed) return;
@@ -110,8 +110,8 @@ const MembershipEntry = (props: {
 
       <Typography sx={{ minWidth: "20vh" }}>
         {props.scene.idUserCreater == props.membership.user.id
-          ? props.membership.user.loginID + " (Ersteller)"
-          : props.membership.user.loginID}
+          ? props.membership.user.email + " (Ersteller)"
+          : props.membership.user.email}
       </Typography>
       {props.scene.idUserCreater == props.membership.user.id ? null : (
         <>

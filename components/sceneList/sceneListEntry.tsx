@@ -181,7 +181,7 @@ const SceneListEntry = (props: {
           mouseOver ? (
             <Stack>
               <Typography sx={{ fontSize: "12px" }}>
-                <b>Creator:</b> {userCreator ? userCreator.loginID : "lädt..."}
+                <b>Creator:</b> {userCreator ? userCreator.email : "lädt..."}
               </Typography>
               <Typography sx={{ fontSize: "12px" }}>
                 <b>ertsellt am:</b>{" "}
@@ -197,7 +197,7 @@ const SceneListEntry = (props: {
           ) : (
             <Stack>
               <Typography sx={{ fontSize: "12px" }}>
-                {userCreator?.loginID}
+                {userCreator?.email}
               </Typography>
               <Typography sx={{ fontSize: "12px" }}>
                 {new Date(props.scene.createDate).toLocaleDateString()}

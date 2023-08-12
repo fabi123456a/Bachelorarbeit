@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { fetchData } from "../../../utils/fetchData";
 import { User } from "@prisma/client";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import { SHA256 } from "crypto-js";
 
 const Insert = (props: {
   setReload: (zahl: number) => void;
@@ -28,8 +29,8 @@ const Insert = (props: {
 
     let insertData: User = {
       id: uuidv4(),
-      loginID: txtLogin,
-      password: txtPw,
+      email: txtLogin,
+      password: SHA256(txtPw).toString(),
       read: checkedRead,
       write: checkedWrite,
       delete: checkedDelete,
@@ -55,7 +56,7 @@ const Insert = (props: {
     <Stack>
       <Stack direction={"row"} sx={{ alignItems: "center" }}>
         <Typography fontWeight={"bold"} fontSize={"20px"} sx={{ p: "12px" }}>
-          Neuen User erstellen
+          Neuen Benutzer erstellen
         </Typography>
         <PersonAddAltIcon
           color={"success"}
@@ -65,7 +66,7 @@ const Insert = (props: {
 
       <Stack sx={{ m: "10px", maxWidth: "300px" }}>
         <TextField
-          label="Benutzernamen"
+          label="E-Mail"
           value={txtLogin}
           onChange={(e) => {
             setTxtxLogin(e.target.value);

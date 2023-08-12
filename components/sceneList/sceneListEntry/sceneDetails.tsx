@@ -156,7 +156,7 @@ const SceneDetails = (props: {
 
         <Stack direction={"row"}>
           <Typography sx={{ minWidth: "15vh" }}>Creator:</Typography>
-          <Typography>{creator?.loginID}</Typography>
+          <Typography>{creator?.email}</Typography>
         </Stack>
 
         <Stack direction={"row"}>

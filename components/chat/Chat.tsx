@@ -199,7 +199,7 @@ export default function Chat(props: {
                         ": " +
                         msg.message +
                         " (" +
-                        msg.user.loginID +
+                        msg.user.email +
                         ")"}
                     </Typography>
                   );

@@ -8,7 +8,7 @@ export default async function register(
   //   const { loginID, password } = req.body;
   const b = req.body;
   const requestData = JSON.parse(b);
-  const loginID = requestData["loginID"];
+  const loginID = requestData["email"];
   const password = requestData["password"];
 
   console.log("REGISTER_TRY: " + loginID + ", " + password);
@@ -17,7 +17,7 @@ export default async function register(
     const registerUser = await prismaClient.user.create({
       data: {
         id: crypto.randomUUID(),
-        loginID: loginID,
+        email: loginID,
         password: password,
         isAdmin: false,
         read: true,

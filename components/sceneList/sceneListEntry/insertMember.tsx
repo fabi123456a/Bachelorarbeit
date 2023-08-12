@@ -43,7 +43,7 @@ const AddMember = (props: {
       props.sessionID,
       "user",
       "select",
-      { loginID: loginID1 },
+      { email: loginID1 },
       null,
       null
     );
@@ -106,7 +106,7 @@ const AddMember = (props: {
           user: User;
         }
       ) => {
-        if (refName.current == member.user.loginID) return (erg = true);
+        if (refName.current == member.user.email) return (erg = true);
       }
     );
     return erg;
@@ -148,7 +148,7 @@ const AddMember = (props: {
       {user ? (
         <Stack direction={"row"} sx={{ m: "8px" }}>
           <Typography fontSize={"13px"}>
-            User <b>{user.loginID}</b> gefunden
+            User <b>{user.email}</b> gefunden
           </Typography>
           <CheckCircleOutlineIcon color="success"></CheckCircleOutlineIcon>
         </Stack>

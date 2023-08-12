@@ -16,11 +16,12 @@ export default async function DB_checkPassword(
   const user = requestData["loginID"];
   const pw = requestData["pw"];
 
+  console.log(pw + ", " + user);
   if (!prismaClient) res.status(200).json({ error: "prismaclient fehler" });
 
   const selectedUser: User = await prismaClient.user.findFirst({
     where: {
-      AND: [{ loginID: user }, { password: pw }],
+      AND: [{ email: user }, { password: pw }],
     },
   });
 

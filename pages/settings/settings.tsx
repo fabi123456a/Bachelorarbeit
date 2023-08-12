@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import { User } from "@prisma/client";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
@@ -8,17 +8,20 @@ const Settings = (props: { user: User }) => {
   return props.user ? (
     <Stack sx={{ padding: "12px" }}>
       <Stack direction={"row"}>
-        <Stack>
-          <Typography>LoginID: </Typography>
-          <Typography>Passwort: </Typography>
-        </Stack>
         <Stack sx={{ ml: "8px" }}>
-          <Typography fontWeight={"bold"}>{props.user.loginID}</Typography>
-          <Typography fontWeight={"bold"}>{props.user.password}</Typography>
+          <Stack direction={"row"} sx={{ alignItems: "center" }}>
+            <Typography sx={{ minWidth: "80px" }}>E-Mail: </Typography>
+            <Typography fontWeight={"bold"}>{props.user.email}</Typography>
+          </Stack>
+          <Stack direction={"row"} sx={{ alignItems: "center" }}>
+            <Typography sx={{ minWidth: "80px" }}>Passwort: </Typography>
+            <Typography fontWeight={"bold"}>{props.user.password}</Typography>
+            <Button size="small">ändern</Button>
+          </Stack>
         </Stack>
       </Stack>
 
-      <Stack direction={"row"}>
+      <Stack direction={"row"} sx={{ ml: "8px" }}>
         <Stack>
           <Typography>lesen: </Typography>
           <Typography>schreiben: </Typography>
