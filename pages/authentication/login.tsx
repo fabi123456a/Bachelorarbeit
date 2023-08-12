@@ -7,6 +7,7 @@ const Home = (props: {
   setLoggedIn: (flag: boolean) => void;
   setActUser: (user: User) => void;
   setRegister: (flag: boolean) => void;
+  setResetPw: (flag: boolean) => void;
   // sessionID: string;
 }) => {
   const [txtLoginID, setTxtLoginID] = useState<string>("admin");
@@ -57,7 +58,7 @@ const Home = (props: {
   return (
     <Stack className="loginContainer">
       <Stack className="login">
-        <Typography className="txtStyle1">AnmeldeID</Typography>
+        <Typography className="txtStyle1">E-Mail</Typography>
         <TextField
           variant="filled"
           onChange={(event) => {
@@ -92,6 +93,16 @@ const Home = (props: {
           Login
         </Button>
         <Button onClick={handleBtnRegisterClick}>Register</Button>
+        <Button
+          sx={{ fontSize: "10px" }}
+          onClick={() => {
+            props.setLoggedIn(false);
+            props.setRegister(false);
+            props.setResetPw(true);
+          }}
+        >
+          Passwort vergessen
+        </Button>
       </Stack>
     </Stack>
   );

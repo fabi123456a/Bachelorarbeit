@@ -26,9 +26,11 @@ import Chat from "../components/chat/Chat";
 import Test from "./text";
 import { fetchData } from "../utils/fetchData";
 import { deleteOldSceneEdits } from "../components/threejs/Scene/Scene";
+import ResetPassword from "./authentication/resetPassword";
 
 const Index = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [resetPw, setResetPw] = useState<boolean>(false);
   const [register, setRegister] = useState<boolean>(false); // wenn true wird register page angezeigt
   const [actUser, setActUser] = useState<User>(null);
   const [scene, setScene] = useState<Scene>(null);
@@ -111,10 +113,18 @@ const Index = () => {
           setLoggedIn={setLoggedIn}
           setActUser={setActUser}
           setRegister={setRegister}
+          setResetPw={setResetPw}
         ></Login>
       )}
 
       {register ? <Register setRegister={setRegister}></Register> : null}
+      {resetPw ? (
+        <ResetPassword
+          setLoggedIn={setLoggedIn}
+          setRegister={setRegister}
+          setResetPw={setResetPw}
+        ></ResetPassword>
+      ) : null}
     </Stack>
   );
 };

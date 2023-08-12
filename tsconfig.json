@@ -14,6 +14,6 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/text.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/text.jsx", "mailService/sendEmail.js"],
   "exclude": ["node_modules"]
 }
