@@ -94,9 +94,9 @@ const Home = (props: {
         >
           Login
         </Button>
-        <Button onClick={handleBtnRegisterClick}>Register</Button>
+        <Button onClick={handleBtnRegisterClick}>Registrieren</Button>
         <Button
-          sx={{ fontSize: "10px" }}
+          sx={{ fontSize: "8px" }}
           onClick={() => {
             props.setLoggedIn(false);
             props.setRegister(false);
@@ -104,7 +104,7 @@ const Home = (props: {
             // alert(SHA256(97069340).toString());
           }}
         >
-          Passwort vergessen
+          Passwort vergessen?
         </Button>
       </Stack>
     </Stack>
