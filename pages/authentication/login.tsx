@@ -75,6 +75,7 @@ const Home = (props: {
             setTxtPassword(event.target.value);
           }}
           value={txtPassword}
+          type="password"
         ></TextField>
         <Button
           sx={{ mt: "24px" }}
@@ -96,7 +97,7 @@ const Home = (props: {
         </Button>
         <Button onClick={handleBtnRegisterClick}>Registrieren</Button>
         <Button
-          sx={{ fontSize: "8px" }}
+          sx={{ fontSize: "10px", mt: "12px" }}
           onClick={() => {
             props.setLoggedIn(false);
             props.setRegister(false);

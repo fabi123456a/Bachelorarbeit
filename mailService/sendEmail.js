@@ -3,9 +3,9 @@ const nodemailer = require("nodemailer");
 const sendEmail = async (to1, subject1, text1) => {
   // Konfiguration des Transporters
   const transporter = nodemailer.createTransport({
-    service: "gmail", // Hier den entsprechenden E-Mail-Dienst wählen
+    service: "gmail", 
     auth: {
-      user: "leistellenkonfigurator@gmail.com", // mchjrtlhsvosdzjo
+      user: "leistellenkonfigurator@gmail.com", 
       pass: "mchjrtlhsvosdzjo",
     },
   });
