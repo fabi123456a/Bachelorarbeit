@@ -48,6 +48,7 @@ function User(props: {
       socket = io();
 
       socket.on("getUsersCamData", (data) => {
+        if (!data) return;
         if (props.worker.id in data) {
           setPos(data[props.worker.id].position);
           setRot(data[props.worker.id].rotation);

@@ -14,6 +14,7 @@ const MemberListEntry = (props: {
   setScene: (scene: Scene) => void;
   sessionID: string;
   idUser: string;
+  setReload: (n: number) => void;
 }) => {
   const [members, setMembers] = useState<
     (SceneMemberShip & {
@@ -57,6 +58,18 @@ const MemberListEntry = (props: {
       null,
       null
     );
+
+    requestedModelsFromScene.forEach(async (model: Model) => {
+      await fetchData(
+        props.idUser,
+        props.sessionID,
+        "model",
+        "delete",
+        { id: model.id },
+        null,
+        null
+      );
+    });
 
     // scenedatensatz löschen
     const requestedDeleteScene = await fetchData(
@@ -156,7 +169,7 @@ const MemberListEntry = (props: {
       <Button
         size="small"
         color="error"
-        onClick={() => {
+        onClick={async () => {
           const confirmed = window.confirm(
             "Willst du die Konfiguration " +
               props.scene.name +
@@ -165,7 +178,8 @@ const MemberListEntry = (props: {
 
           if (!confirmed) return;
 
-          deleteSceneFromDB(props.scene.id);
+          await deleteSceneFromDB(props.scene.id);
+          props.setReload(Math.random());
         }}
       >
         Konfiguration löschen

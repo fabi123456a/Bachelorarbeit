@@ -7,6 +7,7 @@ const MemberList = (props: {
   setScene: (scene: Scene) => void;
   sessionID: string;
   idUser: string;
+  setReload: (n: number) => void;
 }) => {
   return props.scenes ? (
     <Stack className="adminMembersList">
@@ -19,6 +20,7 @@ const MemberList = (props: {
               sessionID={props.sessionID}
               scene={scene}
               setScene={props.setScene}
+              setReload={props.setReload}
             ></MemberListEntry>
           </Stack>
         );

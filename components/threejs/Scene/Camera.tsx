@@ -36,12 +36,17 @@ export default function Camera(props: {
       const rot = props.controlsRef.current.object.rotation;
       props.setRotCam([rot.x, rot.y, rot.z]);
 
-      socket.emit("setUserCamData", {
-        [props.refCurrentWorkingScene.current.id]: {
-          position: pos,
-          rotation: rot,
-        },
-      });
+      socket.emit(
+        "setUserCamData",
+        props.refCurrentWorkingScene.current
+          ? {
+              [props.refCurrentWorkingScene.current.id]: {
+                position: pos,
+                rotation: rot,
+              },
+            }
+          : null
+      );
     });
   }, []);
 

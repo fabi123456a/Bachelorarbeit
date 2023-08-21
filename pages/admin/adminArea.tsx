@@ -18,6 +18,7 @@ const AdminArea = (props: {
 }) => {
   const [loadedScenes, setLoadedScenes] = useState<Scene[]>([]);
   const [actPage, setActPage] = useState<string>("users");
+  const [reload, setReload] = useState<number>(0);
 
   const loadAllScenesFromDB = async () => {
     // const requestetScenes = await fetch("/api/database/Scene/DB_getAllScenes", {
@@ -54,7 +55,7 @@ const AdminArea = (props: {
     loadAllScenesFromDB().then((scenes: Scene[]) => {
       setLoadedScenes(scenes);
     });
-  }, []);
+  }, [reload]);
 
   return props.user ? (
     props.user.isAdmin ? ( //|| true
@@ -113,6 +114,7 @@ const AdminArea = (props: {
               sessionID={props.sessionID}
               scenes={loadedScenes}
               setScene={props.setScene}
+              setReload={setReload}
             ></MemberList>
           ) : (
             <Typography>scenen + member werden geladen</Typography>

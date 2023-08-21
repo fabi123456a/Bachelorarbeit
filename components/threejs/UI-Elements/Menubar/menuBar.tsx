@@ -29,6 +29,7 @@ const MenuBar = (props: {
   if (checkPropsForNull(props)) return null;
 
   const deleteCurrentWorkingScene = async () => {
+    if (!props.currentWorkingScene.current) return;
     const requestedMembership = await fetchData(
       props.idUser,
       props.sessionID,

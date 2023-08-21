@@ -109,6 +109,9 @@ export default function Scene(props: {
   }, []);
 
   const keepSceneEditAlive = async () => {
+    // der fall falss der admin sich die szene aus dem admin bereich anschaut
+    if (!props.refCurrentWorkingScene.current) return;
+
     const requestedUpdate = await fetchData(
       props.idUser,
       props.sessionID,
