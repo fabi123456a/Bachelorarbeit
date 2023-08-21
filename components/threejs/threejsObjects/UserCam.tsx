@@ -13,8 +13,16 @@ function User(props: {
   sessionID: string;
   idUser: string;
 }) {
-  const [pos, setPos] = useState<{ x: number; y: number; z: number }>(null);
-  const [rot, setRot] = useState<{ _x: number; _y: number; _z: number }>(null);
+  const [pos, setPos] = useState<{ x: number; y: number; z: number }>({
+    x: 0,
+    y: 0,
+    z: 0,
+  });
+  const [rot, setRot] = useState<{ _x: number; _y: number; _z: number }>({
+    _x: 0,
+    _y: 0,
+    _z: 0,
+  });
   const [user, setUser] = useState<User>(null);
 
   const loadUserByID = async () => {
@@ -53,7 +61,7 @@ function User(props: {
     });
   }, []);
 
-  return pos ? (
+  return pos && rot ? (
     <>
       <Html position={[pos.x, pos.y, pos.z]}>
         <Typography>{user ? user.email : "lädt.."}</Typography>

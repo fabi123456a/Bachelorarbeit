@@ -116,7 +116,7 @@ const AddMember = (props: {
     <Stack className="" sx={{ mt: "2vh" }}>
       <Stack direction={"row"}>
         <TextField
-          label="User hinzufügen..."
+          label="Benutzer hinzufügen..."
           size="small"
           value={name}
           onChange={async (e) => {

@@ -12,6 +12,7 @@ import MembersList from "./membersList";
 import { fetchData } from "../../../utils/fetchData";
 import { v4 as uuidv4 } from "uuid";
 import io from "socket.io-client";
+import CurrentWorkingList from "./currentWorkingList";
 
 let socket;
 
@@ -82,6 +83,7 @@ const SceneDetails = (props: {
     setMembers(requestedMembers);
   };
 
+  // speichert beim betreten einer Szene, das der Benutzer gerade in dieser Szene arbietet
   const insertCurrentSceneEdit = async () => {
     const currentSceneEditData: CurrentSceneEdit = {
       id: uuidv4(),
@@ -178,6 +180,12 @@ const SceneDetails = (props: {
         loggedInUser={props.loggedInUser}
       ></MembersList>
 
+      <CurrentWorkingList
+        idScene={props.scene.id}
+        loggedInUser={props.loggedInUser}
+        sessionID={props.sessionID}
+      ></CurrentWorkingList>
+
       <Button
         onClick={async () => {
           props.setScene(props.scene);
@@ -187,9 +195,9 @@ const SceneDetails = (props: {
 
           if (currentWorkingScene) {
             props.currentWorkingScene.current = currentWorkingScene;
-          }
 
-          socket.emit("refreshWorkers", {});
+            socket.emit("sceneOnEnter", currentWorkingScene);
+          }
         }}
         variant="contained"
       >

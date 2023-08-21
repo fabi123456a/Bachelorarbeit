@@ -43,6 +43,7 @@ import LightSettings from "../../components/threejs/UI-Elements/Light/lightSetti
 import { fetchData } from "../../utils/fetchData";
 import { TypeModel, TypeObjectProps } from "./types";
 import { get_model_name } from "../../components/threejs/UI-Elements/ModelList/ModelListItem";
+import CurrentWorkingList from "../../components/sceneList/sceneListEntry/currentWorkingList";
 
 let socket;
 
@@ -254,6 +255,7 @@ export default function Main(props: {
 
       // object daten vie socket io synchronisieren
       socket.on("getNewObjectData", (data) => {
+        if (!props.currentWorkingScene.current) return;
         if (
           props.currentWorkingScene.current.idScene ==
           data.currentObjectProps.idScene

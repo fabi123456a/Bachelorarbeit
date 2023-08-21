@@ -122,7 +122,7 @@ const SceneList = (props: {
           direction={"row"}
           sx={{ justifyContent: "center", alignItems: "center" }}
         >
-          <Select
+          {/* <Select
             label="Sortierung"
             onChange={(e) => {
               setCmboBox(e.target.value as string);
@@ -133,7 +133,7 @@ const SceneList = (props: {
           >
             <MenuItem value={props.user.id}>nur meine</MenuItem>
             <MenuItem value={"-1"}>alle</MenuItem>
-          </Select>
+          </Select> */}
           <IconButton
             onClick={() => {
               setReload(Math.random());
@@ -168,6 +168,7 @@ const SceneList = (props: {
               setReload={setReload}
             ></AddScene>
           ) : null}
+          <Typography></Typography>
         </Stack>
       </Stack>
     )

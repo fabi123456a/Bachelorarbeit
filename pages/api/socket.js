@@ -28,8 +28,11 @@ const SocketHandler = (req, res) => {
         //console.log(JSON.stringify(data));
       });
       // refresh workers
-      socket.on("refreshWorkers", async () => {
-        io.emit("getRefreshWorkers");
+      socket.on("sceneOnEnter", async (currentSceneEdit) => {
+        io.emit("getSceneOnEnter", currentSceneEdit);
+      });
+      socket.on("sceneOnLeave", async (currentSceneEdit) => {
+        io.emit("getSceneOnLeave", currentSceneEdit);
       });
       // sync currentObjectProps
       socket.on("newObjectData", async (data) => {

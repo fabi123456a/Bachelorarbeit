@@ -54,7 +54,11 @@ export default function Chat(props: {
     socketInitializer();
   }, []);
 
-  const getAllChatEntry = async () => {
+  const getAllChatEntry = async (): Promise<
+    (ChatEntry & {
+      user: User;
+    })[]
+  > => {
     let requestedChatEntries;
 
     // TODO: orderBy: { datum: "desc", }
@@ -79,9 +83,15 @@ export default function Chat(props: {
 
   // alle chat einträge laden
   useEffect(() => {
-    getAllChatEntry().then((chatEntrys) => {
-      setMsgs(chatEntrys);
-    });
+    getAllChatEntry().then(
+      (
+        chatEntrys: (ChatEntry & {
+          user: User;
+        })[]
+      ) => {
+        setMsgs([...chatEntrys].reverse());
+      }
+    );
   }, [props.scene, reload]);
 
   // laden wer alles online ist

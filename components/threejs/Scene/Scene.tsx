@@ -75,8 +75,34 @@ export default function Scene(props: {
       await fetch("/api/socket");
       socket = io();
 
-      socket.on("getRefreshWorkers", () => {
-        setReload(Math.random());
+      // auf beitritt von benutzer in eine Szene lauschen, return wenn man an keiner Szene arbeitet
+
+      socket.on("getSceneOnEnter", (data: CurrentSceneEdit) => {
+        // alert(JSON.stringify(props.refCurrentWorkingScene.current));
+        if (
+          !props.refCurrentWorkingScene.current ||
+          data.idUser == props.idUser
+        )
+          return;
+
+        alert(data.idUser + "== " + props.idUser);
+        if (data.idScene == props.refCurrentWorkingScene.current.idScene) {
+          alert("Ein Benutzer hat die Konfiguration betreten: " + data.idUser);
+          setReload(Math.random());
+        }
+      });
+
+      socket.on("getSceneOnLeave", (data: CurrentSceneEdit) => {
+        if (
+          !props.refCurrentWorkingScene.current ||
+          data.idUser == props.idUser
+        )
+          return;
+
+        if (data.idScene == props.refCurrentWorkingScene.current.idScene) {
+          alert("Ein Benutzer hat die Konfiguration verlassen: " + data.idUser);
+          setReload(Math.random());
+        }
       });
     };
     socketInitializer();
@@ -308,7 +334,7 @@ export const deleteOldSceneEdits = async (
     null
   );
 
-  if (!requestedOldCurrentEdits) return;
+  if (!requestedOldCurrentEdits || requestedOldCurrentEdits.length <= 0) return;
 
   requestedOldCurrentEdits.forEach(async (el: CurrentSceneEdit) => {
     await fetchData(
