@@ -96,17 +96,20 @@ const DatabaseTable = (props: {
           <TableHead>
             <TableRow>
               {properties
-                ? properties.map((prop: string) => (
-                    <TableCell
-                      sx={{ fontWeight: "bold" }}
-                      key={prop}
-                      onClick={() => {
-                        setSortBy(prop);
-                      }}
-                    >
-                      {prop}
-                    </TableCell>
-                  ))
+                ? properties.map((prop: string) => {
+                    if (prop == "password" || prop == "id") return;
+                    return (
+                      <TableCell
+                        sx={{ fontWeight: "bold" }}
+                        key={prop}
+                        onClick={() => {
+                          setSortBy(prop);
+                        }}
+                      >
+                        {prop}
+                      </TableCell>
+                    );
+                  })
                 : null}
             </TableRow>
           </TableHead>
@@ -114,40 +117,43 @@ const DatabaseTable = (props: {
             {data
               ? data.map((dataRow: any) => (
                   <TableRow key={dataRow["id"]}>
-                    {properties.map((prop: string) => (
-                      <TableCell
-                        key={dataRow[prop] + dataRow["id"] + prop}
-                        onClick={() => {
-                          if (prop === "id" || prop == "password") {
-                            alert("Das kann nicht geändert werden.");
-                            return;
+                    {properties.map((prop: string) => {
+                      if (prop == "password" || prop == "id") return;
+                      return (
+                        <TableCell
+                          key={dataRow[prop] + dataRow["id"] + prop}
+                          onClick={() => {
+                            if (prop === "id" || prop == "password") {
+                              alert("Das kann nicht geändert werden.");
+                              return;
+                            }
+                            setActProp(prop);
+                            setActDataRowID(dataRow["id"]);
+                            setActData(dataRow[prop]);
+                            setShowEditData(true);
+                            setActDataType(typeof dataRow[prop]);
+                          }}
+                          sx={
+                            actProp == prop &&
+                            actData == dataRow[prop] &&
+                            actDataRowID == dataRow["id"]
+                              ? { background: "#ffef62" }
+                              : {}
                           }
-                          setActProp(prop);
-                          setActDataRowID(dataRow["id"]);
-                          setActData(dataRow[prop]);
-                          setShowEditData(true);
-                          setActDataType(typeof dataRow[prop]);
-                        }}
-                        sx={
-                          actProp == prop &&
-                          actData == dataRow[prop] &&
-                          actDataRowID == dataRow["id"]
-                            ? { background: "#ffef62" }
-                            : {}
-                        }
-                      >
-                        {/* {dataRow[prop]} */}
-                        {typeof dataRow[prop] === "boolean" ? (
-                          dataRow[prop] ? (
-                            <CheckIcon color="success"></CheckIcon>
+                        >
+                          {/* {dataRow[prop]} */}
+                          {typeof dataRow[prop] === "boolean" ? (
+                            dataRow[prop] ? (
+                              <CheckIcon color="success"></CheckIcon>
+                            ) : (
+                              <CloseIcon color="error"></CloseIcon>
+                            )
                           ) : (
-                            <CloseIcon color="error"></CloseIcon>
-                          )
-                        ) : (
-                          dataRow[prop]
-                        )}
-                      </TableCell>
-                    ))}
+                            dataRow[prop]
+                          )}
+                        </TableCell>
+                      );
+                    })}
                   </TableRow>
                 ))
               : null}

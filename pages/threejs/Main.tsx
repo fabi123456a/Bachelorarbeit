@@ -634,7 +634,6 @@ export default function Main(props: {
   // ---- COMPONENT ----
   return props.user && props.sessionID ? (
     <Stack className="main">
-      {models ? <Typography>models.length: {models.length}</Typography> : null}
       <MenuBar
         idUser={props.user.id}
         sessionID={props.sessionID}

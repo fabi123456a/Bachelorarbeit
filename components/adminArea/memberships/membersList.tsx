@@ -1,6 +1,6 @@
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import { Button, IconButton, Stack, Typography } from "@mui/material";
-import { Scene, SceneMemberShip, User } from "@prisma/client";
+import { Model, Scene, SceneMemberShip, User } from "@prisma/client";
 import { useEffect, useState } from "react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import Checkbox from "@mui/material/Checkbox";
@@ -22,6 +22,53 @@ const MemberListEntry = (props: {
   >(null);
   const [reload, setReload] = useState(0);
 
+  const deleteSceneFromDB = async (idScene: string) => {
+    // sceneMembership laden um an die id zu kommen zum deleten
+    const requestDelete13: SceneMemberShip[] = await fetchData(
+      props.idUser,
+      props.sessionID,
+      "SceneMemberShip",
+      "select",
+      { idScene: props.scene.id },
+      null,
+      null
+    );
+
+    requestDelete13.forEach(async (memberShip: SceneMemberShip) => {
+      // memberhips der scene löschen
+      const requestDelete12 = await fetchData(
+        props.idUser,
+        props.sessionID,
+        "SceneMemberShip",
+        "delete",
+        { id: memberShip.id },
+        null,
+        null
+      );
+    });
+
+    // alle models der scene laden für die id des models zum deleten
+    const requestedModelsFromScene: Model[] = await fetchData(
+      props.idUser,
+      props.sessionID,
+      "model",
+      "select",
+      { idScene: props.scene.id },
+      null,
+      null
+    );
+
+    // scenedatensatz löschen
+    const requestedDeleteScene = await fetchData(
+      props.idUser,
+      props.sessionID,
+      "scene",
+      "delete",
+      { id: props.scene.id },
+      null,
+      null
+    );
+  };
   const getAllSceneMembershipsFromScene = async (idScene: string) => {
     // const requestMemberships = await fetch(
     //   "/api/database/Membership/DB_getAllMembersBySceneID",
@@ -105,6 +152,24 @@ const MemberListEntry = (props: {
         scene={props.scene}
         setReload={setReload}
       ></AddMember>
+
+      <Button
+        size="small"
+        color="error"
+        onClick={() => {
+          const confirmed = window.confirm(
+            "Willst du die Konfiguration " +
+              props.scene.name +
+              " wirklich löschen?"
+          );
+
+          if (!confirmed) return;
+
+          deleteSceneFromDB(props.scene.id);
+        }}
+      >
+        Konfiguration löschen
+      </Button>
     </Stack>
   ) : (
     <Typography>lädt...</Typography>
