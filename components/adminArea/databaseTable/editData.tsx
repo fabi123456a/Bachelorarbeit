@@ -49,9 +49,6 @@ const EditData = (props: {
 
     // const erg = await response.json();
 
-    alert(props.porpertie);
-    alert(boolValue);
-
     // wenn isAdmin auf true gesetzt wird dann read, write und delete auch auf true setzen
     if (props.porpertie == "isAdmin" && boolValue) {
       const requestUpdate = await fetchData(

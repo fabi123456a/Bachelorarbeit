@@ -74,10 +74,10 @@ export default function Main(props: {
   const [wallVisiblity, setWallVisiblity] = useState<boolean>(true); // to show the left or right wall or hide it when the camera mode changes
   const [valueGltf, setValueGltf] = useState<THREE.Group>(null!);
 
-  // sceneVersion
-  // const [scenVersion, setScenVersion] = useState<number>(
-  //   props.scene ? props.scene.newestVersion : null
-  // );
+  //sceneVersion
+  const [sceneVersion, setSceneVersion] = useState<number>(
+    props.scene ? props.scene.newestVersion : null
+  );
 
   // ambient light
   const [ambientValue, setAmbientValue] = useState<number>(0.5);
@@ -224,8 +224,8 @@ export default function Main(props: {
   // anfangs scene laden, nach dem eine scene in der sceneList ausgewählt wurde und models mit setModels setzen
   useEffect(() => {
     if (!props.scene) return;
-    getSceneModels(props.scene.newestVersion);
-  }, [props.scene]); // [props.scene, sceneVersion]
+    getSceneModels(sceneVersion);
+  }, [props.scene, sceneVersion]); // [props.scene, sceneVersion]
 
   // scene neu socket.io laden // TODO:
   useEffect(() => {
@@ -490,7 +490,7 @@ export default function Main(props: {
     const fbxLoader = new FBXLoader();
 
     for (const element of models) {
-      if (!element.modelPath) continue;
+      // if (!element.modelPath) continue;
 
       await new Promise((resolve, reject) => {
         fbxLoader.load(element.modelPath, (object) => {
@@ -558,6 +558,7 @@ export default function Main(props: {
   async function saveScene(idScene: string) {
     // erst neue version
     const newVersion = props.scene.newestVersion + 1;
+    setSceneVersion(newVersion);
 
     // dann alle neu einfügen, mit nuer version als vermerk
     models.forEach(async (objProp: TypeObjectProps) => {
@@ -641,6 +642,8 @@ export default function Main(props: {
         setScene={props.setScene}
         scene={props.scene}
         isTestMode={isTestMode}
+        setSceneVersion={setSceneVersion}
+        sceneVersion={sceneVersion}
       ></MenuBar>
       <Stack
         direction="row"

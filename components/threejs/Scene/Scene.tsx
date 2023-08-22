@@ -205,6 +205,7 @@ export default function Scene(props: {
               name={model.name}
               texture={null}
               idScene={model.idScene}
+              htmlSettings={props.htmlSettings}
             ></SceneModel>
           ) : model.info == "cylinder" ? (
             <Cylinderqq
@@ -263,6 +264,7 @@ export default function Scene(props: {
               name={model.name}
               texture={null}
               idScene={model.idScene}
+              htmlSettings={props.htmlSettings}
             ></SceneModel>
           ) : model.info == "cylinder" ? (
             <Cylinderqq
@@ -338,18 +340,21 @@ export const deleteOldSceneEdits = async (
   );
 
   if (!requestedOldCurrentEdits || requestedOldCurrentEdits.length <= 0) return;
-
-  requestedOldCurrentEdits.forEach(async (el: CurrentSceneEdit) => {
-    await fetchData(
-      idUser,
-      sessionID,
-      "CurrentSceneEdit",
-      "delete",
-      {
-        id: el.id,
-      },
-      null,
-      null
-    );
-  });
+  try {
+    requestedOldCurrentEdits.forEach(async (el: CurrentSceneEdit) => {
+      await fetchData(
+        idUser,
+        sessionID,
+        "CurrentSceneEdit",
+        "delete",
+        {
+          id: el.id,
+        },
+        null,
+        null
+      );
+    });
+  } catch (e) {
+    alert(e);
+  }
 };

@@ -5,6 +5,7 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import * as THREE from "three";
 import { Vector3 } from "three";
 import { TypeObjectProps } from "../../../pages/threejs/types";
+import HtmlSettings from "./HtmlSettings";
 
 // KOMPONENTE
 
@@ -15,6 +16,7 @@ function SceneModel(
     camPerspektive: string;
     setCurrentObjectProps: (props: TypeObjectProps) => void;
     testmode: boolean;
+    htmlSettings: boolean;
   }
 ) {
   // lädt das FBX-Model
@@ -138,7 +140,45 @@ function SceneModel(
           }}
           ref={refMesh}
           object={fbx.clone(true)}
-        ></primitive>
+        >
+          {props.htmlSettings ? (
+            <HtmlSettings
+              currentObjProps={
+                {
+                  id: props.id,
+                  position: {
+                    x: props.position.x,
+                    y: props.position.y,
+                    z: props.position.z,
+                  },
+                  scale: {
+                    x: props.scale.x,
+                    y: props.scale.y,
+                    z: props.scale.z,
+                  },
+                  rotation: {
+                    x: props.rotation.x,
+                    y: props.rotation.x,
+                    z: props.rotation.x,
+                  },
+                  editMode: props.editMode, //props.editMode,
+                  showXTransform: props.showXTransform, //props.showXTransform,
+                  showYTransform: props.showYTransform, //props.showYTransform,
+                  showZTransform: props.showZTransform, //props.showZTransform,
+                  modelPath: props.modelPath,
+                  visibleInOtherPerspective: props.visibleInOtherPerspective,
+                  name: props.name,
+                  color: "",
+                  info: props.info ? props.info : "",
+                  texture: "",
+                  idScene: props.idScene,
+                } as TypeObjectProps
+              }
+              flag={true}
+              setCurentObj={props.setCurrentObjectProps}
+            ></HtmlSettings>
+          ) : null}
+        </primitive>
       </TransformControls>
     </>
   ) : null;

@@ -24,6 +24,8 @@ const MenuBar = (props: {
   currentWorkingScene: MutableRefObject<CurrentSceneEdit>;
   idUser: string;
   sessionID: string;
+  setSceneVersion: (v: number) => void;
+  sceneVersion: number;
 }) => {
   // bedingtes rendern
   if (checkPropsForNull(props)) return null;
@@ -82,9 +84,9 @@ const MenuBar = (props: {
           size="small"
           sx={{ ml: "14px", fontSize: "12px" }}
           onChange={(e) => {
-            //props.setSceneVersion(e.target.value as number);
+            props.setSceneVersion(e.target.value as number);
           }}
-          value={props.scene.newestVersion}
+          value={props.sceneVersion}
         >
           {Array.from({ length: props.scene.newestVersion }, (_, index) => (
             <MenuItem

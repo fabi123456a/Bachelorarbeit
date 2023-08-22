@@ -74,25 +74,29 @@ const Settings = (props: { user: User; sessionID: string }) => {
               </Button>
             </Stack>
           ) : (
-            <Stack direction={"row"} sx={{ alignItems: "center" }}>
-              <Typography sx={{ minWidth: "80px" }}>Passwort: </Typography>
-              <Typography fontWeight={"bold"}>{props.user.password}</Typography>
-              <Button
-                size="small"
-                onClick={() => {
-                  setFlag(true);
-                }}
-              >
-                ändern
-              </Button>
+            <Stack>
+              <Stack direction={"row"} sx={{ alignItems: "center" }}>
+                <Typography sx={{ minWidth: "80px" }}>Passwort: </Typography>
+                <Typography fontWeight={"bold"}>
+                  {props.user.password}
+                </Typography>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    setFlag(true);
+                  }}
+                >
+                  ändern
+                </Button>
+              </Stack>
+              <Stack direction="row" sx={{ alignItems: "center" }}>
+                <ErrorOutlineIcon sx={{ color: "#9c27b0" }} />
+                <Typography sx={{ fontSize: "10px" }} color="#9c27b0">
+                  Das Passwort steht hier in verschlüsslter Form.
+                </Typography>
+              </Stack>
             </Stack>
           )}
-          <Stack direction="row" sx={{ alignItems: "center" }}>
-            <ErrorOutlineIcon sx={{ color: "#9c27b0" }} />
-            <Typography sx={{ fontSize: "10px" }} color="#9c27b0">
-              Das Passwort steht hier in verschlüsslter Form.
-            </Typography>
-          </Stack>
         </Stack>
       </Stack>
 

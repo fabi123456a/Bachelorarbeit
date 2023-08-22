@@ -22,7 +22,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
   const [reload, setReload] = useState(0);
 
   const getAllTexturesFromFS = async () => {
-    if(!props.loggedInUser)return;
+    if (!props.loggedInUser) return;
     const requestTextures = await fetch("api/filesystem/FS_getTextures", {
       method: "POST",
       body: JSON.stringify({
@@ -120,7 +120,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
       {textures
         ? textures.map((tex: string) => (
             <Stack
-              direction={"row"}
+              direction={"column"}
               className="roundedShadow textureContainer"
               key={tex}
             >
@@ -220,7 +220,8 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography color={"#0288d1"} fontSize={"12px"}>
-                Es werden 5 .jpg formate benötigt die genau so heißen müssen
+                Es werden fünf .jpg-Dateiformate benötigt, die genau diese Namen
+                tragen müssen.
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -275,10 +276,11 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
                   padding: "8px",
                 }}
               >
-                hier findet man ganz viele &nbsp;
+                Hier gibt es eine Vielzahl von&nbsp;
                 <a href="https://3dtextures.me" target="_blank">
                   Texturen
                 </a>
+                .
               </Typography>
             </AccordionDetails>
           </Accordion>
