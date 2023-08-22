@@ -227,6 +227,10 @@ export default function Main(props: {
     getSceneModels(sceneVersion);
   }, [sceneVersion]); // props.scene,  [props.scene, sceneVersion]
 
+  useEffect(() => {
+    setSceneVersion(props.scene.newestVersion);
+  }, [props.scene]);
+
   // scene neu socket.io laden // TODO:
   useEffect(() => {
     const socketInitializer = async () => {
@@ -234,6 +238,7 @@ export default function Main(props: {
       socket = io();
 
       socket.on("syncScene", async (data) => {
+        //alert(data.version);
         if (props.scene.id == data.idScene) {
           const scene = await fetchData(
             props.user.id,
@@ -607,20 +612,12 @@ export default function Main(props: {
 
   // save Scene
   async function saveScene(idScene: string) {
-    // erst neue version
+    // erst neue version berechnen
     const newVersion = props.scene.newestVersion + 1;
 
-    // dann alle neu einfügen, mit nuer version als vermerk
-    models.forEach(async (objProp: TypeObjectProps) => {
-      let model: Model;
-
-      // if (objProp.info == "licht") {
-      //   // TODO: licht macht probleme beim speichern
-      //   alert("licht");
-      //   return;
-      // }
-
-      model = convertTypeObjectPropsToModel(
+    // dann alle models mit neuer version speichern
+    await models.forEach(async (objProp: TypeObjectProps) => {
+      const model: Model = convertTypeObjectPropsToModel(
         objProp,
         props.scene.id,
         newVersion
@@ -660,7 +657,10 @@ export default function Main(props: {
       null
     );
 
-    if (requestChangeVersion.error) return null;
+    if (requestChangeVersion.error) {
+      alert(requestChangeVersion.error);
+      return null;
+    }
   }
 
   async function insertModelToDB(model: Model) {
