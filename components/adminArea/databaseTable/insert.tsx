@@ -58,10 +58,10 @@ const Insert = (props: {
         <Typography fontWeight={"bold"} fontSize={"20px"} sx={{ p: "12px" }}>
           Neuen Benutzer erstellen
         </Typography>
-        <PersonAddAltIcon
+        {/* <PersonAddAltIcon
           color={"success"}
           sx={{ m: "10px" }}
-        ></PersonAddAltIcon>
+        ></PersonAddAltIcon> */}
       </Stack>
 
       <Stack sx={{ m: "10px", maxWidth: "300px" }}>

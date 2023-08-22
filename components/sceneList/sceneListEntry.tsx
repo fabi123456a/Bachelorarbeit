@@ -152,7 +152,7 @@ const SceneListEntry = (props: {
 
   return props.scene && props.setReload && props.setScene && props.user ? (
     <Stack
-      direction={"row"}
+      direction={"column"}
       className="sceneListEntry"
       onClick={() => {
         //props.setScene(props.scene);
@@ -210,9 +210,9 @@ const SceneListEntry = (props: {
       {mouseOver ? (
         props.user.write ? (
           props.user.id == props.scene.idUserCreater ? (
-            <DeleteForeverIcon
+            <Button
+              size="small"
               color="error"
-              sx={{ alignSelf: "center", marginLeft: "auto" }}
               onClick={async (e) => {
                 e.stopPropagation();
 
@@ -228,8 +228,29 @@ const SceneListEntry = (props: {
                   props.setReload(Math.random());
                 }
               }}
-            ></DeleteForeverIcon>
-          ) : null
+            >
+              Löschen
+            </Button>
+          ) : // <DeleteForeverIcon
+          //   color="error"
+          //   sx={{ alignSelf: "center", marginBottom: "0", cursor: "pointer" }}
+          //   onClick={async (e) => {
+          //     e.stopPropagation();
+
+          //     let result = confirm(
+          //       "Wollen Sie wirklich die Scene " +
+          //         props.scene.name +
+          //         " löschen?"
+          //     );
+          //     if (result) {
+          //       await deleteSceneFromDB();
+          //       // TODO: delte modles by sceneID
+
+          //       props.setReload(Math.random());
+          //     }
+          //   }}
+          // ></DeleteForeverIcon>
+          null
         ) : null
       ) : null}
     </Stack>

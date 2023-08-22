@@ -53,7 +53,7 @@ const Home = (props: {
           setScene={props.setScene}
         ></AdminArea>
       ) : settings ? (
-        <Settings user={props.user}></Settings>
+        <Settings user={props.user} sessionID={props.sessionID}></Settings>
       ) : fbxModels ? (
         <FbxList
           loggedInUser={props.user}
