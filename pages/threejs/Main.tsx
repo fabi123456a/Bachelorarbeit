@@ -47,6 +47,8 @@ import CurrentWorkingList from "../../components/sceneList/sceneListEntry/curren
 
 let socket;
 
+// luki
+
 export default function Main(props: {
   user: User;
   scene: Scene;
@@ -490,26 +492,77 @@ export default function Main(props: {
     const fbxLoader = new FBXLoader();
 
     for (const element of models) {
-      // if (!element.modelPath) continue;
+      if (!element.modelPath) {
+        // Erstelle eine Box-Geometrie
+        const boxGeometry = new THREE.BoxGeometry(
+          element.scale.x,
+          element.scale.y,
+          element.scale.z
+        );
 
-      await new Promise((resolve, reject) => {
-        fbxLoader.load(element.modelPath, (object) => {
-          object.scale.set(element.scale.x, element.scale.y, element.scale.z);
-          object.position.set(
-            element.position.x,
-            element.position.y,
-            element.position.z
-          );
-          object.rotation.set(
-            element.rotation.x,
-            element.rotation.y,
-            element.rotation.z
-          );
-          scene.add(object);
-          resolve("");
+        // Erstelle ein Material
+        //let material;
+        // if (colorMap && displacementMap && normalMap && roughnessMap && aoMap) {
+        //   material = new THREE.MeshStandardMaterial({
+        //     map: colorMap,
+        //     normalMap: normalMap,
+        //     roughnessMap: roughnessMap,
+        //     aoMap: aoMap,
+        //     color: props.objProps ? props.color : "",
+        //   });
+        // } else {
+        //   material = new THREE.MeshStandardMaterial({
+        //     color: props.color ? props.color : "",
+        //   });
+        // }
+        let material = new THREE.MeshStandardMaterial({
+          color: element.color ? element.color : "red",
         });
-      });
+
+        // Erstelle ein Mesh-Objekt mit der Geometrie und dem Material
+        const boxMesh = new THREE.Mesh(boxGeometry, material);
+
+        // Setze die Position des Mesh-Objekts
+        boxMesh.position.set(
+          element.position.x,
+          element.position.y,
+          element.position.z
+        );
+
+        //boxMesh.scale.set(element.scale.x, element.scale.y, element.scale.z);
+
+        scene.add(boxMesh);
+      } else {
+        await new Promise((resolve, reject) => {
+          fbxLoader.load(element.modelPath, (object) => {
+            object.scale.set(element.scale.x, element.scale.y, element.scale.z);
+            object.position.set(
+              element.position.x,
+              element.position.y,
+              element.position.z
+            );
+            object.rotation.set(
+              element.rotation.x,
+              element.rotation.y,
+              element.rotation.z
+            );
+            scene.add(object);
+            resolve("");
+          });
+        });
+      }
     }
+
+    // lichtquellen hinzufügen
+    // const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    // scene.add(ambientLight);
+    // const directionalLight = new THREE.DirectionalLight(0xffffff, 10);
+    // directionalLight.position.set(0, 5, 0);
+    // scene.add(directionalLight);
+    const pointLight = new THREE.PointLight(0xffffff, 4000, 100); // Farbe: Weiß, Intensität: 1, Abstand: 100
+    pointLight.position.set(0, 20, 0); // Setze die Position des Lichts
+    scene.add(pointLight);
+
     exportToGLTF(scene);
   };
 
