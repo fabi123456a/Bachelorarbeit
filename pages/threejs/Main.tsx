@@ -47,8 +47,6 @@ import CurrentWorkingList from "../../components/sceneList/sceneListEntry/curren
 
 let socket;
 
-// luki
-
 export default function Main(props: {
   user: User;
   scene: Scene;
