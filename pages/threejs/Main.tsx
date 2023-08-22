@@ -642,7 +642,6 @@ export default function Main(props: {
         scene={props.scene}
         isTestMode={isTestMode}
       ></MenuBar>
-      )
       <Stack
         direction="row"
         style={{ height: "100%", background: "#d9d9d9", overflowY: "auto" }}

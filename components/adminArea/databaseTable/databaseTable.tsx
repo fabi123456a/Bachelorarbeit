@@ -123,7 +123,11 @@ const DatabaseTable = (props: {
                         <TableCell
                           key={dataRow[prop] + dataRow["id"] + prop}
                           onClick={() => {
-                            if (prop === "id" || prop == "password") {
+                            if (
+                              prop === "id" ||
+                              prop == "password" ||
+                              prop == "email"
+                            ) {
                               alert("Das kann nicht geändert werden.");
                               return;
                             }

@@ -109,192 +109,189 @@ function ToolBar(props: {
   }, []);
 
   return visible ? (
-    <Draggable>
-      <Stack className="toolBar roundedShadow">
-        {/* <CloseIcon
+    <Stack className="toolBar roundedShadow">
+      {/* <CloseIcon
           className="iconButton"
           onClick={() => {
             setVisible(false);
           }}
         ></CloseIcon> */}
-        {/* Transform: Verschieben, Rotieren & Skalieren */}
-        <Stack direction={"row"}>
-          <FormControl
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
+      {/* Transform: Verschieben, Rotieren & Skalieren */}
+      <Stack direction={"row"}>
+        <FormControl
+          style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          {props.currentObjProps ? (
+            <>
+              <FormLabel>Transform</FormLabel>
+              <Stack direction={"row"} style={{ width: "100%" }}>
+                <Stack
+                  direction={"row"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  style={{ width: "100%" }}
+                >
+                  {/* Verschieben */}
+                  <IconButton
+                    color={
+                      props.currentObjProps.editMode === "translate"
+                        ? "primary"
+                        : undefined
+                    }
+                    onClick={() => {
+                      if (!checkIfAObjectIsSelected()) return;
+                      if (props.currentObjProps.editMode === "translate") {
+                        resetEditMode();
+                        return;
+                      }
+                      setEditMode("translate");
+                    }}
+                  >
+                    <OpenWithIcon></OpenWithIcon>
+                  </IconButton>
+                  {/* Skalieren */}
+                  <IconButton
+                    color={
+                      props.currentObjProps.editMode === "scale"
+                        ? "primary"
+                        : undefined
+                    }
+                    onClick={() => {
+                      if (!checkIfAObjectIsSelected()) return;
+                      if (props.currentObjProps.editMode === "scale") {
+                        resetEditMode();
+                        return;
+                      }
+                      setEditMode("scale");
+                    }}
+                  >
+                    <ExpandIcon></ExpandIcon>
+                  </IconButton>
+                  {/* Rotieren */}
+                  <IconButton
+                    color={
+                      props.currentObjProps.editMode === "rotate"
+                        ? "primary"
+                        : undefined
+                    }
+                    onClick={() => {
+                      if (!checkIfAObjectIsSelected()) return;
+                      if (props.currentObjProps.editMode === "rotate") {
+                        resetEditMode();
+                        return;
+                      }
+                      setEditMode("rotate");
+                    }}
+                  >
+                    <ThreeSixtyIcon></ThreeSixtyIcon>
+                  </IconButton>
+                  {/* Sperren */}
+                  <IconButton
+                    color={
+                      props.currentObjProps.editMode === undefined
+                        ? "primary"
+                        : undefined
+                    }
+                    onClick={() => {
+                      if (!checkIfAObjectIsSelected()) return;
+                      resetEditMode();
+                    }}
+                  >
+                    <LockIcon></LockIcon>
+                  </IconButton>
+                </Stack>
+                <Stack>
+                  <IconButton
+                    onClick={() => {
+                      if (!checkIfAObjectIsSelected()) {
+                        alert("Kein Objekt ausgewählt");
+                        return;
+                      }
+
+                      let result = confirm("Das Objekt wird gelöscht...");
+
+                      if (result) props.deleteObject(props.currentObjProps.id);
+                    }}
+                  >
+                    <DeleteForeverIcon></DeleteForeverIcon>
+                  </IconButton>
+                </Stack>
+              </Stack>
+            </>
+          ) : (
+            <>
+              <FormLabel>Transform</FormLabel>
+              <Stack direction={"row"} style={{ width: "100%" }}>
+                <Typography color="grey" fontSize={"small"}>
+                  kein Objekt ausgewählt
+                </Typography>
+              </Stack>
+            </>
+          )}
+        </FormControl>
+      </Stack>
+
+      <Divider orientation="vertical" flexItem />
+
+      {/* Kamera Perpektiven: normal, top-down, ... */}
+      <Stack>
+        <PerspectiveSelector
+          controlsRef={props.controlsRef}
+          setPerspective={props.setPerspective}
+          setWallVisibility={props.setWallVisibility}
+          setIsTestMode={props.setIsTestMode}
+          isTestMode={props.isTestMode}
+          setCurrentObj={props.setCurentObj}
+        />
+      </Stack>
+
+      <Divider orientation="vertical" flexItem />
+
+      {/* Laden/Speichern & Expotieren */}
+      <Stack justifyContent={"center"} alignItems={"center"}>
+        <FormLabel>Dateien</FormLabel>
+        <Stack direction="row" gap="1rem" style={{ background: "" }}>
+          <IconButton
+            title="Export current Scene as GLTF"
+            style={{ ...(buttonWithTextStyle as any) }}
+            onClick={() => {
+              props.exportObject();
             }}
           >
-            {props.currentObjProps ? (
-              <>
-                <FormLabel>Transform</FormLabel>
-                <Stack direction={"row"} style={{ width: "100%" }}>
-                  <Stack
-                    direction={"row"}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                    style={{ width: "100%" }}
-                  >
-                    {/* Verschieben */}
-                    <IconButton
-                      color={
-                        props.currentObjProps.editMode === "translate"
-                          ? "primary"
-                          : undefined
-                      }
-                      onClick={() => {
-                        if (!checkIfAObjectIsSelected()) return;
-                        if (props.currentObjProps.editMode === "translate") {
-                          resetEditMode();
-                          return;
-                        }
-                        setEditMode("translate");
-                      }}
-                    >
-                      <OpenWithIcon></OpenWithIcon>
-                    </IconButton>
-                    {/* Skalieren */}
-                    <IconButton
-                      color={
-                        props.currentObjProps.editMode === "scale"
-                          ? "primary"
-                          : undefined
-                      }
-                      onClick={() => {
-                        if (!checkIfAObjectIsSelected()) return;
-                        if (props.currentObjProps.editMode === "scale") {
-                          resetEditMode();
-                          return;
-                        }
-                        setEditMode("scale");
-                      }}
-                    >
-                      <ExpandIcon></ExpandIcon>
-                    </IconButton>
-                    {/* Rotieren */}
-                    <IconButton
-                      color={
-                        props.currentObjProps.editMode === "rotate"
-                          ? "primary"
-                          : undefined
-                      }
-                      onClick={() => {
-                        if (!checkIfAObjectIsSelected()) return;
-                        if (props.currentObjProps.editMode === "rotate") {
-                          resetEditMode();
-                          return;
-                        }
-                        setEditMode("rotate");
-                      }}
-                    >
-                      <ThreeSixtyIcon></ThreeSixtyIcon>
-                    </IconButton>
-                    {/* Sperren */}
-                    <IconButton
-                      color={
-                        props.currentObjProps.editMode === undefined
-                          ? "primary"
-                          : undefined
-                      }
-                      onClick={() => {
-                        if (!checkIfAObjectIsSelected()) return;
-                        resetEditMode();
-                      }}
-                    >
-                      <LockIcon></LockIcon>
-                    </IconButton>
-                  </Stack>
-                  <Stack>
-                    <IconButton
-                      onClick={() => {
-                        if (!checkIfAObjectIsSelected()) {
-                          alert("Kein Objekt ausgewählt");
-                          return;
-                        }
+            <ImportExportIcon></ImportExportIcon>
+            <Typography fontSize=".75rem">Export</Typography>
+          </IconButton>
+          <IconButton
+            style={{ ...(buttonWithTextStyle as any) }}
+            title="Save current Scene"
+            onClick={() => {
+              props.saveScene(props.scene.id); // TODO: await props.safeScene
 
-                        let result = confirm("Das Objekt wird gelöscht...");
-
-                        if (result)
-                          props.deleteObject(props.currentObjProps.id);
-                      }}
-                    >
-                      <DeleteForeverIcon></DeleteForeverIcon>
-                    </IconButton>
-                  </Stack>
-                </Stack>
-              </>
-            ) : (
-              <>
-                <FormLabel>Transform</FormLabel>
-                <Stack direction={"row"} style={{ width: "100%" }}>
-                  <Typography color="grey" fontSize={"small"}>
-                    kein Objekt ausgewählt
-                  </Typography>
-                </Stack>
-              </>
-            )}
-          </FormControl>
-        </Stack>
-
-        <Divider orientation="vertical" flexItem />
-
-        {/* Kamera Perpektiven: normal, top-down, ... */}
-        <Stack>
-          <PerspectiveSelector
-            controlsRef={props.controlsRef}
-            setPerspective={props.setPerspective}
-            setWallVisibility={props.setWallVisibility}
-            setIsTestMode={props.setIsTestMode}
-            isTestMode={props.isTestMode}
-            setCurrentObj={props.setCurentObj}
-          />
-        </Stack>
-
-        <Divider orientation="vertical" flexItem />
-
-        {/* Laden/Speichern & Expotieren */}
-        <Stack justifyContent={"center"} alignItems={"center"}>
-          <FormLabel>Dateien</FormLabel>
-          <Stack direction="row" gap="1rem" style={{ background: "" }}>
-            <IconButton
-              title="Export current Scene as GLTF"
-              style={{ ...(buttonWithTextStyle as any) }}
-              onClick={() => {
-                props.exportObject();
-              }}
-            >
-              <ImportExportIcon></ImportExportIcon>
-              <Typography fontSize=".75rem">Export</Typography>
-            </IconButton>
-            <IconButton
-              style={{ ...(buttonWithTextStyle as any) }}
-              title="Save current Scene"
-              onClick={() => {
-                props.saveScene(props.scene.id); // TODO: await props.safeScene
-
-                // socket1.emit("sceneRefresh", props.scene.id);
-                alert("Scene wurde gespeichert");
-              }}
-            >
-              <SaveIcon></SaveIcon>
-              <Typography fontSize=".75rem">Save</Typography>
-            </IconButton>
-          </Stack>
-        </Stack>
-
-        <Divider orientation="vertical" flexItem />
-
-        {/* World setting*/}
-        <Stack justifyContent={"center"} alignItems={"center"}>
-          <Typography>Welt</Typography>
-          <ShowHtml
-            htmlSettings={props.htmlSettings}
-            setHtmlSettings={props.setHtmlSettings}
-          ></ShowHtml>
+              // socket1.emit("sceneRefresh", props.scene.id);
+              alert("Scene wurde gespeichert");
+            }}
+          >
+            <SaveIcon></SaveIcon>
+            <Typography fontSize=".75rem">Save</Typography>
+          </IconButton>
         </Stack>
       </Stack>
-    </Draggable>
+
+      <Divider orientation="vertical" flexItem />
+
+      {/* World setting*/}
+      <Stack justifyContent={"center"} alignItems={"center"}>
+        <Typography>Welt</Typography>
+        <ShowHtml
+          htmlSettings={props.htmlSettings}
+          setHtmlSettings={props.setHtmlSettings}
+        ></ShowHtml>
+      </Stack>
+    </Stack>
   ) : (
     <Stack
       className="showToolbarBtn roundedShadow minOpenBtn"

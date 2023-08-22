@@ -40,6 +40,7 @@ const LightSettings = (props: {
         <Stack direction={"row"} sx={{ alignItems: "center" }}>
           <Typography sx={{ mr: "6px" }}>Ambientlight: </Typography>
           <TextField
+            onFocus={(e) => e.target.blur()}
             onChange={(e) => {
               props.setAmbientValue(parseFloat(e.target.value));
             }}

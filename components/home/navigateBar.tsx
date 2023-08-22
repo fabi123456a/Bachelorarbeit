@@ -110,7 +110,7 @@ const NavigateBar = (props: {
 
           setActiveButton("textures");
         }}
-        title="FBX-Models"
+        title="Texturen"
       >
         <TextureIcon></TextureIcon>
       </IconButton>

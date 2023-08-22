@@ -43,6 +43,7 @@ export default function PerspectiveSelector(props: {
       {props.isTestMode ? null : (
         <NativeSelect
           disableUnderline
+          onClick={(e) => e.stopPropagation()}
           onChange={(e) => {
             e.stopPropagation();
             const camPerspective: string = e.target.value;
@@ -77,7 +78,11 @@ export default function PerspectiveSelector(props: {
             }
           }}
         >
-          <option value={"normal"} label="Normal" />
+          <option
+            value={"normal"}
+            label="Normal"
+            onClick={(e) => e.stopPropagation()}
+          />
           <option value={"topdown"} label="TopDown" />
           <option value={"frontal"} label="Frontal" />
           <option value={"leftmid"} label="LeftMid" />

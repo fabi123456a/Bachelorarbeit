@@ -116,6 +116,7 @@ body {
   bottom: 8%;
   left: 30%;
   z-index: 100;
+  cursor: grabbing;
 }
 .showlightSettingsBtn {
   position: absolute;
@@ -209,6 +210,7 @@ body {
   align-items: center;
   z-index: 99999;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 7px 8px;
+  min-height: 40px;
 }
 
 /* modelList */
@@ -220,6 +222,7 @@ body {
   height: 75vh;
   width: 27vh;
   z-index: 10;
+  cursor: grabbing;
 }
 
 .modelListEntry {
@@ -247,6 +250,7 @@ body {
   background: white;
   top: 30vh;
   left: 50vh;
+  cursor: grabbing;
 }
 
 .showChatBtn {
@@ -262,10 +266,9 @@ body {
   background: #d9d9d9;
   position: absolute;
   height: 100px;
-  left: 25%;
+  left: 22%;
   top: 6vh;
   z-index: 999;
-  cursor: grabbing;
   min-width: 50%;
   max-height: 8vh;
 
@@ -292,6 +295,7 @@ body {
   bottom: 8%;
   left: 30%;
   z-index: 100;
+  cursor: grabbing;
 }
 
 .showWallListBtn {
@@ -311,7 +315,6 @@ body {
   width: 25vh;
   max-width: 20%;
   z-index: 10;
-  cursor: grabbing;
 }
 
 .showPropsBtn {
@@ -327,7 +330,6 @@ body {
   position: absolute;
   background: #d9d9d9;
   z-index: 100;
-  cursor: grabbing;
   max-height: 80vh;
   min-width: 20vh;
   left: 1.5vh;
@@ -506,11 +508,4 @@ body {
 
 .logoMenubar {
   transform: scale(0.04);
-  position: absolute;
-  background: white;
-  margin-top: 0px;
-  left: -50vh;
-}
-
-.scaleMini {
 }

@@ -22,6 +22,7 @@ model User {
   isAdmin        Boolean @default(false)
   chatEntry      ChatEntry[]
   memberships    SceneMemberShip[]
+  sceneEdits     CurrentSceneEdit[] 
 }
 
 model Scene {
@@ -38,6 +39,7 @@ model CurrentSceneEdit {
   idUser         String 
   idScene        String
   entryDate      DateTime
+  user       User      @relation(fields: [idUser], references: [id])
 }
 
 model SceneMemberShip {

@@ -36,35 +36,33 @@ export default function SceneModelList(props: {
 
   return props.models ? (
     visible ? (
-      <Draggable>
-        <Stack className="sceneTreeView roundedShadow">
-          <TreeView
-            defaultCollapseIcon={<ExpandMoreIcon />}
-            defaultExpandIcon={<ChevronRightIcon />}
-            defaultExpanded={["scene"]}
-            sx={{ overflowY: "auto", overflowX: "hidden" }}
+      <Stack className="sceneTreeView roundedShadow">
+        <TreeView
+          defaultCollapseIcon={<ExpandMoreIcon />}
+          defaultExpandIcon={<ChevronRightIcon />}
+          defaultExpanded={["scene"]}
+          sx={{ overflowY: "auto", overflowX: "hidden" }}
+        >
+          <TreeItem
+            nodeId="scene"
+            label={<Typography fontWeight="bold">Szene</Typography>}
           >
-            <TreeItem
-              nodeId="scene"
-              label={<Typography fontWeight="bold">Szene</Typography>}
-            >
-              {props.models.map((model) => (
-                // <Typography>{model.name}</Typography>
-                <SceneModelListItem
-                  currentObjProps={props.currentObjProps}
-                  setCurrentObj={props.setCurrentObj}
-                  model={model}
-                  key={model.id}
-                  setSelectedId={handleTreeItemClick}
-                  selectedID={props.selectedId}
-                  deleteObject={props.deleteObject}
-                  models={props.models}
-                ></SceneModelListItem>
-              ))}
-            </TreeItem>
-          </TreeView>
-        </Stack>
-      </Draggable>
+            {props.models.map((model) => (
+              // <Typography>{model.name}</Typography>
+              <SceneModelListItem
+                currentObjProps={props.currentObjProps}
+                setCurrentObj={props.setCurrentObj}
+                model={model}
+                key={model.id}
+                setSelectedId={handleTreeItemClick}
+                selectedID={props.selectedId}
+                deleteObject={props.deleteObject}
+                models={props.models}
+              ></SceneModelListItem>
+            ))}
+          </TreeItem>
+        </TreeView>
+      </Stack>
     ) : (
       <Stack
         className="roundedShadow treeViewBtn minOpenBtn"

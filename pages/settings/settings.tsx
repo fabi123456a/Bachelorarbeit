@@ -6,6 +6,7 @@ import { Check } from "@mui/icons-material";
 import { useState } from "react";
 import { fetchData } from "../../utils/fetchData";
 import { SHA256 } from "crypto-js";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 const Settings = (props: { user: User; sessionID: string }) => {
   const [flag, setFlag] = useState<boolean>(false);
@@ -43,6 +44,7 @@ const Settings = (props: { user: User; sessionID: string }) => {
               <TextField
                 label="neues Passwort"
                 size="small"
+                sx={{ ml: "8px" }}
                 onChange={(e) => {
                   setTxtPassword(e.target.value);
                 }}
@@ -85,6 +87,12 @@ const Settings = (props: { user: User; sessionID: string }) => {
               </Button>
             </Stack>
           )}
+          <Stack direction="row" sx={{ alignItems: "center" }}>
+            <ErrorOutlineIcon sx={{ color: "#9c27b0" }} />
+            <Typography sx={{ fontSize: "10px" }} color="#9c27b0">
+              Das Passwort steht hier in verschlüsslter Form.
+            </Typography>
+          </Stack>
         </Stack>
       </Stack>
 

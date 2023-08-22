@@ -9,10 +9,17 @@ const CurrentWorkingList = (props: {
   loggedInUser: User;
   sessionID: string;
 }) => {
-  const [currentScenEdits, setCurrentSceneEdits] =
-    useState<CurrentSceneEdit[]>();
+  const [currentScenEdits, setCurrentSceneEdits] = useState<
+    (CurrentSceneEdit & {
+      user: User;
+    })[]
+  >();
 
-  const getCurrentSceneEdits = async (): Promise<CurrentSceneEdit[]> => {
+  const getCurrentSceneEdits = async (): Promise<
+    (CurrentSceneEdit & {
+      user: User;
+    })[]
+  > => {
     const requestedCurrentSceneEdits = await fetchData(
       props.loggedInUser.id,
       props.sessionID,
@@ -20,7 +27,9 @@ const CurrentWorkingList = (props: {
       "select",
       { idScene: props.idScene },
       null,
-      null
+      {
+        user: true,
+      }
     );
 
     if (requestedCurrentSceneEdits.err) {
@@ -31,28 +40,42 @@ const CurrentWorkingList = (props: {
   };
 
   useEffect(() => {
-    getCurrentSceneEdits().then((edits: CurrentSceneEdit[]) => {
-      setCurrentSceneEdits(edits);
-    });
+    getCurrentSceneEdits().then(
+      (
+        edits: (CurrentSceneEdit & {
+          user: User;
+        })[]
+      ) => {
+        setCurrentSceneEdits(edits);
+      }
+    );
   }, []);
 
-  return (
-    <Stack className="roundedShadow">
-      Online
-      <Stack>
-        {currentScenEdits
-          ? currentScenEdits.map((edit: CurrentSceneEdit) => {
-              return (
-                <Stack direction={"row"} sx={{ alignItems: "center" }}>
-                  <CircleIcon color="success"></CircleIcon>
-                  <Typography>{edit.idUser}</Typography>
-                </Stack>
-              );
-            })
-          : null}
+  return currentScenEdits ? (
+    currentScenEdits.length == 0 ? null : (
+      <Stack className="roundedShadow">
+        Online
+        <Stack>
+          {currentScenEdits
+            ? currentScenEdits.map(
+                (
+                  edit: CurrentSceneEdit & {
+                    user: User;
+                  }
+                ) => {
+                  return (
+                    <Stack direction={"row"} sx={{ alignItems: "center" }}>
+                      <CircleIcon color="success"></CircleIcon>
+                      <Typography>{edit.user.email}</Typography>
+                    </Stack>
+                  );
+                }
+              )
+            : null}
+        </Stack>
       </Stack>
-    </Stack>
-  );
+    )
+  ) : null;
 };
 
 export default CurrentWorkingList;
