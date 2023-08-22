@@ -41,7 +41,7 @@ export default function WallListItem(props: {
               z: props.data[props.name]["z"],
             },
             rotation: { x: 0, y: 0, z: 0 },
-            color: "pink", // der boden soll eine andere farbe bekommen
+            color: "#eeeeee", // der boden soll eine andere farbe bekommen
             name: props.name,
             info: "",
             visibleInOtherPerspective: true,

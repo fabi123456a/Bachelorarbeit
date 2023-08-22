@@ -76,7 +76,7 @@ export default function Main(props: {
 
   //sceneVersion
   const [sceneVersion, setSceneVersion] = useState<number>(
-    props.scene ? props.scene.newestVersion : null
+    props.scene.newestVersion
   );
 
   // ambient light
@@ -225,7 +225,7 @@ export default function Main(props: {
   useEffect(() => {
     if (!props.scene) return;
     getSceneModels(sceneVersion);
-  }, [props.scene, sceneVersion]); // [props.scene, sceneVersion]
+  }, [sceneVersion]); // props.scene,  [props.scene, sceneVersion]
 
   // scene neu socket.io laden // TODO:
   useEffect(() => {
@@ -377,7 +377,7 @@ export default function Main(props: {
     version: number
   ) {
     const model: Model = {
-      id: uuidv4(), // neue id wegen datum feld, new uuid4() ging nicht
+      id: uuidv4(),
       idScene: typeObjectProps.idScene,
       positionX: typeObjectProps.position.x,
       positionY: typeObjectProps.position.y,
@@ -609,17 +609,16 @@ export default function Main(props: {
   async function saveScene(idScene: string) {
     // erst neue version
     const newVersion = props.scene.newestVersion + 1;
-    setSceneVersion(newVersion);
 
     // dann alle neu einfügen, mit nuer version als vermerk
     models.forEach(async (objProp: TypeObjectProps) => {
       let model: Model;
 
-      if (objProp.info == "licht") {
-        // TODO: licht macht probleme beim speichern
-        alert("licht");
-        return;
-      }
+      // if (objProp.info == "licht") {
+      //   // TODO: licht macht probleme beim speichern
+      //   alert("licht");
+      //   return;
+      // }
 
       model = convertTypeObjectPropsToModel(
         objProp,
@@ -638,6 +637,7 @@ export default function Main(props: {
     };
 
     props.setScene(updatedScene);
+    setSceneVersion(newVersion);
 
     // socket.io
     socket.emit("setSyncScene", {
@@ -684,7 +684,7 @@ export default function Main(props: {
   };
 
   // ---- COMPONENT ----
-  return props.user && props.sessionID ? (
+  return props.user && props.sessionID && props.scene ? (
     <Stack className="main">
       <MenuBar
         idUser={props.user.id}
@@ -815,7 +815,6 @@ export default function Main(props: {
             </>
           ) : null
         ) : null}
-
         {/* Canvas/ThreeJS-scene */}
         {/* <Canvas
           onPointerMissed={() => {

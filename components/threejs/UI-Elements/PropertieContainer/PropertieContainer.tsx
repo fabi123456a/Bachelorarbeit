@@ -1,10 +1,17 @@
-import { Divider, Grid, Typography } from "@mui/material";
+import {
+  Divider,
+  FormControlLabel,
+  Grid,
+  Radio,
+  RadioGroup,
+  Typography,
+} from "@mui/material";
 import { Stack } from "@mui/system";
 import NumberInput from "./NumberInput";
 import ColorPicker from "./ColorPicker";
 import TextureSelector from "./textureSelector";
 import Draggable from "react-draggable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { TypeObjectProps } from "../../../../pages/threejs/types";
 
@@ -20,6 +27,13 @@ function PropertieContainer(props: {
   idUser: string;
 }) {
   const [visible, setVisible] = useState<boolean>(true);
+  const [selectedValue, setSelectedValue] = useState(
+    props.objProps ? (props.objProps.color ? "color" : "texture") : null
+  ); // Standardwert
+
+  const handleRadioChange = (event) => {
+    setSelectedValue(event.target.value);
+  };
 
   function handlePositionChange(position: string, value: number) {
     let newPosition: any = { ...props.objProps.position };
@@ -57,14 +71,14 @@ function PropertieContainer(props: {
     });
   }
 
+  useEffect(() => {
+    setSelectedValue(
+      props.objProps ? (props.objProps.color ? "color" : "texture") : null
+    );
+  }, [props.objProps]);
+
   return visible ? (
     <Stack className="properties roundedShadow">
-      {/* <CloseIcon
-          className="iconButton"
-          onClick={() => {
-            setVisible(false);
-          }}
-        ></CloseIcon> */}
       <Typography textAlign={"center"} fontSize={"1.25rem"} fontWeight={"bold"}>
         Eigenschaften
       </Typography>
@@ -172,23 +186,35 @@ function PropertieContainer(props: {
               </Grid>
             </Grid>
           </Stack>
+          <RadioGroup row value={selectedValue} onChange={handleRadioChange}>
+            <FormControlLabel value="color" control={<Radio />} label="Farbe" />
+            <FormControlLabel
+              value="texture"
+              control={<Radio />}
+              label="Textur"
+            />
+          </RadioGroup>
+
           {!props.objProps.modelPath ? (
             <>
-              <ColorPicker
-                currentObjectProps={props.objProps}
-                setCurrentObjectProps={
-                  props.setObjProps as (props: TypeObjectProps) => void
-                }
-              ></ColorPicker>
-              <TextureSelector
-                idUser={props.idUser}
-                sessionID={props.sessionID}
-                currentObjProps={props.objProps}
-                setCurrentObjProps={
-                  props.setObjProps as (props: TypeObjectProps) => void
-                }
-                texture={props.objProps.texture}
-              ></TextureSelector>
+              {selectedValue == "color" ? (
+                <ColorPicker
+                  currentObjectProps={props.objProps}
+                  setCurrentObjectProps={
+                    props.setObjProps as (props: TypeObjectProps) => void
+                  }
+                ></ColorPicker>
+              ) : (
+                <TextureSelector
+                  idUser={props.idUser}
+                  sessionID={props.sessionID}
+                  currentObjProps={props.objProps}
+                  setCurrentObjProps={
+                    props.setObjProps as (props: TypeObjectProps) => void
+                  }
+                  texture={props.objProps.texture}
+                ></TextureSelector>
+              )}
             </>
           ) : null}
         </Stack>

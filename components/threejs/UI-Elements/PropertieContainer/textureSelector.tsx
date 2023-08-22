@@ -4,6 +4,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -22,7 +23,9 @@ export default function TextureSelector(props: {
 
   const handleChange = (event: SelectChangeEvent) => {
     let value: string = event.target.value as string;
-    setTexture(value);
+
+    if (value == "keine Textur") setTexture("");
+    else setTexture(value);
 
     const newObjectProps = { ...props.currentObjProps };
     newObjectProps.texture = value;
@@ -62,79 +65,28 @@ export default function TextureSelector(props: {
         value={texture}
         label="Texture"
         onChange={handleChange}
-        sx={{ overflowX: "scroll" }}
+        // sx={{ overflowX: "scroll" }}
+        size="small"
       >
-        <MenuItem value={""}>keine Texture</MenuItem>
+        <MenuItem value={"keine Textur"}>keine Texture</MenuItem>
         {textures
           ? textures.map((tex: string) => (
               <MenuItem value={tex} key={tex}>
-                <img
-                  src={`./textures/${tex}/Substance_Graph_BaseColor.jpg`}
-                  height={"50px"}
-                  style={{ marginRight: "8px" }}
-                ></img>{" "}
-                {tex}
+                <Stack direction={"row"} sx={{ alignItems: "center" }}>
+                  <img
+                    src={`./textures/${tex}/Substance_Graph_BaseColor.jpg`}
+                    height={"50px"}
+                    style={{ marginRight: "8px" }}
+                  ></img>
+                  {tex}
+                </Stack>
               </MenuItem>
             ))
           : null}
-
-        {/* <MenuItem value={"stoff"}>
-          <img
-            src="./textures/stoff/Substance_Graph_BaseColor.jpg"
-            height={"50px"}
-          ></img>{" "}
-          Stoff
-        </MenuItem>
-        <MenuItem value={"wood"}>
-          <img
-            src="./textures/wood/Substance_Graph_BaseColor.jpg"
-            height={"50px"}
-          ></img>
-          Holz
-        </MenuItem>
-        <MenuItem value={"pavingStones"}>
-          <img
-            src="./textures/pavingStones/Substance_Graph_BaseColor.jpg"
-            height={"50px"}
-          ></img>
-          PavingStones
-        </MenuItem>
-        <MenuItem value={"woodMetal"}>
-          <img
-            src="./textures/woodMetal/Substance_Graph_BaseColor.jpg"
-            height={"50px"}
-          ></img>
-          WoodMetal
-        </MenuItem>
-        <MenuItem value={"stoneFloor"}>
-          <img
-            src="./textures/stoneFloor/Substance_Graph_BaseColor.jpg"
-            height={"50px"}
-          ></img>
-          StoneFloor
-        </MenuItem>
-        <MenuItem value={"metal"}>
-          <img
-            src="./textures/metal/Substance_Graph_BaseColor.jpg"
-            height={"50px"}
-          ></img>
-          Metal
-        </MenuItem>
-        <MenuItem value={"sciFi"}>
-          <img
-            src="./textures/sciFi/Substance_Graph_BaseColor.jpg"
-            height={"50px"}
-          ></img>
-          SciFiction
-        </MenuItem>
-        <MenuItem value={"gravel"}>
-          <img
-            src="./textures/gravel/Substance_Graph_BaseColor.jpg"
-            height={"50px"}
-          ></img>
-          Gravel
-        </MenuItem> */}
       </Select>
+      <Typography fontSize={"12px"}>
+        Texturen werden nach dem Speichern sichtbar.
+      </Typography>
     </>
   );
 }

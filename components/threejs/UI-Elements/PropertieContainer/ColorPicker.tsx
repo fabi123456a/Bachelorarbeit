@@ -7,13 +7,13 @@ function ColorPicker(props: {
   currentObjectProps: TypeObjectProps;
 }) {
   const [color, setColor] = useState(
-    props.currentObjectProps ? props.currentObjectProps.color : "#eeeeee"
+    props.currentObjectProps ? props.currentObjectProps.color : ""
   ); // Farbwert im Status speichern
 
   const handleColorChange = (event) => {
     const newObjectProps = { ...props.currentObjectProps }; // Kopie von currentObjectProps erstellen
     newObjectProps.color = event.target.value; // Farbwert aktualisieren
-    newObjectProps.texture = undefined;
+    newObjectProps.texture = "";
 
     props.setCurrentObjectProps(newObjectProps); // Aktualisierte Object-Props übergeben
 
@@ -29,6 +29,7 @@ function ColorPicker(props: {
       {props.currentObjectProps ? (
         <>
           <Typography fontWeight={"bolder"}>Farbe ändern</Typography>
+
           <input
             type="color"
             id="favcolor"
@@ -36,7 +37,10 @@ function ColorPicker(props: {
             value={color}
             onChange={handleColorChange}
           />
-          <p>{color}</p>
+
+          <Typography fontSize={"12px"}>
+            {color ? color : "keine Farbe ausgewählt"}
+          </Typography>
         </>
       ) : null}
     </Stack>
