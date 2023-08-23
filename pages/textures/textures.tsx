@@ -14,6 +14,7 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { User } from "@prisma/client";
 import { DeleteForeverOutlined } from "@mui/icons-material";
+import ErrorIcon from "@mui/icons-material/Error";
 
 const Textures = (props: { loggedInUser: User; sessionID: string }) => {
   const [textures, setTextures] = useState<string[]>(null);
@@ -74,6 +75,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
   };
 
   useEffect(() => {
+    if (!props.loggedInUser.read) return;
     getAllTexturesFromFS().then((textures: string[]) => setTextures(textures));
   }, [reload]);
 
@@ -115,7 +117,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
     return isValid;
   }
 
-  return props.loggedInUser ? (
+  return props.loggedInUser && props.loggedInUser.read ? (
     <Stack className="texturesContainer">
       {textures
         ? textures.map((tex: string) => (
@@ -130,7 +132,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
                 style={{ marginRight: "8px", height: "20vh", width: "20vh" }}
               ></img>
               <Typography>{tex}</Typography>
-              {props.loggedInUser.isAdmin ? (
+              {props.loggedInUser.delete ? (
                 <IconButton
                   className="iconButton"
                   onClick={async () => {
@@ -288,7 +290,12 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
       ) : null}
     </Stack>
   ) : (
-    <Typography>Einloggen erforderlich.</Typography>
+    <Stack direction={"row"} sx={{ m: "10px" }}>
+      <ErrorIcon color="error" sx={{ mr: "8px" }}></ErrorIcon>
+      <Typography color={"#d32f2f"}>
+        Sie haben keine Berechtigung um die Texturen zu öffnen
+      </Typography>
+    </Stack>
   );
 };
 

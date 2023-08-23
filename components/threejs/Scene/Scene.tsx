@@ -325,7 +325,7 @@ export const deleteOldSceneEdits = async (
   idUser: string,
   sessionID: string
 ) => {
-  const requestedOldCurrentEdits: CurrentSceneEdit[] = await fetchData(
+  const requestedOldCurrentEdits = await fetchData(
     idUser,
     sessionID,
     "CurrentSceneEdit",
@@ -339,7 +339,11 @@ export const deleteOldSceneEdits = async (
     null
   );
 
-  if (!requestedOldCurrentEdits || requestedOldCurrentEdits.length <= 0) return;
+  if (!requestedOldCurrentEdits) return;
+  if (requestedOldCurrentEdits.error) {
+    console.log(requestedOldCurrentEdits.error);
+    return;
+  }
   try {
     requestedOldCurrentEdits.forEach(async (el: CurrentSceneEdit) => {
       await fetchData(
@@ -355,6 +359,6 @@ export const deleteOldSceneEdits = async (
       );
     });
   } catch (e) {
-    alert(e);
+    console.log(e);
   }
 };

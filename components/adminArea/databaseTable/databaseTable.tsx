@@ -21,39 +21,60 @@ const DatabaseTable = (props: {
   sessionID: string;
   user: User;
 }) => {
-  const [data, setData] = useState<any[]>();
+  const [user, setUser] = useState<User[]>();
   const [properties, setProperties] = useState<string[]>();
-  const [types, setTypes] = useState<string[]>();
   const [reload, setReload] = useState<number>(0);
-  const [showEditData, setShowEditData] = useState<boolean>(false);
+  // const [showEditData, setShowEditData] = useState<boolean>(false);
 
-  const [actProp, setActProp] = useState<string>("");
-  const [actDataRowID, setActDataRowID] = useState<string>("");
-  const [actData, setActData] = useState<string>("");
-  const [actDataType, setActDataType] = useState<string>("");
-  const [sortBy, setSortBy] = useState<string>(null);
+  // const [actProp, setActProp] = useState<string>("");
+  // const [actDataRowID, setActDataRowID] = useState<string>("");
+  // const [actData, setActData] = useState<string>("");
+  // const [actDataType, setActDataType] = useState<string>("");
 
-  // {id: "x", loginID: "rr", password: "rr", readOnly: true}
+  const deleteUserByID = async (idUser: string): Promise<boolean> => {
+    const requestedDelete = await fetchData(
+      props.user.id,
+      props.sessionID,
+      "user",
+      "delete",
+      { id: idUser },
+      null,
+      null
+    );
+
+    if (!requestedDelete) {
+      console.log("error while delete a user by id: " + idUser);
+      return false;
+    }
+    return true;
+  };
+
+  const changeRight = async (
+    idUser: string,
+    right: "read" | "write" | "delete" | "isAdmin",
+    flag: boolean
+  ): Promise<boolean> => {
+    const requestedDelete = await fetchData(
+      props.user.id,
+      props.sessionID,
+      "user",
+      "update",
+      { id: idUser },
+      { [right]: flag },
+      null
+    );
+
+    if (!requestedDelete) {
+      console.log("error while update right from user");
+      return false;
+    }
+    return true;
+  };
 
   useEffect(() => {
-    // lädt alle Daten aus props.tablename
-    async function loadData() {
+    async function fetchUser() {
       try {
-        // const response = await fetch("api/database/DB_getAll", {
-        //   method: "POST",
-        //   body: JSON.stringify({
-        //     tableName: props.tableName,
-        //     orderBy: sortBy,
-        //     sessionID: props.sessionID,
-        //     idUser: props.user.id,
-        //   }),
-        // });
-
-        // const result = await response.json();
-        // if (!result || result["error"]) return;
-
-        // TODO: sortBy
-        const request = await fetchData(
+        const requestedUser = await fetchData(
           props.user.id,
           props.sessionID,
           "user",
@@ -63,33 +84,27 @@ const DatabaseTable = (props: {
           null
         );
 
-        if (request.err) return;
+        if (!requestedUser) {
+          console.log("fetch user failed");
+          return;
+        }
 
-        setData(request);
-        setProperties(Object.keys(request[0]));
-
-        // const dataTypes = Object.values(result[0]).map((value) => typeof value);
-        // setX(dataTypes);
-        const dataTypes = Object.values(request[0]).map(
-          (value) => typeof value
-        );
-        setTypes(dataTypes);
-
-        //console.log(result[0]);
+        setUser(requestedUser);
+        setProperties(Object.keys(requestedUser[0]));
       } catch (error) {
         console.error(error);
-        setData(null);
+        setUser(null);
       }
     }
 
-    loadData();
-  }, [reload, sortBy]);
+    fetchUser();
+  }, [reload]);
 
   return (
     <Stack className="databaseTableContainer">
       <Stack className="roundedShadow">
         <Typography sx={{ p: "12px" }} fontWeight={"bold"} fontSize={"20px"}>
-          {data ? "Alle Benutzer" : null}
+          {user ? "Alle Benutzer" : null}
         </Typography>
 
         <Table size="small" className="">
@@ -99,51 +114,65 @@ const DatabaseTable = (props: {
                 ? properties.map((prop: string) => {
                     if (prop == "password" || prop == "id") return;
                     return (
-                      <TableCell
-                        sx={{ fontWeight: "bold" }}
-                        key={prop}
-                        onClick={() => {
-                          setSortBy(prop);
-                        }}
-                      >
+                      <TableCell sx={{ fontWeight: "bold" }} key={prop}>
                         {prop}
                       </TableCell>
                     );
                   })
                 : null}
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {data
-              ? data.map((dataRow: any) => (
+            {user
+              ? user.map((dataRow: any) => (
                   <TableRow key={dataRow["id"]}>
                     {properties.map((prop: string) => {
                       if (prop == "password" || prop == "id") return;
                       return (
                         <TableCell
                           key={dataRow[prop] + dataRow["id"] + prop}
-                          onClick={() => {
-                            if (
-                              prop === "id" ||
-                              prop == "password" ||
-                              prop == "email"
-                            ) {
-                              alert("Das kann nicht geändert werden.");
+                          onClick={async () => {
+                            // if (
+                            //   prop === "id" ||
+                            //   prop == "password" ||
+                            //   prop == "email"
+                            // ) {
+                            //   alert("Das kann nicht geändert werden.");
+                            //   return;
+                            // }
+                            // setActProp(prop);
+                            // setActDataRowID(dataRow["id"]);
+                            // setActData(dataRow[prop]);
+                            // setShowEditData(true);
+                            // setActDataType(typeof dataRow[prop]);
+
+                            // alert(actProp);
+
+                            if (dataRow["id"] == "ADMIN") {
+                              alert("Der Admin kann nicht geändert werden");
                               return;
                             }
-                            setActProp(prop);
-                            setActDataRowID(dataRow["id"]);
-                            setActData(dataRow[prop]);
-                            setShowEditData(true);
-                            setActDataType(typeof dataRow[prop]);
+
+                            const flag = await changeRight(
+                              dataRow["id"],
+                              prop as "read" | "write" | "delete" | "isAdmin",
+                              !dataRow[prop]
+                            );
+
+                            if (!flag) {
+                              alert("Das konnte nicht geändert werden.");
+                              return;
+                            }
+                            setReload(Math.random());
                           }}
-                          sx={
-                            actProp == prop &&
-                            actData == dataRow[prop] &&
-                            actDataRowID == dataRow["id"]
-                              ? { background: "#ffef62" }
-                              : {}
-                          }
+                          // sx={
+                          //   actProp == prop &&
+                          //   actData == dataRow[prop] &&
+                          //   actDataRowID == dataRow["id"]
+                          //     ? { background: "#ffef62" }
+                          //     : {}
+                          // }
                         >
                           {/* {dataRow[prop]} */}
                           {typeof dataRow[prop] === "boolean" ? (
@@ -158,6 +187,30 @@ const DatabaseTable = (props: {
                         </TableCell>
                       );
                     })}
+                    <TableCell>
+                      {dataRow["id"] == "ADMIN" ? null : (
+                        <Button
+                          color="error"
+                          size={"small"}
+                          onClick={async () => {
+                            const erg = await deleteUserByID(dataRow["id"]);
+
+                            if (!erg) {
+                              alert("Löschen des Benutzers Fehlgeschlagen.");
+                              return;
+                            }
+                            alert(
+                              "Der Benutzer " +
+                                dataRow["email"] +
+                                " wurde gelöscht."
+                            );
+                            setReload(Math.random());
+                          }}
+                        >
+                          Löschen
+                        </Button>
+                      )}
+                    </TableCell>
                   </TableRow>
                 ))
               : null}
@@ -175,7 +228,7 @@ const DatabaseTable = (props: {
         </Stack>
       ) : null}
 
-      {showEditData ? (
+      {/* {showEditData ? (
         <EditData
           idUser={props.user.id}
           sessionID={props.sessionID}
@@ -190,7 +243,7 @@ const DatabaseTable = (props: {
           setActDataRowID={setActDataRowID}
           setActProp={setActProp}
         ></EditData>
-      ) : null}
+      ) : null} */}
     </Stack>
   );
 };

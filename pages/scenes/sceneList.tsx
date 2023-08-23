@@ -16,6 +16,7 @@ import SceneDetails from "../../components/sceneList/sceneListEntry/sceneDetails
 import { fetchData } from "../../utils/fetchData";
 import { deleteOldSceneEdits } from "../../components/threejs/Scene/Scene";
 import ReplayIcon from "@mui/icons-material/Replay";
+import ErrorIcon from "@mui/icons-material/Error";
 
 const SceneList = (props: {
   setScene: (scene: Scene) => void;
@@ -26,17 +27,12 @@ const SceneList = (props: {
 }) => {
   const [scenes, setScenes] = useState<Scene[]>();
   const [reload, setReload] = useState<number>();
-  const [cmboBox, setCmboBox] = useState<string>("-1"); // -1 => alle
   const [actScene, setActScene] = useState<Scene>(null);
-  const [sceneMembership, setSceneMembership] = useState<SceneMemberShip>(null);
-  const [memberships, setMemberships] = useState<
-    SceneMemberShip &
-      {
-        scene: Scene;
-      }[]
-  >(null);
 
-  const getMembershipFromSceneID = async (idUser: string, idScene: string) => {
+  const fetchMembershipFromSceneID = async (
+    idUser: string,
+    idScene: string
+  ) => {
     const requestedMembership = await fetchData(
       props.user.id,
       props.sessionID,
@@ -50,56 +46,50 @@ const SceneList = (props: {
       null
     );
 
-    if (requestedMembership.error) return null;
+    if (!requestedMembership) {
+      console.log("error while load memberships by scene id");
+      return null;
+    }
 
     return requestedMembership;
   };
 
-  const getAllSceneMemberships = async () => {
+  const fetchSceneMemberShips = async () => {
     const requestMemberships = await fetchData(
       props.user.id,
       props.sessionID,
       "SceneMemberShip",
       "select",
-      { idUser: props.user.id }, // {idUser: props.user.id}
+      { idUser: props.user.id },
       null,
       { scene: true }
     );
 
-    if (!requestMemberships || requestMemberships.err) return;
+    if (!requestMemberships) return;
+
+    if (requestMemberships.error) {
+      alert(requestMemberships.error);
+      return;
+    }
 
     const extractedScenes = requestMemberships.map(
       (membership) => membership.scene
     );
-    setScenes(extractedScenes);
-  };
-
-  const getOwnScenes = (scenes: Scene[]): Scene[] => {
-    const idUserCreator: string = props.user.id;
-
-    const scenesWithMatchingCreator = scenes.filter(
-      (scene) => scene.idUserCreater === idUserCreator
-    );
-
-    return scenesWithMatchingCreator;
+    // setScenes(extractedScenes);
+    return extractedScenes;
   };
 
   useEffect(() => {
-    deleteOldSceneEdits(props.user.id, props.sessionID).then(() => {
-      getAllSceneMemberships().then(() => {
-        if (cmboBox == props.user.id) {
-          // nur eigene escenen rausfiltern
-          setScenes(getOwnScenes(scenes));
-        }
-      });
-    });
-  }, [reload, cmboBox]);
+    if (!props.user.read) return;
+    deleteOldSceneEdits(props.user.id, props.sessionID);
+    fetchSceneMemberShips().then((scenes: Scene[]) => setScenes(scenes));
+  }, [reload]);
 
   useEffect(() => {
+    if (!props.user.read) return;
     if (!actScene) return;
-    getMembershipFromSceneID(props.user.id, actScene.id).then(
+    fetchMembershipFromSceneID(props.user.id, actScene.id).then(
       (membership: SceneMemberShip) => {
-        setSceneMembership(membership);
         props.setActSceneMembership(membership);
       }
     );
@@ -113,7 +103,6 @@ const SceneList = (props: {
         setSelectedScene={setActScene}
         setScene={props.setScene}
         loggedInUser={props.user}
-        ownMembership={sceneMembership}
         currentWorkingScene={props.currentWorkingScene}
       ></SceneDetails>
     ) : (
@@ -122,18 +111,6 @@ const SceneList = (props: {
           direction={"row"}
           sx={{ justifyContent: "center", alignItems: "center" }}
         >
-          {/* <Select
-            label="Sortierung"
-            onChange={(e) => {
-              setCmboBox(e.target.value as string);
-            }}
-            value={cmboBox}
-            size="small"
-            className="select"
-          >
-            <MenuItem value={props.user.id}>nur meine</MenuItem>
-            <MenuItem value={"-1"}>alle</MenuItem>
-          </Select> */}
           <IconButton
             onClick={() => {
               setReload(Math.random());
@@ -143,24 +120,32 @@ const SceneList = (props: {
           </IconButton>
         </Stack>
         <Stack className="sceneListEntriesContainer">
-          {scenes
-            ? scenes.map((scene: Scene) => {
-                return (
-                  <SceneListEntry
-                    reload={reload}
-                    sessionID={props.sessionID}
-                    user={props.user}
-                    key={scene.id}
-                    scene={scene}
-                    setScene={props.setScene}
-                    setReload={setReload}
-                    setSelectedScene={setActScene}
-                  ></SceneListEntry>
-                );
-              })
-            : "keine Leitstellen-Konfiguration vorhanden"}
-          {/* bei readonly user ausblenden */}
-          {props.user.write || true ? (
+          {scenes ? (
+            scenes.map((scene: Scene) => {
+              return (
+                <SceneListEntry
+                  reload={reload}
+                  sessionID={props.sessionID}
+                  user={props.user}
+                  key={scene.id}
+                  scene={scene}
+                  setScene={props.setScene}
+                  setReload={setReload}
+                  setSelectedScene={setActScene}
+                ></SceneListEntry>
+              );
+            })
+          ) : !props.user.read ? (
+            <Stack direction={"row"} sx={{ m: "10px" }}>
+              <ErrorIcon color="error" sx={{ mr: "8px" }}></ErrorIcon>
+              <Typography color={"#d32f2f"}>
+                Sie haben keine Berechtigung um die Konfigurationen zu öffnen
+              </Typography>
+            </Stack>
+          ) : (
+            <Typography>keine Leitstellen-Konfiguration vorhanden</Typography>
+          )}
+          {props.user.write ? (
             <AddScene
               sessionID={props.sessionID}
               user={props.user}

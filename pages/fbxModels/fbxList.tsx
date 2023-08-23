@@ -12,6 +12,7 @@ import { DeleteForeverOutlined } from "@mui/icons-material";
 import UploadFbx from "../../components/threejs/UI-Elements/ModelList/fbxHandle/uploadFbx";
 import FbxListEntry from "../../components/fbxModels/fbxListEntry";
 import { User } from "@prisma/client";
+import ErrorIcon from "@mui/icons-material/Error";
 
 interface FileListResponse {
   files: string[];
@@ -23,6 +24,10 @@ const FbxList = (props: { loggedInUser: User; sessionID: string }) => {
   const [isLoading, setIsloading] = useState<boolean>(true);
 
   useEffect(() => {
+    if (!props.loggedInUser.read) {
+      setIsloading(false);
+      return;
+    }
     const fetchFiles = async () => {
       try {
         const response = await fetch("api/filesystem/FS_getFbxModels", {
@@ -46,6 +51,13 @@ const FbxList = (props: { loggedInUser: User; sessionID: string }) => {
   return isLoading ? (
     <Stack className="fullHeightWidth centerH centerV">
       <CircularProgress className="loading"></CircularProgress>
+    </Stack>
+  ) : !props.loggedInUser.read ? (
+    <Stack direction={"row"} sx={{ m: "10px" }}>
+      <ErrorIcon color="error" sx={{ mr: "8px" }}></ErrorIcon>
+      <Typography color={"#d32f2f"}>
+        Sie haben keine Berechtigung um die 3D-Modelle zu öffnen
+      </Typography>
     </Stack>
   ) : (
     <Stack>

@@ -13,6 +13,10 @@ export default async function DB_executeSQL(
   // SESSION
   const check = await checkSessionID(sessionID);
   if (!check) {
+    console.log(
+      "\x1b[31m%s\x1b[0m",
+      "request ZUGRIFF VERWEIGERT - keine gültige SessionID"
+    );
     res.status(403).json({
       error: "Zugriff verweigert: Unngültige SessionID.",
     });
@@ -32,6 +36,8 @@ export default async function DB_executeSQL(
     });
     return;
   }
+
+  //...
 
   console.log(
     "\x1b[95m%s\x1b[0m",
@@ -73,6 +79,6 @@ export default async function DB_executeSQL(
     res.status(200).json(result);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: "An error occurred while DB_excuteSQL." });
+    res.status(500).json(null);
   }
 }

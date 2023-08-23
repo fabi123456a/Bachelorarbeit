@@ -31,7 +31,7 @@ const FbxListEntry = (props: {
       <Typography>{props.file.toLowerCase().replace(".fbx", "")}</Typography>
 
       {/* nur admin darf löschen TODO: */}
-      {props.loggedInUser.isAdmin ? (
+      {props.loggedInUser.delete ? (
         <IconButton
           onClick={async () => {
             const confirmed = window.confirm(

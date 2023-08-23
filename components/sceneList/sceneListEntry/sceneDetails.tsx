@@ -21,7 +21,6 @@ const SceneDetails = (props: {
   setSelectedScene: (scene: Scene) => void;
   setScene: (scene: Scene) => void;
   loggedInUser: User;
-  ownMembership: SceneMemberShip;
   sessionID: string;
   currentWorkingScene: MutableRefObject<CurrentSceneEdit>;
 }) => {
@@ -137,7 +136,6 @@ const SceneDetails = (props: {
         >
           <ArrowBackIosIcon></ArrowBackIosIcon>
         </IconButton>
-        {/* {props.ownMembership?.readOnly ? "readonly" : "lesen/schreiben"} */}
         <Typography variant="h5">
           <b>{props.scene.name}</b>
         </Typography>
