@@ -30,7 +30,6 @@ export default function Camera(props: {
   useEffect(() => {
     props.controlsRef.current.addEventListener("change", (event) => {
       const pos = props.controlsRef.current.object.position;
-
       props.setCamPos([pos.x, pos.y, pos.z]);
 
       const rot = props.controlsRef.current.object.rotation;

@@ -52,7 +52,7 @@ const MembersListEntry = (props: {
       null
     );
 
-    if (requestDelete.err) return;
+    if (!requestDelete) return;
 
     if (requestDelete) return true;
     else return false;
@@ -81,7 +81,7 @@ const MembersListEntry = (props: {
       null
     );
 
-    if (requestedChatEntries.err) return;
+    if (!requestedChatEntries) return;
   };
 
   return props.membership ? (

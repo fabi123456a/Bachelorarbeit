@@ -25,7 +25,10 @@ export async function fetchData(
     });
 
     const data = await response.json();
-    if (!data) return null;
+    if (data.error) {
+      console.log(data.error);
+      return null;
+    }
     return data;
   } catch (error) {
     console.error(error);

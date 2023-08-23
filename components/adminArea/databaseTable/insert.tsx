@@ -47,7 +47,7 @@ const Insert = (props: {
       null
     );
 
-    if (requestInsert.err) return;
+    if (!requestInsert) return;
 
     return requestInsert;
   };

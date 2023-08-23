@@ -13,7 +13,7 @@ import io from "socket.io-client";
 import SceneModel from "../threejsObjects/SceneModel";
 import BoxGeoPivot from "../threejsObjects/BoxGeoPivot";
 import Cylinderqq from "../threejsObjects/CylinderPivot";
-import User from "../threejsObjects/UserCam";
+import UserCam from "../threejsObjects/UserCam";
 import { get_model_name } from "../UI-Elements/ModelList/ModelListItem";
 import { TypeObjectProps } from "../../../pages/threejs/types";
 
@@ -85,7 +85,7 @@ export default function Scene(props: {
         )
           return;
 
-        alert(data.idUser + "== " + props.idUser);
+        // alert(data.idUser + "== " + props.idUser);
         if (data.idScene == props.refCurrentWorkingScene.current.idScene) {
           alert("Ein Benutzer hat die Konfiguration betreten: " + data.idUser);
           setReload(Math.random());
@@ -126,7 +126,7 @@ export default function Scene(props: {
       null
     );
 
-    if (requestedUpdate.error) return null;
+    if (!requestedUpdate) return null;
     return requestedUpdate;
   };
 
@@ -159,11 +159,11 @@ export default function Scene(props: {
         ? workers.map((worker: CurrentSceneEdit) => {
             if (props.refCurrentWorkingScene.current.id == worker.id) return;
             return (
-              <User
+              <UserCam
                 worker={worker}
                 idUser={props.idUser}
                 sessionID={props.sessionID}
-              ></User>
+              ></UserCam>
             );
           })
         : null}
@@ -332,7 +332,7 @@ export const deleteOldSceneEdits = async (
     "select",
     {
       entryDate: {
-        lte: new Date(Date.now() - 40 * 1000), // 30sek new Date(Date.now() - 30 * 1000), // 7min new Date(Date.now() - 7 * 60 * 1000),
+        lte: new Date(Date.now() - 10 * 60 * 1000), // 30sek new Date(Date.now() - 30 * 1000), // 7min new Date(Date.now() - 7 * 60 * 1000),
       },
     },
     null,
@@ -340,10 +340,6 @@ export const deleteOldSceneEdits = async (
   );
 
   if (!requestedOldCurrentEdits) return;
-  if (requestedOldCurrentEdits.error) {
-    console.log(requestedOldCurrentEdits.error);
-    return;
-  }
   try {
     requestedOldCurrentEdits.forEach(async (el: CurrentSceneEdit) => {
       await fetchData(

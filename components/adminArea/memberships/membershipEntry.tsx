@@ -52,7 +52,7 @@ const MembershipEntry = (props: {
       null
     );
 
-    if (requestDelete.err) return;
+    if (!requestDelete) return;
 
     if (requestDelete) return true;
     else return false;
@@ -82,7 +82,7 @@ const MembershipEntry = (props: {
       null
     );
 
-    if (requestedChatEntries.err) return;
+    if (!requestedChatEntries) return;
   };
 
   return props.scene && props.membership ? (

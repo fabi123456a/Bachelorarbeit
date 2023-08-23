@@ -2,20 +2,20 @@ import { useEffect, useState } from "react";
 import { Box, Html } from "@react-three/drei";
 import * as THREE from "three";
 import { Typography } from "@mui/material";
-import { CurrentSceneEdit, User } from "@prisma/client";
+import { CurrentSceneEdit, User as UserCam } from "@prisma/client";
 import io from "socket.io-client";
 import { fetchData } from "../../../utils/fetchData";
 
 let socket;
 
-function User(props: {
+function UserCam(props: {
   worker: CurrentSceneEdit;
   sessionID: string;
   idUser: string;
 }) {
   const [pos, setPos] = useState<{ x: number; y: number; z: number }>({
     x: 0,
-    y: 0,
+    y: -100,
     z: 0,
   });
   const [rot, setRot] = useState<{ _x: number; _y: number; _z: number }>({
@@ -23,7 +23,7 @@ function User(props: {
     _y: 0,
     _z: 0,
   });
-  const [user, setUser] = useState<User>(null);
+  const [user, setUser] = useState<UserCam>(null);
 
   const loadUserByID = async () => {
     const requestedUser = await fetchData(
@@ -36,7 +36,7 @@ function User(props: {
       null
     );
 
-    if (requestedUser.error) return;
+    if (!requestedUser) return;
 
     // alert(JSON.stringify(requestedUser));
     return requestedUser;
@@ -56,7 +56,7 @@ function User(props: {
       });
     };
     socketInitializer();
-    loadUserByID().then((users: User) => {
+    loadUserByID().then((users: UserCam) => {
       //alert(user.loginID);
       setUser(users[0]);
     });
@@ -76,4 +76,4 @@ function User(props: {
   ) : null;
 }
 
-export default User;
+export default UserCam;

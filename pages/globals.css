@@ -149,7 +149,7 @@ body {
   width: 24vh;
   margin: 18px;
   padding: 8px;
-  position: relative;
+  /* position: relative; */
 
   transition: width 0.5s, height 0.5s, box-shadow 0.5s, background-color 0.5s;
 

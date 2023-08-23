@@ -46,7 +46,7 @@ const AdminArea = (props: {
       null
     );
 
-    if (requestedScenes.err) return;
+    if (!requestedScenes) return;
 
     return requestedScenes;
   };

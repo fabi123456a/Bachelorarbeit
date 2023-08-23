@@ -46,7 +46,7 @@ const SceneDetails = (props: {
       null
     );
 
-    if (requestedUser.err) return;
+    if (!requestedUser) return;
 
     return requestedUser[0];
   };
@@ -62,7 +62,7 @@ const SceneDetails = (props: {
       null
     );
 
-    if (requestedModels.err) return;
+    if (!requestedModels) return;
     setModelsCount(requestedModels.length);
   };
 
@@ -77,7 +77,7 @@ const SceneDetails = (props: {
       { user: true }
     );
 
-    if (requestedMembers.err) return;
+    if (!requestedMembers) return;
 
     setMembers(requestedMembers);
   };
@@ -101,11 +101,39 @@ const SceneDetails = (props: {
       null
     );
 
-    if (requestedInsert.err) {
-      alert(requestedInsert.err);
+    if (!requestedInsert) {
       return;
     }
     return requestedInsert;
+  };
+
+  // löscht veralteten CurrentSceneEdit DatenSatze
+  const deleteScenEditByUserID = async () => {
+    const requestedEdits: CurrentSceneEdit[] = await fetchData(
+      props.loggedInUser.id,
+      props.sessionID,
+      "CurrentSceneEdit",
+      "select",
+      { idUser: props.loggedInUser.id },
+      null,
+      null
+    );
+
+    if (!requestedEdits) {
+      return;
+    }
+
+    requestedEdits.forEach(async (edit: CurrentSceneEdit) => {
+      await fetchData(
+        props.loggedInUser.id,
+        props.sessionID,
+        "CurrentSceneEdit",
+        "delete",
+        { id: edit.id },
+        null,
+        null
+      );
+    });
   };
 
   useEffect(() => {
@@ -187,6 +215,9 @@ const SceneDetails = (props: {
       <Button
         onClick={async () => {
           props.setScene(props.scene);
+
+          // prüfen ob es schon einen scenedit gibt und dann löschen
+          await deleteScenEditByUserID();
 
           const currentWorkingScene: CurrentSceneEdit =
             await insertCurrentSceneEdit();

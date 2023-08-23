@@ -108,7 +108,7 @@ const MemberListEntry = (props: {
       { user: true }
     );
 
-    if (requestedMemberships.err) return;
+    if (!requestedMemberships) return;
 
     return requestedMemberships;
   };

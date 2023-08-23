@@ -64,7 +64,7 @@ const AddScene = (props: {
       null
     );
 
-    if (request.err) return;
+    if (!request) return;
 
     return request;
   };
@@ -94,7 +94,7 @@ const AddScene = (props: {
       null
     );
 
-    if (rquestInsertModel.err) return;
+    if (!rquestInsertModel) return;
 
     return rquestInsertModel;
   };

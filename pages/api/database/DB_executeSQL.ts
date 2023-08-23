@@ -37,8 +37,6 @@ export default async function DB_executeSQL(
     return;
   }
 
-  //...
-
   console.log(
     "\x1b[95m%s\x1b[0m",
     `D A T A B A S E : ${action} in ${tableName} where ${JSON.stringify(
@@ -79,6 +77,8 @@ export default async function DB_executeSQL(
     res.status(200).json(result);
   } catch (err) {
     console.log(err);
-    res.status(500).json(null);
+    res.status(500).json({
+      error: err,
+    });
   }
 }

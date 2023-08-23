@@ -95,6 +95,10 @@ const SceneList = (props: {
     );
   }, [actScene]);
 
+  useEffect(() => {
+    deleteOldSceneEdits(props.user.id, props.sessionID);
+  }, []);
+
   return props.setScene && props.user ? (
     actScene ? (
       <SceneDetails

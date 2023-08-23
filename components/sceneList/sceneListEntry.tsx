@@ -100,7 +100,7 @@ const SceneListEntry = (props: {
     );
 
     //alert(JSON.stringify(requestedCreator));
-    if (requestedCreator.err) return;
+    if (!requestedCreator) return;
 
     //alert(JSON.stringify(requestedCreator));
 
@@ -121,7 +121,7 @@ const SceneListEntry = (props: {
       null
     );
 
-    if (requestedModels.err) return;
+    if (!requestedModels) return;
 
     setModelsCount(requestedModels.length);
   };
@@ -137,7 +137,7 @@ const SceneListEntry = (props: {
       null
     );
 
-    if (requestedCurrentEdit.err) return;
+    if (!requestedCurrentEdit) return;
 
     //alert(requestedCurrentEdit[0]);
 
@@ -165,7 +165,7 @@ const SceneListEntry = (props: {
         setMouseOver(false);
       }}
     >
-      <Stack>
+      <Stack sx={{ flexGrow: 1 }}>
         {currentEdits ? (
           currentEdits.length > 0 ? (
             <Stack className="sceneListEntryOnline">
@@ -178,7 +178,7 @@ const SceneListEntry = (props: {
         </Typography>
 
         {userCreator ? (
-          mouseOver ? (
+          mouseOver && false ? (
             <Stack>
               <Typography sx={{ fontSize: "12px" }}>
                 <b>Creator:</b> {userCreator ? userCreator.email : "lädt..."}
@@ -197,7 +197,7 @@ const SceneListEntry = (props: {
           ) : (
             <Stack>
               <Typography sx={{ fontSize: "12px" }}>
-                {userCreator?.email}
+                {userCreator?.email.split("@")[0]}
               </Typography>
               <Typography sx={{ fontSize: "12px" }}>
                 {new Date(props.scene.createDate).toLocaleDateString()}
@@ -207,7 +207,7 @@ const SceneListEntry = (props: {
         ) : null}
       </Stack>
 
-      {mouseOver ? (
+      {mouseOver ? ( // mouseover
         props.user.write ? (
           props.user.id == props.scene.idUserCreater ? (
             <Button
@@ -231,26 +231,7 @@ const SceneListEntry = (props: {
             >
               Löschen
             </Button>
-          ) : // <DeleteForeverIcon
-          //   color="error"
-          //   sx={{ alignSelf: "center", marginBottom: "0", cursor: "pointer" }}
-          //   onClick={async (e) => {
-          //     e.stopPropagation();
-
-          //     let result = confirm(
-          //       "Wollen Sie wirklich die Scene " +
-          //         props.scene.name +
-          //         " löschen?"
-          //     );
-          //     if (result) {
-          //       await deleteSceneFromDB();
-          //       // TODO: delte modles by sceneID
-
-          //       props.setReload(Math.random());
-          //     }
-          //   }}
-          // ></DeleteForeverIcon>
-          null
+          ) : null
         ) : null
       ) : null}
     </Stack>

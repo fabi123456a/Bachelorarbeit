@@ -32,8 +32,7 @@ const CurrentWorkingList = (props: {
       }
     );
 
-    if (requestedCurrentSceneEdits.err) {
-      alert(requestedCurrentSceneEdits.err);
+    if (!requestedCurrentSceneEdits) {
       return;
     }
     return requestedCurrentSceneEdits;

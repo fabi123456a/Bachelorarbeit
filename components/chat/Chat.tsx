@@ -76,7 +76,7 @@ export default function Chat(props: {
         ))
       : null;
 
-    if (requestedChatEntries.err) return;
+    if (!requestedChatEntries) return;
 
     return requestedChatEntries;
   };
@@ -107,7 +107,7 @@ export default function Chat(props: {
         null
       );
 
-      if (request.err) return;
+      if (!request) return;
       return request;
     };
     getAllSessions().then(

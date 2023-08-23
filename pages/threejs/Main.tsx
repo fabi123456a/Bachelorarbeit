@@ -674,7 +674,7 @@ export default function Main(props: {
       null
     );
 
-    if (rquestInsertModel.err) return;
+    if (!rquestInsertModel) return;
   }
 
   const [selectedOption, setSelectedOption] = useState("");

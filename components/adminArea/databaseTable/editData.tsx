@@ -67,7 +67,7 @@ const EditData = (props: {
         null
       );
 
-      if (requestUpdate.err) return;
+      if (!requestUpdate) return;
       return requestUpdate;
     }
 
@@ -84,7 +84,7 @@ const EditData = (props: {
       null
     );
 
-    if (requestUpdate.err) return;
+    if (!requestUpdate) return;
     return requestUpdate;
   };
 
