@@ -11,6 +11,8 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 const Settings = (props: { user: User; sessionID: string }) => {
   const [flag, setFlag] = useState<boolean>(false);
   const [txtPassword, setTxtPassword] = useState<string>("");
+  const [flag1, setFlag1] = useState<boolean>(false);
+  const [txtDisplayName, setTxtDisplayName] = useState<string>("");
 
   const safeNewPassword = async (): Promise<boolean> => {
     alert(txtPassword);
@@ -28,12 +30,27 @@ const Settings = (props: { user: User; sessionID: string }) => {
     return true;
   };
 
+  const changeDisplayName = async (): Promise<boolean> => {
+    const requestChangeDisplayName = await fetchData(
+      props.user.id,
+      props.sessionID,
+      "user",
+      "update",
+      { id: props.user.id },
+      { displayName: txtDisplayName },
+      null
+    );
+
+    if (!requestChangeDisplayName) return false;
+    return true;
+  };
+
   return props.user ? (
     <Stack sx={{ padding: "12px" }}>
       <Stack direction={"row"}>
         <Stack sx={{ ml: "8px" }}>
           <Stack direction={"row"} sx={{ alignItems: "center" }}>
-            <Typography sx={{ minWidth: "80px" }}>E-Mail: </Typography>
+            <Typography sx={{ minWidth: "120px" }}>E-Mail: </Typography>
             <Typography fontWeight={"bold"}>{props.user.email}</Typography>
           </Stack>
           {flag ? (
@@ -76,7 +93,7 @@ const Settings = (props: { user: User; sessionID: string }) => {
           ) : (
             <Stack>
               <Stack direction={"row"} sx={{ alignItems: "center" }}>
-                <Typography sx={{ minWidth: "80px" }}>Passwort: </Typography>
+                <Typography sx={{ minWidth: "120px" }}>Passwort: </Typography>
                 <Typography fontWeight={"bold"}>
                   {props.user.password}
                 </Typography>
@@ -90,6 +107,7 @@ const Settings = (props: { user: User; sessionID: string }) => {
                 </Button>
               </Stack>
               <Stack direction="row" sx={{ alignItems: "center" }}>
+                <Typography sx={{ minWidth: "120px" }}></Typography>
                 <ErrorOutlineIcon sx={{ color: "#9c27b0" }} />
                 <Typography sx={{ fontSize: "10px" }} color="#9c27b0">
                   Das Passwort steht hier in verschlüsslter Form.
@@ -99,14 +117,65 @@ const Settings = (props: { user: User; sessionID: string }) => {
           )}
         </Stack>
       </Stack>
+      <Stack>
+        <Stack direction={"row"} sx={{ ml: "8px", alignItems: "center" }}>
+          {flag1 ? (
+            <>
+              <Typography>Anzeige-Name ändern: </Typography>
+              <TextField
+                size="small"
+                onChange={(e) => {
+                  setTxtDisplayName(e.target.value);
+                }}
+                value={txtDisplayName}
+              ></TextField>
+              <Button
+                onClick={async () => {
+                  const flag = await changeDisplayName();
+                  if (!flag) {
+                    alert("Anzeige-Name ändern hat nicht funktioniert");
+                    return;
+                  }
+                  alert("Der Anzeige-Name wurde geändert");
+                  setFlag1(false);
+                }}
+              >
+                Ändern
+              </Button>
+              <Button
+                color="error"
+                onClick={() => {
+                  setFlag1(false);
+                }}
+              >
+                Abbrechen
+              </Button>
+            </>
+          ) : (
+            <>
+              <Typography sx={{ minWidth: "120px" }}>Anzeige-Name: </Typography>
+              <Typography fontWeight={"bold"}>
+                {props.user.displayName}
+              </Typography>
+              <Button
+                onClick={() => {
+                  setFlag1(true);
+                }}
+              >
+                ändern
+              </Button>
+            </>
+          )}
+        </Stack>
+      </Stack>
 
       <Stack direction={"row"} sx={{ ml: "8px" }}>
         <Stack>
-          <Typography>lesen: </Typography>
-          <Typography>schreiben: </Typography>
-          <Typography>löschen: </Typography>
+          <Typography sx={{ minWidth: "120px" }}>lesen: </Typography>
+          <Typography sx={{ minWidth: "120px" }}>schreiben: </Typography>
+          <Typography sx={{ minWidth: "120px" }}>löschen: </Typography>
         </Stack>
-        <Stack sx={{ ml: "8px" }}>
+        <Stack>
           {props.user.read ? (
             <CheckIcon color="success" />
           ) : (
@@ -124,6 +193,16 @@ const Settings = (props: { user: User; sessionID: string }) => {
           )}
         </Stack>
       </Stack>
+      <Typography
+        sx={{
+          mt: "12px",
+          border: "1px solid black",
+          textAlign: "center",
+          background: "white",
+        }}
+      >
+        Änderungen werden nach dem Einloggen sichtbar
+      </Typography>
     </Stack>
   ) : (
     <Typography>lädt...</Typography>

@@ -48,7 +48,7 @@ const AddMember = (props: {
       null
     );
 
-    if (requestedUser.length == 0 || !requestedUser) {
+    if (!requestedUser) {
       setUser(null);
       return;
     }

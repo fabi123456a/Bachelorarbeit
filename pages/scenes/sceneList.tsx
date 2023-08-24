@@ -12,7 +12,9 @@ import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { User, Scene, SceneMemberShip, CurrentSceneEdit } from "@prisma/client";
 import AddScene from "../../components/sceneList/addScne";
 import SceneListEntry from "../../components/sceneList/sceneListEntry";
-import SceneDetails from "../../components/sceneList/sceneListEntry/sceneDetails";
+import SceneDetails, {
+  deleteScenEditByUserID,
+} from "../../components/sceneList/sceneListEntry/sceneDetails";
 import { fetchData } from "../../utils/fetchData";
 import { deleteOldSceneEdits } from "../../components/threejs/Scene/Scene";
 import ReplayIcon from "@mui/icons-material/Replay";
@@ -81,7 +83,9 @@ const SceneList = (props: {
 
   useEffect(() => {
     if (!props.user.read) return;
-    deleteOldSceneEdits(props.user.id, props.sessionID);
+    deleteOldSceneEdits(props.user.id, props.sessionID).then(() => {
+      deleteScenEditByUserID(props.user.id, props.sessionID);
+    });
     fetchSceneMemberShips().then((scenes: Scene[]) => setScenes(scenes));
   }, [reload]);
 
@@ -96,7 +100,9 @@ const SceneList = (props: {
   }, [actScene]);
 
   useEffect(() => {
-    deleteOldSceneEdits(props.user.id, props.sessionID);
+    deleteOldSceneEdits(props.user.id, props.sessionID).then(() => {
+      deleteScenEditByUserID(props.user.id, props.sessionID);
+    });
   }, []);
 
   return props.setScene && props.user ? (

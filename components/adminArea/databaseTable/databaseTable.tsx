@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import Insert from "./insert";
 import EditData from "./editData";
-import { User } from "@prisma/client";
+import { ChatEntry, SceneMemberShip, User } from "@prisma/client";
 import { fetchData } from "../../../utils/fetchData";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
@@ -24,6 +24,7 @@ const DatabaseTable = (props: {
   const [user, setUser] = useState<User[]>();
   const [properties, setProperties] = useState<string[]>();
   const [reload, setReload] = useState<number>(0);
+  const [changeName, setChangeName] = useState<boolean>(false);
   // const [showEditData, setShowEditData] = useState<boolean>(false);
 
   // const [actProp, setActProp] = useState<string>("");
@@ -32,6 +33,57 @@ const DatabaseTable = (props: {
   // const [actDataType, setActDataType] = useState<string>("");
 
   const deleteUserByID = async (idUser: string): Promise<boolean> => {
+    // erstmal alle chatentrys des nutzers löschen
+    const requestedChatEntries: ChatEntry[] = await fetchData(
+      props.user.id,
+      props.sessionID,
+      "chatEntry",
+      "select",
+      { idUser: idUser },
+      null,
+      null
+    );
+
+    // chatEntries durchlaufen und anhand der id löschen
+    if (requestedChatEntries) {
+      requestedChatEntries.forEach(async (chatEntry: ChatEntry) => {
+        await fetchData(
+          props.user.id,
+          props.sessionID,
+          "chatEntry",
+          "delete",
+          { id: chatEntry.id },
+          null,
+          null
+        );
+      });
+    }
+
+    // jtz alle memberships löschen
+    const requestedMemberships: SceneMemberShip[] = await fetchData(
+      props.user.id,
+      props.sessionID,
+      "SceneMemberShip",
+      "select",
+      { idUser: idUser },
+      null,
+      null
+    );
+
+    if (requestedMemberships) {
+      requestedMemberships.forEach(async (membership: SceneMemberShip) => {
+        await fetchData(
+          props.user.id,
+          props.sessionID,
+          "SceneMemberShip",
+          "delete",
+          { id: membership.id },
+          null,
+          null
+        );
+      });
+    }
+
     const requestedDelete = await fetchData(
       props.user.id,
       props.sessionID,
@@ -66,6 +118,27 @@ const DatabaseTable = (props: {
 
     if (!requestedDelete) {
       console.log("error while update right from user");
+      return false;
+    }
+    return true;
+  };
+
+  const changeDisplayName = async (
+    idUser: string,
+    newName: string
+  ): Promise<boolean> => {
+    const requesRename = await fetchData(
+      props.user.id,
+      props.sessionID,
+      "user",
+      "update",
+      { id: idUser },
+      { displayName: newName },
+      null
+    );
+
+    if (!requesRename) {
+      console.log("error while changing displayName from user");
       return false;
     }
     return true;
@@ -133,38 +206,32 @@ const DatabaseTable = (props: {
                         <TableCell
                           key={dataRow[prop] + dataRow["id"] + prop}
                           onClick={async () => {
-                            // if (
-                            //   prop === "id" ||
-                            //   prop == "password" ||
-                            //   prop == "email"
-                            // ) {
-                            //   alert("Das kann nicht geändert werden.");
-                            //   return;
-                            // }
-                            // setActProp(prop);
-                            // setActDataRowID(dataRow["id"]);
-                            // setActData(dataRow[prop]);
-                            // setShowEditData(true);
-                            // setActDataType(typeof dataRow[prop]);
-
-                            // alert(actProp);
-
-                            if (dataRow["id"] == "ADMIN") {
-                              alert("Der Admin kann nicht geändert werden");
+                            if (prop === "displayName") {
+                              // await changeDisplayName(
+                              //   dataRow["id"],
+                              //   "newName123"
+                              // );
+                              // setReload(Math.random());
+                              //setChangeName(true);
                               return;
-                            }
+                            } else {
+                              if (dataRow["id"] == "ADMIN") {
+                                alert("Der Admin kann nicht geändert werden");
+                                return;
+                              }
 
-                            const flag = await changeRight(
-                              dataRow["id"],
-                              prop as "read" | "write" | "delete" | "isAdmin",
-                              !dataRow[prop]
-                            );
+                              const flag = await changeRight(
+                                dataRow["id"],
+                                prop as "read" | "write" | "delete" | "isAdmin",
+                                !dataRow[prop]
+                              );
 
-                            if (!flag) {
-                              alert("Das konnte nicht geändert werden.");
-                              return;
+                              if (!flag) {
+                                alert("Das konnte nicht geändert werden.");
+                                return;
+                              }
+                              setReload(Math.random());
                             }
-                            setReload(Math.random());
                           }}
                           // sx={
                           //   actProp == prop &&
@@ -193,6 +260,14 @@ const DatabaseTable = (props: {
                           color="error"
                           size={"small"}
                           onClick={async () => {
+                            const confirmed = window.confirm(
+                              "Willst du den Benutzer " +
+                                dataRow["email"] +
+                                " wirklich löschen?"
+                            );
+
+                            if (!confirmed) return;
+
                             const erg = await deleteUserByID(dataRow["id"]);
 
                             if (!erg) {

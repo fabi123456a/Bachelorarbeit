@@ -107,35 +107,6 @@ const SceneDetails = (props: {
     return requestedInsert;
   };
 
-  // löscht veralteten CurrentSceneEdit DatenSatze
-  const deleteScenEditByUserID = async () => {
-    const requestedEdits: CurrentSceneEdit[] = await fetchData(
-      props.loggedInUser.id,
-      props.sessionID,
-      "CurrentSceneEdit",
-      "select",
-      { idUser: props.loggedInUser.id },
-      null,
-      null
-    );
-
-    if (!requestedEdits) {
-      return;
-    }
-
-    requestedEdits.forEach(async (edit: CurrentSceneEdit) => {
-      await fetchData(
-        props.loggedInUser.id,
-        props.sessionID,
-        "CurrentSceneEdit",
-        "delete",
-        { id: edit.id },
-        null,
-        null
-      );
-    });
-  };
-
   useEffect(() => {
     if (!props.scene) return;
     getUserFromIdCreator(props.scene.idUserCreater).then((user: User) => {
@@ -214,10 +185,8 @@ const SceneDetails = (props: {
 
       <Button
         onClick={async () => {
-          props.setScene(props.scene);
-
           // prüfen ob es schon einen scenedit gibt und dann löschen
-          await deleteScenEditByUserID();
+          await deleteScenEditByUserID(props.loggedInUser.id, props.sessionID);
 
           const currentWorkingScene: CurrentSceneEdit =
             await insertCurrentSceneEdit();
@@ -227,6 +196,8 @@ const SceneDetails = (props: {
 
             socket.emit("sceneOnEnter", currentWorkingScene);
           }
+
+          props.setScene(props.scene);
         }}
         variant="contained"
       >
@@ -239,3 +210,35 @@ const SceneDetails = (props: {
 };
 
 export default SceneDetails;
+
+// löscht veralteten CurrentSceneEdit DatenSatze
+export const deleteScenEditByUserID = async (
+  userID: string,
+  sessionID: string
+) => {
+  const requestedEdits: CurrentSceneEdit[] = await fetchData(
+    userID,
+    sessionID,
+    "CurrentSceneEdit",
+    "select",
+    { idUser: userID },
+    null,
+    null
+  );
+
+  if (!requestedEdits) {
+    return;
+  }
+
+  requestedEdits.forEach(async (edit: CurrentSceneEdit) => {
+    await fetchData(
+      userID,
+      sessionID,
+      "CurrentSceneEdit",
+      "delete",
+      { id: edit.id },
+      null,
+      null
+    );
+  });
+};

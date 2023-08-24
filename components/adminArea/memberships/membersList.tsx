@@ -23,9 +23,9 @@ const MemberListEntry = (props: {
   >(null);
   const [reload, setReload] = useState(0);
 
-  const deleteSceneFromDB = async (idScene: string) => {
-    // sceneMembership laden um an die id zu kommen zum deleten
-    const requestDelete13: SceneMemberShip[] = await fetchData(
+  const deleteSceneFromDB = async (idScene: string): Promise<boolean> => {
+    // sceneMemberships laden um an die id zu kommen zum deleten
+    const requestedMemberships: SceneMemberShip[] = await fetchData(
       props.idUser,
       props.sessionID,
       "SceneMemberShip",
@@ -35,18 +35,19 @@ const MemberListEntry = (props: {
       null
     );
 
-    requestDelete13.forEach(async (memberShip: SceneMemberShip) => {
-      // memberhips der scene löschen
-      const requestDelete12 = await fetchData(
-        props.idUser,
-        props.sessionID,
-        "SceneMemberShip",
-        "delete",
-        { id: memberShip.id },
-        null,
-        null
-      );
-    });
+    if (requestedMemberships) {
+      for (const membership of requestedMemberships) {
+        await fetchData(
+          props.idUser,
+          props.sessionID,
+          "SceneMemberShip",
+          "delete",
+          { id: membership.id },
+          null,
+          null
+        );
+      }
+    }
 
     // alle models der scene laden für die id des models zum deleten
     const requestedModelsFromScene: Model[] = await fetchData(
@@ -59,17 +60,19 @@ const MemberListEntry = (props: {
       null
     );
 
-    requestedModelsFromScene.forEach(async (model: Model) => {
-      await fetchData(
-        props.idUser,
-        props.sessionID,
-        "model",
-        "delete",
-        { id: model.id },
-        null,
-        null
-      );
-    });
+    if (requestedModelsFromScene) {
+      for (const model of requestedModelsFromScene) {
+        await fetchData(
+          props.idUser,
+          props.sessionID,
+          "model",
+          "delete",
+          { id: model.id },
+          null,
+          null
+        );
+      }
+    }
 
     // scenedatensatz löschen
     const requestedDeleteScene = await fetchData(
@@ -81,7 +84,15 @@ const MemberListEntry = (props: {
       null,
       null
     );
+
+    if (!requestedDeleteScene) {
+      alert("Löschen der Konfiguration fehlgeschlagen");
+      return false;
+    }
+    alert("Die Konfiguration wurde erfolgreich gelöscht");
+    return true;
   };
+
   const getAllSceneMembershipsFromScene = async (idScene: string) => {
     // const requestMemberships = await fetch(
     //   "/api/database/Membership/DB_getAllMembersBySceneID",

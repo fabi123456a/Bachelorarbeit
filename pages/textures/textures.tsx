@@ -129,7 +129,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
               <img
                 src={`./textures/${tex}/Substance_Graph_BaseColor.jpg`}
                 height={"50px"}
-                style={{ marginRight: "8px", height: "20vh", width: "20vh" }}
+                style={{ marginRight: "8px", height: "30vh", width: "30vh" }}
               ></img>
               <Typography>{tex}</Typography>
               {props.loggedInUser.delete ? (

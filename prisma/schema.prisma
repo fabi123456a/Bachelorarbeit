@@ -16,6 +16,7 @@ model User {
   id             String     @id 
   email          String  @unique
   password       String?
+  displayName    String  @default("ADMIN")
   read           Boolean @default(true)
   write          Boolean @default(false)
   delete         Boolean @default(false)

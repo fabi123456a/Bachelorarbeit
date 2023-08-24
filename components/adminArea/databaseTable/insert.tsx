@@ -6,6 +6,10 @@ import { fetchData } from "../../../utils/fetchData";
 import { User } from "@prisma/client";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import { SHA256 } from "crypto-js";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const Insert = (props: {
   setReload: (zahl: number) => void;
@@ -30,6 +34,7 @@ const Insert = (props: {
     let insertData: User = {
       id: uuidv4(),
       email: txtLogin,
+      displayName: txtLogin,
       password: SHA256(txtPw).toString(),
       read: checkedRead,
       write: checkedWrite,
@@ -54,99 +59,98 @@ const Insert = (props: {
 
   return (
     <Stack>
-      <Stack direction={"row"} sx={{ alignItems: "center" }}>
-        <Typography fontWeight={"bold"} fontSize={"20px"} sx={{ p: "12px" }}>
-          Neuen Benutzer erstellen
-        </Typography>
-        {/* <PersonAddAltIcon
-          color={"success"}
-          sx={{ m: "10px" }}
-        ></PersonAddAltIcon> */}
-      </Stack>
-
-      <Stack sx={{ m: "10px", maxWidth: "300px" }}>
-        <TextField
-          label="E-Mail"
-          value={txtLogin}
-          onChange={(e) => {
-            setTxtxLogin(e.target.value);
-          }}
-        ></TextField>
-      </Stack>
-      <Stack sx={{ m: "10px", maxWidth: "300px" }}>
-        <TextField
-          label="Passwort"
-          value={txtPw}
-          onChange={(e) => {
-            setTxtPw(e.target.value);
-          }}
-        ></TextField>
-      </Stack>
-      <Stack direction={"row"} sx={{ alignItems: "center" }}>
-        <Checkbox
-          checked={checkedRead}
-          onChange={(e) => {
-            setCheckedRead(e.target.checked);
-          }}
-        ></Checkbox>
-        <Typography>lesen</Typography>
-      </Stack>
-      <Stack direction={"row"} sx={{ alignItems: "center" }}>
-        <Checkbox
-          checked={checkedWrite}
-          onChange={(e) => {
-            setCheckedWrite(e.target.checked);
-          }}
-        ></Checkbox>
-        <Typography>schreiben</Typography>
-      </Stack>
-      <Stack direction={"row"} sx={{ alignItems: "center" }}>
-        <Checkbox
-          checked={checkedUpdate}
-          onChange={(e) => {
-            setCheckedUpdate(e.target.checked);
-          }}
-        ></Checkbox>
-        <Typography>updaten</Typography>
-      </Stack>
-      <Stack direction={"row"} sx={{ alignItems: "center" }}>
-        <Checkbox
-          checked={checkedDelete}
-          onChange={(e) => {
-            setCheckedDelete(e.target.checked);
-          }}
-        ></Checkbox>
-        <Typography>löschen</Typography>
-      </Stack>
-      <Stack direction={"row"} sx={{ alignItems: "center" }}>
-        <Checkbox
-          checked={checkedAdmin}
-          onChange={(e) => {
-            setCheckedAdmin(e.target.checked);
-          }}
-        ></Checkbox>
-        <Typography>ist Admin</Typography>
-      </Stack>
-      <Button
-        onClick={async () => {
-          const insertedUser = await handleInsert();
-          if (!insertedUser) {
-            alert("Fehler beim hinzufügen des Benutzers.");
-            return;
-          } else {
-            props.setReload(Math.random());
-            setTxtPw("");
-            setTxtxLogin("");
-            setCheckedRead(false);
-            setCheckedWrite(false);
-            setCheckedUpdate(false);
-            setCheckedDelete(false);
-            setCheckedAdmin(false);
-          }
-        }}
-      >
-        Hinzufügen
-      </Button>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography fontWeight={"bold"} fontSize={"20px"} sx={{ p: "12px" }}>
+            Neuen Benutzer erstellen
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Stack sx={{ m: "10px", maxWidth: "300px" }}>
+            <TextField
+              label="E-Mail"
+              value={txtLogin}
+              onChange={(e) => {
+                setTxtxLogin(e.target.value);
+              }}
+            ></TextField>
+          </Stack>
+          <Stack sx={{ m: "10px", maxWidth: "300px" }}>
+            <TextField
+              label="Passwort"
+              value={txtPw}
+              onChange={(e) => {
+                setTxtPw(e.target.value);
+              }}
+            ></TextField>
+          </Stack>
+          <Stack direction={"row"} sx={{ alignItems: "center" }}>
+            <Checkbox
+              checked={checkedRead}
+              onChange={(e) => {
+                setCheckedRead(e.target.checked);
+              }}
+            ></Checkbox>
+            <Typography>lesen</Typography>
+          </Stack>
+          <Stack direction={"row"} sx={{ alignItems: "center" }}>
+            <Checkbox
+              checked={checkedWrite}
+              onChange={(e) => {
+                setCheckedWrite(e.target.checked);
+              }}
+            ></Checkbox>
+            <Typography>schreiben</Typography>
+          </Stack>
+          <Stack direction={"row"} sx={{ alignItems: "center" }}>
+            <Checkbox
+              checked={checkedUpdate}
+              onChange={(e) => {
+                setCheckedUpdate(e.target.checked);
+              }}
+            ></Checkbox>
+            <Typography>updaten</Typography>
+          </Stack>
+          <Stack direction={"row"} sx={{ alignItems: "center" }}>
+            <Checkbox
+              checked={checkedDelete}
+              onChange={(e) => {
+                setCheckedDelete(e.target.checked);
+              }}
+            ></Checkbox>
+            <Typography>löschen</Typography>
+          </Stack>
+          <Stack direction={"row"} sx={{ alignItems: "center" }}>
+            <Checkbox
+              checked={checkedAdmin}
+              onChange={(e) => {
+                setCheckedAdmin(e.target.checked);
+              }}
+            ></Checkbox>
+            <Typography>ist Admin</Typography>
+          </Stack>
+          <Button
+            onClick={async () => {
+              const insertedUser = await handleInsert();
+              if (!insertedUser) {
+                alert("Fehler beim hinzufügen des Benutzers.");
+                return;
+              } else {
+                props.setReload(Math.random());
+                setTxtPw("");
+                setTxtxLogin("");
+                setCheckedRead(false);
+                setCheckedWrite(false);
+                setCheckedUpdate(false);
+                setCheckedDelete(false);
+                setCheckedAdmin(false);
+              }
+            }}
+          >
+            Hinzufügen
+          </Button>
+        </AccordionDetails>
+      </Accordion>
     </Stack>
   );
 };
