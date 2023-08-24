@@ -171,28 +171,43 @@ const Settings = (props: { user: User; sessionID: string }) => {
 
       <Stack direction={"row"} sx={{ ml: "8px" }}>
         <Stack>
-          <Typography sx={{ minWidth: "120px" }}>lesen: </Typography>
-          <Typography sx={{ minWidth: "120px" }}>schreiben: </Typography>
-          <Typography sx={{ minWidth: "120px" }}>löschen: </Typography>
+          <Typography sx={{ minWidth: "120px", minHeight: "4vh" }}>
+            lesen:{" "}
+          </Typography>
+          <Typography sx={{ minWidth: "120px", minHeight: "4vh" }}>
+            schreiben:{" "}
+          </Typography>
+          <Typography sx={{ minWidth: "120px", minHeight: "4vh" }}>
+            löschen:{" "}
+          </Typography>
+          <Typography sx={{ minWidth: "120px", minHeight: "4vh" }}>
+            Admin:{" "}
+          </Typography>
         </Stack>
         <Stack>
           {props.user.read ? (
-            <CheckIcon color="success" />
+            <CheckIcon color="success" sx={{ minHeight: "4vh" }} />
           ) : (
-            <CloseIcon color="warning" />
+            <CloseIcon color="error" sx={{ minHeight: "4vh" }} />
           )}
           {props.user.write ? (
-            <CheckIcon color="success" />
+            <CheckIcon color="success" sx={{ minHeight: "4vh" }} />
           ) : (
-            <CloseIcon color="warning" />
+            <CloseIcon color="error" sx={{ minHeight: "4vh" }} />
           )}
           {props.user.delete ? (
-            <CheckIcon color="success" />
+            <CheckIcon color="success" sx={{ minHeight: "4vh" }} />
           ) : (
-            <CloseIcon color="warning" />
+            <CloseIcon color="error" sx={{ minHeight: "4vh" }} />
+          )}
+          {props.user.isAdmin ? (
+            <CheckIcon color="success" sx={{ minHeight: "4vh" }} />
+          ) : (
+            <CloseIcon color="error" sx={{ minHeight: "4vh" }} />
           )}
         </Stack>
       </Stack>
+
       <Typography
         sx={{
           mt: "12px",

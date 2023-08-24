@@ -105,7 +105,7 @@ const SceneListEntry = (props: {
     setUserCreator(requestedCreator[0]);
   };
 
-  const getSceneModelsCount = async (idScene: string) => {
+  const getSceneModelsCount = async () => {
     const requestedModels = await fetchData(
       props.user.id,
       props.sessionID,
@@ -113,7 +113,6 @@ const SceneListEntry = (props: {
       "select",
       {
         idScene: props.scene.id,
-        version: props.scene.newestVersion,
       },
       null,
       null
@@ -142,9 +141,36 @@ const SceneListEntry = (props: {
     setCurrentEdits(requestedCurrentEdit);
   };
 
+  const removeMembership = async (): Promise<boolean> => {
+    const requestRemoveMembership: SceneMemberShip[] = await fetchData(
+      props.user.id,
+      props.sessionID,
+      "SceneMemberShip",
+      "select",
+      { idScene: props.scene.id, idUser: props.user.id },
+      null,
+      null
+    );
+
+    for (const membership of requestRemoveMembership) {
+      await fetchData(
+        props.user.id,
+        props.sessionID,
+        "SceneMemberShip",
+        "delete",
+        { id: membership.id },
+        null,
+        null
+      );
+    }
+
+    if (!requestRemoveMembership) return false;
+    return true;
+  };
+
   useEffect(() => {
     getUserFromScene();
-    getSceneModelsCount(props.scene.id);
+    getSceneModelsCount();
     getCurrentEdits();
   }, [props.reload]);
 
@@ -166,9 +192,7 @@ const SceneListEntry = (props: {
       <Stack sx={{ flexGrow: 1 }}>
         {currentEdits ? (
           currentEdits.length > 0 ? (
-            <Stack className="sceneListEntryOnline">
-              {currentEdits.length}
-            </Stack>
+            <Stack>{currentEdits.length}</Stack>
           ) : null
         ) : null}
         <Typography sx={{ fontWeight: "bold", fontSize: "16px", mb: "6px" }}>
@@ -229,7 +253,35 @@ const SceneListEntry = (props: {
             >
               Löschen
             </Button>
-          ) : null
+          ) : (
+            <Button
+              color="error"
+              onClick={async (e) => {
+                e.stopPropagation();
+
+                let result = confirm(
+                  "Wollen Sie wirklich die Scene " +
+                    props.scene.name +
+                    " entfernen?"
+                );
+
+                if (!result) return;
+
+                const flag = await removeMembership();
+
+                if (!flag) {
+                  alert(
+                    "Das entfernen aus der Konfiguration ist fehlgeschlagen."
+                  );
+                  return;
+                }
+                alert("Sie haben die Konfiguration entfernt.");
+                props.setReload(Math.random());
+              }}
+            >
+              entfernen
+            </Button>
+          )
         ) : null
       ) : null}
     </Stack>

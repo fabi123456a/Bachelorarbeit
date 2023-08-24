@@ -65,7 +65,7 @@ function UserCam(props: {
   return pos && rot ? (
     <>
       <Html position={[pos.x, pos.y, pos.z]}>
-        <Typography>{user ? user.email : "lädt.."}</Typography>
+        <Typography>{user ? user.displayName : "lädt.."}</Typography>
       </Html>
       <Box
         material={new THREE.MeshStandardMaterial({ color: "red" })}

@@ -125,7 +125,7 @@ const SceneDetails = (props: {
   }, []);
 
   return props.scene ? (
-    <Stack sx={{ padding: "12px" }}>
+    <Stack sx={{ padding: "12px", overflow: "auto", width: "100%" }}>
       <Stack direction={"row"} sx={{ alignItems: "center" }}>
         <IconButton
           className="iconButton"
@@ -140,7 +140,43 @@ const SceneDetails = (props: {
         </Typography>
       </Stack>
 
-      <Stack className="roundedShadow" direction={"column"}>
+      <Stack
+        sx={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Button
+          sx={{ p: "12px", maxWidth: "80vh" }}
+          onClick={async () => {
+            // prüfen ob es schon einen scenedit gibt und dann löschen
+            await deleteScenEditByUserID(
+              props.loggedInUser.id,
+              props.sessionID
+            );
+
+            const currentWorkingScene: CurrentSceneEdit =
+              await insertCurrentSceneEdit();
+
+            if (currentWorkingScene) {
+              props.currentWorkingScene.current = currentWorkingScene;
+
+              socket.emit("sceneOnEnter", currentWorkingScene);
+            }
+
+            props.setScene(props.scene);
+          }}
+          variant="contained"
+        >
+          Konfiguration betreten
+        </Button>
+      </Stack>
+
+      <Stack
+        className="roundedShadow"
+        direction={"column"}
+        sx={{ background: "white" }}
+      >
         <Stack direction={"row"}></Stack>
         <Typography fontWeight={"bold"} sx={{ mb: "2vh" }}>
           Infos:
@@ -182,27 +218,6 @@ const SceneDetails = (props: {
         loggedInUser={props.loggedInUser}
         sessionID={props.sessionID}
       ></CurrentWorkingList>
-
-      <Button
-        onClick={async () => {
-          // prüfen ob es schon einen scenedit gibt und dann löschen
-          await deleteScenEditByUserID(props.loggedInUser.id, props.sessionID);
-
-          const currentWorkingScene: CurrentSceneEdit =
-            await insertCurrentSceneEdit();
-
-          if (currentWorkingScene) {
-            props.currentWorkingScene.current = currentWorkingScene;
-
-            socket.emit("sceneOnEnter", currentWorkingScene);
-          }
-
-          props.setScene(props.scene);
-        }}
-        variant="contained"
-      >
-        Konfiguration betreten
-      </Button>
     </Stack>
   ) : (
     <Typography>Scene lädt...</Typography>

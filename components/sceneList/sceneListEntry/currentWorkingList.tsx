@@ -50,31 +50,36 @@ const CurrentWorkingList = (props: {
     );
   }, []);
 
-  return currentScenEdits ? (
-    currentScenEdits.length == 0 ? null : (
-      <Stack className="roundedShadow">
-        Online
-        <Stack>
-          {currentScenEdits
-            ? currentScenEdits.map(
-                (
-                  edit: CurrentSceneEdit & {
-                    user: User;
-                  }
-                ) => {
-                  return (
-                    <Stack direction={"row"} sx={{ alignItems: "center" }}>
-                      <CircleIcon color="success"></CircleIcon>
-                      <Typography>{edit.user.email}</Typography>
-                    </Stack>
-                  );
+  return (
+    <Stack className="roundedShadow">
+      <Typography fontWeight={"bold"}>Online</Typography>
+      <Stack>
+        {currentScenEdits ? (
+          currentScenEdits.length > 0 ? (
+            currentScenEdits.map(
+              (
+                edit: CurrentSceneEdit & {
+                  user: User;
                 }
-              )
-            : null}
-        </Stack>
+              ) => {
+                return (
+                  <Stack direction={"row"} sx={{ alignItems: "center" }}>
+                    <CircleIcon color="success"></CircleIcon>
+                    <Typography>{edit.user.email}</Typography>
+                  </Stack>
+                );
+              }
+            )
+          ) : (
+            <Typography fontSize={"12px"}>
+              Keiner bearbeitet die Konfiguration gerade. Wenn ein Benutzer die
+              Konfiguration bearbeitet wird dies hier angezeigt.
+            </Typography>
+          )
+        ) : null}
       </Stack>
-    )
-  ) : null;
+    </Stack>
+  );
 };
 
 export default CurrentWorkingList;
