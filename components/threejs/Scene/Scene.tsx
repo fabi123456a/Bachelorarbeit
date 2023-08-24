@@ -42,6 +42,7 @@ export default function Scene(props: {
 }) {
   const [workers, setWorkers] = useState<CurrentSceneEdit[]>(null);
   const [reload, setReload] = useState<number>(null);
+  const refCurrent = useRef<TypeObjectProps>();
 
   const getWorkers = async () => {
     const requestedWorkers = await fetchData(
@@ -229,6 +230,7 @@ export default function Scene(props: {
             ></PointlightPivot>
           ) : (
             <BoxGeoPivot
+              reCurrent={refCurrent}
               key={model.id}
               controlsRef={props.controlsRef}
               isSelected={model.id === props.currentObjectProps?.id}
@@ -280,6 +282,7 @@ export default function Scene(props: {
             ></Cylinderqq>
           ) : (
             <BoxGeoPivot
+              reCurrent={refCurrent}
               key={model.id}
               // id={model.id}
               controlsRef={props.controlsRef}

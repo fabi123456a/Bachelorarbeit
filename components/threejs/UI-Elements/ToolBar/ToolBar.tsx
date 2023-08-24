@@ -138,7 +138,8 @@ function ToolBar(props: {
                   {/* Verschieben */}
                   <IconButton
                     color={
-                      props.currentObjProps.editMode === "translate"
+                      props.currentObjProps.editMode === "translate" || //vorher war ohne  || !props.currentObjProps.editMode, weil sonderfall, am anfamng ist editmode undefinded weil es keinen wert initial in der DB gibt
+                      !props.currentObjProps.editMode
                         ? "primary"
                         : undefined
                     }
@@ -190,7 +191,7 @@ function ToolBar(props: {
                     <ThreeSixtyIcon></ThreeSixtyIcon>
                   </IconButton>
                   {/* Sperren */}
-                  <IconButton
+                  {/* <IconButton
                     color={
                       props.currentObjProps.editMode === undefined
                         ? "primary"
@@ -202,7 +203,7 @@ function ToolBar(props: {
                     }}
                   >
                     <LockIcon></LockIcon>
-                  </IconButton>
+                  </IconButton> */}
                 </Stack>
                 <Stack>
                   <IconButton

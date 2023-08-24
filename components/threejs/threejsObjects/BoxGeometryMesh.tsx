@@ -19,6 +19,7 @@ function BoxGeometry(props: {
   htmlSettings: boolean;
   setCurentObj: (obj: TypeObjectProps) => void;
   objProps: TypeObjectProps;
+  reCurrent: MutableRefObject<TypeObjectProps>;
 }) {
   const [isLoading, setIsLoading] = useState(true);
   const [colorMap, displacementMap, normalMap, roughnessMap, aoMap] =
@@ -68,7 +69,10 @@ function BoxGeometry(props: {
       onDoubleClick={(e) => {
         if (e) {
           e.stopPropagation();
-          props.setCurrentObjProps ? props.setCurrentObjProps() : null;
+          props.reCurrent.current = props.objProps;
+
+          if (!props.objProps.editMode)
+            props.setCurrentObjProps ? props.setCurrentObjProps() : null;
         }
       }}
     >

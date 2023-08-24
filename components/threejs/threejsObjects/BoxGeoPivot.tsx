@@ -19,6 +19,7 @@ function BoxGeoPivot(props: {
   testMode: boolean;
   htmlSettings: boolean;
   idScene: string;
+  reCurrent: MutableRefObject<TypeObjectProps>;
 }) {
   // referenz auf das Mesh des FBX-Models
   const refMesh = useRef<THREE.Mesh>(null);
@@ -30,6 +31,11 @@ function BoxGeoPivot(props: {
 
   // function
   const setCurrentObj = () => {
+    let editModeC = "translate";
+
+    if (props.reCurrent.current.id == props.objProps.id)
+      editModeC = props.objProps.editMode;
+
     // position des Objects als Vektor3
     let vectorPosition: Vector3 = new Vector3();
     refMesh.current?.getWorldPosition(vectorPosition);
@@ -55,7 +61,7 @@ function BoxGeoPivot(props: {
         y: tcRef.current?.object.rotation.y ?? 0,
         z: tcRef.current?.object.rotation.z ?? 0,
       },
-      editMode: "translate", //props.editMode,
+      editMode: editModeC as "translate" | "scale" | "rotate", //props.editMode,
       showXTransform: true, //props.showXTransform,
       showYTransform: true, //props.showYTransform,
       showZTransform: true, //props.showZTransform,
@@ -82,7 +88,7 @@ function BoxGeoPivot(props: {
     <>
       <TransformControls
         ref={tcRef}
-        mode={props.objProps.editMode ? props.objProps.editMode : "scale"}
+        mode={props.objProps.editMode} //  ? props.objProps.editMode : "scale"
         showX={props.isSelected && props.objProps.showXTransform}
         showY={props.isSelected && props.objProps.showYTransform}
         showZ={props.isSelected && props.objProps.showZTransform}
@@ -133,6 +139,7 @@ function BoxGeoPivot(props: {
       >
         <>
           <BoxGeometry
+            reCurrent={props.reCurrent}
             ref123={refMesh}
             setCurrentObjProps={props.testMode ? null : setCurrentObj}
             geometrie={{ positionXYZ: [0, 0, 0], scaleXYZ: [1, 1, 1] }}
