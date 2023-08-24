@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { Html, TransformControls } from "@react-three/drei";
 import * as THREE from "three";
 import { Vector3 } from "three";
-import BoxGeometry from "./BoxGeometry";
+import BoxGeometry from "./BoxGeometryMesh";
 import { Button } from "@mui/material";
 import HtmlSettings from "./HtmlSettings";
 import { checkPropsForNull } from "../../../utils/checkIfPropIsNull";
@@ -106,6 +106,7 @@ function BoxGeoPivot(props: {
         onMouseUp={(e) => {
           //Checks if an event happened or if component just rerendered
           if (e) {
+            console.log("mouseup:" + props.objProps.name);
             setCurrentObj();
             console.log("_Kamerarotation frei");
 
@@ -133,7 +134,7 @@ function BoxGeoPivot(props: {
         <>
           <BoxGeometry
             ref123={refMesh}
-            onclick={props.testMode ? null : setCurrentObj}
+            setCurrentObjProps={props.testMode ? null : setCurrentObj}
             geometrie={{ positionXYZ: [0, 0, 0], scaleXYZ: [1, 1, 1] }}
             testMode={props.testMode}
             color={props.objProps.color}

@@ -1,14 +1,18 @@
-import React, { Ref, useEffect, useState } from "react";
+import React, { MutableRefObject, Ref, useEffect, useState } from "react";
 import { BufferGeometry, Material, Mesh } from "three";
 import HtmlSettings from "./HtmlSettings";
 import { TextureLoader } from "three/src/loaders/TextureLoader";
 import { useLoader } from "@react-three/fiber";
-import { BoxGeometryValue, TypeObjectProps } from "../../../pages/threejs/types";
+import {
+  BoxGeometryValue,
+  TypeObjectProps,
+} from "../../../pages/threejs/types";
+import { CurrentSceneEdit } from "@prisma/client";
 
 function BoxGeometry(props: {
   // position & skalieren der Box
   geometrie: BoxGeometryValue;
-  onclick?: () => void;
+  setCurrentObjProps?: () => void;
   ref123?: Ref<Mesh<BufferGeometry, Material | Material[]>>;
   testMode: boolean;
   color: string;
@@ -52,8 +56,19 @@ function BoxGeometry(props: {
         props.geometrie.positionXYZ[2],
       ]}
       onClick={(e) => {
+        // if (e) {
+        //   console.log(
+        //     "currentObjProps: " + JSON.stringify(props.refCurrent.current)
+        //   );
+        //   if (props.refCurrent.current.id == props.objProps.id) {
+        //     props.setCurrentObjProps ? props.setCurrentObjProps() : null;
+        //   }
+        // }
+      }}
+      onDoubleClick={(e) => {
         if (e) {
-          props.onclick ? props.onclick() : null;
+          e.stopPropagation();
+          props.setCurrentObjProps ? props.setCurrentObjProps() : null;
         }
       }}
     >

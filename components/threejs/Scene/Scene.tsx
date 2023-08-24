@@ -6,7 +6,7 @@ import * as THREE from "three";
 import { Box, TransformControls } from "@react-three/drei";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import PointlightPivot from "../threejsObjects/Pointlight";
-import { MutableRefObject, useEffect, useState } from "react";
+import { MutableRefObject, useEffect, useState, useRef } from "react";
 import { fetchData } from "../../../utils/fetchData";
 import { CurrentSceneEdit } from "@prisma/client";
 import io from "socket.io-client";
