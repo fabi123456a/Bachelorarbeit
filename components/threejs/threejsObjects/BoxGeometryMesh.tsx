@@ -71,8 +71,9 @@ function BoxGeometry(props: {
           e.stopPropagation();
           props.reCurrent.current = props.objProps;
 
-          if (!props.objProps.editMode)
-            props.setCurrentObjProps ? props.setCurrentObjProps() : null;
+          // alert(props.objProps.editMode);
+          // if (!props.objProps.editMode)
+          props.setCurrentObjProps ? props.setCurrentObjProps() : null;
         }
       }}
     >

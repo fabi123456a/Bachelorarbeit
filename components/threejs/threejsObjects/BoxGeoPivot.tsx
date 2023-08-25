@@ -25,10 +25,6 @@ function BoxGeoPivot(props: {
   const refMesh = useRef<THREE.Mesh>(null);
   const tcRef = useRef<any>(null);
 
-  // default color
-  const defaultColor = "#328da8";
-  const highlightColor = "#fffb00";
-
   // function
   const setCurrentObj = () => {
     let editModeC = "translate";
