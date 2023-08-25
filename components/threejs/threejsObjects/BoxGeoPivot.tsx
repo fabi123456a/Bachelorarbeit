@@ -27,10 +27,10 @@ function BoxGeoPivot(props: {
 
   // function
   const setCurrentObj = () => {
-    let editModeC = "translate";
+    // let editModeC = "translate";
 
-    if (props.reCurrent.current.id == props.objProps.id)
-      editModeC = props.objProps.editMode;
+    // if (props.reCurrent.current.id == props.objProps.id)
+    //   editModeC = props.objProps.editMode;
 
     // position des Objects als Vektor3
     let vectorPosition: Vector3 = new Vector3();
@@ -57,7 +57,7 @@ function BoxGeoPivot(props: {
         y: tcRef.current?.object.rotation.y ?? 0,
         z: tcRef.current?.object.rotation.z ?? 0,
       },
-      editMode: editModeC as "translate" | "scale" | "rotate", //props.editMode,
+      editMode: props.objProps.editMode, //editModeC as "translate" | "scale" | "rotate", //props.editMode,
       showXTransform: true, //props.showXTransform,
       showYTransform: true, //props.showYTransform,
       showZTransform: true, //props.showZTransform,

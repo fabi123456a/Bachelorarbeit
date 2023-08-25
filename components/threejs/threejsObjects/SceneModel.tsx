@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { TransformControls } from "@react-three/drei";
-import { useLoader } from "@react-three/fiber";
+import { ThreeEvent, useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import * as THREE from "three";
 import { Vector3 } from "three";
@@ -32,6 +32,7 @@ function SceneModel(
   const [key, setKey] = useState(0);
 
   useEffect(() => {
+    // refMesh.current.
     // TODO: braucht man das?
     // tcRef ? (tcRef.current.domElement.style.pointerEvents = "auto") : null;
   }, []);
@@ -65,7 +66,7 @@ function SceneModel(
         y: tcRef.current?.object.rotation.y ?? 0,
         z: tcRef.current?.object.rotation.z ?? 0,
       },
-      editMode: "translate", //props.editMode,
+      editMode: props.editMode, //props.editMode,
       showXTransform: true, //props.showXTransform,
       showYTransform: true, //props.showYTransform,
       showZTransform: true, //props.showZTransform,
@@ -125,60 +126,73 @@ function SceneModel(
             props.controlsRef.current.enableRotate = false;
           }
         }}
-        onClick={(e) => {
-          if (props.testmode) return;
-          if (e) {
-            e.stopPropagation();
-            setCurrentObj();
-          }
-        }}
+        // onClick={(e) => {
+        //   alert("xx");
+        //   if (props.testmode) return;
+        //   if (e) {
+        //     e.stopPropagation();
+        //     setCurrentObj();
+        //   }
+        // }}
       >
-        <primitive
-          onClick={() => {
-            if (props.testmode) return;
-            setCurrentObj();
+        <mesh
+          onDoubleClick={(e: ThreeEvent<MouseEvent>) => {
+            // alert("xx");
+
+            if (e) {
+              e.stopPropagation();
+              setCurrentObj ? setCurrentObj() : null;
+            }
           }}
-          ref={refMesh}
-          object={fbx.clone(true)}
         >
-          {props.htmlSettings ? (
-            <HtmlSettings
-              currentObjProps={
-                {
-                  id: props.id,
-                  position: {
-                    x: props.position.x,
-                    y: props.position.y,
-                    z: props.position.z,
-                  },
-                  scale: {
-                    x: props.scale.x,
-                    y: props.scale.y,
-                    z: props.scale.z,
-                  },
-                  rotation: {
-                    x: props.rotation.x,
-                    y: props.rotation.x,
-                    z: props.rotation.x,
-                  },
-                  editMode: props.editMode, //props.editMode,
-                  showXTransform: props.showXTransform, //props.showXTransform,
-                  showYTransform: props.showYTransform, //props.showYTransform,
-                  showZTransform: props.showZTransform, //props.showZTransform,
-                  modelPath: props.modelPath,
-                  visibleInOtherPerspective: props.visibleInOtherPerspective,
-                  name: props.name,
-                  color: "",
-                  info: props.info ? props.info : "",
-                  texture: "",
-                  idScene: props.idScene,
-                } as TypeObjectProps
-              }
-              flag={true}
-              setCurentObj={props.setCurrentObjectProps}
-            ></HtmlSettings>
-          ) : null}
-        </primitive>
+          <primitive
+            // onClick={() => {
+            //   if (props.testmode) return;
+            //   setCurrentObj();
+            // }}
+
+            ref={refMesh}
+            object={fbx.clone(true)}
+          >
+            {props.htmlSettings ? (
+              <HtmlSettings
+                currentObjProps={
+                  {
+                    id: props.id,
+                    position: {
+                      x: props.position.x,
+                      y: props.position.y,
+                      z: props.position.z,
+                    },
+                    scale: {
+                      x: props.scale.x,
+                      y: props.scale.y,
+                      z: props.scale.z,
+                    },
+                    rotation: {
+                      x: props.rotation.x,
+                      y: props.rotation.x,
+                      z: props.rotation.x,
+                    },
+                    editMode: props.editMode, //props.editMode,
+                    showXTransform: props.showXTransform, //props.showXTransform,
+                    showYTransform: props.showYTransform, //props.showYTransform,
+                    showZTransform: props.showZTransform, //props.showZTransform,
+                    modelPath: props.modelPath,
+                    visibleInOtherPerspective: props.visibleInOtherPerspective,
+                    name: props.name,
+                    color: "",
+                    info: props.info ? props.info : "",
+                    texture: "",
+                    idScene: props.idScene,
+                  } as TypeObjectProps
+                }
+                flag={true}
+                setCurentObj={props.setCurrentObjectProps}
+              ></HtmlSettings>
+            ) : null}
+          </primitive>
+        </mesh>
       </TransformControls>
     </>
   ) : null;
