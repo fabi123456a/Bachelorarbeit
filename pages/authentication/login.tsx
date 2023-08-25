@@ -2,6 +2,7 @@ import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { User } from "@prisma/client";
 import { SHA256 } from "crypto-js";
+import { deleteScenEditByUserID } from "../../components/sceneList/sceneListEntry/sceneDetails";
 
 const Home = (props: {
   setLoggedIn: (flag: boolean) => void;

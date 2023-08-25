@@ -10,6 +10,7 @@ import {
 import AddScene from "./addScne";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { fetchData } from "../../utils/fetchData";
+import CurrentWorkingList from "./sceneListEntry/currentWorkingList";
 
 const SceneListEntry = (props: {
   scene: Scene;
@@ -190,11 +191,6 @@ const SceneListEntry = (props: {
       }}
     >
       <Stack sx={{ flexGrow: 1 }}>
-        {currentEdits ? (
-          currentEdits.length > 0 ? (
-            <Stack>{currentEdits.length}</Stack>
-          ) : null
-        ) : null}
         <Typography sx={{ fontWeight: "bold", fontSize: "16px", mb: "6px" }}>
           {props.scene.name}
         </Typography>

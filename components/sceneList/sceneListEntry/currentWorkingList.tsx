@@ -65,7 +65,9 @@ const CurrentWorkingList = (props: {
                 return (
                   <Stack direction={"row"} sx={{ alignItems: "center" }}>
                     <CircleIcon color="success"></CircleIcon>
-                    <Typography>{edit.user.email}</Typography>
+                    <Typography>
+                      {edit.user.displayName}({edit.user.email})
+                    </Typography>
                   </Stack>
                 );
               }
