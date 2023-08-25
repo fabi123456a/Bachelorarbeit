@@ -69,8 +69,7 @@ const SceneList = (props: {
 
     if (!requestMemberships) return;
 
-    if (requestMemberships.error) {
-      alert(requestMemberships.error);
+    if (!requestMemberships) {
       return;
     }
 

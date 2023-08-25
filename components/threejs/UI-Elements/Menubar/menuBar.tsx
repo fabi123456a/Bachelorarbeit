@@ -44,7 +44,7 @@ const MenuBar = (props: {
       null
     );
 
-    if (requestedMembership.error) return null;
+    if (!requestedMembership) return null;
 
     return requestedMembership;
   };

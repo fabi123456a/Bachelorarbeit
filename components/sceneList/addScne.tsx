@@ -35,7 +35,7 @@ const AddScene = (props: {
       null
     );
 
-    if (requestInsertScene.error) return null;
+    if (!requestInsertScene) return null;
 
     return requestInsertScene;
   };

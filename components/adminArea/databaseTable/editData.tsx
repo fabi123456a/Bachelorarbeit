@@ -139,7 +139,7 @@ const EditData = (props: {
         onClick={async () => {
           const flag = await editDataInDatabase(); // TODO: prüfen ob das löschen überhaupt funktioniert hat
 
-          if (!flag || flag.error) {
+          if (!flag) {
             alert(flag.error);
             return;
           }

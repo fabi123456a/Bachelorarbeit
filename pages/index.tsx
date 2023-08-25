@@ -61,7 +61,7 @@ const Index = () => {
 
     const session = await requestedSession.json();
 
-    if (session.error) return null;
+    if (!session) return null;
 
     return session;
   };

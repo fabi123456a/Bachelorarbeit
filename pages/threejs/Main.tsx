@@ -657,8 +657,7 @@ export default function Main(props: {
       null
     );
 
-    if (requestChangeVersion.error) {
-      alert(requestChangeVersion.error);
+    if (requestChangeVersion) {
       return null;
     }
   }
