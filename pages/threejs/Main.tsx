@@ -495,6 +495,7 @@ export default function Main(props: {
     const fbxLoader = new FBXLoader();
 
     for (const element of models) {
+      if (element.info == "licht") return;
       if (!element.modelPath) {
         // Erstelle eine Box-Geometrie
         const boxGeometry = new THREE.BoxGeometry(
