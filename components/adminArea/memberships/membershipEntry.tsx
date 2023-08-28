@@ -110,8 +110,15 @@ const MembershipEntry = (props: {
 
       <Typography sx={{ minWidth: "20vh" }}>
         {props.scene.idUserCreater == props.membership.user.id
-          ? props.membership.user.email + " (Ersteller)"
-          : props.membership.user.email}
+          ? props.membership.user.displayName +
+            " (" +
+            props.membership.user.email +
+            ")" +
+            " Ersteller"
+          : props.membership.user.displayName +
+            " (" +
+            props.membership.user.email +
+            ")"}
       </Typography>
       {props.scene.idUserCreater == props.membership.user.id ? null : (
         <>

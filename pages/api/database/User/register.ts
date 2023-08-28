@@ -8,7 +8,7 @@ export default async function register(
   //   const { loginID, password } = req.body;
   const b = req.body;
   const requestData = JSON.parse(b);
-  const loginID = requestData["email"];
+  const loginID: string = requestData["email"];
   const password = requestData["password"];
 
   console.log("REGISTER_TRY: " + loginID + ", " + password);
@@ -23,6 +23,7 @@ export default async function register(
         read: true,
         write: true,
         delete: false,
+        displayName: loginID.split("@")[0],
       },
     });
     console.log("REGISTER => " + loginID);

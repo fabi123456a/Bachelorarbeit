@@ -27,8 +27,6 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
     const code = generateEightDigitNumber();
     const hashedCode = SHA256(code.toString()).toString();
 
-    alert(code + ", " + hashedCode);
-
     // email in db einfügen
     const response = await fetch("/api/database/User/register", {
       method: "POST",
@@ -80,6 +78,12 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
             alert("Geben Sie eine E-Mail zum Registrieren an.");
             return;
           }
+
+          if (!txtLoginID.includes("@")) {
+            alert("Geben sie eine gültige E-Mail an.");
+            return;
+          }
+
           const registeredUser: User = await handleBtnRegisterClick(
             txtLoginID,
             txtPw
