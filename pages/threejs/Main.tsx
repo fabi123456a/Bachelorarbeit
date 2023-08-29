@@ -686,9 +686,10 @@ export default function Main(props: {
   // ---- COMPONENT ----
   return props.user && props.sessionID && props.scene ? (
     <Stack className="main">
-      <Typography>
-        readonly: {props.membership.readOnly ? "ja" : "nein"}
-      </Typography>
+      {props.membership.readOnly ? (
+        <Typography>readonly Modus</Typography>
+      ) : null}
+
       <MenuBar
         idUser={props.user.id}
         sessionID={props.sessionID}

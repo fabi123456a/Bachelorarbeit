@@ -22,7 +22,7 @@ export default async function register(
         isAdmin: false,
         read: true,
         write: true,
-        delete: false,
+        delete: true,
         displayName: loginID.split("@")[0],
       },
     });
