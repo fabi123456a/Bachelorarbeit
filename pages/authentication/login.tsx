@@ -18,6 +18,7 @@ const Home = (props: {
 
   const handleBtnRegisterClick = () => {
     props.setRegister(true);
+    props.setResetPw(false);
   };
 
   // checkt login & pw wenns stim kommt der user zurück
@@ -78,7 +79,7 @@ const Home = (props: {
           type="password"
         ></TextField>
         <Button
-          sx={{ mt: "24px" }}
+          sx={{ mt: "24px", background: "#1c8445" }}
           size="large"
           variant="contained"
           onClick={async () => {
@@ -91,13 +92,16 @@ const Home = (props: {
 
             props.setLoggedIn(true);
             props.setActUser(user);
+            props.setResetPw(false);
           }}
         >
           Login
         </Button>
-        <Button onClick={handleBtnRegisterClick}>Registrieren</Button>
+        <Button onClick={handleBtnRegisterClick} sx={{ color: "#1c8445" }}>
+          Registrieren
+        </Button>
         <Button
-          sx={{ fontSize: "10px", mt: "12px" }}
+          sx={{ fontSize: "10px", mt: "12px", color: "#1c8445" }}
           onClick={() => {
             props.setLoggedIn(false);
             props.setRegister(false);

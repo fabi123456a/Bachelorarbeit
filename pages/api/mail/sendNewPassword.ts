@@ -20,19 +20,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   const hashedPw = SHA256(newPassword).toString();
+  try {
+    await prismaClient.user.update({
+      where: { email: email },
+      data: { password: hashedPw },
+    });
 
-  await prismaClient.user.update({
-    where: { email: email },
-    data: { password: hashedPw },
-  });
+    sendEmail(
+      email,
+      "Neues Passwort",
+      "Ihr neues Passwort lautet: " +
+        newPassword +
+        ". Sie können das Passwort in den Einstellungen wieder ändern."
+    );
 
-  sendEmail(
-    email,
-    "Neues Passwort",
-    "Ihr neues Passwort lautet: " +
-      newPassword +
-      ". Sie können das Passwort in den Einstellungen wieder ändern."
-  );
+    res.send(true);
+  } catch (e) {
+    console.log(e);
+    res.send(false);
+  }
 };
 
 export default handler;

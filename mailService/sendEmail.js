@@ -3,9 +3,9 @@ const nodemailer = require("nodemailer");
 const sendEmail = async (to1, subject1, text1) => {
   // Konfiguration des Transporters
   const transporter = nodemailer.createTransport({
-    service: "gmail", 
+    service: "gmail",
     auth: {
-      user: "leistellenkonfigurator@gmail.com", 
+      user: "leistellenkonfigurator@gmail.com",
       pass: "mchjrtlhsvosdzjo",
     },
   });
@@ -22,7 +22,7 @@ const sendEmail = async (to1, subject1, text1) => {
     if (error) {
       throw new Error(error);
     } else {
-      console.log("Email Sent");
+      console.log("Eine E-Mail wurde an " + to1 + " gesendet.");
       return true;
     }
   });

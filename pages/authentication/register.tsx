@@ -2,6 +2,7 @@ import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { SHA256 } from "crypto-js";
 import { User } from "@prisma/client";
+import CubeRotater from "../../components/threejs/cubeRotator/cubeRotator";
 
 const Register = (props: { setRegister: (flag: boolean) => void }) => {
   const [txtLoginID, setTxtLoginID] = useState<string>(
@@ -63,17 +64,34 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
   };
 
   return (
-    <Stack className="register">
-      <Typography variant="h1">Registrieren</Typography>
-      <TextField
-        label={"E-Mail"}
-        variant="filled"
-        onChange={(event) => {
-          setTxtLoginID(event.target.value);
+    <Stack
+      className="register"
+      sx={{
+        width: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <img
+        src="./logo/Logo-Icon-final.png"
+        style={{
+          transform: "scale(0.2)",
+          position: "absolute",
         }}
-        value={txtLoginID}
-      ></TextField>
-      {/* <TextField
+      ></img>
+      <Stack sx={{ maxWidth: "70%" }} className="roundedShadow">
+        <Typography variant="h2" sx={{ mb: "24px" }}>
+          Registrieren
+        </Typography>
+        <TextField
+          label={"E-Mail"}
+          variant="filled"
+          onChange={(event) => {
+            setTxtLoginID(event.target.value);
+          }}
+          value={txtLoginID}
+        ></TextField>
+        {/* <TextField
         label={"Passwort"}
         variant="filled"
         onChange={(event) => {
@@ -81,43 +99,46 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
         }}
         value={txtPw}
       ></TextField> */}
-      <Button
-        sx={{ mt: "24px" }}
-        size="large"
-        variant="contained"
-        onClick={async () => {
-          if (!txtLoginID) {
-            alert("Geben Sie eine E-Mail zum Registrieren an.");
-            return;
-          }
+        <Button
+          sx={{ mt: "24px", background: "#1c8445" }}
+          size="large"
+          variant="contained"
+          onClick={async () => {
+            if (!txtLoginID) {
+              alert("Geben Sie eine E-Mail zum Registrieren an.");
+              return;
+            }
 
-          if (!txtLoginID.includes("@")) {
-            alert("Geben sie eine gültige E-Mail an.");
-            return;
-          }
+            if (!txtLoginID.includes("@")) {
+              alert("Geben sie eine gültige E-Mail an.");
+              return;
+            }
 
-          const registeredUser: boolean = await registerUser(txtLoginID);
+            const registeredUser: boolean = await registerUser(txtLoginID);
 
-          if (!registeredUser) {
-            alert("Registrieren fehlgeschlagen");
-            return;
-          } else {
-            alert(
-              "Wir senden ihnen eine E-Mail mit einem Paswort zum anmelden gesendet. Sie werden nun zum Login weitergeleitet."
-            );
+            if (!registeredUser) {
+              alert("Registrieren fehlgeschlagen");
+              return;
+            } else {
+              alert(
+                "Wir senden ihnen eine E-Mail mit einem Paswort zum anmelden gesendet. Sie werden nun zum Login weitergeleitet."
+              );
+              props.setRegister(false);
+            }
+          }}
+        >
+          Registrieren
+        </Button>
+        <Button
+          sx={{ color: "#1c8445" }}
+          onClick={() => {
             props.setRegister(false);
-          }
-        }}
-      >
-        Registrieren
-      </Button>
-      <Button
-        onClick={() => {
-          props.setRegister(false);
-        }}
-      >
-        Zurück
-      </Button>
+          }}
+        >
+          Zurück
+        </Button>
+      </Stack>
+      <CubeRotater></CubeRotater>
     </Stack>
   );
 };

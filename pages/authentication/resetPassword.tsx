@@ -12,7 +12,7 @@ const ResetPassword = (props: {
   const [email, setEmail] = useState<string>("admin");
 
   const sendNewPassword = async () => {
-    const response = await fetch("/api/mail/testMail", {
+    const response = await fetch("/api/mail/sendNewPassword", {
       method: "POST",
       body: JSON.stringify({
         email: email,
@@ -27,8 +27,11 @@ const ResetPassword = (props: {
 
   return (
     <Stack className="resetPassword">
-      <Typography>Neues Passwort anfordern</Typography>
+      <Typography sx={{ mb: "24px" }} fontWeight={"bold"}>
+        Neues Passwort anfordern
+      </Typography>
       <TextField
+        value={email}
         label="E-Mail"
         onChange={(e) => {
           setEmail(e.target.value);
@@ -36,13 +39,20 @@ const ResetPassword = (props: {
       ></TextField>
       <Button
         color="success"
-        onClick={() => {
-          alert(
-            "Eine neues Passwort wird an " +
-              email +
-              " gesendet."
-          );
-          sendNewPassword();
+        onClick={async () => {
+          if (!email) return;
+          if (!email.includes("@")) {
+            alert("Geben Sie eine Gültige E-Mail-Adresse an.");
+            return;
+          }
+
+          const flag = await sendNewPassword();
+          if (!flag) {
+            alert("Kein Benutzer mit der E-Mail " + email + " gefunden.");
+            return;
+          }
+          alert("Eine neues Passwort wird an " + email + " gesendet.");
+          setEmail("");
         }}
       >
         neues Passwort anfordern
@@ -54,7 +64,7 @@ const ResetPassword = (props: {
           props.setLoggedIn(false);
         }}
       >
-        Zurück
+        Schliessen
       </Button>
     </Stack>
   );
