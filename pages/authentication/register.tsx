@@ -4,7 +4,9 @@ import { SHA256 } from "crypto-js";
 import { User } from "@prisma/client";
 
 const Register = (props: { setRegister: (flag: boolean) => void }) => {
-  const [txtLoginID, setTxtLoginID] = useState<string>("");
+  const [txtLoginID, setTxtLoginID] = useState<string>(
+    "Fabi.auderath@googlemail.com"
+  );
   const [txtPw, setTxtPw] = useState<string>("");
 
   function generateEightDigitNumber(): number {
@@ -20,10 +22,7 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
     return eightDigitNumber;
   }
 
-  const handleBtnRegisterClick = async (
-    email: string,
-    pw: string
-  ): Promise<User> => {
+  const registerUser = async (email: string): Promise<boolean> => {
     const code = generateEightDigitNumber();
     const hashedCode = SHA256(code.toString()).toString();
 
@@ -36,6 +35,19 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
       }),
     });
 
+    let result: boolean;
+    try {
+      result = await response.json();
+    } catch (e) {
+      // alert(e);
+      return;
+    }
+
+    if (!result) {
+      alert("Registrieren Fehlgeschlagen.");
+      return;
+    }
+
     // den code senden zum anmelden
     const response1 = await fetch("/api/mail/sendCode", {
       method: "POST",
@@ -46,8 +58,8 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
     });
     const result1 = await response1.json();
 
-    const result = await response.json();
-    return result;
+    if (!result1) return;
+    return result1;
   };
 
   return (
@@ -84,17 +96,14 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
             return;
           }
 
-          const registeredUser: User = await handleBtnRegisterClick(
-            txtLoginID,
-            txtPw
-          );
+          const registeredUser: boolean = await registerUser(txtLoginID);
 
           if (!registeredUser) {
-            alert("Registrierung fehlgeschlagen");
+            alert("Registrieren fehlgeschlagen");
             return;
           } else {
             alert(
-              "Wir haben ihnen eine E-Mail Adresse mit einem Paswwort gesendet."
+              "Wir senden ihnen eine E-Mail mit einem Paswort zum anmelden gesendet. Sie werden nun zum Login weitergeleitet."
             );
             props.setRegister(false);
           }

@@ -69,10 +69,6 @@ const SceneList = (props: {
 
     if (!requestMemberships) return;
 
-    if (!requestMemberships) {
-      return;
-    }
-
     const extractedScenes = requestMemberships.map(
       (membership) => membership.scene
     );

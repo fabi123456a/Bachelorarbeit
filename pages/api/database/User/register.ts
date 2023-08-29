@@ -27,7 +27,7 @@ export default async function register(
       },
     });
     console.log("REGISTER => " + loginID);
-    res.send(registerUser);
+    res.send(true);
   } catch (e) {
     console.log("Registrieren fehlgeschlagen.");
     res.send(null);

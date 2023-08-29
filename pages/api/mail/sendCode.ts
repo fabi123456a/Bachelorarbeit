@@ -11,13 +11,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const email: string = requestData["email"];
   const code: string = requestData["code"];
 
-  sendEmail(
-    email,
-    "Passwort zum anmelden",
-    "Ihr  Passwort lautet " +
-      code +
-      ". Sie können das Passwort in den Einstellungen jederzeit ändern."
-  );
+  try {
+    sendEmail(
+      email,
+      "Passwort zum anmelden",
+      "Ihr  Passwort lautet " +
+        code +
+        ". Sie können das Passwort in den Einstellungen jederzeit ändern."
+    );
+    res.send(true);
+  } catch (e) {
+    res.send(false);
+  }
 };
 
 export default handler;
