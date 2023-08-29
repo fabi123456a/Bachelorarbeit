@@ -65,8 +65,8 @@ function FollowMouse({ mesh, mouse, ...props }: FollowMouseProps) {
   const aspect = size.width / viewport.width;
 
   useFrame(() => {
-    const x = (mouse.current.x / size.width) * 3.6 - 1;
-    const y = -(mouse.current.y / size.height) * 3.6 + 1;
+    const x = (mouse.current.x / size.width) * 8 - 1;
+    const y = -(mouse.current.y / size.height) * 5 + 1;
     const z = 0;
     const position = [x, y, z];
     groupRef.current.position.set(position[0], position[1], position[2]);
