@@ -88,7 +88,7 @@ export default function Scene(props: {
 
         // alert(data.idUser + "== " + props.idUser);
         if (data.idScene == props.refCurrentWorkingScene.current.idScene) {
-          alert("Ein Benutzer hat die Konfiguration betreten: " + data.idUser);
+          //alert("Ein Benutzer hat die Konfiguration betreten: " + data.idUser);
           setReload(Math.random());
         }
       });
@@ -101,7 +101,7 @@ export default function Scene(props: {
           return;
 
         if (data.idScene == props.refCurrentWorkingScene.current.idScene) {
-          alert("Ein Benutzer hat die Konfiguration verlassen: " + data.idUser);
+          //alert("Ein Benutzer hat die Konfiguration verlassen: " + data.idUser);
           setReload(Math.random());
         }
       });

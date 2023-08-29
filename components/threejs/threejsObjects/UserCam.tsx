@@ -68,7 +68,7 @@ function UserCam(props: {
         <Typography>{user ? user.displayName : "lädt.."}</Typography>
       </Html>
       <Box
-        material={new THREE.MeshStandardMaterial({ color: "red" })}
+        material={new THREE.MeshStandardMaterial({ color: "yellow" })}
         position={[pos.x, pos.y, pos.z]}
         rotation={[rot._x, rot._y, rot._z]}
       ></Box>
