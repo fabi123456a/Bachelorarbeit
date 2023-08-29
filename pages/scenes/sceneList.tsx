@@ -34,8 +34,8 @@ const SceneList = (props: {
   const fetchMembershipFromSceneID = async (
     idUser: string,
     idScene: string
-  ) => {
-    const requestedMembership = await fetchData(
+  ): Promise<SceneMemberShip> => {
+    const requestedMembership: SceneMemberShip[] = await fetchData(
       props.user.id,
       props.sessionID,
       "SceneMemberShip",
@@ -53,7 +53,7 @@ const SceneList = (props: {
       return null;
     }
 
-    return requestedMembership;
+    return requestedMembership[0];
   };
 
   const fetchSceneMemberShips = async () => {

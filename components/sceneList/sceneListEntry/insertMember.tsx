@@ -26,19 +26,8 @@ const AddMember = (props: {
   const [user, setUser] = useState<User>(null);
   const refName = useRef<string>("");
 
-  const checkLoginID = async (loginID1: string) => {
-    // const userRequest = await fetch("/api/database/User/DB_getUserByLoginID", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     loginID: loginID,
-    //     sessionID: props.sessionID,
-    //     idUser: props.idUser,
-    //   }),
-    // });
-
-    // const user = await userRequest.json();
-
-    const requestedUser = await fetchData(
+  const checkIfUSerExist = async (loginID1: string) => {
+    const requestedUser: User[] = await fetchData(
       props.idUser,
       props.sessionID,
       "user",
@@ -48,11 +37,11 @@ const AddMember = (props: {
       null
     );
 
-    if (!requestedUser) {
+    if (!requestedUser || requestedUser.length == 0) {
       setUser(null);
       return;
     }
-    setUser(requestedUser);
+    setUser(requestedUser[0]);
   };
 
   const addMemberShipToDB = async (
@@ -60,21 +49,6 @@ const AddMember = (props: {
     idUser1: string,
     readonly: boolean
   ) => {
-    // const response = await fetch(
-    //   "/api/database/Membership/DB_insertMemberShip",
-    //   {
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //       idScene: idScene,
-    //       idUser: idUser,
-    //       readonly: readonly,
-    //       sessionID: props.sessionID,
-    //     }),
-    //   }
-    // );
-
-    // const result = await response.json();
-
     const membership: SceneMemberShip = {
       id: uuidv4(),
       idScene: idScene1,
@@ -116,13 +90,13 @@ const AddMember = (props: {
     <Stack className="" sx={{ mt: "2vh" }}>
       <Stack direction={"row"}>
         <TextField
-          label="Benutzer hinzufügen..."
+          label="E-Mail eingeben"
           size="small"
           value={name}
           onChange={async (e) => {
             setName(e.target.value);
             refName.current = e.target.value;
-            await checkLoginID(refName.current);
+            await checkIfUSerExist(refName.current);
           }}
         ></TextField>
         <Button
@@ -133,7 +107,7 @@ const AddMember = (props: {
                 alert(refName.current + " ist bereits member.");
                 return;
               }
-              await addMemberShipToDB(props.scene.id, user[0].id, false);
+              await addMemberShipToDB(props.scene.id, user.id, false);
               props.setReload(Math.random());
               setName("");
               setUser(null);

@@ -46,7 +46,7 @@ const DatabaseTable = (props: {
 
     // chatEntries durchlaufen und anhand der id löschen
     if (requestedChatEntries) {
-      requestedChatEntries.forEach(async (chatEntry: ChatEntry) => {
+      for (const chatEntry of requestedChatEntries) {
         await fetchData(
           props.user.id,
           props.sessionID,
@@ -56,7 +56,7 @@ const DatabaseTable = (props: {
           null,
           null
         );
-      });
+      }
     }
 
     // jtz alle memberships löschen
@@ -71,7 +71,7 @@ const DatabaseTable = (props: {
     );
 
     if (requestedMemberships) {
-      requestedMemberships.forEach(async (membership: SceneMemberShip) => {
+      for (const membership of requestedMemberships) {
         await fetchData(
           props.user.id,
           props.sessionID,
@@ -81,7 +81,7 @@ const DatabaseTable = (props: {
           null,
           null
         );
-      });
+      }
     }
 
     const requestedDelete = await fetchData(
