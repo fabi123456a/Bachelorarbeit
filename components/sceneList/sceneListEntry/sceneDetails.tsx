@@ -183,7 +183,7 @@ const SceneDetails = (props: {
         </Typography>
 
         <Stack direction={"row"}>
-          <Typography sx={{ minWidth: "15vh" }}>ertsellt am:</Typography>
+          <Typography sx={{ minWidth: "15vh" }}>erstellt am:</Typography>
           <Typography>
             {new Date(props.scene.createDate).toLocaleDateString()}
           </Typography>

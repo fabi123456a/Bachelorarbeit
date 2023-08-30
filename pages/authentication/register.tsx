@@ -122,7 +122,7 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
               return;
             } else {
               alert(
-                "Wir senden ihnen eine E-Mail mit einem Paswort zum anmelden gesendet. Sie werden nun zum Login weitergeleitet."
+                "Wir senden ihnen eine E-Mail mit einem Passwort zum anmelden. Sie werden nun zum Login weitergeleitet."
               );
               props.setRegister(false);
             }
