@@ -158,6 +158,7 @@ export default function Scene(props: {
 
       {workers
         ? workers.map((worker: CurrentSceneEdit) => {
+            if (!props.refCurrentWorkingScene.current) return;
             if (props.refCurrentWorkingScene.current.id == worker.id) return;
             return (
               <UserCam

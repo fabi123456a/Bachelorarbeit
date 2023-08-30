@@ -29,7 +29,7 @@ const SceneListEntry = (props: {
 
   const deleteSceneFromDB = async () => {
     // sceneMembership laden um an die id zu kommen zum deleten
-    const requestDelete13 = await fetchData(
+    const requestedMembership: SceneMemberShip[] = await fetchData(
       props.user.id,
       props.sessionID,
       "SceneMemberShip",
@@ -40,12 +40,12 @@ const SceneListEntry = (props: {
     );
 
     // memberhips der scene löschen
-    const requestDelete12 = await fetchData(
+    const requestedMembershipDelete = await fetchData(
       props.user.id,
       props.sessionID,
       "SceneMemberShip",
       "delete",
-      { id: requestDelete13[0].id },
+      { id: requestedMembership[0].id },
       null,
       null
     );

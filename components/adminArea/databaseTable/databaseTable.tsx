@@ -11,7 +11,12 @@ import {
 import { useEffect, useState } from "react";
 import Insert from "./insert";
 import EditData from "./editData";
-import { ChatEntry, SceneMemberShip, User } from "@prisma/client";
+import {
+  ChatEntry,
+  CurrentSceneEdit,
+  SceneMemberShip,
+  User,
+} from "@prisma/client";
 import { fetchData } from "../../../utils/fetchData";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
@@ -32,73 +37,105 @@ const DatabaseTable = (props: {
   // const [actData, setActData] = useState<string>("");
   // const [actDataType, setActDataType] = useState<string>("");
 
+  // benutzer löschen
   const deleteUserByID = async (idUser: string): Promise<boolean> => {
-    // erstmal alle chatentrys des nutzers löschen
-    const requestedChatEntries: ChatEntry[] = await fetchData(
-      props.user.id,
-      props.sessionID,
-      "chatEntry",
-      "select",
-      { idUser: idUser },
-      null,
-      null
-    );
+    try {
+      // erstmal alle chatentrys des nutzers löschen
+      const requestedChatEntries: ChatEntry[] = await fetchData(
+        props.user.id,
+        props.sessionID,
+        "chatEntry",
+        "select",
+        { idUser: idUser },
+        null,
+        null
+      );
 
-    // chatEntries durchlaufen und anhand der id löschen
-    if (requestedChatEntries) {
-      for (const chatEntry of requestedChatEntries) {
-        await fetchData(
-          props.user.id,
-          props.sessionID,
-          "chatEntry",
-          "delete",
-          { id: chatEntry.id },
-          null,
-          null
-        );
+      // chatEntries durchlaufen und anhand der id löschen
+      if (requestedChatEntries) {
+        for (const chatEntry of requestedChatEntries) {
+          await fetchData(
+            props.user.id,
+            props.sessionID,
+            "chatEntry",
+            "delete",
+            { id: chatEntry.id },
+            null,
+            null
+          );
+        }
       }
-    }
 
-    // jtz alle memberships löschen
-    const requestedMemberships: SceneMemberShip[] = await fetchData(
-      props.user.id,
-      props.sessionID,
-      "SceneMemberShip",
-      "select",
-      { idUser: idUser },
-      null,
-      null
-    );
+      // jtz alle memberships löschen
+      const requestedMemberships: SceneMemberShip[] = await fetchData(
+        props.user.id,
+        props.sessionID,
+        "SceneMemberShip",
+        "select",
+        { idUser: idUser },
+        null,
+        null
+      );
 
-    if (requestedMemberships) {
-      for (const membership of requestedMemberships) {
-        await fetchData(
-          props.user.id,
-          props.sessionID,
-          "SceneMemberShip",
-          "delete",
-          { id: membership.id },
-          null,
-          null
-        );
+      if (requestedMemberships) {
+        for (const membership of requestedMemberships) {
+          await fetchData(
+            props.user.id,
+            props.sessionID,
+            "SceneMemberShip",
+            "delete",
+            { id: membership.id },
+            null,
+            null
+          );
+        }
       }
-    }
 
-    const requestedDelete = await fetchData(
-      props.user.id,
-      props.sessionID,
-      "user",
-      "delete",
-      { id: idUser },
-      null,
-      null
-    );
+      // currentSceneEdits löschen
+      const requestedCurrentSceneEdits: CurrentSceneEdit[] = await fetchData(
+        props.user.id,
+        props.sessionID,
+        "CurrentSceneEdit",
+        "select",
+        { idUser: idUser },
+        null,
+        null
+      );
 
-    if (!requestedDelete) {
-      console.log("error while delete a user by id: " + idUser);
+      if (requestedCurrentSceneEdits) {
+        for (const sceneEdit of requestedCurrentSceneEdits) {
+          await fetchData(
+            props.user.id,
+            props.sessionID,
+            "CurrentSceneEdit",
+            "delete",
+            { id: sceneEdit.id },
+            null,
+            null
+          );
+        }
+      }
+
+      // benutzer an sich löschen
+      const requestedDelete = await fetchData(
+        props.user.id,
+        props.sessionID,
+        "user",
+        "delete",
+        { id: idUser },
+        null,
+        null
+      );
+
+      if (!requestedDelete) {
+        console.log("error while delete a user by id: " + idUser);
+        return false;
+      }
+      return true;
+    } catch (e) {
+      alert(e);
       return false;
     }
-    return true;
   };
 
   const changeRight = async (
@@ -206,32 +243,26 @@ const DatabaseTable = (props: {
                         <TableCell
                           key={dataRow[prop] + dataRow["id"] + prop}
                           onClick={async () => {
-                            if (prop === "displayName") {
-                              // await changeDisplayName(
-                              //   dataRow["id"],
-                              //   "newName123"
-                              // );
-                              // setReload(Math.random());
-                              //setChangeName(true);
+                            if (dataRow["id"] == "ADMIN") {
+                              alert("Der Admin kann nicht geändert werden");
                               return;
-                            } else {
-                              if (dataRow["id"] == "ADMIN") {
-                                alert("Der Admin kann nicht geändert werden");
-                                return;
-                              }
-
-                              const flag = await changeRight(
-                                dataRow["id"],
-                                prop as "read" | "write" | "delete" | "isAdmin",
-                                !dataRow[prop]
-                              );
-
-                              if (!flag) {
-                                alert("Das konnte nicht geändert werden.");
-                                return;
-                              }
-                              setReload(Math.random());
                             }
+                            if (prop == "email") {
+                              alert("Die E-Mail kann nicht geändert werden.");
+                              return;
+                            }
+
+                            const flag = await changeRight(
+                              dataRow["id"],
+                              prop as "read" | "write" | "delete" | "isAdmin",
+                              !dataRow[prop]
+                            );
+
+                            if (!flag) {
+                              alert("Das konnte nicht geändert werden.");
+                              return;
+                            }
+                            setReload(Math.random());
                           }}
                           // sx={
                           //   actProp == prop &&

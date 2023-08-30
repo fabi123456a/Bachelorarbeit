@@ -9,7 +9,7 @@ const ResetPassword = (props: {
   setResetPw: (flag: boolean) => void;
   // sessionID: string;
 }) => {
-  const [email, setEmail] = useState<string>("admin");
+  const [email, setEmail] = useState<string>("");
 
   const sendNewPassword = async () => {
     const response = await fetch("/api/mail/sendNewPassword", {

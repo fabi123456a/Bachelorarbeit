@@ -245,7 +245,19 @@ export const deleteScenEditByUserID = async (
     return;
   }
 
-  requestedEdits.forEach(async (edit: CurrentSceneEdit) => {
+  // requestedEdits.forEach(async (edit: CurrentSceneEdit) => {
+  //   await fetchData(
+  //     userID,
+  //     sessionID,
+  //     "CurrentSceneEdit",
+  //     "delete",
+  //     { id: edit.id },
+  //     null,
+  //     null
+  //   );
+  // });
+
+  for (const edit of requestedEdits) {
     await fetchData(
       userID,
       sessionID,
@@ -255,5 +267,5 @@ export const deleteScenEditByUserID = async (
       null,
       null
     );
-  });
+  }
 };

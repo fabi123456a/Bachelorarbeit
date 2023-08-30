@@ -17,10 +17,10 @@ const SocketHandler = (req, res) => {
 
         io.emit("getChatEntry", chatEntry.idScene);
       });
-      // scene
-      socket.on("setSyncScene", async (data) => {
+      // wenn szene gespeichert wird
+      socket.on("safeScene", async (data) => {
         // console.log("----------------" + JSON.stringify(data));
-        io.emit("syncScene", data);
+        io.emit("getSafeScene", data);
       });
       // userCam
       socket.on("setUserCamData", async (data) => {
@@ -47,6 +47,12 @@ const SocketHandler = (req, res) => {
       socket.on("addWall", async (data) => {
         console.log(data);
         io.emit("getAddWall", data);
+      });
+
+      // wenn ein Object aus der Szene gelöscht wird
+      socket.on("deleteObject", async (data) => {
+        console.log(data);
+        io.emit("getDeleteObject", data);
       });
     });
   }

@@ -132,7 +132,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
                 style={{ marginRight: "8px", height: "30vh", width: "30vh" }}
               ></img>
               <Typography>{tex}</Typography>
-              {props.loggedInUser.delete ? (
+              {props.loggedInUser.isAdmin ? (
                 <IconButton
                   className="iconButton"
                   onClick={async () => {

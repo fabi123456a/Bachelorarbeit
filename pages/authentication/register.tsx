@@ -5,9 +5,7 @@ import { User } from "@prisma/client";
 import CubeRotater from "../../components/threejs/cubeRotator/cubeRotator";
 
 const Register = (props: { setRegister: (flag: boolean) => void }) => {
-  const [txtLoginID, setTxtLoginID] = useState<string>(
-    "Fabi.auderath@googlemail.com"
-  );
+  const [txtLoginID, setTxtLoginID] = useState<string>("");
   const [txtPw, setTxtPw] = useState<string>("");
 
   function generateEightDigitNumber(): number {
@@ -79,8 +77,11 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
           position: "absolute",
         }}
       ></img>
-      <Stack sx={{ maxWidth: "70%" }} className="roundedShadow">
-        <Typography variant="h2" sx={{ mb: "24px" }}>
+      <Stack
+        sx={{ maxWidth: "40%", minWidth: "40%" }}
+        className="roundedShadow"
+      >
+        <Typography variant="h4" sx={{ mb: "24px" }}>
           Registrieren
         </Typography>
         <TextField

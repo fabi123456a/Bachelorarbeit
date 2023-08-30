@@ -96,6 +96,7 @@ export default function Main(props: {
     idModel: string;
   }>(null);
   const [newSocketioWall, setNewSocketioWall] = useState<TypeObjectProps>(null);
+  const [newSocktioDeleteID, setNewSocktioDeleteID] = useState<string>(null);
 
   // ---- REFS ----
   const sceneRef = useRef<any>(null!);
@@ -231,16 +232,21 @@ export default function Main(props: {
     setSceneVersion(props.scene.newestVersion);
   }, [props.scene]);
 
-  // scene neu socket.io laden // TODO:
+  // socket.io
   useEffect(() => {
     const socketInitializer = async () => {
       await fetch("/api/socket");
       socket = io();
 
-      socket.on("syncScene", async (data) => {
+      socket.on("getSafeScene", async (data) => {
+        if (!props.currentWorkingScene.current) return;
         //alert(data.version);
-        if (props.scene.id == data.idScene) {
-          const scene = await fetchData(
+        if (
+          props.currentWorkingScene.current.idScene == data.idScene &&
+          props.user.id != data.idUser
+        ) {
+          //if (props.scene.id == data.idScene)
+          const scene: Scene[] = await fetchData(
             props.user.id,
             props.sessionID,
             "scene",
@@ -251,11 +257,15 @@ export default function Main(props: {
           );
 
           props.setScene(scene[0]);
-        }
-
-        if (props.scene.id == data.idScene && props.user.id != data.idUser) {
           alert("Scene wird gespeichert...");
         }
+
+        // if (
+        //   props.currentWorkingScene.current.idScene &&
+        //   props.user.id != data.idUser
+        // ) {
+        //   alert("Scene wird gespeichert...");
+        // }
       });
 
       // object daten vie socket io synchronisieren
@@ -271,13 +281,20 @@ export default function Main(props: {
 
       // fbx add synchronisieren via socket io
       socket.on("getAddFbx", (data) => {
-        if (data.idScene != props.scene.id || props.user.id == data.idUser)
-          return;
+        if (!props.currentWorkingScene.current) return;
 
-        setNewSocketioFbxModel({
-          modelPath: data.modelPath,
-          idModel: data.modelID,
-        });
+        // if (data.idScene != props.scene.id || props.user.id == data.idUser)
+        //   return;
+
+        if (
+          props.currentWorkingScene.current.idScene == data.idScene &&
+          props.user.id != data.idUser
+        ) {
+          setNewSocketioFbxModel({
+            modelPath: data.modelPath,
+            idModel: data.modelID,
+          });
+        }
       });
 
       // wall, cuber, floor, cylinder add synchronisieren via socket io
@@ -287,10 +304,19 @@ export default function Main(props: {
         //   idScene: props.idScene,
         //   idUser: props.idUser,
         // }
-        if (data.idScene != props.scene.id || props.user.id == data.idUser)
-          return;
+        // if (data.idScene != props.scene.id || props.user.id == data.idUser)
+        //   return;
+        if (
+          props.currentWorkingScene.current.idScene == data.idScene &&
+          props.user.id != data.idUser
+        ) {
+          setNewSocketioWall(data.wall);
+        }
+      });
 
-        setNewSocketioWall(data.wall);
+      // wenn ein Object aus der Szene gelöscht wird
+      socket.on("getDeleteObject", (data) => {
+        setNewSocktioDeleteID(data.id);
       });
     };
     socketInitializer();
@@ -314,6 +340,11 @@ export default function Main(props: {
     if (!newSocketioWall) return;
     handleWallAdd(newSocketioWall);
   }, [newSocketioWall]);
+
+  useEffect(() => {
+    if (!newSocktioDeleteID) return;
+    handleModelDelete(newSocktioDeleteID);
+  }, [newSocktioDeleteID]);
 
   // ----- FUNCTIONS ----
 
@@ -488,6 +519,10 @@ export default function Main(props: {
   const handleModelDelete = (id: string) => {
     setModels((prevModels) => prevModels.filter((model) => model.id !== id));
     setCurrentObjectProps(null!);
+
+    socket.emit("deleteObject", {
+      id: id,
+    });
   };
 
   const handleModelexport = async () => {
@@ -638,7 +673,7 @@ export default function Main(props: {
     setSceneVersion(newVersion);
 
     // socket.io
-    socket.emit("setSyncScene", {
+    socket.emit("safeScene", {
       version: newVersion,
       idScene: idScene,
       idUser: props.user.id,
@@ -659,7 +694,7 @@ export default function Main(props: {
     );
 
     if (requestChangeVersion) {
-      return null;
+      return;
     }
   }
 
@@ -686,9 +721,18 @@ export default function Main(props: {
   // ---- COMPONENT ----
   return props.user && props.sessionID && props.scene ? (
     <Stack className="main">
-      {props.membership.readOnly ? (
-        <Typography>readonly Modus</Typography>
-      ) : null}
+      {props.membership ? (
+        props.membership.readOnly ? (
+          <Typography>readonly Modus</Typography>
+        ) : null
+      ) : (
+        <Stack direction={"row"} sx={{ alignItems: "baseline" }}>
+          <Typography>Admin Modus</Typography>
+          <Typography fontSize={"12px"} sx={{ color: "gray", ml: "10px" }}>
+            (Sie sind in der Konfiguration nicht Sichtbar für andere Benutzer)
+          </Typography>
+        </Stack>
+      )}
 
       <MenuBar
         idUser={props.user.id}

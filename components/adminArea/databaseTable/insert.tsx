@@ -42,7 +42,7 @@ const Insert = (props: {
       isAdmin: checkedAdmin,
     };
 
-    const requestInsert = await fetchData(
+    const requestedInsert = await fetchData(
       props.idUser,
       props.sessionID,
       "user",
@@ -52,9 +52,11 @@ const Insert = (props: {
       null
     );
 
-    if (!requestInsert) return;
+    if (!requestedInsert) {
+      return;
+    }
 
-    return requestInsert;
+    return requestedInsert;
   };
 
   return (
@@ -144,6 +146,12 @@ const Insert = (props: {
                 setCheckedUpdate(false);
                 setCheckedDelete(false);
                 setCheckedAdmin(false);
+
+                alert(
+                  "Der Benutzer " +
+                    insertedUser.email +
+                    " wurde erfolgreich erstellt. Sie können den Benutzer nun in der Tabelle verwalten."
+                );
               }
             }}
           >
