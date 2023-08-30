@@ -76,7 +76,7 @@ export default function Main(props: {
 
   //sceneVersion
   const [sceneVersion, setSceneVersion] = useState<number>(
-    props.scene.newestVersion
+    props.scene ? props.scene.newestVersion : null
   );
 
   // ambient light
@@ -229,6 +229,7 @@ export default function Main(props: {
   }, [sceneVersion]); // props.scene,  [props.scene, sceneVersion]
 
   useEffect(() => {
+    if (!props.scene) return;
     setSceneVersion(props.scene.newestVersion);
   }, [props.scene]);
 
