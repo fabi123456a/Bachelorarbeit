@@ -72,7 +72,7 @@ export default async function DB_executeSQL(
         return res.status(400).json({ error: "Invalid action." });
     }
 
-    console.log(`DB_excuteSQL => ${JSON.stringify(result)}`);
+    //console.log(`DB_excuteSQL => ${JSON.stringify(result)}`);
 
     res.status(200).json(result);
   } catch (err) {

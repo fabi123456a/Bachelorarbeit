@@ -2,7 +2,7 @@ import { Stack, Typography } from "@mui/material";
 import SceneList from "../scenes/sceneList";
 import { CurrentSceneEdit, Scene, SceneMemberShip, User } from "@prisma/client";
 import NavigateBar from "../../components/home/navigateBar";
-import { MutableRefObject, useState } from "react";
+import { MutableRefObject, useEffect, useState } from "react";
 import AdminArea from "../admin/adminArea";
 import Settings from "../settings/settings";
 import FbxList from "../fbxModels/fbxList";
@@ -22,6 +22,17 @@ const Home = (props: {
   const [scenes, setScenes] = useState<boolean>(true);
   const [fbxModels, setFbxModels] = useState<boolean>(false);
   const [textures, setTextures] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!props.sessionID) return;
+
+    fetch("api/database/Session/DB_sessionKeepAlive", {
+      method: "POST",
+      body: JSON.stringify({
+        sessionID: props.sessionID,
+      }),
+    });
+  }, [adminArea, settings, scenes, fbxModels, textures]);
 
   return props.user ? (
     <Stack className="home">
