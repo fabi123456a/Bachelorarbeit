@@ -34,7 +34,7 @@ export default function WallListItem(props: {
             showYTransform: true,
             showZTransform: true,
             modelPath: null,
-            position: { x: 0, y: 0, z: 0 },
+            position: { x: 0, y: 4, z: 0 },
             scale: {
               x: props.data[props.name]["x"],
               y: props.data[props.name]["y"],

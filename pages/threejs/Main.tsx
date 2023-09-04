@@ -194,6 +194,14 @@ export default function Main(props: {
       currentObjectProps: currentObjectProps,
       user: props.user,
     });
+
+    // session keep alive
+    fetch("api/database/Session/DB_sessionKeepAlive", {
+      method: "POST",
+      body: JSON.stringify({
+        sessionID: props.sessionID,
+      }),
+    });
   }, [currentObjectProps]);
 
   const getSceneModels = async (version: number) => {
@@ -654,6 +662,10 @@ export default function Main(props: {
 
     // dann alle models mit neuer version speichern
     await models.forEach(async (objProp: TypeObjectProps) => {
+      if (objProp.info == "licht") {
+        alert("licht");
+        return;
+      }
       const model: Model = convertTypeObjectPropsToModel(
         objProp,
         props.scene.id,

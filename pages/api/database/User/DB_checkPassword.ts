@@ -31,6 +31,12 @@ export default async function DB_checkPassword(
   } else {
     console.log("checkpassword => TRUE");
 
+    await prismaClient.session.deleteMany({
+      where: {
+        idUser: selectedUser.id,
+      },
+    });
+
     const session: Session = await insertSession(selectedUser.id);
     console.log("DB_INSERT session -> sessionID: " + session.id);
 
