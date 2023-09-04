@@ -17,6 +17,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import { checkPropsForNull } from "../../../../utils/checkIfPropIsNull";
 import { TypeObjectProps } from "../../../../pages/threejs/types";
+import { User } from "@prisma/client";
 
 export default function SceneModelListItem(props: {
   model: TypeObjectProps;
@@ -26,6 +27,7 @@ export default function SceneModelListItem(props: {
   selectedID: string;
   deleteObject: (id: string) => void;
   models: TypeObjectProps[];
+  user: User;
 }) {
   const [rename, setRename] = useState<boolean>(false);
   const [name, setName] = useState<string>(
@@ -86,16 +88,19 @@ export default function SceneModelListItem(props: {
             props.selectedID === props.model.id ? (
               <Stack direction={"row"}>
                 {/* <Button onClick={(e) => handleIconClick(e, props.model.id)}> */}
-                <DeleteForeverIcon
-                  onClick={(e) => handleDeleteClick(e, props.model.id)}
-                />
-
-                <DriveFileRenameOutlineIcon
-                  sx={{ mr: "4px" }}
-                  onClick={(e) => {
-                    setRename((prev) => !prev);
-                  }}
-                />
+                {props.user.delete && props.user.write ? (
+                  <DeleteForeverIcon
+                    onClick={(e) => handleDeleteClick(e, props.model.id)}
+                  />
+                ) : null}
+                {props.user.write ? (
+                  <DriveFileRenameOutlineIcon
+                    sx={{ mr: "4px" }}
+                    onClick={(e) => {
+                      setRename((prev) => !prev);
+                    }}
+                  />
+                ) : null}
               </Stack>
             ) : null
           }

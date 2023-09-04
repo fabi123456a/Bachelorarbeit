@@ -226,7 +226,7 @@ const SceneListEntry = (props: {
       </Stack>
 
       {mouseOver ? ( // mouseover
-        props.user.write ? (
+        props.user.delete ? (
           props.user.id == props.scene.idUserCreater ? (
             <Button
               size="small"

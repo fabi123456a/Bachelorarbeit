@@ -791,8 +791,7 @@ export default function Main(props: {
 
         {/* ui elements ausblenden, wenn keine lese rechte oder kein admin oder readonly im membership */}
         {props.user ? (
-          props.user.isAdmin ||
-          (props.user.write && !props.membership.readOnly) ? (
+          props.user.isAdmin || !props.membership.readOnly ? (
             <>
               <Chat
                 scene={props.scene}
@@ -810,6 +809,7 @@ export default function Main(props: {
 
               {/* ToolBar */}
               <ToolBar
+                user={props.user}
                 setPerspective={setPerspective}
                 deleteObject={handleModelDelete}
                 exportObject={handleModelexport}
@@ -855,6 +855,7 @@ export default function Main(props: {
 
               {/* treeview */}
               <SceneModelList
+                user={props.user}
                 models={models}
                 currentObjProps={currentObjectProps}
                 setCurrentObj={setCurrentObjectProps}

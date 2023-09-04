@@ -15,7 +15,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     sendEmail(
       email,
       "Passwort zum anmelden",
-      "Ihr  Passwort lautet " +
+      "Ihre Email zum Einloggen: " +
+        email +
+        ", das  Passwort: " +
         code +
         ". Sie können das Passwort in den Einstellungen jederzeit ändern."
     );

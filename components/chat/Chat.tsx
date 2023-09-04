@@ -157,10 +157,10 @@ export default function Chat(props: {
       <Stack
         className="chat roundedShadow"
         sx={{
-          maxHeight: "300px",
-          minHeight: "300px",
-          maxWidth: "200px",
-          minWidth: "200px",
+          maxHeight: "400px",
+          minHeight: "400px",
+          maxWidth: "300px",
+          minWidth: "300px",
         }}
       >
         <CloseIcon
@@ -171,24 +171,38 @@ export default function Chat(props: {
         ></CloseIcon>
         {props.scene ? (
           <>
-            <Typography>
-              {props.scene ? "Chat: " + props.scene.name : "alle chats"}
-            </Typography>
-            <Stack direction={"row"}>
-              <TextField
-                onChange={onChangeHandler}
-                value={text}
-                size="small"
-                sx={{ fontSize: fontSize1 }}
-              ></TextField>
-              <Button variant="outlined" onClick={onClickHandler}>
-                send
-              </Button>
+            <Stack sx={{ ml: "16px" }}>
+              <Typography>
+                {props.scene ? "Chat: " + props.scene.name : null}
+              </Typography>
             </Stack>
+
+            {props.user.write ? (
+              <Stack
+                direction={"row"}
+                sx={{
+                  m: "8px",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <TextField
+                  onChange={onChangeHandler}
+                  value={text}
+                  size="small"
+                  sx={{ fontSize: fontSize1 }}
+                ></TextField>
+                <Button variant="outlined" onClick={onClickHandler}>
+                  send
+                </Button>
+              </Stack>
+            ) : null}
 
             <Stack
               sx={{
-                overflowY: "scroll",
+                overflowY: "auto",
+                alignItems: "center",
+                marginBottom: "8px",
               }}
             >
               {msgs.map(
@@ -201,17 +215,40 @@ export default function Chat(props: {
                   counter++;
 
                   return (
-                    <Typography
-                      style={{ background: color, fontSize: fontSize1 }}
-                      key={msg.id}
+                    <Stack
+                      direction={"row"}
+                      sx={{ background: color, padding: "4px" }}
                     >
-                      {new Date(msg.datum).toLocaleTimeString() +
-                        ": " +
-                        msg.message +
-                        " (" +
-                        msg.user.email +
-                        ")"}
-                    </Typography>
+                      <Stack
+                        sx={{
+                          background: color,
+                          overflowWrap: "break-word",
+                          inlineSize: "250px",
+                          overflow: "auto",
+                        }}
+                      >
+                        <Typography
+                          style={{ background: color, fontSize: fontSize1 }}
+                          key={msg.id}
+                        >
+                          {new Date(msg.datum).toLocaleTimeString() +
+                            ": " +
+                            msg.message}
+                          <b> ({msg.user.displayName})</b>
+                        </Typography>
+                      </Stack>
+                      {/* <Typography
+                        style={{ background: color, fontSize: fontSize1 }}
+                        key={msg.id}
+                      >
+                        {new Date(msg.datum).toLocaleTimeString() +
+                          ": " +
+                          msg.message +
+                          " (" +
+                          msg.user.displayName +
+                          ")"}
+                      </Typography> */}
+                    </Stack>
                   );
                 }
               )}

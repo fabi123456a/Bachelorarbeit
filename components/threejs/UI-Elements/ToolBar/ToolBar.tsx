@@ -16,7 +16,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
 import io from "socket.io-client";
 import { useEffect, useState } from "react";
-import { Scene } from "@prisma/client";
+import { Scene, User } from "@prisma/client";
 import ShowHtml from "./showHtml";
 import Draggable from "react-draggable";
 import CloseIcon from "@mui/icons-material/Close";
@@ -41,6 +41,7 @@ function ToolBar(props: {
   scene: Scene;
   setHtmlSettings: (flag: boolean) => void;
   htmlSettings: boolean;
+  user: User;
 }) {
   const [visible, setVisible] = useState<boolean>(true);
 
@@ -206,20 +207,23 @@ function ToolBar(props: {
                   </IconButton> */}
                 </Stack>
                 <Stack>
-                  <IconButton
-                    onClick={() => {
-                      if (!checkIfAObjectIsSelected()) {
-                        alert("Kein Objekt ausgewählt");
-                        return;
-                      }
+                  {props.user.delete ? (
+                    <IconButton
+                      onClick={() => {
+                        if (!checkIfAObjectIsSelected()) {
+                          alert("Kein Objekt ausgewählt");
+                          return;
+                        }
 
-                      let result = confirm("Das Objekt wird gelöscht...");
+                        let result = confirm("Das Objekt wird gelöscht...");
 
-                      if (result) props.deleteObject(props.currentObjProps.id);
-                    }}
-                  >
-                    <DeleteForeverIcon></DeleteForeverIcon>
-                  </IconButton>
+                        if (result)
+                          props.deleteObject(props.currentObjProps.id);
+                      }}
+                    >
+                      <DeleteForeverIcon></DeleteForeverIcon>
+                    </IconButton>
+                  ) : null}
                 </Stack>
               </Stack>
             </>
@@ -266,19 +270,21 @@ function ToolBar(props: {
             <ImportExportIcon></ImportExportIcon>
             <Typography fontSize=".75rem">Export</Typography>
           </IconButton>
-          <IconButton
-            style={{ ...(buttonWithTextStyle as any) }}
-            title="Save current Scene"
-            onClick={() => {
-              props.saveScene(props.scene.id); // TODO: await props.safeScene
+          {props.user.write ? (
+            <IconButton
+              style={{ ...(buttonWithTextStyle as any) }}
+              title="Save current Scene"
+              onClick={() => {
+                props.saveScene(props.scene.id); // TODO: await props.safeScene
 
-              // socket1.emit("sceneRefresh", props.scene.id);
-              alert("Scene wurde gespeichert");
-            }}
-          >
-            <SaveIcon></SaveIcon>
-            <Typography fontSize=".75rem">Save</Typography>
-          </IconButton>
+                // socket1.emit("sceneRefresh", props.scene.id);
+                alert("Scene wurde gespeichert");
+              }}
+            >
+              <SaveIcon></SaveIcon>
+              <Typography fontSize=".75rem">Save</Typography>
+            </IconButton>
+          ) : null}
         </Stack>
       </Stack>
 
@@ -286,7 +292,7 @@ function ToolBar(props: {
 
       {/* World setting*/}
       <Stack justifyContent={"center"} alignItems={"center"}>
-        <Typography>Welt</Typography>
+        <FormLabel>Welt</FormLabel>
         <ShowHtml
           htmlSettings={props.htmlSettings}
           setHtmlSettings={props.setHtmlSettings}

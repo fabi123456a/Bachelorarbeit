@@ -37,7 +37,8 @@ const MembersList = (props: {
           );
         }
       )}
-      {props.loggedInUser.id == props.scene.idUserCreater ? (
+      {props.loggedInUser.id == props.scene.idUserCreater &&
+      props.loggedInUser.write ? (
         <AddMember
           idUser={props.loggedInUser.id}
           sessionID={props.sessionID}

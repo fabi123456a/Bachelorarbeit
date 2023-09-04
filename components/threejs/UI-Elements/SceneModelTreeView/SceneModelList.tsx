@@ -15,6 +15,7 @@ import SceneModelListItem from "./ScenModeListItem";
 import Draggable from "react-draggable";
 import CloseIcon from "@mui/icons-material/Close";
 import { TypeObjectProps } from "../../../../pages/threejs/types";
+import { User } from "@prisma/client";
 
 export default function SceneModelList(props: {
   models: TypeObjectProps[];
@@ -22,6 +23,7 @@ export default function SceneModelList(props: {
   setCurrentObj: (objProps: TypeObjectProps) => void;
   deleteObject: (id: string) => void;
   selectedId: string;
+  user: User;
 }) {
   const [selectedId, setSelectedId] = useState<string>(props.selectedId);
   const [visible, setVisible] = useState<boolean>(true);
@@ -50,6 +52,7 @@ export default function SceneModelList(props: {
             {props.models.map((model) => (
               // <Typography>{model.name}</Typography>
               <SceneModelListItem
+                user={props.user}
                 currentObjProps={props.currentObjProps}
                 setCurrentObj={props.setCurrentObj}
                 model={model}
