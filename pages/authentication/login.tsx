@@ -11,10 +11,12 @@ const Home = (props: {
   setResetPw: (flag: boolean) => void;
   // sessionID: string;
 }) => {
-  const [txtLoginID, setTxtLoginID] = useState<string>(
-    "leistellenkonfigurator@gmail.com"
-  );
-  const [txtPassword, setTxtPassword] = useState<string>("LeitstellenKonf123@");
+  // const [txtLoginID, setTxtLoginID] = useState<string>(
+  //   "leistellenkonfigurator@gmail.com"
+  // );
+  // const [txtPassword, setTxtPassword] = useState<string>("LeitstellenKonf123@");
+  const [txtLoginID, setTxtLoginID] = useState<string>("");
+  const [txtPassword, setTxtPassword] = useState<string>("");
 
   const handleBtnRegisterClick = () => {
     props.setRegister(true);
