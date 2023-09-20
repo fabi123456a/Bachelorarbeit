@@ -2,7 +2,7 @@ import { Button, Stack, TextField, Typography } from "@mui/material";
 import { User } from "@prisma/client";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
-import { Check } from "@mui/icons-material";
+import { Check, ResetTvRounded } from "@mui/icons-material";
 import { useState } from "react";
 import { fetchData } from "../../utils/fetchData";
 import { SHA256 } from "crypto-js";
@@ -14,6 +14,7 @@ const Settings = (props: { user: User; sessionID: string }) => {
   const [flag1, setFlag1] = useState<boolean>(false);
   const [txtDisplayName, setTxtDisplayName] = useState<string>("");
 
+  // speichert ein neues Passwort für einen Benutzer
   const safeNewPassword = async (): Promise<boolean> => {
     const safePW = await fetchData(
       props.user.id,
@@ -29,6 +30,7 @@ const Settings = (props: { user: User; sessionID: string }) => {
     return true;
   };
 
+  // ändert den displayName eines Benutzers
   const changeDisplayName = async (): Promise<boolean> => {
     const requestChangeDisplayName = await fetchData(
       props.user.id,
@@ -68,6 +70,10 @@ const Settings = (props: { user: User; sessionID: string }) => {
               <Button
                 size="small"
                 onClick={async () => {
+                  if (!txtPassword) {
+                    alert("Geben Sie ein Passwort ein.");
+                    return;
+                  }
                   const erg = await safeNewPassword();
                   if (!erg) {
                     alert("Das neue Passwort konnte nicht gespeichert werden.");
@@ -130,6 +136,10 @@ const Settings = (props: { user: User; sessionID: string }) => {
               ></TextField>
               <Button
                 onClick={async () => {
+                  if (!txtDisplayName) {
+                    alert("Geben Sie einen Anzeige-Namen an.");
+                    return;
+                  }
                   const flag = await changeDisplayName();
                   if (!flag) {
                     alert("Anzeige-Name ändern hat nicht funktioniert");
