@@ -31,6 +31,7 @@ const SceneList = (props: {
   const [reload, setReload] = useState<number>();
   const [actScene, setActScene] = useState<Scene>(null);
 
+  // lädt den SceneMemberShip-Datensatz, wird aufgerufen wenn eine Szene ausgewählt wird
   const fetchMembershipFromSceneID = async (
     idUser: string,
     idScene: string
@@ -56,8 +57,12 @@ const SceneList = (props: {
     return requestedMembership[0];
   };
 
-  const fetchSceneMemberShips = async () => {
-    const requestMemberships = await fetchData(
+  // lädt die Szenen eines Benutzers anhand der MemberShips
+  const fetchScenes = async (): Promise<Scene[]> => {
+    // memberships des Benutzers laden
+    const requestMemberships: (SceneMemberShip & {
+      scene: Scene;
+    })[] = await fetchData(
       props.user.id,
       props.sessionID,
       "SceneMemberShip",
@@ -69,21 +74,33 @@ const SceneList = (props: {
 
     if (!requestMemberships) return;
 
-    const extractedScenes = requestMemberships.map(
+    // aus den MemberShips die Szenen extrahieren
+    const extractedScenes: Scene[] = requestMemberships.map(
       (membership) => membership.scene
     );
-    // setScenes(extractedScenes);
+
     return extractedScenes;
   };
 
+  // currentSceneEdits löschen
   useEffect(() => {
-    if (!props.user.read) return;
     deleteOldSceneEdits(props.user.id, props.sessionID).then(() => {
       deleteScenEditByUserID(props.user.id, props.sessionID);
     });
-    fetchSceneMemberShips().then((scenes: Scene[]) => setScenes(scenes));
+  }, []);
+
+  // Szenen laden
+  useEffect(() => {
+    if (!props.user.read) return;
+
+    deleteOldSceneEdits(props.user.id, props.sessionID).then(() => {
+      deleteScenEditByUserID(props.user.id, props.sessionID);
+    });
+
+    fetchScenes().then((scenes: Scene[]) => setScenes(scenes));
   }, [reload]);
 
+  // speichert immer den SceneMemberShip-Datensatz, wenn eine Szene ausgewählt wird
   useEffect(() => {
     if (!props.user.read) return;
     if (!actScene) return;
@@ -93,12 +110,6 @@ const SceneList = (props: {
       }
     );
   }, [actScene]);
-
-  useEffect(() => {
-    deleteOldSceneEdits(props.user.id, props.sessionID).then(() => {
-      deleteScenEditByUserID(props.user.id, props.sessionID);
-    });
-  }, []);
 
   return props.setScene && props.user ? (
     actScene ? (
@@ -147,9 +158,7 @@ const SceneList = (props: {
                 Sie haben keine Berechtigung um die Konfigurationen zu öffnen
               </Typography>
             </Stack>
-          ) : (
-            <Typography>keine Leitstellen-Konfiguration vorhanden</Typography>
-          )}
+          ) : null}
           {props.user.write ? (
             <AddScene
               sessionID={props.sessionID}

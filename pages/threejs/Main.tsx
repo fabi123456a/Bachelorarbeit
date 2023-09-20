@@ -266,7 +266,7 @@ export default function Main(props: {
           );
 
           props.setScene(scene[0]);
-          alert("Scene wird gespeichert...");
+          alert("Konfiguration wird gespeichert...");
         }
 
         // if (
@@ -418,7 +418,6 @@ export default function Main(props: {
   // TypeObjectProps -> Model (prisma)
   function convertTypeObjectPropsToModel(
     typeObjectProps: TypeObjectProps,
-    idScene: string,
     version: number
   ) {
     const model: Model = {
@@ -657,23 +656,43 @@ export default function Main(props: {
 
   // save Scene
   async function saveScene(idScene: string) {
+    // alert("1");
+
     // erst neue version berechnen
     const newVersion = props.scene.newestVersion + 1;
 
     // dann alle models mit neuer version speichern
-    await models.forEach(async (objProp: TypeObjectProps) => {
+    // await models.forEach(async (objProp: TypeObjectProps) => {
+    //   if (objProp.info == "licht") {
+    //     alert("licht");
+    //     return;
+    //   }
+    //   const model: Model = convertTypeObjectPropsToModel(
+    //     objProp,
+    //     props.scene.id,
+    //     newVersion
+    //   );
+
+    //   await insertModelToDB(model);
+    // });
+
+    // dann alle models mit neuer version speichern
+    // alert("1.5");
+
+    for (const objProp of models) {
       if (objProp.info == "licht") {
         alert("licht");
-        return;
+        continue;
       }
-      const model: Model = convertTypeObjectPropsToModel(
-        objProp,
-        props.scene.id,
-        newVersion
-      );
 
-      await insertModelToDB(model);
-    });
+      // alert("1.7");
+      const model: Model = convertTypeObjectPropsToModel(objProp, newVersion);
+      // alert("1.8");
+
+      const flag: boolean = await insertModelToDB(model);
+      if (!flag) alert("Fehler beim speichern.");
+    }
+    // alert("2");
 
     // neu version in scene speichern
     await changeSceneVersion(newVersion);
@@ -681,6 +700,7 @@ export default function Main(props: {
       ...props.scene,
       newestVersion: newVersion,
     };
+    // alert("3");
 
     props.setScene(updatedScene);
     setSceneVersion(newVersion);
@@ -691,6 +711,7 @@ export default function Main(props: {
       idScene: idScene,
       idUser: props.user.id,
     });
+    // alert("4");
   }
 
   async function changeSceneVersion(version: number) {
@@ -711,8 +732,9 @@ export default function Main(props: {
     }
   }
 
-  async function insertModelToDB(model: Model) {
-    const rquestInsertModel = await fetchData(
+  async function insertModelToDB(model: Model): Promise<boolean> {
+    // alert("start insert DB");
+    const requestInsertModel = await fetchData(
       props.user.id,
       props.sessionID,
       "model",
@@ -722,7 +744,12 @@ export default function Main(props: {
       null
     );
 
-    if (!rquestInsertModel) return;
+    if (!requestInsertModel) {
+      // alert("db false");
+      return false;
+    }
+    // alert("db true");
+    return true;
   }
 
   const [selectedOption, setSelectedOption] = useState("");
@@ -736,13 +763,18 @@ export default function Main(props: {
     <Stack className="main">
       {props.membership ? (
         props.membership.readOnly ? (
-          <Typography>readonly Modus</Typography>
+          <Stack sx={{ background: "grey" }}>
+            <Typography>readonly Modus</Typography>
+          </Stack>
         ) : null
       ) : (
-        <Stack direction={"row"} sx={{ alignItems: "baseline" }}>
+        <Stack
+          direction={"row"}
+          sx={{ alignItems: "baseline", background: "red" }}
+        >
           <Typography>Admin Modus</Typography>
-          <Typography fontSize={"12px"} sx={{ color: "gray", ml: "10px" }}>
-            (Sie sind in der Konfiguration nicht Sichtbar für andere Benutzer)
+          <Typography fontSize={"12px"} sx={{ ml: "10px" }}>
+            (Sie sind in der Konfiguration für andere Benutzer nicht Sichtbar)
           </Typography>
         </Stack>
       )}

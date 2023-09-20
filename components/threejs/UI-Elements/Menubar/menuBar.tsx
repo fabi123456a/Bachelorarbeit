@@ -63,8 +63,6 @@ const MenuBar = (props: {
         sx={{ mr: "16px", ml: "7px", color: "black" }}
         onClick={async () => {
           props.setScene(null);
-
-          // alert(props.currentWorkingScene.current.id);
           await deleteCurrentWorkingScene();
           if (props.currentWorkingScene.current)
             socket.emit("sceneOnLeave", props.currentWorkingScene.current);

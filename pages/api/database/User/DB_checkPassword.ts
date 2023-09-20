@@ -8,39 +8,38 @@ export default async function DB_checkPassword(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // const flag = await checkSessionID(req, res);
-  // if (!flag) return;
-
   const b = req.body;
   const requestData = JSON.parse(b);
-  const user = requestData["loginID"];
+  const email = requestData["loginID"];
   const pw = requestData["pw"];
 
-  console.log(pw + ", " + user);
-  if (!prismaClient) res.status(200).json({ error: "prismaclient fehler" });
+  console.log("Login versuch: " + pw + ", " + email);
+  if (!prismaClient) res.status(200).json(null);
 
+  // versuchen den Benutzer anhand der login Daten (email & pw) zu laden
   const selectedUser: User = await prismaClient.user.findFirst({
     where: {
-      AND: [{ email: user }, { password: pw }],
+      AND: [{ email: email }, { password: pw }],
     },
   });
 
+  // prüfen ob ein Benutzer gefunden wurde
   if (selectedUser == null) {
     console.log("checkpassword => FALSE");
     res.status(200).json(null);
   } else {
     console.log("checkpassword => TRUE");
 
+    // alle session des Benutzers löschen
     await prismaClient.session.deleteMany({
       where: {
         idUser: selectedUser.id,
       },
     });
 
+    // session anlegen
     const session: Session = await insertSession(selectedUser.id);
     console.log("DB_INSERT session -> sessionID: " + session.id);
-
-    res.setHeader("Set-Cookie", "sessionID=cookieValue");
 
     res.status(200).json(selectedUser);
   }

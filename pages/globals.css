@@ -23,10 +23,10 @@ body {
   justify-content: center;
   position: relative;
   background: white;
-  min-height: 35vh;
-  max-height: 35vh;
-  min-width: 35vh;
-  max-width: 35vh;
+  min-height: 300px;
+  max-height: 300px;
+  min-width: 300px;
+  max-width: 300px;
   padding: 32px;
 
   box-shadow: 0px 7px 14px 0px rgba(0, 0, 0, 0.5);
@@ -314,7 +314,7 @@ body {
   top: 6vh;
   width: 25vh;
   max-width: 20%;
-  z-index: 9990;
+  z-index: 9;
 }
 
 .showPropsBtn {
@@ -407,6 +407,11 @@ body {
 
 .textureContainer {
   background: white;
+}
+
+.newTexture {
+  max-width: 520px;
+  min-width: 520px;
 }
 
 /* feedback */

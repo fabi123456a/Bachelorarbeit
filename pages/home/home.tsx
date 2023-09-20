@@ -9,7 +9,7 @@ import FbxList from "../fbxModels/fbxList";
 import Textures from "../textures/textures";
 
 const Home = (props: {
-  setScene: (scene: Scene) => void;
+  setScene: (scene: Scene) => void; // setzt die Szene, wird aufgerufen wenn man eine Szene Betritt
   user: User;
   setActUser: (user: User) => void;
   setLoggedIn: (flag: boolean) => void;

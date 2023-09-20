@@ -78,7 +78,7 @@ export default function Camera(props: {
           /* enableRotate={props.lockCamera ? false : true} */
         />
       ) : (
-        <OrthographicCamera // TODO: warum guckt die kamera immer in die mitte und nicht nach vorne?
+        <OrthographicCamera
           position={
             props.perspektive === "topdown"
               ? camPos.topDown
@@ -89,7 +89,7 @@ export default function Camera(props: {
               : camPos.rightToMid
           }
           zoom={20}
-          makeDefault // TODO:  glaube durch das make deafult wird die oritcontrol cam überschrieben
+          makeDefault
         >
           <OrbitControls ref={props.controlsRef} enableRotate={false} />
         </OrthographicCamera>

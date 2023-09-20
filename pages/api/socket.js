@@ -19,7 +19,6 @@ const SocketHandler = (req, res) => {
       });
       // wenn szene gespeichert wird
       socket.on("safeScene", async (data) => {
-        // console.log("----------------" + JSON.stringify(data));
         io.emit("getSafeScene", data);
       });
       // userCam

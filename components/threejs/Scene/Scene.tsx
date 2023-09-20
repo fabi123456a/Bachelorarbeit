@@ -40,10 +40,11 @@ export default function Scene(props: {
   refCurrentWorkingScene: MutableRefObject<CurrentSceneEdit>;
   addObject: (pfad: string, info: string) => void;
 }) {
-  const [workers, setWorkers] = useState<CurrentSceneEdit[]>(null);
+  const [workers, setWorkers] = useState<CurrentSceneEdit[]>(null); // beinhaltet alle Benutzer die an der Szene arbeiten
   const [reload, setReload] = useState<number>(null);
   const refCurrent = useRef<TypeObjectProps>();
 
+  // lädt alle CurrentSceneEdit-Datensätze der Szene
   const getWorkers = async () => {
     const requestedWorkers = await fetchData(
       props.idUser,
@@ -57,11 +58,12 @@ export default function Scene(props: {
       null
     );
 
-    if (requestedWorkers.error) return null;
+    if (!requestedWorkers) return null;
     setWorkers(requestedWorkers);
     return requestedWorkers;
   };
 
+  // lädt die Workers (also die, die an der Szene arbeiten)
   useEffect(() => {
     getWorkers();
   }, [reload]);
@@ -71,35 +73,37 @@ export default function Scene(props: {
     //alert(workers.length);
   }, [workers]);
 
+  // socket io initialisieren
   useEffect(() => {
     const socketInitializer = async () => {
       await fetch("/api/socket");
       socket = io();
 
-      // auf beitritt von benutzer in eine Szene lauschen, return wenn man an keiner Szene arbeitet
-
+      // auf beitritt von benutzer in eine Szene lauschen
       socket.on("getSceneOnEnter", (data: CurrentSceneEdit) => {
-        // alert(JSON.stringify(props.refCurrentWorkingScene.current));
+        // daten verwerfen, wenn man an keiner Szene arbeitet oder wenn man der selbe benutzer ist der dieses ereignis ausgelöst hat
         if (
           !props.refCurrentWorkingScene.current ||
           data.idUser == props.idUser
         )
           return;
 
-        // alert(data.idUser + "== " + props.idUser);
+        // wenn man an derselben Szene arbeitet, dann Szene neu laden (bzw. getWorkers() neu aufrufen)
         if (data.idScene == props.refCurrentWorkingScene.current.idScene) {
-          //alert("Ein Benutzer hat die Konfiguration betreten: " + data.idUser);
           setReload(Math.random());
         }
       });
 
+      // wenn einer eine Szene verlässt
       socket.on("getSceneOnLeave", (data: CurrentSceneEdit) => {
+        // daten verwerfen, wenn man an keiner Szene arbeitet oder wenn man der selbe benutzer ist der dieses ereignis ausgelöst hat
         if (
           !props.refCurrentWorkingScene.current ||
           data.idUser == props.idUser
         )
           return;
 
+        // wenn man an derselben Szene arbeitet, dann Szene neu laden (bzw. getWorkers() neu aufrufen)
         if (data.idScene == props.refCurrentWorkingScene.current.idScene) {
           //alert("Ein Benutzer hat die Konfiguration verlassen: " + data.idUser);
           setReload(Math.random());
@@ -109,8 +113,9 @@ export default function Scene(props: {
     socketInitializer();
   }, []);
 
+  // updated die Uhrzeit des CurrentSceneEdit-Datensatz
   const keepSceneEditAlive = async () => {
-    // der fall falss der admin sich die szene aus dem admin bereich anschaut
+    // der fall, falls der admin sich die Szene aus dem Adminbereich anschaut, dieser hat ja dann keinen currentSceneEdit Datensatz
     if (!props.refCurrentWorkingScene.current) return;
 
     const requestedUpdate = await fetchData(
@@ -137,15 +142,14 @@ export default function Scene(props: {
         props.setCurrentObjectProps(null);
       }}
       onClick={async () => {
-        // membersceneentry
+        // updated den eigenen CurrentSceneEdit-Datensatz
         await keepSceneEditAlive();
+        // löscht alte CurrentSceneEdit-Datensätze (älter als 10min inaktivität)
         await deleteOldSceneEdits(props.idUser, props.sessionID);
       }}
       className="canvas"
       ref={props.sceneRef}
     >
-      {/* Canvas nimmt größe von parent container */}
-      {/* Canvas richtet eine Szene & Kamera ein */}
       {/* Kamera */}
       <Camera
         refCurrentWorkingScene={props.refCurrentWorkingScene}
@@ -156,6 +160,7 @@ export default function Scene(props: {
         setRotCam={props.setRotCam}
       ></Camera>
 
+      {/* workers, also die Benutzer die in dieser Szene arbeiten */}
       {workers
         ? workers.map((worker: CurrentSceneEdit) => {
             if (!props.refCurrentWorkingScene.current) return;
@@ -170,10 +175,11 @@ export default function Scene(props: {
           })
         : null}
 
-      {/* Licht */}
+      {/* Umgebungslicht */}
       <ambientLight intensity={props.ambientValue} />
       {/* <pointLight position={[10, 10, 10]} /> */}
 
+      {/* Punktlicht */}
       <PointlightPivot
         camPerspektive={props.perspektive}
         controlsRef={props.controlsRef}
@@ -309,6 +315,7 @@ export default function Scene(props: {
           )
         ) : null
       )}
+
       {/* ground plane */}
       <mesh position={[0, 0, 0]} rotation={[Math.PI / -2, 0, 0]}>
         <planeGeometry args={[1000, 1000, 30, 30]} />
@@ -325,6 +332,7 @@ export default function Scene(props: {
   ) : null;
 }
 
+// löscht currentSceneEdits die älter als 10min sind
 export const deleteOldSceneEdits = async (
   idUser: string,
   sessionID: string
@@ -345,19 +353,19 @@ export const deleteOldSceneEdits = async (
 
   if (!requestedOldCurrentEdits) return;
   try {
-    requestedOldCurrentEdits.forEach(async (el: CurrentSceneEdit) => {
+    for (const edit of requestedOldCurrentEdits as CurrentSceneEdit[]) {
       await fetchData(
         idUser,
         sessionID,
         "CurrentSceneEdit",
         "delete",
         {
-          id: el.id,
+          id: edit.id,
         },
         null,
         null
       );
-    });
+    }
   } catch (e) {
     console.log(e);
   }

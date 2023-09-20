@@ -159,7 +159,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
           ))
         : null}
       {props.loggedInUser.write ? (
-        <Stack className="roundedShadow textureContainer">
+        <Stack className="roundedShadow textureContainer newTexture">
           <Typography>Texture hinzufügen</Typography>
           <Stack direction={"row"}>
             <input
@@ -185,14 +185,17 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
             ) : null}
           </Stack>
 
-          <div>
-            <h3>Ausgewählte Dateien:</h3>
-            <ul>
-              {selectedFiles.map((file) => (
-                <li key={file.name}>{file.name}</li>
-              ))}
-            </ul>
-          </div>
+          {selectedFiles.length == 0 ? null : (
+            <div>
+              <h3>Ausgewählte Dateien:</h3>
+              <ul>
+                {selectedFiles.map((file) => (
+                  <li key={file.name}>{file.name}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {validateSelectedFiles(selectedFiles) ? (
             <Stack direction={"row"} sx={{ m: "8px" }}>
               <TextField
@@ -206,7 +209,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
               <Button
                 onClick={async () => {
                   if (!textureName) {
-                    alert("Geben sie einen Texture namen an.");
+                    alert("Geben sie einen Texture-Namen an.");
                     return;
                   }
                   await addTextureFilesToFS(textureName);
@@ -219,7 +222,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
               </Button>
             </Stack>
           ) : null}
-          <Accordion>
+          <Accordion sx={{ mt: "6px" }}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography color={"#0288d1"} fontSize={"12px"}>
                 Es werden fünf .jpg-Dateiformate benötigt, die genau diese Namen

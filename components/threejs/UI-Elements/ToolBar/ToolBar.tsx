@@ -274,11 +274,11 @@ function ToolBar(props: {
             <IconButton
               style={{ ...(buttonWithTextStyle as any) }}
               title="Save current Scene"
-              onClick={() => {
-                props.saveScene(props.scene.id); // TODO: await props.safeScene
+              onClick={async () => {
+                await props.saveScene(props.scene.id);
 
                 // socket1.emit("sceneRefresh", props.scene.id);
-                alert("Scene wurde gespeichert");
+                alert("Die Konfiguration wurde gespeichert.");
               }}
             >
               <SaveIcon></SaveIcon>

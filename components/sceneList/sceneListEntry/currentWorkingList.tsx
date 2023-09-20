@@ -51,7 +51,7 @@ const CurrentWorkingList = (props: {
   }, []);
 
   return (
-    <Stack className="roundedShadow">
+    <Stack className="roundedShadow" sx={{ background: "white" }}>
       <Typography fontWeight={"bold"}>Online</Typography>
       <Stack>
         {currentScenEdits ? (
@@ -74,8 +74,8 @@ const CurrentWorkingList = (props: {
             )
           ) : (
             <Typography fontSize={"12px"}>
-              Keiner bearbeitet die Konfiguration gerade. Wenn ein Benutzer die
-              Konfiguration bearbeitet wird dies hier angezeigt.
+              Kein Benutzer bearbeitet die Konfiguration gerade. Wenn ein
+              Benutzer die Konfiguration bearbeitet wird dies hier angezeigt.
             </Typography>
           )
         ) : null}

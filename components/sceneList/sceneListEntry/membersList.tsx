@@ -49,7 +49,7 @@ const MembersList = (props: {
       ) : null}
     </Stack>
   ) : (
-    <Stack>lädt..</Stack>
+    <Stack>Mitglieder werden geladen..</Stack>
   );
 };
 

@@ -22,11 +22,12 @@ const AddMember = (props: {
   sessionID: string;
   idUser: string;
 }) => {
-  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [user, setUser] = useState<User>(null);
-  const refName = useRef<string>("");
+  const refEmail = useRef<string>("");
 
-  const checkIfUSerExist = async (loginID1: string) => {
+  // prüft ob der Benutzer exestiert, ergebnis wird in status user geschrieben
+  const checkIfUserExist = async (loginID1: string) => {
     const requestedUser: User[] = await fetchData(
       props.idUser,
       props.sessionID,
@@ -44,11 +45,12 @@ const AddMember = (props: {
     setUser(requestedUser[0]);
   };
 
+  // erstellt ein neuen Membership
   const addMemberShipToDB = async (
     idScene1: string,
     idUser1: string,
     readonly: boolean
-  ) => {
+  ): Promise<SceneMemberShip> => {
     const membership: SceneMemberShip = {
       id: uuidv4(),
       idScene: idScene1,
@@ -67,12 +69,13 @@ const AddMember = (props: {
       null
     );
 
-    if (!request) return;
+    if (!request) return null;
 
     return request;
   };
 
-  const checkIfIsAlreadyMember = (loginID: string): boolean => {
+  // prüft ob ein Benutzer (also die E-Mail) bereits ein Mitglied ist
+  const checkIfIsAlreadyMember = (email: string): boolean => {
     let erg: boolean = false;
     props.members.forEach(
       (
@@ -80,7 +83,7 @@ const AddMember = (props: {
           user: User;
         }
       ) => {
-        if (refName.current == member.user.email) return (erg = true);
+        if (email == member.user.email) return (erg = true);
       }
     );
     return erg;
@@ -92,33 +95,45 @@ const AddMember = (props: {
         <TextField
           label="E-Mail eingeben"
           size="small"
-          value={name}
+          value={email}
           onChange={async (e) => {
-            setName(e.target.value);
-            refName.current = e.target.value;
-            await checkIfUSerExist(refName.current);
+            setEmail(e.target.value);
+            refEmail.current = e.target.value;
+            await checkIfUserExist(refEmail.current);
           }}
         ></TextField>
         <Button
           onClick={async () => {
             if (user) {
-              let check = checkIfIsAlreadyMember(refName.current);
+              // prüfen ob die angegebene E-Mail bereits ein Member ist
+              const check = checkIfIsAlreadyMember(refEmail.current);
               if (check) {
-                alert(refName.current + " ist bereits member.");
+                alert(refEmail.current + " ist bereits member.");
                 return;
               }
-              await addMemberShipToDB(props.scene.id, user.id, false);
-              props.setReload(Math.random());
-              setName("");
-              setUser(null);
+
+              // den Benutzer als Mitglied der Szene hinzufügen
+              const erg = await addMemberShipToDB(
+                props.scene.id,
+                user.id,
+                false
+              );
+
+              if (!erg) alert("Das hat nicht funktioniert.");
+              else {
+                props.setReload(Math.random());
+                setEmail("");
+                setUser(null);
+              }
             } else {
-              alert("Geben sie einen User an den es gibt.");
+              alert("Geben Sie einen registrierten Benutzer an.");
             }
           }}
         >
           Hinzufügen
         </Button>
       </Stack>
+
       {user ? (
         <Stack direction={"row"} sx={{ m: "8px" }}>
           <Typography fontSize={"13px"}>
@@ -128,10 +143,10 @@ const AddMember = (props: {
         </Stack>
       ) : (
         <Stack direction={"row"} sx={{ m: "8px" }}>
-          {name ? (
+          {email ? (
             <>
               <Typography fontSize={"13px"}>
-                kein User mit der loginID {name} gefunden
+                kein User mit der E-Mail {email} gefunden
               </Typography>
               <HighlightOffIcon color="error"></HighlightOffIcon>
             </>

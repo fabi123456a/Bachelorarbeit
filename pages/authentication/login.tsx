@@ -23,16 +23,16 @@ const Home = (props: {
     props.setResetPw(false);
   };
 
-  // checkt login & pw wenns stim kommt der user zurück
+  // prüft email & pw, gibt den gefunden Benutzer zurück oder null
   const checkData = async () => {
-    const response = await fetch("/api/database/User/DB_checkPassword", {
+    const responseCheckLogin = await fetch("/api/database/User/DB_checkPassword", {
       method: "POST",
       body: JSON.stringify({
-        loginID: txtLoginID,
+        loginID: txtLoginID.toLowerCase(),
         pw: SHA256(txtPassword).toString(), // SHA256(97069340).toString(), //
       }),
     });
-    const result = await response.json();
+    const result = await responseCheckLogin.json();
 
     return result;
 

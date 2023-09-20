@@ -15,7 +15,6 @@ const Settings = (props: { user: User; sessionID: string }) => {
   const [txtDisplayName, setTxtDisplayName] = useState<string>("");
 
   const safeNewPassword = async (): Promise<boolean> => {
-    alert(txtPassword);
     const safePW = await fetchData(
       props.user.id,
       props.sessionID,

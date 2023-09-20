@@ -33,10 +33,10 @@ const Index = () => {
   const [resetPw, setResetPw] = useState<boolean>(false);
   const [register, setRegister] = useState<boolean>(false); // wenn true wird register page angezeigt
   const [actUser, setActUser] = useState<User>(null);
-  const [scene, setScene] = useState<Scene>(null);
-  const [sceneMembership, setSceneMembership] = useState<SceneMemberShip>();
+  const [scene, setScene] = useState<Scene>(null); // beinhaltet die Szene für Main
+  const [sceneMembership, setSceneMembership] = useState<SceneMemberShip>(); // speichert den aktuellen MemberShip-Datensatz der ausgewählten Szene
   const [session, setSession] = useState<Session>(null);
-  const refCurrentWorkingScene = useRef<CurrentSceneEdit>(null);
+  const refCurrentWorkingScene = useRef<CurrentSceneEdit>(null); // beinhaltet den aktuellen CurrentSceneEdit-Datensatz, ist ausgefüllt wenn ein Benutzer eine Szene bearbeitete 
 
   // neu fetchData
   const getSession = async (): Promise<Session> => {

@@ -2,6 +2,7 @@ import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { User } from "@prisma/client";
 import { SHA256 } from "crypto-js";
+import { isEmailValid } from "./register";
 
 const ResetPassword = (props: {
   setLoggedIn: (flag: boolean) => void;
@@ -15,7 +16,7 @@ const ResetPassword = (props: {
     const response = await fetch("/api/mail/sendNewPassword", {
       method: "POST",
       body: JSON.stringify({
-        email: email,
+        email: email.toLowerCase(),
       }),
     });
     const result = await response.json();
@@ -28,7 +29,7 @@ const ResetPassword = (props: {
   return (
     <Stack className="resetPassword">
       <Typography sx={{ mb: "24px" }} fontWeight={"bold"}>
-        Neues Passwort anfordern
+        Passwort zurücksetzen
       </Typography>
       <TextField
         value={email}
@@ -40,8 +41,8 @@ const ResetPassword = (props: {
       <Button
         color="success"
         onClick={async () => {
-          if (!email) return;
-          if (!email.includes("@")) {
+          // angegebene E-Mail prüfen
+          if (!isEmailValid(email) || !email) {
             alert("Geben Sie eine Gültige E-Mail-Adresse an.");
             return;
           }
@@ -51,7 +52,9 @@ const ResetPassword = (props: {
             alert("Kein Benutzer mit der E-Mail " + email + " gefunden.");
             return;
           }
-          alert("Eine neues Passwort wird an " + email + " gesendet.");
+          alert(
+            "Eine neues Passwort wird an " + email.toLowerCase() + " gesendet."
+          );
           setEmail("");
         }}
       >

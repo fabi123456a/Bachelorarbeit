@@ -5,7 +5,6 @@ export default async function register(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  //   const { loginID, password } = req.body;
   const b = req.body;
   const requestData = JSON.parse(b);
   const loginID: string = requestData["email"];
@@ -14,7 +13,7 @@ export default async function register(
   console.log("REGISTER_TRY: " + loginID + ", " + password);
 
   try {
-    const registerUser = await prismaClient.user.create({
+    await prismaClient.user.create({
       data: {
         id: crypto.randomUUID(),
         email: loginID,
@@ -29,7 +28,7 @@ export default async function register(
     console.log("REGISTER => " + loginID);
     res.send(true);
   } catch (e) {
-    console.log("Registrieren fehlgeschlagen.");
-    res.send(null);
+    console.log(e);
+    res.send(false);
   }
 }

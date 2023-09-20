@@ -18,8 +18,8 @@ let socket;
 
 const SceneDetails = (props: {
   scene: Scene;
-  setSelectedScene: (scene: Scene) => void;
-  setScene: (scene: Scene) => void;
+  setSelectedScene: (scene: Scene) => void; // setzt die ausgewählte Szene für die SceneList
+  setScene: (scene: Scene) => void; // setzt die Szene für main, wird aufgerufen wenn man eine Szene Betritt
   loggedInUser: User;
   sessionID: string;
   currentWorkingScene: MutableRefObject<CurrentSceneEdit>;
@@ -33,6 +33,7 @@ const SceneDetails = (props: {
   >();
   const [reload, setReload] = useState<number>(0);
 
+  // lädt den Ersteller
   const getUserFromIdCreator = async (idCreator: string): Promise<User> => {
     if (!props.scene) return;
 
@@ -51,6 +52,7 @@ const SceneDetails = (props: {
     return requestedUser[0];
   };
 
+  // lädt die anzahl der Objekte in der Szene
   const getSceneModelsCount = async (idScene: string) => {
     const requestedModels = await fetchData(
       props.loggedInUser.id,
@@ -66,6 +68,7 @@ const SceneDetails = (props: {
     setModelsCount(requestedModels.length);
   };
 
+  // lädt alle Member einer Szene
   const getAllSceneMembers = async (idScene: string) => {
     const requestedMembers = await fetchData(
       props.loggedInUser.id,
@@ -82,8 +85,8 @@ const SceneDetails = (props: {
     setMembers(requestedMembers);
   };
 
-  // speichert beim betreten einer Szene, das der Benutzer gerade in dieser Szene arbietet
-  const insertCurrentSceneEdit = async () => {
+  // speichert beim betreten einer Szene, das der Benutzer gerade in dieser Szene arbeitet
+  const insertCurrentSceneEdit = async (): Promise<CurrentSceneEdit> => {
     const currentSceneEditData: CurrentSceneEdit = {
       id: uuidv4(),
       entryDate: new Date(),
@@ -102,11 +105,12 @@ const SceneDetails = (props: {
     );
 
     if (!requestedInsert) {
-      return;
+      return null;
     }
-    return requestedInsert;
+    return requestedInsert as CurrentSceneEdit;
   };
 
+  // lädt den Ersteller, anzahl Objekte und alle Members der Szene
   useEffect(() => {
     if (!props.scene) return;
     getUserFromIdCreator(props.scene.idUserCreater).then((user: User) => {
@@ -116,6 +120,7 @@ const SceneDetails = (props: {
     getAllSceneMembers(props.scene.id);
   }, [reload]);
 
+  // socket io initialisieren
   useEffect(() => {
     const socketInitializer = async () => {
       await fetch("/api/socket");
@@ -149,21 +154,24 @@ const SceneDetails = (props: {
         <Button
           sx={{ p: "12px", maxWidth: "80vh" }}
           onClick={async () => {
-            // prüfen ob es schon einen scenedit gibt und dann löschen
+            // löscht vor dem betreten einer Szene die CurrentSceneEdit-Datensätze eines Benutzers
             await deleteScenEditByUserID(
               props.loggedInUser.id,
               props.sessionID
             );
 
+            // legt während dem betreten einen CurrenSceneEdit-Datensatz an
             const currentWorkingScene: CurrentSceneEdit =
               await insertCurrentSceneEdit();
 
+            // sichert den angelegten CurrenSceneEdit-Datensatz, wird für socket io benötigt (Szenen-synchronisation)
             if (currentWorkingScene) {
               props.currentWorkingScene.current = currentWorkingScene;
 
               socket.emit("sceneOnEnter", currentWorkingScene);
             }
 
+            // Szene setzen damit es in Main angezeigt wird
             props.setScene(props.scene);
           }}
           variant="contained"
@@ -226,7 +234,7 @@ const SceneDetails = (props: {
 
 export default SceneDetails;
 
-// löscht veralteten CurrentSceneEdit DatenSatze
+// löscht veraltete CurrentSceneEdit Datensätze eines Benutzers
 export const deleteScenEditByUserID = async (
   userID: string,
   sessionID: string

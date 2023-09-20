@@ -27,61 +27,41 @@ const MembersListEntry = (props: {
     setIsHovered(false);
   };
 
-  const deleteMemberShipByIdInDB = async (id: string) => {
-    // const deleteRequest = await fetch(
-    //   "/api/database/Membership/DB_deleteMemberShipByID",
-    //   {
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //       id: id,
-    //       sessionID: props.sessionID,
-    //       idUser: props.loggedInUser.id,
-    //     }),
-    //   }
-    // );
-
-    // const erg = await deleteRequest.json();
-
+  // löscht einen membership
+  const deleteMemberShipByIdInDB = async (
+    idMembership: string
+  ): Promise<boolean> => {
     const requestDelete = await fetchData(
       props.loggedInUser.id,
       props.sessionID,
       "sceneMemberShip",
       "delete",
-      { id: id },
+      { id: idMembership },
       null,
       null
     );
 
-    if (!requestDelete) return;
-
-    if (requestDelete) return true;
-    else return false;
+    if (!requestDelete) return false;
+    return true;
   };
 
-  const updateMembershipInDB = async (id: string, readonly: boolean) => {
-    // const deleteRequest = await fetch(
-    //   "/api/database/Membership/DB_changeReadonlyByID",
-    //   {
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //       id: id,
-    //       readonly: readonly,
-    //       sessionID: props.sessionID,
-    //       idUser: props.loggedInUser.id,
-    //     }),
-    //   }
-    // );
-    const requestedChatEntries = await fetchData(
+  // ändert den readonly status eines memberships
+  const updateMembershipInDB = async (
+    idMembership: string,
+    readonly: boolean
+  ): Promise<SceneMemberShip> => {
+    const requestedChangeReadonly = await fetchData(
       props.loggedInUser.id,
       props.sessionID,
       "sceneMemberShip",
       "update",
-      { id: id },
+      { id: idMembership },
       { readOnly: readonly },
       null
     );
 
-    if (!requestedChatEntries) return;
+    if (!requestedChangeReadonly) return null;
+    return requestedChangeReadonly;
   };
 
   return props.membership ? (
@@ -99,17 +79,21 @@ const MembersListEntry = (props: {
           <Typography color={"grey"} sx={{ ml: "8px" }}>
             (Ersteller)
           </Typography>
-        ) : props.scene.idUserCreater == props.loggedInUser.id ? (
+        ) : props.scene.idUserCreater == props.loggedInUser.id ? ( // wenn der Ersteller der Szene eingeloggt ist
           <Stack direction={"row"} sx={{ alignItems: "center" }}>
             <Checkbox
               checked={checkbox}
               onChange={async (e) => {
+                // status der Checkbox switchen
                 setCheckbox((prev) => !prev);
-                //alert(e.target.checked);
-                await updateMembershipInDB(
+
+                // readonly status im Membership ändern
+                const erg = await updateMembershipInDB(
                   props.membership.id,
                   e.target.checked
                 );
+
+                if (!erg) alert("Das hat nicht funktioniert.");
               }}
             ></Checkbox>
             <Typography>readonly</Typography>
@@ -130,15 +114,22 @@ const MembersListEntry = (props: {
               <IconButton
                 onClick={async () => {
                   const confirmed = window.confirm(
-                    "Willst du " + props.membership.user.email + " entfernen?"
+                    "Willst du " +
+                      props.membership.user.email +
+                      " aus der Konfiguration entfernen?"
                   );
                   if (!confirmed) return;
 
-                  await deleteMemberShipByIdInDB(props.membership.id);
+                  const flag = await deleteMemberShipByIdInDB(
+                    props.membership.id
+                  );
+
+                  if (!flag) alert("Das hat nicht funktioniert.");
+
                   props.setReload(Math.random());
                 }}
               >
-                <DeleteForever></DeleteForever>
+                <DeleteForever color={"error"}></DeleteForever>
               </IconButton>
             )
           ) : null

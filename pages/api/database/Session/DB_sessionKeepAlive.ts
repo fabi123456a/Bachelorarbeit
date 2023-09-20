@@ -21,7 +21,9 @@ export default async function DB_sessionKeepAlive(
     });
 
     console.log("session keep alive: " + sessionID);
+    res.send(true);
   } catch (e) {
     console.log(e);
+    res.send(false);
   }
 }

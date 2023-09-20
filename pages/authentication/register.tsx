@@ -8,6 +8,7 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
   const [txtLoginID, setTxtLoginID] = useState<string>("");
   const [txtPw, setTxtPw] = useState<string>("");
 
+  // funktion, um eine 8 stellige Zahl zu generieren
   function generateEightDigitNumber(): number {
     const min = 10000000; // Die kleinste 8-stellige Zahl (10000000)
     const max = 99999999; // Die größte 8-stellige Zahl (99999999)
@@ -21,44 +22,39 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
     return eightDigitNumber;
   }
 
+  // funktion, um einen Benutzer mit einer E-Mail in die Datenbank hinzuzufügen + code senden
   const registerUser = async (email: string): Promise<boolean> => {
     const code = generateEightDigitNumber();
     const hashedCode = SHA256(code.toString()).toString();
 
-    // email in db einfügen
-    const response = await fetch("/api/database/User/register", {
+    // user in db einfügen
+    const responseRegister = await fetch("/api/database/User/register", {
       method: "POST",
       body: JSON.stringify({
-        email: email,
+        email: email.toLowerCase(),
         password: hashedCode,
       }),
     });
 
-    let result: boolean;
-    try {
-      result = await response.json();
-    } catch (e) {
-      // alert(e);
-      return;
-    }
+    let result: boolean = await responseRegister.json();
 
     if (!result) {
       alert("Registrieren Fehlgeschlagen.");
-      return;
+      return false;
     }
 
     // den code senden zum anmelden
-    const response1 = await fetch("/api/mail/sendCode", {
+    const responseSendCode = await fetch("/api/mail/sendCode", {
       method: "POST",
       body: JSON.stringify({
         email: email,
         code: code,
       }),
     });
-    const result1 = await response1.json();
+    const result1 = await responseSendCode.json();
 
-    if (!result1) return;
-    return result1;
+    if (!result1) return false;
+    return true;
   };
 
   return (
@@ -75,10 +71,11 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
         style={{
           transform: "scale(0.2)",
           position: "absolute",
+          zIndex: "-10",
         }}
       ></img>
       <Stack
-        sx={{ maxWidth: "40%", minWidth: "40%" }}
+        sx={{ maxWidth: "350px", minWidth: "350px", background: "white" }}
         className="roundedShadow"
       >
         <Typography variant="h4" sx={{ mb: "24px" }}>
@@ -105,24 +102,28 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
           size="large"
           variant="contained"
           onClick={async () => {
+            // eingegebene E-Mail prüfen
             if (!txtLoginID) {
               alert("Geben Sie eine E-Mail zum Registrieren an.");
               return;
             }
 
-            if (!txtLoginID.includes("@")) {
+            // eingegebene E-Mail prüfen
+            if (!isEmailValid(txtLoginID)) {
               alert("Geben sie eine gültige E-Mail an.");
               return;
             }
 
+            // versuchen, E-Mail/Benutzer in die Datenbank eintragen
             const registeredUser: boolean = await registerUser(txtLoginID);
 
+            // prüfen ob das hinzufügen in die Datenbank funktioniert hat
             if (!registeredUser) {
               alert("Registrieren fehlgeschlagen");
               return;
             } else {
               alert(
-                "Wir senden ihnen eine E-Mail mit einem Passwort zum anmelden. Sie werden nun zum Login weitergeleitet."
+                "Wir haben Ihnen eine E-Mail mit einem Anmeldepasswort gesendet. Bitte überprüfen Sie Ihr Postfach und verwenden Sie das erhaltenen Passwort, um sich anzumelden."
               );
               props.setRegister(false);
             }
@@ -143,5 +144,12 @@ const Register = (props: { setRegister: (flag: boolean) => void }) => {
     </Stack>
   );
 };
+
+// E-Mail mit regex prüfen
+export function isEmailValid(email: string): boolean {
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+  return emailRegex.test(email);
+}
 
 export default Register;
