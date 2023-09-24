@@ -308,6 +308,7 @@ export default function Main(props: {
 
       // wall, cuber, floor, cylinder add synchronisieren via socket io
       socket.on("getAddWall", (data) => {
+        if (!props.currentWorkingScene.current) return;
         // {
         //   wall: x,
         //   idScene: props.idScene,

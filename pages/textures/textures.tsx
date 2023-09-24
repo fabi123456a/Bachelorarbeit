@@ -145,7 +145,7 @@ const Textures = (props: { loggedInUser: User; sessionID: string }) => {
                     const flag = await handleTextureDelete(tex);
                     if (flag && !(typeof flag === "object")) {
                       // notwendig weil wenn keine session id dann wird {error: ".."} zurückgeliefert
-                      alert("texture wurde gelöscht");
+                      alert("Die Textur wurde gelöscht");
                       setReload(Math.random());
                     } else {
                       alert("löschen fehlgeschlagen");

@@ -16,10 +16,10 @@ model User {
   id             String     @id 
   email          String  @unique
   password       String?
-  displayName    String  @default("ADMIN")
+  displayName    String  @default("")
   read           Boolean @default(true)
-  write          Boolean @default(false)
-  delete         Boolean @default(false)
+  write          Boolean @default(true)
+  delete         Boolean @default(true)
   isAdmin        Boolean @default(false)
   chatEntry      ChatEntry[]
   memberships    SceneMemberShip[]

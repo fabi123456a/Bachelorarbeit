@@ -24,7 +24,6 @@ export default function ModelList(props: {
       <Stack
         className="modelList roundedShadow"
         direction="column"
-        height="100%"
         alignContent={"center"}
       >
         <CloseIcon

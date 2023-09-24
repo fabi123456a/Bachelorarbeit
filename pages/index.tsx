@@ -36,7 +36,7 @@ const Index = () => {
   const [scene, setScene] = useState<Scene>(null); // beinhaltet die Szene für Main
   const [sceneMembership, setSceneMembership] = useState<SceneMemberShip>(); // speichert den aktuellen MemberShip-Datensatz der ausgewählten Szene
   const [session, setSession] = useState<Session>(null);
-  const refCurrentWorkingScene = useRef<CurrentSceneEdit>(null); // beinhaltet den aktuellen CurrentSceneEdit-Datensatz, ist ausgefüllt wenn ein Benutzer eine Szene bearbeitete 
+  const refCurrentWorkingScene = useRef<CurrentSceneEdit>(null); // beinhaltet den aktuellen CurrentSceneEdit-Datensatz, ist ausgefüllt wenn ein Benutzer eine Szene bearbeitete
 
   // neu fetchData
   const getSession = async (): Promise<Session> => {
@@ -72,6 +72,8 @@ const Index = () => {
     getSession().then((session: Session) => {
       setSession(session);
     });
+
+    // refCurrentWorkingScene.current = null;
   }, [actUser]);
 
   useEffect(() => {
