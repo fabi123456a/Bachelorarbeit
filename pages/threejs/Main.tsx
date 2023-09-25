@@ -682,7 +682,7 @@ export default function Main(props: {
 
     for (const objProp of models) {
       if (objProp.info == "licht") {
-        alert("licht");
+        //alert("licht");
         continue;
       }
 

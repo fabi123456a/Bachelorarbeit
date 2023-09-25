@@ -79,7 +79,7 @@ const Settings = (props: { user: User; sessionID: string }) => {
                     alert("Das neue Passwort konnte nicht gespeichert werden.");
                     return;
                   }
-                  alert("Das neue Passwort wurde geändert.");
+                  alert("Das neue Passwort wurde gespeichert.");
                   setFlag(false);
                 }}
               >
